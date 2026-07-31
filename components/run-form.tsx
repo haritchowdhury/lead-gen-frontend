@@ -46,13 +46,13 @@ export function RunForm() {
     } catch (requestError) {
       if (
         requestError instanceof ApiRequestError &&
-        requestError.code === "RUN_ALREADY_ACTIVE" &&
+        requestError.code === "AUTHENTICATION_REQUIRED" &&
         requestError.details &&
         typeof requestError.details === "object" &&
-        "runId" in requestError.details &&
-        typeof requestError.details.runId === "string"
+        "continueUrl" in requestError.details &&
+        requestError.details.continueUrl === "/sign-up"
       ) {
-        router.push(`/runs/${encodeURIComponent(requestError.details.runId)}`);
+        router.push("/sign-up");
         return;
       }
       if (
@@ -144,4 +144,3 @@ export function RunForm() {
     </form>
   );
 }
-

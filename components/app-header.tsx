@@ -1,8 +1,16 @@
 import Link from "next/link";
 
 import { StoreIcon } from "@/components/icons";
+import { HeaderAuth } from "@/components/header-auth";
+import { sessionUserId } from "@/lib/auth/server";
 
-export function AppHeader() {
+export async function AppHeader() {
+  let signedIn = false;
+  try {
+    signedIn = Boolean(await sessionUserId());
+  } catch {
+    signedIn = false;
+  }
   return (
     <header className="site-header">
       <div className="shell header-inner">
@@ -12,12 +20,14 @@ export function AppHeader() {
           </span>
           <span>StoreSignal</span>
         </Link>
-        <div className="header-meta">
-          <span className="signal-dot" />
-          Shopify lead intelligence
+        <div className="header-actions">
+          <div className="header-meta">
+            <span className="signal-dot" />
+            Shopify lead intelligence
+          </div>
+          <HeaderAuth signedIn={signedIn} />
         </div>
       </div>
     </header>
   );
 }
-

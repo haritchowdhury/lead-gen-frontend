@@ -11,8 +11,8 @@ Requirements:
 
 - Node.js 20 or newer
 - The backend running on its own port
-- The same backend API token configured in both projects, when authentication is
-  enabled
+- Neon Auth enabled on the same Neon branch used by the backend
+- The same private backend API token configured in both projects
 
 Copy the example environment file:
 
@@ -41,14 +41,6 @@ Open `http://localhost:3001` if port 3000 is already used by the backend:
 npm run dev -- --port 3001
 ```
 
-The completed Neon-backed frontend fixture supplied by the backend is:
-
-```text
-run_hH3nIaWOEBsavW0A0ZhKxSKI
-```
-
-Open it at `/runs/run_hH3nIaWOEBsavW0A0ZhKxSKI`.
-
 ## Environment boundary
 
 Only these values belong in the frontend:
@@ -56,11 +48,31 @@ Only these values belong in the frontend:
 ```env
 BACKEND_API_BASE_URL=http://127.0.0.1:3000
 BACKEND_API_TOKEN=use-the-same-backend-service-token
+NEON_AUTH_BASE_URL=your-branch-neon-auth-endpoint
+NEON_AUTH_COOKIE_SECRET=at-least-32-random-characters
 ```
 
-They are server-only. Do not add `NEXT_PUBLIC_` prefixes. Database, Google,
+They are server-only. Generate the cookie secret with `openssl rand -base64 32`.
+Do not add `NEXT_PUBLIC_` prefixes. Database, Google,
 OpenAI, Browserless, or other scraper credentials must remain in the backend.
 `BACKEND_API_BASE_URL` must not end with `/`.
+
+The frontend pins `@neondatabase/auth` and mounts its Next.js handler at
+`/api/auth/[...path]`. Email/password signup behavior, allowed origins, email
+verification, and password-reset delivery are configured in Neon Auth. Configure
+verification or an equivalent abuse control before a public launch.
+
+### Dependency security gate
+
+As of 31 July 2026, the current official SDK release is the beta
+`@neondatabase/auth@0.4.2-beta`, which pins `better-auth@1.4.18`. `npm audit`
+reports advisories in that dependency, primarily for OAuth/OIDC providers,
+magic-link/email-OTP, organizations, and auth-server plugins. This application
+uses the SDK as a proxy to Neon's managed service, exposes only email/password,
+session lookup, and sign-out through its auth Route Handler, and does not enable
+those features. Even so, re-check for a Neon SDK release with patched transitive
+dependencies before a public production launch; do not force an unsupported
+`better-auth` override without Neon compatibility testing.
 
 ## Commands
 
@@ -77,14 +89,22 @@ npm run check
 The browser only calls same-origin Next.js routes:
 
 - `GET /api/health`
+- `POST /api/run-intents/claim`
+- `GET /api/runs`
 - `POST /api/runs`
 - `GET /api/runs/[runId]`
 - `GET /api/runs/[runId]/results`
 
-The Route Handlers add the private service token and proxy short-lived requests
-to the backend. Scraping never runs in Vercel. The run page polls every three
+The Route Handlers validate the Neon Auth session, add the private service token
+and a server-derived `X-User-Id`, and proxy short-lived requests to the backend.
+The browser can never supply the owner ID. Scraping never runs in Vercel. The run page polls every three
 seconds without overlapping requests, survives reloads through its URL, and
 stops at a terminal state.
+
+An anonymous home-page submission creates only an expiring backend `RunIntent`.
+The opaque intent ID is stored in an HTTP-only, SameSite=Lax cookie. After signup
+or signin, `/runs/continue` claims it idempotently and redirects to the owned run
+slug. `/runs` lists the current user's run history.
 
 CSV serialization lives in `lib/csv-export.ts`. Export-all requests every result
 page at a page size of 200, preserves the backend's 25-column legacy order,
@@ -93,10 +113,10 @@ protects spreadsheet formula-like text.
 
 ## Vercel
 
-Create a Vercel project with `frontend` as the Root Directory and configure
-`BACKEND_API_BASE_URL` and `BACKEND_API_TOKEN` for Development, Preview, and
-Production. Prefer a non-production backend for preview deployments. No database
-credential is needed by Vercel.
+Create a Vercel project with `frontend` as the Root Directory and configure all
+four server-only variables above for Development, Preview, and Production.
+Prefer a non-production backend and Neon branch for preview deployments. No
+database credential is needed by Vercel.
 
 Before deployment:
 

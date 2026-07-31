@@ -46,6 +46,21 @@ export type StartRunResponse = {
   createdAt: string;
 };
 
+export type RunIntentResponse = {
+  intentId: string;
+  expiresAt: string;
+};
+
+export type RunListResponse = {
+  pagination: {
+    page: number;
+    pageSize: number;
+    totalItems: number;
+    totalPages: number;
+  };
+  items: RunStatus[];
+};
+
 export type Lead = {
   id: string;
   shop_type: string | null;
@@ -110,4 +125,3 @@ export type ResultFilters = {
   sortBy: "lead_score" | "store_name" | "shop_type" | "google_rank";
   sortDirection: "asc" | "desc";
 };
-

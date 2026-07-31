@@ -7,6 +7,7 @@ type ProxyOptions = {
   method?: "GET" | "POST";
   body?: string;
   timeoutMs: number;
+  userId?: string;
 };
 
 export function jsonError(
@@ -41,6 +42,7 @@ export async function proxyBackend({
   method = "GET",
   body,
   timeoutMs,
+  userId,
 }: ProxyOptions): Promise<Response> {
   const baseUrl = backendBaseUrl();
   if (!baseUrl) {
@@ -65,6 +67,7 @@ export async function proxyBackend({
         ...(process.env.BACKEND_API_TOKEN
           ? { Authorization: `Bearer ${process.env.BACKEND_API_TOKEN}` }
           : {}),
+        ...(userId ? { "X-User-Id": userId } : {}),
       },
     });
 
