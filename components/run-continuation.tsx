@@ -26,7 +26,7 @@ export function RunContinuation() {
         claimError instanceof ApiRequestError &&
         claimError.code === "RUN_INTENT_NOT_FOUND"
       ) {
-        router.replace("/runs");
+        router.replace("/");
         return;
       }
       setError(errorMessage(claimError));

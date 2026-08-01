@@ -142,6 +142,7 @@ export function runStatus(overrides: Partial<RunStatus> = {}): RunStatus {
   return {
     runId: "run_abcdefghijklmnop",
     state: "completed",
+    phase: "finished",
     stage: "completed",
     createdAt: "2026-08-01T00:00:00.000Z",
     startedAt: "2026-08-01T00:00:01.000Z",
@@ -150,6 +151,7 @@ export function runStatus(overrides: Partial<RunStatus> = {}): RunStatus {
     resultsAvailable: true,
     pipelineVersion: 2,
     scoringVersion: 2,
+    queryReview: null,
     error: null,
     ...overrides,
   };

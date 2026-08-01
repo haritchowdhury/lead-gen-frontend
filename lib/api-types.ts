@@ -1,9 +1,17 @@
 export type RunState =
   | "queued"
   | "running"
+  | "awaiting_query_confirmation"
   | "completed"
   | "failed"
   | "cancelled";
+export type RunPhase =
+  | "query_planning"
+  | "query_review"
+  | "scraping"
+  | "finished";
+export type QuerySource = "generated" | "user_added" | "user_edited";
+export type QueryValidationState = "pending" | "valid" | "invalid";
 
 export type LeadStatus = "qualified" | "rejected" | "failed";
 export type BusinessQualifier = "brand" | "retailer" | "unspecified";
@@ -165,6 +173,7 @@ export type RunProgress = {
 export type RunStatus = {
   runId: string;
   state: RunState;
+  phase: RunPhase | null;
   stage: string;
   createdAt: string;
   startedAt: string | null;
@@ -173,15 +182,62 @@ export type RunStatus = {
   resultsAvailable: boolean;
   pipelineVersion: number | null;
   scoringVersion: number | null;
+  queryReview: {
+    revision: number;
+    confirmedRevision: number | null;
+    editable: boolean;
+    queriesUrl: string;
+    valid: boolean | null;
+    invalidQueryCount: number | null;
+  } | null;
   error: { code: string; message: string } | null;
 };
 
 export type StartRunResponse = {
   runId: string;
   state: "queued";
+  phase: "query_planning";
+  stage: "queued_query_planning";
   statusUrl: string;
+  queriesUrl: string;
   resultsUrl: string;
   createdAt: string;
+};
+
+export type QueryCategory = {
+  categoryIndex: number;
+  originalShopType: string;
+  shopType: string;
+  businessQualifier: BusinessQualifier | string;
+};
+
+export type RunQuery = {
+  id: string;
+  categoryIndex: number;
+  sequence: number;
+  query: string;
+  source: QuerySource;
+  validationState: QueryValidationState;
+  rejectionReason: string | null;
+  queryScore: number | null;
+  generationReason: string | null;
+  probedAt: string | null;
+};
+
+export type QuerySet = {
+  runId: string;
+  revision: number;
+  editable: boolean;
+  categories: QueryCategory[];
+  queries: RunQuery[];
+};
+
+export type StartScrapeResponse = {
+  runId: string;
+  state: "queued";
+  phase: "scraping";
+  stage: "queued_query_validation";
+  revision: number;
 };
 
 export type RunIntentResponse = {

@@ -130,15 +130,15 @@ export function RunForm() {
 
       <div className="form-footer">
         <p>
-          Store research runs in the background. You can safely leave and return
-          using the run link.
+          We generate a reviewable query list first. Store scraping starts only
+          after you confirm it.
         </p>
         <button
           className="button button-primary"
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Starting run…" : "Find stores"}
+          {isSubmitting ? "Generating queries…" : "Generate queries"}
           {!isSubmitting && <ArrowRightIcon />}
         </button>
       </div>

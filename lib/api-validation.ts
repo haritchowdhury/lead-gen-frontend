@@ -12,6 +12,7 @@ import type {
   Lead,
   QueryAudit,
   QueryAuditPage,
+  QuerySet,
   ResultPage,
   RunDiagnostic,
   RunIntentResponse,
@@ -20,6 +21,7 @@ import type {
   RunStatus,
   ScoreBreakdown,
   StartRunResponse,
+  StartScrapeResponse,
   StoreFitEvidence,
   StoreFitPageEvidence,
 } from "@/lib/api-types";
@@ -71,6 +73,11 @@ function nullableNumber(value: unknown, path: string): number | null {
 function boolean(value: unknown, path: string): boolean {
   if (typeof value !== "boolean") throw new ApiPayloadError(path);
   return value;
+}
+
+function nullableBoolean(value: unknown, path: string): boolean | null {
+  if (value === null) return null;
+  return boolean(value, path);
 }
 
 function oneOf<T extends string>(
@@ -435,9 +442,34 @@ export function parseRunStatus(value: unknown, path = "run"): RunStatus {
       message: text(parsed.message, `${path}.error.message`),
     };
   }
+  let queryReview: RunStatus["queryReview"] = null;
+  if (source.queryReview !== null) {
+    const review = record(source.queryReview, `${path}.queryReview`);
+    queryReview = {
+      revision: integer(review.revision, `${path}.queryReview.revision`),
+      confirmedRevision: nullableNumber(
+        review.confirmedRevision,
+        `${path}.queryReview.confirmedRevision`,
+      ),
+      editable: boolean(review.editable, `${path}.queryReview.editable`),
+      queriesUrl: text(review.queriesUrl, `${path}.queryReview.queriesUrl`),
+      valid: nullableBoolean(review.valid, `${path}.queryReview.valid`),
+      invalidQueryCount: nullableNumber(
+        review.invalidQueryCount,
+        `${path}.queryReview.invalidQueryCount`,
+      ),
+    };
+  }
   return {
     runId: text(source.runId, `${path}.runId`),
-    state: oneOf(source.state, ["queued", "running", "completed", "failed", "cancelled"], `${path}.state`),
+    state: oneOf(source.state, ["queued", "running", "awaiting_query_confirmation", "completed", "failed", "cancelled"], `${path}.state`),
+    phase: source.phase === null
+      ? null
+      : oneOf(
+          source.phase,
+          ["query_planning", "query_review", "scraping", "finished"] as const,
+          `${path}.phase`,
+        ),
     stage: text(source.stage, `${path}.stage`),
     createdAt: text(source.createdAt, `${path}.createdAt`),
     startedAt: nullableText(source.startedAt, `${path}.startedAt`),
@@ -446,6 +478,7 @@ export function parseRunStatus(value: unknown, path = "run"): RunStatus {
     resultsAvailable: boolean(source.resultsAvailable, `${path}.resultsAvailable`),
     pipelineVersion: nullableNumber(source.pipelineVersion, `${path}.pipelineVersion`),
     scoringVersion: nullableNumber(source.scoringVersion, `${path}.scoringVersion`),
+    queryReview,
     error,
   };
 }
@@ -455,9 +488,56 @@ export function parseStartRunResponse(value: unknown): StartRunResponse {
   return {
     runId: text(source.runId, "startRun.runId"),
     state: oneOf(source.state, ["queued"], "startRun.state"),
+    phase: oneOf(source.phase, ["query_planning"], "startRun.phase"),
+    stage: oneOf(source.stage, ["queued_query_planning"], "startRun.stage"),
     statusUrl: text(source.statusUrl, "startRun.statusUrl"),
+    queriesUrl: text(source.queriesUrl, "startRun.queriesUrl"),
     resultsUrl: text(source.resultsUrl, "startRun.resultsUrl"),
     createdAt: text(source.createdAt, "startRun.createdAt"),
+  };
+}
+
+export function parseQuerySet(value: unknown): QuerySet {
+  const source = record(value, "querySet");
+  return {
+    runId: text(source.runId, "querySet.runId"),
+    revision: integer(source.revision, "querySet.revision"),
+    editable: boolean(source.editable, "querySet.editable"),
+    categories: array(source.categories, "querySet.categories", (item, path) => {
+      const category = record(item, path);
+      return {
+        categoryIndex: integer(category.categoryIndex, `${path}.categoryIndex`),
+        originalShopType: text(category.originalShopType, `${path}.originalShopType`),
+        shopType: text(category.shopType, `${path}.shopType`),
+        businessQualifier: text(category.businessQualifier, `${path}.businessQualifier`),
+      };
+    }),
+    queries: array(source.queries, "querySet.queries", (item, path) => {
+      const query = record(item, path);
+      return {
+        id: text(query.id, `${path}.id`),
+        categoryIndex: integer(query.categoryIndex, `${path}.categoryIndex`),
+        sequence: integer(query.sequence, `${path}.sequence`),
+        query: text(query.query, `${path}.query`),
+        source: oneOf(query.source, ["generated", "user_added", "user_edited"], `${path}.source`),
+        validationState: oneOf(query.validationState, ["pending", "valid", "invalid"], `${path}.validationState`),
+        rejectionReason: nullableText(query.rejectionReason, `${path}.rejectionReason`),
+        queryScore: nullableNumber(query.queryScore, `${path}.queryScore`),
+        generationReason: nullableText(query.generationReason, `${path}.generationReason`),
+        probedAt: nullableText(query.probedAt, `${path}.probedAt`),
+      };
+    }),
+  };
+}
+
+export function parseStartScrapeResponse(value: unknown): StartScrapeResponse {
+  const source = record(value, "startScrape");
+  return {
+    runId: text(source.runId, "startScrape.runId"),
+    state: oneOf(source.state, ["queued"], "startScrape.state"),
+    phase: oneOf(source.phase, ["scraping"], "startScrape.phase"),
+    stage: oneOf(source.stage, ["queued_query_validation"], "startScrape.stage"),
+    revision: integer(source.revision, "startScrape.revision"),
   };
 }
 

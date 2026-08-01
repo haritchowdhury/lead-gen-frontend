@@ -23,6 +23,7 @@ function formatDate(value: string): string {
 function stateLabel(run: RunStatus): string {
   if (run.state === "queued") return "Queued";
   if (run.state === "running") return stageLabel(run.stage);
+  if (run.state === "awaiting_query_confirmation") return "Review queries";
   return run.state[0].toUpperCase() + run.state.slice(1);
 }
 

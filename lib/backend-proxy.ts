@@ -4,7 +4,7 @@ import type { ApiErrorPayload } from "@/lib/api-types";
 
 type ProxyOptions = {
   path: string;
-  method?: "GET" | "POST";
+  method?: "GET" | "POST" | "PUT";
   body?: string;
   timeoutMs: number;
   userId?: string;

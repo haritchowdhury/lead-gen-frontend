@@ -89,7 +89,10 @@ test("validates every successful response family consumed by the frontend", () =
   assert.equal(parseStartRunResponse({
     runId: run.runId,
     state: "queued",
+    phase: "query_planning",
+    stage: "queued_query_planning",
     statusUrl: `/api/runs/${run.runId}`,
+    queriesUrl: `/api/runs/${run.runId}/queries`,
     resultsUrl: `/api/runs/${run.runId}/results`,
     createdAt: run.createdAt,
   }).state, "queued");

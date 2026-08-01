@@ -15,6 +15,7 @@ import { ResultsFilters } from "@/components/results-filters";
 import { ResultsTable } from "@/components/results-table";
 import { RunEvidence } from "@/components/run-evidence";
 import { RunProgress } from "@/components/run-progress";
+import { QueryEditor } from "@/components/query-editor";
 import type {
   LeadStatus,
   ResultFilters,
@@ -92,6 +93,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
   } | null>(null);
   const [reloadVersion, setReloadVersion] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [statusReloadVersion, setStatusReloadVersion] = useState(0);
   const filters = useMemo(
     () => filtersFromParams(new URLSearchParams(searchParams.toString())),
     [searchParams],
@@ -141,7 +143,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
       if (timer) clearTimeout(timer);
       controller?.abort();
     };
-  }, [runId]);
+  }, [runId, statusReloadVersion]);
 
   useEffect(() => {
     if (!run?.resultsAvailable) return;
@@ -263,6 +265,13 @@ export function RunWorkspace({ runId }: { runId: string }) {
         )}
 
         <RunProgress run={run} />
+
+        {run.state === "awaiting_query_confirmation" && (
+          <QueryEditor
+            runId={runId}
+            onStarted={() => setStatusReloadVersion((value) => value + 1)}
+          />
+        )}
 
         {run.resultsAvailable && (
           <section className="results-section">
