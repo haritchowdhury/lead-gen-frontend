@@ -1,4 +1,4 @@
-import type { Lead } from "@/lib/api-types";
+import type { Lead, ResultPage } from "@/lib/api-types";
 
 export const CSV_HEADERS = [
   "shop_type",
@@ -26,6 +26,18 @@ export const CSV_HEADERS = [
   "status",
   "rejection_reason",
   "error",
+  "business_qualifier",
+  "pipeline_version",
+  "scoring_version",
+  "store_fit_state",
+  "store_fit_evidence",
+  "contactability_tier",
+  "contact_evidence",
+  "identity_confidence",
+  "identity_evidence",
+  "score_breakdown",
+  "discovery_occurrences",
+  "matched_categories",
 ] as const;
 
 type CsvHeader = (typeof CSV_HEADERS)[number];
@@ -35,10 +47,19 @@ function protectFormula(value: string): string {
 }
 
 function csvValue(lead: Lead, header: CsvHeader): string {
-  const raw =
-    header === "social_profiles"
-      ? JSON.stringify(lead.social_profiles)
-      : lead[header];
+  const jsonHeaders = new Set<CsvHeader>([
+    "social_profiles",
+    "store_fit_evidence",
+    "contact_evidence",
+    "identity_evidence",
+    "score_breakdown",
+    "discovery_occurrences",
+    "matched_categories",
+  ]);
+  const source = lead[header];
+  const raw = jsonHeaders.has(header) && source != null
+    ? JSON.stringify(source)
+    : source;
   if (raw == null) return "";
   return typeof raw === "number" ? String(raw) : protectFormula(String(raw));
 }
@@ -58,6 +79,23 @@ export function serializeLeadsToCsv(leads: Lead[]): string {
   return `${lines.join("\r\n")}\r\n`;
 }
 
+export async function collectAllLeads(
+  fetchPage: (page: number) => Promise<ResultPage>,
+  onProgress?: (page: number, totalPages: number) => void,
+): Promise<Lead[]> {
+  const leads: Lead[] = [];
+  let pageNumber = 1;
+  let totalPages = 1;
+  do {
+    onProgress?.(pageNumber, totalPages);
+    const page = await fetchPage(pageNumber);
+    leads.push(...page.items);
+    totalPages = page.pagination.totalPages;
+    pageNumber += 1;
+  } while (pageNumber <= totalPages);
+  return leads;
+}
+
 export function downloadLeadsCsv(leads: Lead[], runId: string): void {
   const blob = new Blob([`\uFEFF${serializeLeadsToCsv(leads)}`], {
     type: "text/csv;charset=utf-8",
@@ -71,4 +109,3 @@ export function downloadLeadsCsv(leads: Lead[], runId: string): void {
   anchor.remove();
   URL.revokeObjectURL(url);
 }
-

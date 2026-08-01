@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 
 import { DownloadIcon } from "@/components/icons";
-import type { Lead, ResultPage } from "@/lib/api-types";
+import type { ResultPage } from "@/lib/api-types";
 import { apiRequest, errorMessage } from "@/lib/client-api";
-import { downloadLeadsCsv } from "@/lib/csv-export";
+import { collectAllLeads, downloadLeadsCsv } from "@/lib/csv-export";
 
 type ExportCsvButtonProps = {
   runId: string;
@@ -26,25 +26,19 @@ export function ExportCsvButton({
     setError(null);
     const controller = new AbortController();
     controllerRef.current = controller;
-    const leads: Lead[] = [];
-
     try {
-      let pageNumber = 1;
-      let totalPages = 1;
-      do {
+      const leads = await collectAllLeads(async (pageNumber) => {
+        return apiRequest<ResultPage>(
+          `/api/runs/${encodeURIComponent(runId)}/results?page=${pageNumber}&pageSize=200`,
+          { signal: controller.signal },
+        );
+      }, (pageNumber, totalPages) => {
         setProgress(
           totalPages === 1
             ? "Preparing CSV…"
             : `Fetching page ${pageNumber} of ${totalPages}…`,
         );
-        const page = await apiRequest<ResultPage>(
-          `/api/runs/${encodeURIComponent(runId)}/results?page=${pageNumber}&pageSize=200`,
-          { signal: controller.signal },
-        );
-        leads.push(...page.items);
-        totalPages = page.pagination.totalPages;
-        pageNumber += 1;
-      } while (pageNumber <= totalPages);
+      });
 
       downloadLeadsCsv(leads, runId);
       setProgress(null);
@@ -77,4 +71,3 @@ export function ExportCsvButton({
     </div>
   );
 }
-

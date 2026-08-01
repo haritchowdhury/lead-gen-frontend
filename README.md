@@ -94,6 +94,8 @@ The browser only calls same-origin Next.js routes:
 - `POST /api/runs`
 - `GET /api/runs/[runId]`
 - `GET /api/runs/[runId]/results`
+- `GET /api/runs/[runId]/query-audits`
+- `GET /api/runs/[runId]/diagnostics`
 
 The Route Handlers validate the Neon Auth session, add the private service token
 and a server-derived `X-User-Id`, and proxy short-lived requests to the backend.
@@ -106,10 +108,18 @@ The opaque intent ID is stored in an HTTP-only, SameSite=Lax cookie. After signu
 or signin, `/runs/continue` claims it idempotently and redirects to the owned run
 slug. `/runs` lists the current user's run history.
 
+The lead table presents every validated contact channel, contactability tier,
+store-fit and identity evidence, discovery provenance, and versioned score
+semantics. Evidence-rank v2 is described as a deterministic rank rather than a
+probability; legacy score-v1 rows remain readable and use neutral styling. Query
+audits and operational diagnostics have a separate paginated view and never
+appear as store leads.
+
 CSV serialization lives in `lib/csv-export.ts`. Export-all requests every result
-page at a page size of 200, preserves the backend's 25-column legacy order,
-converts null values to empty cells, serializes social profiles as JSON, and
-protects spreadsheet formula-like text.
+page at a page size of 200, preserves the backend's 25-column legacy prefix,
+appends the 12 G3 evidence fields in backend order, converts null values to empty
+cells, serializes structured values as JSON, and protects spreadsheet formula-like
+text.
 
 ## Vercel
 

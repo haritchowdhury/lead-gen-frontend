@@ -13,6 +13,7 @@ import { ExportCsvButton } from "@/components/export-csv-button";
 import { CopyIcon, PlusIcon, RefreshIcon } from "@/components/icons";
 import { ResultsFilters } from "@/components/results-filters";
 import { ResultsTable } from "@/components/results-table";
+import { RunEvidence } from "@/components/run-evidence";
 import { RunProgress } from "@/components/run-progress";
 import type {
   LeadStatus,
@@ -316,6 +317,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
                     </div>
                   )}
                   <ResultsTable
+                    key={query}
                     leads={results.items}
                     loading={loadedQuery !== query}
                   />
@@ -333,6 +335,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
                 Loading stored results…
               </div>
             )}
+            <RunEvidence runId={runId} />
           </section>
         )}
       </div>
