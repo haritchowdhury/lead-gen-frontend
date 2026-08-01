@@ -276,6 +276,82 @@ function scoreBreakdown(value: unknown, path: string): ScoreBreakdown {
   };
 }
 
+const V2_SCORE_COMPONENTS = [
+  "identity",
+  "shopifyValidation",
+  "categoryFit",
+  "contactEvidence",
+] as const;
+
+export function assertLeadScoreState(
+  lead: Pick<Lead,
+    "status" | "pipeline_version" | "scoring_version" | "lead_score" |
+    "score_breakdown" | "score_semantics">,
+  path = "lead",
+): void {
+  const unversioned = lead.pipeline_version === null && lead.scoring_version === null;
+  const v2 = lead.pipeline_version === 2 && lead.scoring_version === 2;
+  if (!unversioned && !v2) throw new ApiPayloadError(`${path}.versions`);
+
+  if (unversioned) {
+    if (lead.score_semantics !== "legacy_v1") {
+      throw new ApiPayloadError(`${path}.score_semantics`);
+    }
+    return;
+  }
+
+  if (lead.status !== "qualified") {
+    if (
+      lead.lead_score !== null ||
+      lead.score_breakdown !== null ||
+      lead.score_semantics !== "not_scored_v2"
+    ) {
+      throw new ApiPayloadError(`${path}.score_state`);
+    }
+    return;
+  }
+
+  if (
+    lead.score_semantics !== "evidence_rank_v2" ||
+    lead.lead_score === null ||
+    !Number.isSafeInteger(lead.lead_score) ||
+    lead.lead_score < 0 ||
+    lead.lead_score > 100 ||
+    lead.score_breakdown === null
+  ) {
+    throw new ApiPayloadError(`${path}.score_state`);
+  }
+  const breakdown = lead.score_breakdown;
+  if (
+    breakdown.version !== 2 ||
+    breakdown.total !== lead.lead_score ||
+    !Number.isSafeInteger(breakdown.total) ||
+    breakdown.semantics !== "deterministic_evidence_rank_not_probability"
+  ) {
+    throw new ApiPayloadError(`${path}.score_breakdown`);
+  }
+  const keys = Object.keys(breakdown.components).sort();
+  const expectedKeys = [...V2_SCORE_COMPONENTS].sort();
+  if (
+    keys.length !== expectedKeys.length ||
+    keys.some((key, index) => key !== expectedKeys[index])
+  ) {
+    throw new ApiPayloadError(`${path}.score_breakdown.components`);
+  }
+  const components = V2_SCORE_COMPONENTS.map((key) => breakdown.components[key]);
+  if (components.some((value) =>
+    typeof value !== "number" ||
+    !Number.isSafeInteger(value) ||
+    value < 0 ||
+    value > 100
+  )) {
+    throw new ApiPayloadError(`${path}.score_breakdown.components`);
+  }
+  if ((components as number[]).reduce((sum, value) => sum + value, 0) !== breakdown.total) {
+    throw new ApiPayloadError(`${path}.score_breakdown.components`);
+  }
+}
+
 function occurrence(value: unknown, path: string): DiscoveryOccurrence {
   const source = record(value, path);
   const result: DiscoveryOccurrence = {};
@@ -331,14 +407,7 @@ export function parseLead(value: unknown, path = "lead"): Lead {
   for (const key of nullableTexts) result[key] = nullableText(source[key], `${path}.${key}`);
   for (const key of nullableNumbers) result[key] = nullableNumber(source[key], `${path}.${key}`);
   const lead = result as Lead;
-  const isV2 = lead.pipeline_version === 2 || lead.scoring_version === 2;
-  if (
-    (lead.score_semantics === "legacy_v1" && isV2) ||
-    (lead.score_semantics === "not_scored_v2" && (!isV2 || lead.lead_score !== null)) ||
-    (lead.score_semantics === "evidence_rank_v2" && (!isV2 || lead.lead_score === null))
-  ) {
-    throw new ApiPayloadError(`${path}.score_semantics`);
-  }
+  assertLeadScoreState(lead, path);
   return lead;
 }
 

@@ -105,7 +105,7 @@ export function lead(overrides: Partial<Lead> = {}): Lead {
       version: 2,
       components: { identity: 20, shopifyValidation: 25, categoryFit: 30, contactEvidence: 15 },
       total: 90,
-      semantics: "evidence_rank_v2",
+      semantics: "deterministic_evidence_rank_not_probability",
     },
     discovery_occurrences: [{
       categoryIntent: { originalShopType: "Eyewear Brand", shopType: "eyewear", businessQualifier: "brand", categoryVocabulary: ["eyewear"] },

@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import test from "node:test";
 
+import type { Lead } from "../lib/api-types.ts";
 import {
   ApiPayloadError,
   parseDiagnosticPage,
@@ -44,10 +46,37 @@ test("score semantics must agree with durable v2 versions and score presence", (
   ])));
   assert.throws(() => parseResultPage(resultPage([
     lead({ status: "rejected", lead_score: null, score_breakdown: null, score_semantics: "legacy_v1" }),
-  ])), /score_semantics/u);
+  ])), ApiPayloadError);
   assert.doesNotThrow(() => parseResultPage(resultPage([
     lead({ pipeline_version: null, scoring_version: null, lead_score: 71, score_breakdown: null, score_semantics: "legacy_v1" }),
   ])));
+});
+
+test("shared lead score-state matrix fails whole result pages closed", () => {
+  const fixtures = JSON.parse(fs.readFileSync(
+    new URL("../../contracts/lead-score-state-v2.fixtures.json", import.meta.url),
+    "utf8",
+  )) as {
+    valid: Array<{ name: string; lead: Partial<Lead> }>;
+    invalid: Array<{ name: string; lead: Partial<Lead> }>;
+  };
+  for (const fixture of fixtures.valid) {
+    assert.doesNotThrow(
+      () => parseResultPage(resultPage([lead(fixture.lead)])),
+      fixture.name,
+    );
+  }
+  for (const fixture of fixtures.invalid) {
+    assert.throws(
+      () => parseResultPage(resultPage([lead(fixture.lead)])),
+      ApiPayloadError,
+      fixture.name,
+    );
+  }
+  assert.throws(() => parseResultPage(resultPage([lead({
+    ...fixtures.valid[0].lead,
+    lead_score: Number.POSITIVE_INFINITY,
+  })])), ApiPayloadError);
 });
 
 test("validates every successful response family consumed by the frontend", () => {

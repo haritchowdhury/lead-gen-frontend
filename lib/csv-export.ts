@@ -1,4 +1,5 @@
 import type { Lead, ResultPage } from "@/lib/api-types";
+import { assertLeadScoreState } from "./api-validation.ts";
 
 export const CSV_HEADERS = [
   "shop_type",
@@ -71,6 +72,7 @@ function escapeCell(value: string): string {
 }
 
 export function serializeLeadsToCsv(leads: Lead[]): string {
+  leads.forEach((lead, index) => assertLeadScoreState(lead, `leads[${index}]`));
   const lines = [
     CSV_HEADERS.join(","),
     ...leads.map((lead) =>

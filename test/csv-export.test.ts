@@ -123,7 +123,14 @@ test("serializes every structured G3 field into one append-only cell", () => {
     }] },
     identity_confidence: 70,
     identity_evidence: { stableHostname: "fixture.myshopify.com" },
-    score_breakdown: { version: 2, components: { identity: 14 }, total: 14 },
+    lead_score: 96,
+    score_breakdown: {
+      version: 2,
+      components: { identity: 20, shopifyValidation: 25, categoryFit: 30, contactEvidence: 21 },
+      total: 96,
+      semantics: "deterministic_evidence_rank_not_probability",
+    },
+    score_semantics: "evidence_rank_v2",
     discovery_occurrences: [{ query: "eyewear brand", rank: 1 }],
     matched_categories: [{ shopType: "eyewear", businessQualifier: "brand" }],
     original_shop_type: "Eyewear Brand",
@@ -149,4 +156,20 @@ test("complete export retrieves every page once and preserves backend order", as
   assert.deepEqual(requested, [1, 2, 3]);
   assert.deepEqual(leads.map(({ id }) => id), ["lead_1", "lead_2", "lead_3"]);
   assert.deepEqual(progress, [[1, 1], [2, 3], [3, 3]]);
+});
+
+test("frontend CSV export rejects contradictory v2 score states", () => {
+  assert.throws(() => serializeLeadsToCsv([lead({
+    status: "rejected",
+    pipeline_version: 2,
+    scoring_version: 2,
+    lead_score: 72,
+    score_breakdown: {
+      version: 2,
+      components: { identity: 14, shopifyValidation: 20, categoryFit: 24, contactEvidence: 14 },
+      total: 72,
+      semantics: "deterministic_evidence_rank_not_probability",
+    },
+    score_semantics: "evidence_rank_v2",
+  })]), /score_state/u);
 });
