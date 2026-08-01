@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { StartRunResponse } from "@/lib/api-types";
+import { parseStartRunResponse } from "@/lib/api-validation";
 import { ApiRequestError, apiRequest, errorMessage } from "@/lib/client-api";
 
 export function RunContinuation() {
@@ -18,7 +19,7 @@ export function RunContinuation() {
     try {
       const run = await apiRequest<StartRunResponse>("/api/run-intents/claim", {
         method: "POST",
-      });
+      }, parseStartRunResponse);
       router.replace(`/runs/${encodeURIComponent(run.runId)}`);
     } catch (claimError) {
       if (

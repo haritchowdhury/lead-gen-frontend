@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { DownloadIcon } from "@/components/icons";
 import type { ResultPage } from "@/lib/api-types";
+import { parseResultPage } from "@/lib/api-validation";
 import { apiRequest, errorMessage } from "@/lib/client-api";
 import { collectAllLeads, downloadLeadsCsv } from "@/lib/csv-export";
 
@@ -31,6 +32,7 @@ export function ExportCsvButton({
         return apiRequest<ResultPage>(
           `/api/runs/${encodeURIComponent(runId)}/results?page=${pageNumber}&pageSize=200`,
           { signal: controller.signal },
+          parseResultPage,
         );
       }, (pageNumber, totalPages) => {
         setProgress(

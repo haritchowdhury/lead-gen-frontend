@@ -11,6 +11,7 @@ import {
 function lead(overrides: Partial<Lead> = {}): Lead {
   return {
     id: "lead_fixture",
+    original_shop_type: null,
     shop_type: "clothing",
     generated_query: null,
     query_score: null,
@@ -53,10 +54,10 @@ function lead(overrides: Partial<Lead> = {}): Lead {
   };
 }
 
-test("preserves the exact 25-column legacy prefix, appends G3 fields, and excludes id", () => {
+test("preserves the exact 25-column legacy prefix and appends durable evidence fields", () => {
   const [header] = serializeLeadsToCsv([lead()]).split("\r\n");
   assert.equal(header, CSV_HEADERS.join(","));
-  assert.equal(CSV_HEADERS.length, 37);
+  assert.equal(CSV_HEADERS.length, 38);
   assert.deepEqual(CSV_HEADERS.slice(0, 25), [
     "shop_type", "generated_query", "query_score", "query_generation_reason",
     "search_query", "google_rank", "google_result_url", "myshopify_domain",
@@ -66,19 +67,20 @@ test("preserves the exact 25-column legacy prefix, appends G3 fields, and exclud
     "relevance_score", "lead_score", "status", "rejection_reason", "error",
   ]);
   assert.equal(CSV_HEADERS[25], "business_qualifier");
-  assert.equal(CSV_HEADERS.at(-1), "matched_categories");
+  assert.equal(CSV_HEADERS.at(-2), "matched_categories");
+  assert.equal(CSV_HEADERS.at(-1), "original_shop_type");
   assert.equal(header.split(",").includes("id"), false);
 });
 
 test("serializes social profiles, nulls, commas, and quotes safely", () => {
   const csv = serializeLeadsToCsv([
     lead({
-      store_name: 'Fixture, "North"',
+      store_name: 'Fixture, "North"\n眼鏡 café',
       phone: null,
       social_profiles: ["https://instagram.com/fixture"],
     }),
   ]);
-  assert.match(csv, /"Fixture, ""North"""/u);
+  assert.match(csv, /"Fixture, ""North""\n眼鏡 café"/u);
   assert.match(csv, /"\[""https:\/\/instagram\.com\/fixture""\]"/u);
 });
 
@@ -88,6 +90,19 @@ test("protects formula-like text while leaving numeric scores numeric", () => {
   ]);
   assert.match(csv, /"'=HYPERLINK\(""https:\/\/bad\.example""\)"/u);
   assert.match(csv, /,96,qualified,/u);
+});
+
+test("neutralizes every spreadsheet formula prefix including tab and carriage return", () => {
+  const values = ["=1+1", "+cmd", "-2+3", "@SUM(A1)", "\tformula", "\rformula", "  =trimmed"];
+  const csv = serializeLeadsToCsv(values.map((value, index) => lead({
+    id: `lead_${index}`,
+    store_name: value,
+    lead_score: index,
+  })));
+  for (const value of values) {
+    assert.equal(csv.includes(`'${value}`), true, `missing protection for ${JSON.stringify(value)}`);
+  }
+  assert.match(csv, /,0,qualified,/u);
 });
 
 test("serializes every structured G3 field into one append-only cell", () => {
@@ -111,10 +126,12 @@ test("serializes every structured G3 field into one append-only cell", () => {
     score_breakdown: { version: 2, components: { identity: 14 }, total: 14 },
     discovery_occurrences: [{ query: "eyewear brand", rank: 1 }],
     matched_categories: [{ shopType: "eyewear", businessQualifier: "brand" }],
+    original_shop_type: "Eyewear Brand",
   })]);
   assert.match(csv, /"\[\{""state"":""specialist"",""score"":100\}\]"/u);
   assert.match(csv, /"\{""stableHostname"":""fixture\.myshopify\.com""\}"/u);
   assert.match(csv, /"\[\{""query"":""eyewear brand"",""rank"":1\}\]"/u);
+  assert.match(csv, /,Eyewear Brand\r\n/u);
 });
 
 test("complete export retrieves every page once and preserves backend order", async () => {

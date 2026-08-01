@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { sessionUserId } from "@/lib/auth/server";
 import { jsonError, proxyBackend } from "@/lib/backend-proxy";
 import type { RunIntentResponse } from "@/lib/api-types";
+import { parseRunIntentResponse } from "@/lib/api-validation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -100,7 +101,7 @@ export async function POST(request: Request): Promise<Response> {
 
   let intent: RunIntentResponse;
   try {
-    intent = (await intentResponse.clone().json()) as RunIntentResponse;
+    intent = parseRunIntentResponse(await intentResponse.clone().json());
   } catch {
     return jsonError(
       502,

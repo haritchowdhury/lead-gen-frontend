@@ -38,12 +38,13 @@ export const CSV_HEADERS = [
   "score_breakdown",
   "discovery_occurrences",
   "matched_categories",
+  "original_shop_type",
 ] as const;
 
 type CsvHeader = (typeof CSV_HEADERS)[number];
 
 function protectFormula(value: string): string {
-  return /^[=+\-@]/u.test(value.trimStart()) ? `'${value}` : value;
+  return /^[\t\r]/u.test(value) || /^\s*[=+\-@]/u.test(value) ? `'${value}` : value;
 }
 
 function csvValue(lead: Lead, header: CsvHeader): string {

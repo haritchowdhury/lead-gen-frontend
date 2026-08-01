@@ -1,4 +1,5 @@
 import type { ApiErrorPayload } from "@/lib/api-types";
+import { isApiErrorPayload } from "@/lib/api-validation";
 
 export class ApiRequestError extends Error {
   status: number;
@@ -14,22 +15,10 @@ export class ApiRequestError extends Error {
   }
 }
 
-function isApiErrorPayload(value: unknown): value is ApiErrorPayload {
-  if (!value || typeof value !== "object" || !("error" in value)) return false;
-  const error = (value as { error?: unknown }).error;
-  return Boolean(
-    error &&
-      typeof error === "object" &&
-      "code" in error &&
-      "message" in error &&
-      typeof (error as { code: unknown }).code === "string" &&
-      typeof (error as { message: unknown }).message === "string",
-  );
-}
-
 export async function apiRequest<T>(
   input: string,
   init: RequestInit = {},
+  parse: (payload: unknown) => T,
 ): Promise<T> {
   const response = await fetch(input, {
     ...init,
@@ -54,11 +43,10 @@ export async function apiRequest<T>(
     throw new Error("The request could not be completed.");
   }
 
-  return payload as T;
+  return parse(payload);
 }
 
 export function errorMessage(error: unknown): string {
   if (error instanceof Error && error.message) return error.message;
   return "Something went wrong. Please try again.";
 }
-

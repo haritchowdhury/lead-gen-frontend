@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import type { RunListResponse, RunStatus } from "@/lib/api-types";
+import { parseRunListResponse } from "@/lib/api-validation";
 import { apiRequest, errorMessage } from "@/lib/client-api";
 import { stageLabel } from "@/lib/stages";
 
@@ -34,7 +35,7 @@ export function RunHistory() {
     const controller = new AbortController();
     apiRequest<RunListResponse>(`/api/runs?page=${page}&pageSize=${PAGE_SIZE}`, {
       signal: controller.signal,
-    })
+    }, parseRunListResponse)
       .then(setData)
       .catch((requestError: unknown) => {
         if ((requestError as { name?: string }).name !== "AbortError") {

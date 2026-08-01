@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { ArrowRightIcon, PlusIcon } from "@/components/icons";
 import type { StartRunResponse } from "@/lib/api-types";
+import { parseStartRunResponse } from "@/lib/api-validation";
 import { ApiRequestError, apiRequest, errorMessage } from "@/lib/client-api";
 import { parseCategories } from "@/lib/category-validation";
 
@@ -41,7 +42,7 @@ export function RunForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ shopTypes: parsed.categories }),
-      });
+      }, parseStartRunResponse);
       router.push(`/runs/${encodeURIComponent(run.runId)}`);
     } catch (requestError) {
       if (

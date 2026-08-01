@@ -21,6 +21,7 @@ import type {
   ResultPage,
   RunStatus,
 } from "@/lib/api-types";
+import { parseResultPage, parseRunStatus } from "@/lib/api-validation";
 import {
   ApiRequestError,
   apiRequest,
@@ -109,6 +110,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
         const nextRun = await apiRequest<RunStatus>(
           `/api/runs/${encodeURIComponent(runId)}`,
           { signal: controller.signal },
+          parseRunStatus,
         );
         if (disposed) return;
         setRun(nextRun);
@@ -147,6 +149,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
     apiRequest<ResultPage>(
         `/api/runs/${encodeURIComponent(runId)}/results?${query}`,
         { signal: controller.signal },
+        parseResultPage,
       )
       .then((nextResults) => {
         setResults(nextResults);
@@ -219,6 +222,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
 
   const terminalError =
     run.state === "failed" || run.state === "cancelled" ? run.error : null;
+  const currentResults = loadedQuery === query ? results : null;
 
   return (
     <main className="run-page">
@@ -274,27 +278,37 @@ export function RunWorkspace({ runId }: { runId: string }) {
               <ExportCsvButton runId={runId} />
             </div>
 
-            {results ? (
+            {resultsError?.query === query ? (
+              <div className="inline-error" role="alert">
+                <span>{resultsError.message}</span>
+                <button
+                  type="button"
+                  onClick={() => setReloadVersion((value) => value + 1)}
+                >
+                  Try again
+                </button>
+              </div>
+            ) : currentResults ? (
               <>
                 <div className="summary-grid">
                   <SummaryCard
                     label="All leads"
-                    value={results.summary.total}
+                    value={currentResults.summary.total}
                     tone="neutral"
                   />
                   <SummaryCard
                     label="Qualified"
-                    value={results.summary.qualified}
+                    value={currentResults.summary.qualified}
                     tone="positive"
                   />
                   <SummaryCard
                     label="Rejected"
-                    value={results.summary.rejected}
+                    value={currentResults.summary.rejected}
                     tone="muted"
                   />
                   <SummaryCard
                     label="Failed"
-                    value={results.summary.failed}
+                    value={currentResults.summary.failed}
                     tone="danger"
                   />
                 </div>
@@ -303,28 +317,17 @@ export function RunWorkspace({ runId }: { runId: string }) {
                   <ResultsFilters
                     filters={filters}
                     onChange={changeFilters}
-                    counts={results.summary}
+                    counts={currentResults.summary}
                   />
-                  {resultsError?.query === query && (
-                    <div className="inline-error" role="alert">
-                      <span>{resultsError.message}</span>
-                      <button
-                        type="button"
-                        onClick={() => setReloadVersion((value) => value + 1)}
-                      >
-                        Try again
-                      </button>
-                    </div>
-                  )}
                   <ResultsTable
-                    key={query}
-                    leads={results.items}
+                    key={`${runId}:${query}:${currentResults.items.map(({ id }) => id).join(",")}`}
+                    leads={currentResults.items}
                     loading={loadedQuery !== query}
                   />
                   <Pagination
-                    page={results.pagination.page}
-                    totalPages={results.pagination.totalPages}
-                    totalItems={results.pagination.totalItems}
+                    page={currentResults.pagination.page}
+                    totalPages={currentResults.pagination.totalPages}
+                    totalItems={currentResults.pagination.totalItems}
                     onPage={(page) => changeFilters({ page })}
                   />
                 </div>

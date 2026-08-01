@@ -17,7 +17,10 @@ export type ContactabilityTier =
   | "indirect"
   | "research_only"
   | "none";
-export type ScoreSemantics = "legacy_v1" | "evidence_rank_v2";
+export type ScoreSemantics =
+  | "legacy_v1"
+  | "not_scored_v2"
+  | "evidence_rank_v2";
 export type JsonValue =
   | string
   | number
@@ -33,6 +36,19 @@ export type EvidenceItem = {
   method: string;
   confidence: number;
   validationReason: string;
+  decision?: ContactPageDecision;
+};
+
+export type ContactPageDecision = {
+  accepted: boolean;
+  routeAccepted: boolean;
+  routeReason: string;
+  sameStore: boolean;
+  httpUsable: boolean;
+  pageUsable: boolean;
+  positiveSignals: string[];
+  validationReason: string;
+  sourceUrl: string;
 };
 
 export type ContactEvidence = {
@@ -52,12 +68,31 @@ export type CategoryIntent = {
 
 export type StoreFitEvidence = {
   intent?: CategoryIntent;
+  accepted?: boolean;
   state?: StoreFitState | string;
   score?: number;
   matchedTerms?: string[];
   sourceUrls?: string[];
   reason?: string;
-  evidence?: JsonValue[];
+  signalKinds?: string[];
+  breadthEvidence?: Array<{
+    sourceUrl: string;
+    signal: string;
+    terms: string[];
+  }>;
+  evidence?: StoreFitPageEvidence[];
+};
+
+export type StoreFitPageEvidence = {
+  sourceUrl: string;
+  pageType: string;
+  matchedTerms: string[];
+  claimTerms: string[];
+  signals: string[];
+  breadthTerms: string[];
+  negativeSignals: string[];
+  strength: number;
+  textLength: number;
 };
 
 export type IdentityEvidence = {
@@ -89,11 +124,15 @@ export type ScoreBreakdown = {
 };
 
 export type DiscoveryOccurrence = {
+  categoryIntent?: CategoryIntent;
+  originalShopType?: string;
   shopType?: string;
   businessQualifier?: BusinessQualifier | string;
   query?: string;
   queryScore?: number | null;
   queryGenerationReason?: string;
+  querySourceUrls?: string[];
+  categoryVocabulary?: string[];
   rank?: number | null;
   resultUrl?: string;
   finalUrl?: string;
@@ -162,6 +201,7 @@ export type RunListResponse = {
 
 export type Lead = {
   id: string;
+  original_shop_type: string | null;
   shop_type: string | null;
   generated_query: string | null;
   query_score: number | null;

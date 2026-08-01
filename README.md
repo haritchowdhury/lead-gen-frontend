@@ -111,13 +111,15 @@ slug. `/runs` lists the current user's run history.
 The lead table presents every validated contact channel, contactability tier,
 store-fit and identity evidence, discovery provenance, and versioned score
 semantics. Evidence-rank v2 is described as a deterministic rank rather than a
-probability; legacy score-v1 rows remain readable and use neutral styling. Query
+probability; not-scored v2 and legacy-v1 rows are distinct, and legacy scores use
+neutral styling. Successful backend payloads are runtime-validated before the UI
+or export trusts them; malformed payloads fail closed. Query
 audits and operational diagnostics have a separate paginated view and never
 appear as store leads.
 
 CSV serialization lives in `lib/csv-export.ts`. Export-all requests every result
 page at a page size of 200, preserves the backend's 25-column legacy prefix,
-appends the 12 G3 evidence fields in backend order, converts null values to empty
+appends the 13 evidence/provenance fields in backend order (38 columns total), converts null values to empty
 cells, serializes structured values as JSON, and protects spreadsheet formula-like
 text.
 

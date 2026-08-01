@@ -2,7 +2,7 @@ import type {
   ContactabilityTier,
   Lead,
   ScoreBreakdown,
-} from "@/lib/api-types";
+} from "./api-types";
 
 export type ContactChannel = {
   kind: "email" | "phone" | "contact_page" | "social_profile";
@@ -107,12 +107,20 @@ export function scorePresentation(lead: Lead): ScorePresentation {
       explanation: "Legacy score; not comparable with evidence-rank v2.",
     };
   }
-  if (lead.status !== "qualified" || lead.lead_score == null) {
+  if (lead.score_semantics === "not_scored_v2") {
     return {
       value: "—",
       label: "Not scored",
       tone: "empty",
       explanation: "Rejected and failed v2 outcomes do not receive a score.",
+    };
+  }
+  if (lead.lead_score == null) {
+    return {
+      value: "—",
+      label: "Score unavailable",
+      tone: "empty",
+      explanation: "The scored-v2 result did not include its evidence rank.",
     };
   }
   return {

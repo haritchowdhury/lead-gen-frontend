@@ -8,6 +8,7 @@ import type {
   JsonValue,
   QueryAuditPage,
 } from "@/lib/api-types";
+import { parseDiagnosticPage, parseQueryAuditPage } from "@/lib/api-validation";
 import { apiRequest, errorMessage } from "@/lib/client-api";
 import { humanizeToken, safeExternalUrl } from "@/lib/lead-presentation";
 
@@ -34,6 +35,7 @@ export function RunEvidence({ runId }: { runId: string }) {
     apiRequest<QueryAuditPage>(
       `/api/runs/${encodeURIComponent(runId)}/query-audits?page=${audits.page}&pageSize=${PAGE_SIZE}`,
       { signal: controller.signal },
+      parseQueryAuditPage,
     ).then((data) => {
       setAudits((current) => ({ ...current, data, loading: false, error: null }));
     }).catch((error: unknown) => {
@@ -49,6 +51,7 @@ export function RunEvidence({ runId }: { runId: string }) {
     apiRequest<DiagnosticPage>(
       `/api/runs/${encodeURIComponent(runId)}/diagnostics?page=${diagnostics.page}&pageSize=${PAGE_SIZE}`,
       { signal: controller.signal },
+      parseDiagnosticPage,
     ).then((data) => {
       setDiagnostics((current) => ({ ...current, data, loading: false, error: null }));
     }).catch((error: unknown) => {

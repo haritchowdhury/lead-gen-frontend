@@ -14,6 +14,7 @@ import {
 function lead(overrides: Partial<Lead> = {}): Lead {
   return {
     id: "lead_fixture",
+    original_shop_type: "Eyewear Brand",
     shop_type: "eyewear",
     generated_query: null,
     query_score: null,
@@ -119,7 +120,7 @@ test("contactability labels distinguish indirect, research-only, and none", () =
 test("scores distinguish qualified v2, structural outcomes, and legacy rows", () => {
   assert.equal(scorePresentation(lead()).tone, "high");
   assert.deepEqual(
-    scorePresentation(lead({ status: "rejected", lead_score: 99 })),
+    scorePresentation(lead({ status: "rejected", lead_score: null, score_semantics: "not_scored_v2" })),
     {
       value: "—",
       label: "Not scored",
