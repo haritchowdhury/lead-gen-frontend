@@ -267,4 +267,17 @@ test("traffic CSV rejects malformed nested material before producing output", ()
     () => serializeLeadsToCsv([lead({ traffic_enrichment: traffic })]),
     /cumulative_layout_shift_p75/u,
   );
+
+  const invalidFractions = trafficEnrichment();
+  if (invalidFractions.crux?.popularity.observed_device_fractions) {
+    invalidFractions.crux.popularity.observed_device_fractions = {
+      phone: 1,
+      desktop: 1,
+      tablet: 1,
+    };
+  }
+  assert.throws(
+    () => serializeLeadsToCsv([lead({ traffic_enrichment: invalidFractions })]),
+    /observed_device_fractions/u,
+  );
 });

@@ -40,6 +40,15 @@ function formattedDate(value: string | undefined): string | null {
   }).format(new Date(value));
 }
 
+export function formattedCalendarDate(value: string): string {
+  return new Intl.DateTimeFormat(undefined, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${value}T00:00:00.000Z`));
+}
+
 function stateLabel(state: TrafficSourceState): string {
   switch (state) {
     case "available": return "Available";
@@ -235,7 +244,7 @@ function CruxDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
               </>
             )}
             <p className="traffic-observation">
-              {origin.collection_period && `Collection ${formattedDate(origin.collection_period.first_date)}–${formattedDate(origin.collection_period.last_date)}`}
+              {origin.collection_period && `Collection ${formattedCalendarDate(origin.collection_period.first_date)}–${formattedCalendarDate(origin.collection_period.last_date)}`}
               {origin.observed_at && ` · Observed ${formattedDate(origin.observed_at)}`}
             </p>
           </>

@@ -471,6 +471,35 @@ function httpsUrl(value: unknown, path: string): string {
   return parsed;
 }
 
+function canonicalDataForSeoHostname(value: unknown, path: string): string {
+  const parsed = text(value, path);
+  if (parsed !== parsed.trim() || !/^[\x00-\x7F]+$/u.test(parsed) ||
+      /(?:^|\.)xn--/iu.test(parsed) || /^www\./iu.test(parsed) ||
+      /[:\/@?#\\]/u.test(parsed)) {
+    throw new ApiPayloadError(path);
+  }
+  const hostname = parsed.toLowerCase().replace(/\.$/u, "");
+  const labels = hostname.split(".");
+  if (hostname !== parsed || hostname.length > 253 || !hostname.includes(".") ||
+      /^\d+(?:\.\d+){3}$/u.test(hostname) ||
+      labels.some((label) => !label || label.length > 63 ||
+        !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/u.test(label))) {
+    throw new ApiPayloadError(path);
+  }
+  return parsed;
+}
+
+function canonicalCruxOrigin(value: unknown, path: string): string {
+  const parsed = httpsUrl(value, path);
+  if (!/^[\x00-\x7F]+$/u.test(parsed)) throw new ApiPayloadError(path);
+  const url = new URL(parsed);
+  if (url.pathname !== "/" || url.search || url.hash || url.origin !== parsed ||
+      /(?:^|\.)xn--/iu.test(url.hostname)) {
+    throw new ApiPayloadError(path);
+  }
+  return parsed;
+}
+
 function dataForSeoMetrics(value: unknown, path: string): DataForSeoTrafficMetrics {
   const source = record(value, path);
   const result = {
@@ -514,12 +543,15 @@ function dataForSeoTraffic(value: unknown, path: string): DataForSeoTraffic {
     throw new ApiPayloadError(`${path}.markets`);
   }
   if (!worldwide && !markets.length) throw new ApiPayloadError(path);
+  if ((state === "available") !== (worldwide !== undefined && markets.length === 9)) {
+    throw new ApiPayloadError(`${path}.state`);
+  }
   return {
     state,
     label,
-    ...(optional(source, "target", path, text) === undefined
+    ...(optional(source, "target", path, canonicalDataForSeoHostname) === undefined
       ? {}
-      : { target: optional(source, "target", path, nonEmptyText) }),
+      : { target: optional(source, "target", path, canonicalDataForSeoHostname) }),
     ...(worldwide ? { worldwide } : {}),
     markets,
     ...(optional(source, "observed_at", path, isoTimestamp) === undefined
@@ -533,11 +565,15 @@ function deviceFractions(
   path: string,
 ): { desktop: number; phone: number; tablet: number } {
   const source = record(value, path);
-  return {
+  const result = {
     desktop: fraction(source.desktop, `${path}.desktop`),
     phone: fraction(source.phone, `${path}.phone`),
     tablet: fraction(source.tablet, `${path}.tablet`),
   };
+  if (Math.abs(result.desktop + result.phone + result.tablet - 1) > 0.010000001) {
+    throw new ApiPayloadError(path);
+  }
+  return result;
 }
 
 function cruxOriginMetrics(value: unknown, path: string): CruxOriginMetrics {
@@ -569,14 +605,20 @@ function cruxOriginMetrics(value: unknown, path: string): CruxOriginMetrics {
     path,
     deviceFractions,
   );
+  const firstDate = isoDate(period.first_date, `${path}.collection_period.first_date`);
+  const lastDate = isoDate(period.last_date, `${path}.collection_period.last_date`);
+  if (firstDate > lastDate) throw new ApiPayloadError(`${path}.collection_period`);
+  if (Object.keys(metrics).length === 0 && formFactors === undefined) {
+    throw new ApiPayloadError(path);
+  }
   return {
     state,
-    origin: httpsUrl(source.origin, `${path}.origin`),
+    origin: canonicalCruxOrigin(source.origin, `${path}.origin`),
     metrics,
     ...(formFactors ? { observed_form_factor_fractions: formFactors } : {}),
     collection_period: {
-      first_date: isoDate(period.first_date, `${path}.collection_period.first_date`),
-      last_date: isoDate(period.last_date, `${path}.collection_period.last_date`),
+      first_date: firstDate,
+      last_date: lastDate,
     },
     observed_at: isoTimestamp(source.observed_at, `${path}.observed_at`),
   };
@@ -597,7 +639,7 @@ function cruxPopularity(value: unknown, path: string): CruxPopularity {
   }
   return {
     state,
-    origin: httpsUrl(source.origin, `${path}.origin`),
+    origin: canonicalCruxOrigin(source.origin, `${path}.origin`),
     label: oneOf(
       source.label,
       ["Coarse CrUX navigation popularity rank"] as const,
@@ -631,6 +673,9 @@ function cruxTraffic(value: unknown, path: string): CruxTraffic {
         ? "no_coverage"
         : "unavailable";
   if (state !== expectedState) throw new ApiPayloadError(`${path}.state`);
+  if (originMaterial && popularityMaterial && originMetrics.origin !== popularity.origin) {
+    throw new ApiPayloadError(`${path}.origin`);
+  }
   return { state, origin_metrics: originMetrics, popularity };
 }
 

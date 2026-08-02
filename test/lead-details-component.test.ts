@@ -33,6 +33,7 @@ type Components = {
         : never
       : never,
   ) => "good" | "needs_improvement" | "poor" | "incomplete";
+  formattedCalendarDate: (value: string) => string;
 };
 
 let compiled: Promise<Components> | null = null;
@@ -70,6 +71,7 @@ function compiledComponents(): Promise<Components> {
       TrafficEnrichmentDetails: traffic.TrafficEnrichmentDetails,
       coreWebVitalRating: traffic.coreWebVitalRating,
       coreWebVitalsAssessment: traffic.coreWebVitalsAssessment,
+      formattedCalendarDate: traffic.formattedCalendarDate,
     } as Components;
   })();
   return compiled;
@@ -164,6 +166,24 @@ test("traffic details render every available metric, truthful labels, and attrib
     assert.match(html, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"));
   }
   assert.match(html, /target="_blank" rel="noreferrer"/u);
+});
+
+test("CrUX date-only collection dates render as the same calendar date across timezones", async () => {
+  const { formattedCalendarDate } = await compiledComponents();
+  const previousTimezone = process.env.TZ;
+  try {
+    process.env.TZ = "America/Los_Angeles";
+    const west = formattedCalendarDate("2026-07-01");
+    process.env.TZ = "Asia/Kolkata";
+    const east = formattedCalendarDate("2026-07-01");
+    assert.equal(west, east);
+    assert.match(west, /2026/u);
+    assert.match(west, /Jul/u);
+    assert.match(west, /1/u);
+  } finally {
+    if (previousTimezone === undefined) delete process.env.TZ;
+    else process.env.TZ = previousTimezone;
+  }
 });
 
 test("traffic render matrix preserves historical, single-source, both, and state-only leads", async () => {

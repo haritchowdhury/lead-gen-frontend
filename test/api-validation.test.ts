@@ -93,6 +93,43 @@ test("malformed consumed traffic members fail the entire result page closed", ()
     ["fraction out of range", (traffic: ReturnType<typeof trafficEnrichment>) => {
       Object.assign(traffic.crux?.popularity.observed_device_fractions ?? {}, { phone: 2 });
     }],
+    ["fraction sum mismatch", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      Object.assign(traffic.crux?.popularity.observed_device_fractions ?? {}, {
+        phone: 0.2, desktop: 0.2, tablet: 0.2,
+      });
+    }],
+    ["noncanonical DataForSEO target", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      if (traffic.dataforseo) traffic.dataforseo.target = "www.fixture.example";
+    }],
+    ["duplicate DataForSEO market", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      traffic.dataforseo?.markets?.push(structuredClone(traffic.dataforseo.markets[0]));
+    }],
+    ["DataForSEO state scope mismatch", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      if (traffic.dataforseo) traffic.dataforseo.state = "available";
+    }],
+    ["CrUX origin path", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      if (traffic.crux?.origin_metrics.origin) {
+        traffic.crux.origin_metrics.origin = "https://fixture.example/path";
+      }
+    }],
+    ["different CrUX component origins", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      if (traffic.crux?.popularity.origin) traffic.crux.popularity.origin = "https://other.example";
+    }],
+    ["empty available CrUX material", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      if (traffic.crux?.origin_metrics) {
+        traffic.crux.origin_metrics.metrics = {};
+        delete traffic.crux.origin_metrics.observed_form_factor_fractions;
+      }
+    }],
+    ["invalid CrUX month", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      if (traffic.crux?.popularity) traffic.crux.popularity.dataset_month = "202613";
+    }],
+    ["reversed collection dates", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      if (traffic.crux?.origin_metrics.collection_period) {
+        traffic.crux.origin_metrics.collection_period.first_date = "2026-07-29";
+        traffic.crux.origin_metrics.collection_period.last_date = "2026-07-01";
+      }
+    }],
     ["attribution mismatch", (traffic: ReturnType<typeof trafficEnrichment>) => {
       traffic.traffic_sources = ["crux", "dataforseo"];
     }],
