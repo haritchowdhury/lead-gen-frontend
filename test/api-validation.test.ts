@@ -13,7 +13,7 @@ import {
   parseRunStatus,
   parseStartRunResponse,
 } from "../lib/api-validation.ts";
-import { lead, resultPage, runStatus } from "./fixtures.ts";
+import { lead, resultPage, runStatus, trafficEnrichment } from "./fixtures.ts";
 
 test("validates and reconstructs full result evidence while ignoring additive fields", () => {
   const payload = structuredClone(resultPage());
@@ -38,6 +38,77 @@ test("malformed required or nested evidence fails the whole result page closed",
     Object.assign(malformedNested.items[0].store_fit_evidence[0].evidence[0], { textLength: "1840" });
   }
   assert.throws(() => parseResultPage(malformedNested), /textLength/u);
+});
+
+test("traffic enrichment validates all source combinations and ignores additive fields", () => {
+  const both = structuredClone(trafficEnrichment());
+  Object.assign(both, { future_traffic_field: true });
+  Object.assign(both.dataforseo?.worldwide ?? {}, { future_metric: 42 });
+  const parsedBoth = parseResultPage(resultPage([lead({ traffic_enrichment: both })]));
+  assert.equal(parsedBoth.items[0].traffic_enrichment?.dataforseo?.worldwide?.estimated_google_search_traffic, 12);
+  assert.equal(parsedBoth.items[0].traffic_enrichment?.crux?.origin_metrics.metrics?.cumulative_layout_shift_p75, "0.08");
+  assert.equal("future_traffic_field" in (parsedBoth.items[0].traffic_enrichment ?? {}), false);
+
+  const dataOnly = structuredClone(trafficEnrichment());
+  delete dataOnly.crux;
+  dataOnly.traffic_sources = ["dataforseo"];
+  dataOnly.traffic_attributions = dataOnly.traffic_attributions?.slice(0, 1);
+  assert.doesNotThrow(() => parseResultPage(resultPage([lead({ traffic_enrichment: dataOnly })])));
+
+  const cruxOnly = structuredClone(trafficEnrichment());
+  delete cruxOnly.dataforseo;
+  cruxOnly.traffic_sources = ["crux"];
+  cruxOnly.traffic_attributions = cruxOnly.traffic_attributions?.slice(1);
+  assert.doesNotThrow(() => parseResultPage(resultPage([lead({ traffic_enrichment: cruxOnly })])));
+  assert.doesNotThrow(() => parseResultPage(resultPage([lead({ traffic_enrichment: undefined })])));
+});
+
+test("traffic enrichment preserves partial and no-coverage states without inventing zero", () => {
+  const partial = structuredClone(trafficEnrichment());
+  if (partial.crux) {
+    partial.crux.state = "partial";
+    partial.crux.popularity = { state: "no_coverage" };
+  }
+  assert.doesNotThrow(() => parseResultPage(resultPage([lead({ traffic_enrichment: partial })])));
+
+  const noCoverage: Lead["traffic_enrichment"] = {
+    version: "traffic-enrichment-public-v1",
+    dataforseo: { state: "no_coverage" },
+  };
+  const parsed = parseResultPage(resultPage([lead({ traffic_enrichment: noCoverage })]));
+  assert.deepEqual(parsed.items[0].traffic_enrichment?.dataforseo, { state: "no_coverage" });
+});
+
+test("malformed consumed traffic members fail the entire result page closed", () => {
+  const cases = [
+    ["wrong CLS type", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      Object.assign(traffic.crux?.origin_metrics.metrics ?? {}, { cumulative_layout_shift_p75: 0.08 });
+    }],
+    ["negative traffic", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      Object.assign(traffic.dataforseo?.worldwide ?? {}, { organic_estimated_traffic: -1 });
+    }],
+    ["derived total mismatch", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      Object.assign(traffic.dataforseo?.worldwide ?? {}, { estimated_google_search_traffic: 99 });
+    }],
+    ["fraction out of range", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      Object.assign(traffic.crux?.popularity.observed_device_fractions ?? {}, { phone: 2 });
+    }],
+    ["attribution mismatch", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      traffic.traffic_sources = ["crux", "dataforseo"];
+    }],
+    ["invalid nested date", (traffic: ReturnType<typeof trafficEnrichment>) => {
+      Object.assign(traffic.crux?.origin_metrics.collection_period ?? {}, { first_date: "2026-02-30" });
+    }],
+  ] as const;
+  for (const [name, mutate] of cases) {
+    const traffic = structuredClone(trafficEnrichment());
+    mutate(traffic);
+    assert.throws(
+      () => parseResultPage(resultPage([lead({ traffic_enrichment: traffic })])),
+      ApiPayloadError,
+      name,
+    );
+  }
 });
 
 test("score semantics must agree with durable v2 versions and score presence", () => {

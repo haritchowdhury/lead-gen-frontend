@@ -4,6 +4,12 @@ import type {
   CollectionPage,
   ContactEvidence,
   ContactPageDecision,
+  CruxOriginMetrics,
+  CruxPopularity,
+  CruxTraffic,
+  DataForSeoMarketTraffic,
+  DataForSeoTraffic,
+  DataForSeoTrafficMetrics,
   DiagnosticPage,
   DiscoveryOccurrence,
   EvidenceItem,
@@ -24,6 +30,9 @@ import type {
   StartScrapeResponse,
   StoreFitEvidence,
   StoreFitPageEvidence,
+  TrafficAttribution,
+  TrafficEnrichment,
+  TrafficSourceState,
 } from "@/lib/api-types";
 
 export class ApiPayloadError extends Error {
@@ -385,6 +394,322 @@ function occurrence(value: unknown, path: string): DiscoveryOccurrence {
   return result;
 }
 
+const TRAFFIC_STATES = ["available", "partial", "no_coverage", "unavailable"] as const;
+const CRUX_COMPONENT_STATES = ["available", "no_coverage", "unavailable"] as const;
+const TRAFFIC_SOURCES = ["dataforseo", "crux"] as const;
+const DATAFORSEO_COUNTRIES = ["US", "GB", "CA", "AU", "NZ", "DE", "FR", "IN", "AE"] as const;
+
+function nonNegativeNumber(value: unknown, path: string): number {
+  const parsed = number(value, path);
+  if (parsed < 0) throw new ApiPayloadError(path);
+  return parsed;
+}
+
+function nonNegativeInteger(value: unknown, path: string): number {
+  const parsed = integer(value, path);
+  if (parsed < 0) throw new ApiPayloadError(path);
+  return parsed;
+}
+
+function positiveInteger(value: unknown, path: string): number {
+  const parsed = integer(value, path);
+  if (parsed <= 0) throw new ApiPayloadError(path);
+  return parsed;
+}
+
+function fraction(value: unknown, path: string): number {
+  const parsed = number(value, path);
+  if (parsed < 0 || parsed > 1) throw new ApiPayloadError(path);
+  return parsed;
+}
+
+function decimalString(value: unknown, path: string): string {
+  const parsed = text(value, path);
+  if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/u.test(parsed)) {
+    throw new ApiPayloadError(path);
+  }
+  return parsed;
+}
+
+function nonEmptyText(value: unknown, path: string): string {
+  const parsed = text(value, path);
+  if (!parsed.trim()) throw new ApiPayloadError(path);
+  return parsed;
+}
+
+function isoTimestamp(value: unknown, path: string): string {
+  const parsed = text(value, path);
+  if (!/^\d{4}-\d{2}-\d{2}T.+(?:Z|[+-]\d{2}:\d{2})$/u.test(parsed) ||
+      !Number.isFinite(Date.parse(parsed))) {
+    throw new ApiPayloadError(path);
+  }
+  isoDate(parsed.slice(0, 10), path);
+  return parsed;
+}
+
+function isoDate(value: unknown, path: string): string {
+  const parsed = text(value, path);
+  if (!/^\d{4}-\d{2}-\d{2}$/u.test(parsed)) throw new ApiPayloadError(path);
+  const date = new Date(`${parsed}T00:00:00.000Z`);
+  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== parsed) {
+    throw new ApiPayloadError(path);
+  }
+  return parsed;
+}
+
+function httpsUrl(value: unknown, path: string): string {
+  const parsed = text(value, path);
+  let url: URL;
+  try {
+    url = new URL(parsed);
+  } catch {
+    throw new ApiPayloadError(path);
+  }
+  if (url.protocol !== "https:" || url.username || url.password) {
+    throw new ApiPayloadError(path);
+  }
+  return parsed;
+}
+
+function dataForSeoMetrics(value: unknown, path: string): DataForSeoTrafficMetrics {
+  const source = record(value, path);
+  const result = {
+    estimated_google_search_traffic: nonNegativeNumber(source.estimated_google_search_traffic, `${path}.estimated_google_search_traffic`),
+    organic_estimated_traffic: nonNegativeNumber(source.organic_estimated_traffic, `${path}.organic_estimated_traffic`),
+    organic_keyword_count: nonNegativeInteger(source.organic_keyword_count, `${path}.organic_keyword_count`),
+    paid_estimated_traffic: nonNegativeNumber(source.paid_estimated_traffic, `${path}.paid_estimated_traffic`),
+    paid_keyword_count: nonNegativeInteger(source.paid_keyword_count, `${path}.paid_keyword_count`),
+    featured_snippet_estimated_traffic: nonNegativeNumber(source.featured_snippet_estimated_traffic, `${path}.featured_snippet_estimated_traffic`),
+    featured_snippet_keyword_count: nonNegativeInteger(source.featured_snippet_keyword_count, `${path}.featured_snippet_keyword_count`),
+    local_pack_estimated_traffic: nonNegativeNumber(source.local_pack_estimated_traffic, `${path}.local_pack_estimated_traffic`),
+    local_pack_keyword_count: nonNegativeInteger(source.local_pack_keyword_count, `${path}.local_pack_keyword_count`),
+  };
+  if (result.estimated_google_search_traffic !==
+      result.organic_estimated_traffic + result.paid_estimated_traffic) {
+    throw new ApiPayloadError(`${path}.estimated_google_search_traffic`);
+  }
+  return result;
+}
+
+function dataForSeoTraffic(value: unknown, path: string): DataForSeoTraffic {
+  const source = record(value, path);
+  const state = oneOf(source.state, TRAFFIC_STATES, `${path}.state`);
+  if (state === "no_coverage" || state === "unavailable") return { state };
+  const label = oneOf(
+    source.label,
+    ["Estimated Google search traffic"] as const,
+    `${path}.label`,
+  );
+  const worldwide = optional(source, "worldwide", path, dataForSeoMetrics);
+  const markets = array(source.markets, `${path}.markets`, (market, marketPath) => {
+    const marketSource = record(market, marketPath);
+    return {
+      country_code: oneOf(marketSource.country_code, DATAFORSEO_COUNTRIES, `${marketPath}.country_code`),
+      ...dataForSeoMetrics(marketSource, marketPath),
+    } as DataForSeoMarketTraffic;
+  });
+  const positions = markets.map(({ country_code }) => DATAFORSEO_COUNTRIES.indexOf(country_code));
+  if (new Set(positions).size !== positions.length ||
+      positions.some((position, index) => index > 0 && position <= positions[index - 1])) {
+    throw new ApiPayloadError(`${path}.markets`);
+  }
+  if (!worldwide && !markets.length) throw new ApiPayloadError(path);
+  return {
+    state,
+    label,
+    ...(optional(source, "target", path, text) === undefined
+      ? {}
+      : { target: optional(source, "target", path, nonEmptyText) }),
+    ...(worldwide ? { worldwide } : {}),
+    markets,
+    ...(optional(source, "observed_at", path, isoTimestamp) === undefined
+      ? {}
+      : { observed_at: optional(source, "observed_at", path, isoTimestamp) }),
+  };
+}
+
+function deviceFractions(
+  value: unknown,
+  path: string,
+): { desktop: number; phone: number; tablet: number } {
+  const source = record(value, path);
+  return {
+    desktop: fraction(source.desktop, `${path}.desktop`),
+    phone: fraction(source.phone, `${path}.phone`),
+    tablet: fraction(source.tablet, `${path}.tablet`),
+  };
+}
+
+function cruxOriginMetrics(value: unknown, path: string): CruxOriginMetrics {
+  const source = record(value, path);
+  const state = oneOf(source.state, CRUX_COMPONENT_STATES, `${path}.state`);
+  if (state !== "available") return { state };
+  const rawMetrics = record(source.metrics, `${path}.metrics`);
+  const metrics = {
+    ...(optional(rawMetrics, "largest_contentful_paint_p75_ms", `${path}.metrics`, nonNegativeNumber) === undefined ? {} : {
+      largest_contentful_paint_p75_ms: optional(rawMetrics, "largest_contentful_paint_p75_ms", `${path}.metrics`, nonNegativeNumber),
+    }),
+    ...(optional(rawMetrics, "interaction_to_next_paint_p75_ms", `${path}.metrics`, nonNegativeNumber) === undefined ? {} : {
+      interaction_to_next_paint_p75_ms: optional(rawMetrics, "interaction_to_next_paint_p75_ms", `${path}.metrics`, nonNegativeNumber),
+    }),
+    ...(optional(rawMetrics, "cumulative_layout_shift_p75", `${path}.metrics`, decimalString) === undefined ? {} : {
+      cumulative_layout_shift_p75: optional(rawMetrics, "cumulative_layout_shift_p75", `${path}.metrics`, decimalString),
+    }),
+    ...(optional(rawMetrics, "first_contentful_paint_p75_ms", `${path}.metrics`, nonNegativeNumber) === undefined ? {} : {
+      first_contentful_paint_p75_ms: optional(rawMetrics, "first_contentful_paint_p75_ms", `${path}.metrics`, nonNegativeNumber),
+    }),
+    ...(optional(rawMetrics, "time_to_first_byte_p75_ms", `${path}.metrics`, nonNegativeNumber) === undefined ? {} : {
+      time_to_first_byte_p75_ms: optional(rawMetrics, "time_to_first_byte_p75_ms", `${path}.metrics`, nonNegativeNumber),
+    }),
+  };
+  const period = record(source.collection_period, `${path}.collection_period`);
+  const formFactors = optional(
+    source,
+    "observed_form_factor_fractions",
+    path,
+    deviceFractions,
+  );
+  return {
+    state,
+    origin: httpsUrl(source.origin, `${path}.origin`),
+    metrics,
+    ...(formFactors ? { observed_form_factor_fractions: formFactors } : {}),
+    collection_period: {
+      first_date: isoDate(period.first_date, `${path}.collection_period.first_date`),
+      last_date: isoDate(period.last_date, `${path}.collection_period.last_date`),
+    },
+    observed_at: isoTimestamp(source.observed_at, `${path}.observed_at`),
+  };
+}
+
+function cruxPopularity(value: unknown, path: string): CruxPopularity {
+  const source = record(value, path);
+  const state = oneOf(source.state, CRUX_COMPONENT_STATES, `${path}.state`);
+  if (state !== "available") return { state };
+  const datasetMonth = text(source.dataset_month, `${path}.dataset_month`);
+  if (!/^20\d{2}(?:0[1-9]|1[0-2])$/u.test(datasetMonth)) {
+    throw new ApiPayloadError(`${path}.dataset_month`);
+  }
+  const popularityRank = positiveInteger(source.popularity_rank, `${path}.popularity_rank`);
+  const popularityBand = text(source.popularity_band, `${path}.popularity_band`);
+  if (popularityBand !== `top_${popularityRank}`) {
+    throw new ApiPayloadError(`${path}.popularity_band`);
+  }
+  return {
+    state,
+    origin: httpsUrl(source.origin, `${path}.origin`),
+    label: oneOf(
+      source.label,
+      ["Coarse CrUX navigation popularity rank"] as const,
+      `${path}.label`,
+    ),
+    dataset_month: datasetMonth,
+    popularity_rank: popularityRank,
+    popularity_band: popularityBand,
+    observed_device_fractions: deviceFractions(
+      source.observed_device_fractions,
+      `${path}.observed_device_fractions`,
+    ),
+    observed_at: isoTimestamp(source.observed_at, `${path}.observed_at`),
+  };
+}
+
+function cruxTraffic(value: unknown, path: string): CruxTraffic {
+  const source = record(value, path);
+  const state = oneOf(source.state, TRAFFIC_STATES, `${path}.state`);
+  const originMetrics = cruxOriginMetrics(source.origin_metrics, `${path}.origin_metrics`);
+  const popularity = cruxPopularity(source.popularity, `${path}.popularity`);
+  const originMaterial = originMetrics.state === "available" &&
+    (Boolean(Object.keys(originMetrics.metrics ?? {}).length) ||
+      originMetrics.observed_form_factor_fractions !== undefined);
+  const popularityMaterial = popularity.state === "available";
+  const expectedState: TrafficSourceState = originMaterial && popularityMaterial
+    ? "available"
+    : originMaterial || popularityMaterial
+      ? "partial"
+      : originMetrics.state === "no_coverage" && popularity.state === "no_coverage"
+        ? "no_coverage"
+        : "unavailable";
+  if (state !== expectedState) throw new ApiPayloadError(`${path}.state`);
+  return { state, origin_metrics: originMetrics, popularity };
+}
+
+function trafficAttribution(value: unknown, path: string): TrafficAttribution {
+  const source = record(value, path);
+  return {
+    source: oneOf(source.source, TRAFFIC_SOURCES, `${path}.source`),
+    name: nonEmptyText(source.name, `${path}.name`),
+    text: nonEmptyText(source.text, `${path}.text`),
+    source_url: httpsUrl(source.source_url, `${path}.source_url`),
+    ...(optional(source, "license", path, text) === undefined
+      ? {}
+      : { license: optional(source, "license", path, text) }),
+    ...(optional(source, "license_url", path, httpsUrl) === undefined
+      ? {}
+      : { license_url: optional(source, "license_url", path, httpsUrl) }),
+    ...(optional(source, "transformation", path, text) === undefined
+      ? {}
+      : { transformation: optional(source, "transformation", path, text) }),
+  };
+}
+
+function trafficEnrichment(value: unknown, path: string): TrafficEnrichment {
+  const source = record(value, path);
+  const version = oneOf(
+    source.version,
+    ["traffic-enrichment-public-v1"] as const,
+    `${path}.version`,
+  );
+  const dataforseo = optional(source, "dataforseo", path, dataForSeoTraffic);
+  const crux = optional(source, "crux", path, cruxTraffic);
+  if (!dataforseo && !crux) throw new ApiPayloadError(path);
+
+  const expectedSources: Array<"dataforseo" | "crux"> = [];
+  if (dataforseo && ["available", "partial"].includes(dataforseo.state) &&
+      (dataforseo.worldwide || dataforseo.markets?.length)) {
+    expectedSources.push("dataforseo");
+  }
+  if (crux && (crux.origin_metrics.state === "available" &&
+      (Object.keys(crux.origin_metrics.metrics ?? {}).length > 0 ||
+        crux.origin_metrics.observed_form_factor_fractions !== undefined) ||
+      crux.popularity.state === "available")) {
+    expectedSources.push("crux");
+  }
+
+  const rawSources = optional(source, "traffic_sources", path, (item, itemPath) =>
+    array(item, itemPath, (entry, entryPath) => oneOf(entry, TRAFFIC_SOURCES, entryPath)));
+  const attributions = optional(
+    source,
+    "traffic_attributions",
+    path,
+    (item, itemPath) => array(item, itemPath, trafficAttribution),
+  );
+  if (expectedSources.length) {
+    if (!rawSources || !attributions || rawSources.length !== expectedSources.length ||
+        attributions.length !== expectedSources.length ||
+        rawSources.some((item, index) => item !== expectedSources[index]) ||
+        attributions.some((item, index) => item.source !== expectedSources[index])) {
+      throw new ApiPayloadError(`${path}.traffic_sources`);
+    }
+    const cruxAttribution = attributions.find(({ source: attributionSource }) =>
+      attributionSource === "crux");
+    if (cruxAttribution &&
+        (!cruxAttribution.license || !cruxAttribution.license_url ||
+          !cruxAttribution.transformation)) {
+      throw new ApiPayloadError(`${path}.traffic_attributions`);
+    }
+  } else if (rawSources !== undefined || attributions !== undefined) {
+    throw new ApiPayloadError(`${path}.traffic_sources`);
+  }
+  return {
+    version,
+    ...(dataforseo ? { dataforseo } : {}),
+    ...(crux ? { crux } : {}),
+    ...(rawSources ? { traffic_sources: rawSources } : {}),
+    ...(attributions ? { traffic_attributions: attributions } : {}),
+  };
+}
+
 export function parseLead(value: unknown, path = "lead"): Lead {
   const source = record(value, path);
   const nullableTexts = [
@@ -413,6 +738,8 @@ export function parseLead(value: unknown, path = "lead"): Lead {
   } as Omit<Lead, (typeof nullableTexts)[number] | (typeof nullableNumbers)[number]> & Partial<Lead>;
   for (const key of nullableTexts) result[key] = nullableText(source[key], `${path}.${key}`);
   for (const key of nullableNumbers) result[key] = nullableNumber(source[key], `${path}.${key}`);
+  const parsedTraffic = optional(source, "traffic_enrichment", path, trafficEnrichment);
+  if (parsedTraffic) result.traffic_enrichment = parsedTraffic;
   const lead = result as Lead;
   assertLeadScoreState(lead, path);
   return lead;

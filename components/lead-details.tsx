@@ -15,6 +15,7 @@ import {
   scoreComponents,
   scorePresentation,
 } from "../lib/lead-presentation";
+import { TrafficEnrichmentDetails } from "./traffic-enrichment";
 
 function ExternalDetailLink({
   href,
@@ -358,6 +359,7 @@ export function LeadDetails({ lead }: { lead: Lead }) {
       <StoreEvidence lead={lead} />
       <ScoreDetails lead={lead} />
       <IdentityDetails lead={lead} />
+      <TrafficEnrichmentDetails enrichment={lead.traffic_enrichment} />
       <DiscoveryDetails lead={lead} />
       <OutcomeDetails lead={lead} />
     </div>

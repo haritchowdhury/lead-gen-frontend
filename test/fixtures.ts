@@ -1,4 +1,87 @@
-import type { Lead, ResultPage, RunProgress, RunStatus } from "../lib/api-types.ts";
+import type {
+  Lead,
+  ResultPage,
+  RunProgress,
+  RunStatus,
+  TrafficEnrichment,
+} from "../lib/api-types.ts";
+
+export function trafficEnrichment(): TrafficEnrichment {
+  return {
+    version: "traffic-enrichment-public-v1",
+    dataforseo: {
+      state: "partial",
+      label: "Estimated Google search traffic",
+      target: "fixture.example",
+      worldwide: {
+        estimated_google_search_traffic: 12,
+        organic_estimated_traffic: 10.5,
+        organic_keyword_count: 7,
+        paid_estimated_traffic: 1.5,
+        paid_keyword_count: 2,
+        featured_snippet_estimated_traffic: 3,
+        featured_snippet_keyword_count: 1,
+        local_pack_estimated_traffic: 4,
+        local_pack_keyword_count: 1,
+      },
+      markets: [{
+        country_code: "IN",
+        estimated_google_search_traffic: 4,
+        organic_estimated_traffic: 4,
+        organic_keyword_count: 3,
+        paid_estimated_traffic: 0,
+        paid_keyword_count: 0,
+        featured_snippet_estimated_traffic: 1,
+        featured_snippet_keyword_count: 1,
+        local_pack_estimated_traffic: 0,
+        local_pack_keyword_count: 0,
+      }],
+      observed_at: "2026-08-01T00:00:00.000Z",
+    },
+    crux: {
+      state: "available",
+      origin_metrics: {
+        state: "available",
+        origin: "https://fixture.example",
+        metrics: {
+          largest_contentful_paint_p75_ms: 2400,
+          interaction_to_next_paint_p75_ms: 180,
+          cumulative_layout_shift_p75: "0.08",
+          first_contentful_paint_p75_ms: 1600,
+          time_to_first_byte_p75_ms: 700,
+        },
+        observed_form_factor_fractions: { desktop: 0.4, phone: 0.6, tablet: 0 },
+        collection_period: { first_date: "2026-07-01", last_date: "2026-07-28" },
+        observed_at: "2026-08-01T00:00:00.000Z",
+      },
+      popularity: {
+        state: "available",
+        origin: "https://fixture.example",
+        label: "Coarse CrUX navigation popularity rank",
+        dataset_month: "202606",
+        popularity_rank: 100000,
+        popularity_band: "top_100000",
+        observed_device_fractions: { phone: 0.7, desktop: 0.3, tablet: 0 },
+        observed_at: "2026-08-01T00:00:00.000Z",
+      },
+    },
+    traffic_sources: ["dataforseo", "crux"],
+    traffic_attributions: [{
+      source: "dataforseo",
+      name: "DataForSEO Labs",
+      text: "Estimated Google search traffic data sourced from DataForSEO Labs.",
+      source_url: "https://dataforseo.com/apis/dataforseo-labs-api",
+    }, {
+      source: "crux",
+      name: "Chrome UX Report",
+      text: "Performance and popularity data sourced from the Chrome UX Report by Google, licensed under CC BY 4.0.",
+      source_url: "https://developer.chrome.com/docs/crux/",
+      license: "CC BY 4.0",
+      license_url: "https://creativecommons.org/licenses/by/4.0/",
+      transformation: "Metrics are selected and renamed.",
+    }],
+  };
+}
 
 export function lead(overrides: Partial<Lead> = {}): Lead {
   return {

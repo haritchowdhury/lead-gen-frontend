@@ -4,9 +4,11 @@ import test from "node:test";
 import type { Lead } from "../lib/api-types.ts";
 import {
   collectAllLeads,
+  csvHeaders,
   CSV_HEADERS,
   serializeLeadsToCsv,
 } from "../lib/csv-export.ts";
+import { trafficEnrichment } from "./fixtures.ts";
 
 function lead(overrides: Partial<Lead> = {}): Lead {
   return {
@@ -172,4 +174,97 @@ test("frontend CSV export rejects contradictory v2 score states", () => {
     },
     score_semantics: "evidence_rank_v2",
   })]), /score_state/u);
+});
+
+function parseCsvRow(row: string): string[] {
+  const fields: string[] = [];
+  let field = "";
+  let quoted = false;
+  for (let index = 0; index < row.length; index += 1) {
+    const character = row[index];
+    if (character === '"') {
+      if (quoted && row[index + 1] === '"') {
+        field += '"';
+        index += 1;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (character === "," && !quoted) {
+      fields.push(field);
+      field = "";
+    } else {
+      field += character;
+    }
+  }
+  fields.push(field);
+  return fields;
+}
+
+test("traffic CSV headers follow enabled source members and material attribution", () => {
+  assert.deepEqual(csvHeaders([lead()]), [...CSV_HEADERS]);
+
+  const dataNoCoverage = lead({
+    traffic_enrichment: {
+      version: "traffic-enrichment-public-v1",
+      dataforseo: { state: "no_coverage" },
+    },
+  });
+  const dataHeaders = csvHeaders([dataNoCoverage]);
+  assert.equal(dataHeaders.slice(0, CSV_HEADERS.length).join(","), CSV_HEADERS.join(","));
+  assert.equal(dataHeaders.includes("dataforseo_state"), true);
+  assert.equal(dataHeaders.includes("dataforseo_in_estimated_google_search_traffic"), true);
+  assert.equal(dataHeaders.some((header) => header.startsWith("crux_")), false);
+  assert.equal(dataHeaders.includes("traffic_attribution_text"), false);
+
+  const cruxOnly = trafficEnrichment();
+  delete cruxOnly.dataforseo;
+  cruxOnly.traffic_sources = ["crux"];
+  cruxOnly.traffic_attributions = cruxOnly.traffic_attributions?.slice(1);
+  const cruxHeaders = csvHeaders([lead(), lead({ traffic_enrichment: cruxOnly })]);
+  assert.equal(cruxHeaders.includes("crux_state"), true);
+  assert.equal(cruxHeaders.some((header) => header.startsWith("dataforseo_")), false);
+  assert.equal(cruxHeaders.includes("traffic_attribution_text"), true);
+
+  const bothHeaders = csvHeaders([lead({ traffic_enrichment: trafficEnrichment() })]);
+  assert.equal(bothHeaders.includes("dataforseo_state"), true);
+  assert.equal(bothHeaders.includes("crux_state"), true);
+  assert.equal(bothHeaders.includes("traffic_license_urls"), true);
+  assert.equal(bothHeaders.indexOf("dataforseo_state") < bothHeaders.indexOf("crux_state"), true);
+  assert.equal(bothHeaders.indexOf("crux_state") < bothHeaders.indexOf("traffic_sources"), true);
+});
+
+test("traffic CSV flattens every source, retains zero, and protects attribution formulas", () => {
+  const traffic = trafficEnrichment();
+  if (traffic.traffic_attributions?.[0]) {
+    traffic.traffic_attributions[0].text = "=DataForSEO attribution";
+  }
+  const csv = serializeLeadsToCsv([lead({ traffic_enrichment: traffic })]);
+  const [headerRow, valueRow] = csv.trimEnd().split("\r\n");
+  const headers = parseCsvRow(headerRow);
+  const values = parseCsvRow(valueRow);
+  const row = Object.fromEntries(headers.map((header, index) => [header, values[index]]));
+  assert.equal(row.dataforseo_label, "Estimated Google search traffic");
+  assert.equal(row.dataforseo_worldwide_estimated_google_search_traffic, "12");
+  assert.equal(row.dataforseo_in_estimated_google_search_traffic, "4");
+  assert.equal(row.dataforseo_in_paid_estimated_traffic, "0");
+  assert.equal(row.dataforseo_us_estimated_google_search_traffic, "");
+  assert.equal(row.crux_largest_contentful_paint_p75_ms, "2400");
+  assert.equal(row.crux_cumulative_layout_shift_p75, "0.08");
+  assert.equal(row.crux_popularity_band, "top_100000");
+  assert.equal(row.traffic_sources, "dataforseo | crux");
+  assert.match(row.traffic_attribution_text, /^'=DataForSEO attribution/u);
+  assert.match(row.traffic_license_urls, /creativecommons/u);
+  assert.equal(values.includes("[object Object]"), false);
+  assert.equal(values.some((value) => value.includes("traffic-enrichment-public-v1")), false);
+});
+
+test("traffic CSV rejects malformed nested material before producing output", () => {
+  const traffic = trafficEnrichment();
+  Object.assign(traffic.crux?.origin_metrics.metrics ?? {}, {
+    cumulative_layout_shift_p75: 0.08,
+  });
+  assert.throws(
+    () => serializeLeadsToCsv([lead({ traffic_enrichment: traffic })]),
+    /cumulative_layout_shift_p75/u,
+  );
 });

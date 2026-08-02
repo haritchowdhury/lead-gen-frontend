@@ -9,7 +9,7 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { lead } from "./fixtures.ts";
+import { lead, trafficEnrichment } from "./fixtures.ts";
 
 type Components = {
   LeadDetails: React.ComponentType<{ lead: ReturnType<typeof lead> }>;
@@ -19,6 +19,20 @@ type Components = {
     expandedLeadId: string | null;
     onExpandedLeadId: (leadId: string | null) => void;
   }>;
+  TrafficEnrichmentDetails: React.ComponentType<{
+    enrichment: ReturnType<typeof trafficEnrichment> | undefined;
+  }>;
+  coreWebVitalRating: (
+    metric: "lcp" | "inp" | "cls",
+    value: number,
+  ) => "good" | "needs_improvement" | "poor";
+  coreWebVitalsAssessment: (
+    metrics: ReturnType<typeof trafficEnrichment>["crux"] extends infer Crux
+      ? Crux extends { origin_metrics: { metrics?: infer Metrics } }
+        ? Metrics
+        : never
+      : never,
+  ) => "good" | "needs_improvement" | "poor" | "incomplete";
 };
 
 let compiled: Promise<Components> | null = null;
@@ -49,7 +63,14 @@ function compiledComponents(): Promise<Components> {
     const require = createRequire(import.meta.url);
     const details = require(join(output, "components", "lead-details.js"));
     const table = require(join(output, "components", "results-table.js"));
-    return { LeadDetails: details.LeadDetails, ResultsTableView: table.ResultsTableView } as Components;
+    const traffic = require(join(output, "components", "traffic-enrichment.js"));
+    return {
+      LeadDetails: details.LeadDetails,
+      ResultsTableView: table.ResultsTableView,
+      TrafficEnrichmentDetails: traffic.TrafficEnrichmentDetails,
+      coreWebVitalRating: traffic.coreWebVitalRating,
+      coreWebVitalsAssessment: traffic.coreWebVitalsAssessment,
+    } as Components;
   })();
   return compiled;
 }
@@ -116,4 +137,105 @@ test("actual table view cannot retain expanded evidence for a replaced result se
   assert.doesNotMatch(replaced, /lead-detail-lead_first/u);
   assert.doesNotMatch(replaced, /First Evidence/u);
   assert.match(replaced, /Second Evidence/u);
+});
+
+test("traffic details render every available metric, truthful labels, and attribution", async () => {
+  const { TrafficEnrichmentDetails } = await compiledComponents();
+  const html = renderToStaticMarkup(createElement(TrafficEnrichmentDetails, {
+    enrichment: trafficEnrichment(),
+  }));
+  for (const expected of [
+    "Estimated Google search traffic",
+    "not total website visits",
+    "Worldwide",
+    "Organic ranking footprint",
+    "Featured-snippet keyword count",
+    "India (IN)",
+    "Chrome UX Report",
+    "CrUX does not provide visit totals",
+    "Core Web Vitals: Pass",
+    "Largest Contentful Paint, 75th percentile",
+    "Time to First Byte, 75th percentile",
+    "Top 100,000",
+    "Observed monthly device fractions",
+    "CC BY 4.0",
+    "do not imply provider endorsement",
+  ]) {
+    assert.match(html, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"));
+  }
+  assert.match(html, /target="_blank" rel="noreferrer"/u);
+});
+
+test("traffic render matrix preserves historical, single-source, both, and state-only leads", async () => {
+  const { LeadDetails, ResultsTableView } = await compiledComponents();
+  const both = trafficEnrichment();
+  const dataOnly = structuredClone(both);
+  delete dataOnly.crux;
+  dataOnly.traffic_sources = ["dataforseo"];
+  dataOnly.traffic_attributions = dataOnly.traffic_attributions?.slice(0, 1);
+  const cruxOnly = structuredClone(both);
+  delete cruxOnly.dataforseo;
+  cruxOnly.traffic_sources = ["crux"];
+  cruxOnly.traffic_attributions = cruxOnly.traffic_attributions?.slice(1);
+  const noCoverage = {
+    version: "traffic-enrichment-public-v1",
+    dataforseo: { state: "no_coverage" },
+  } as const;
+
+  const historical = renderToStaticMarkup(createElement(LeadDetails, { lead: lead() }));
+  assert.doesNotMatch(historical, /Traffic and site experience/u);
+
+  const dataHtml = renderToStaticMarkup(createElement(LeadDetails, {
+    lead: lead({ traffic_enrichment: dataOnly }),
+  }));
+  assert.match(dataHtml, /Estimated Google search traffic/u);
+  assert.doesNotMatch(dataHtml, /CrUX does not provide visit totals/u);
+
+  const cruxHtml = renderToStaticMarkup(createElement(LeadDetails, {
+    lead: lead({ traffic_enrichment: cruxOnly }),
+  }));
+  assert.match(cruxHtml, /CrUX does not provide visit totals/u);
+  assert.doesNotMatch(cruxHtml, /DataForSEO metrics/u);
+
+  const stateHtml = renderToStaticMarkup(createElement(LeadDetails, {
+    lead: lead({ traffic_enrichment: noCoverage }),
+  }));
+  assert.match(stateHtml, /No DataForSEO coverage/u);
+  assert.doesNotMatch(stateHtml, />0</u);
+
+  const collapsed = renderToStaticMarkup(createElement(ResultsTableView, {
+    leads: [lead({ traffic_enrichment: both })],
+    loading: false,
+    expandedLeadId: null,
+    onExpandedLeadId: () => {},
+  }));
+  assert.match(collapsed, /Est\. Google search 12/u);
+
+  const collapsedNoMaterial = renderToStaticMarkup(createElement(ResultsTableView, {
+    leads: [lead({ traffic_enrichment: noCoverage })],
+    loading: false,
+    expandedLeadId: null,
+    onExpandedLeadId: () => {},
+  }));
+  assert.doesNotMatch(collapsedNoMaterial, /traffic-compact/u);
+});
+
+test("Core Web Vitals assessments honor exact documented boundaries", async () => {
+  const { coreWebVitalRating, coreWebVitalsAssessment } = await compiledComponents();
+  assert.equal(coreWebVitalRating("lcp", 2500), "good");
+  assert.equal(coreWebVitalRating("lcp", 2500.01), "needs_improvement");
+  assert.equal(coreWebVitalRating("lcp", 4000.01), "poor");
+  assert.equal(coreWebVitalRating("inp", 200), "good");
+  assert.equal(coreWebVitalRating("inp", 500), "needs_improvement");
+  assert.equal(coreWebVitalRating("cls", 0.1), "good");
+  assert.equal(coreWebVitalRating("cls", 0.25), "needs_improvement");
+  assert.equal(coreWebVitalsAssessment({
+    largest_contentful_paint_p75_ms: 2500,
+    interaction_to_next_paint_p75_ms: 200,
+    cumulative_layout_shift_p75: "0.1",
+  }), "good");
+  assert.equal(coreWebVitalsAssessment({
+    largest_contentful_paint_p75_ms: 2500,
+    cumulative_layout_shift_p75: "0.1",
+  }), "incomplete");
 });

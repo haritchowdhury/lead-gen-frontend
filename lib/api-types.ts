@@ -255,6 +255,98 @@ export type RunListResponse = {
   items: RunStatus[];
 };
 
+export type TrafficSourceState =
+  | "available"
+  | "partial"
+  | "no_coverage"
+  | "unavailable";
+
+export type DataForSeoTrafficMetrics = {
+  estimated_google_search_traffic: number;
+  organic_estimated_traffic: number;
+  organic_keyword_count: number;
+  paid_estimated_traffic: number;
+  paid_keyword_count: number;
+  featured_snippet_estimated_traffic: number;
+  featured_snippet_keyword_count: number;
+  local_pack_estimated_traffic: number;
+  local_pack_keyword_count: number;
+};
+
+export type DataForSeoMarketTraffic = DataForSeoTrafficMetrics & {
+  country_code: "US" | "GB" | "CA" | "AU" | "NZ" | "DE" | "FR" | "IN" | "AE";
+};
+
+export type DataForSeoTraffic = {
+  state: TrafficSourceState;
+  label?: "Estimated Google search traffic";
+  target?: string;
+  worldwide?: DataForSeoTrafficMetrics;
+  markets?: DataForSeoMarketTraffic[];
+  observed_at?: string;
+};
+
+export type CruxOriginMetrics = {
+  state: Exclude<TrafficSourceState, "partial">;
+  origin?: string;
+  metrics?: {
+    largest_contentful_paint_p75_ms?: number;
+    interaction_to_next_paint_p75_ms?: number;
+    cumulative_layout_shift_p75?: string;
+    first_contentful_paint_p75_ms?: number;
+    time_to_first_byte_p75_ms?: number;
+  };
+  observed_form_factor_fractions?: {
+    desktop: number;
+    phone: number;
+    tablet: number;
+  };
+  collection_period?: {
+    first_date: string;
+    last_date: string;
+  };
+  observed_at?: string;
+};
+
+export type CruxPopularity = {
+  state: Exclude<TrafficSourceState, "partial">;
+  origin?: string;
+  label?: "Coarse CrUX navigation popularity rank";
+  dataset_month?: string;
+  popularity_rank?: number;
+  popularity_band?: string;
+  observed_device_fractions?: {
+    phone: number;
+    desktop: number;
+    tablet: number;
+  };
+  observed_at?: string;
+};
+
+export type CruxTraffic = {
+  state: TrafficSourceState;
+  origin_metrics: CruxOriginMetrics;
+  popularity: CruxPopularity;
+};
+
+export type TrafficAttribution = {
+  source: "dataforseo" | "crux";
+  name: string;
+  text: string;
+  source_url: string;
+  license?: string;
+  license_url?: string;
+  transformation?: string;
+};
+
+export type TrafficEnrichment = {
+  version: "traffic-enrichment-public-v1";
+  dataforseo?: DataForSeoTraffic;
+  crux?: CruxTraffic;
+  traffic_sources?: Array<"dataforseo" | "crux">;
+  traffic_attributions?: TrafficAttribution[];
+};
+
 export type Lead = {
   id: string;
   original_shop_type: string | null;
@@ -296,6 +388,7 @@ export type Lead = {
   discovery_occurrences: DiscoveryOccurrence[] | null;
   matched_categories: CategoryIntent[] | null;
   score_semantics: ScoreSemantics;
+  traffic_enrichment?: TrafficEnrichment;
 };
 
 export type ResultSummary = {

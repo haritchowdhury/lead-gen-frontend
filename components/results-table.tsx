@@ -7,6 +7,7 @@ import {
   ExternalLinkIcon,
 } from "./icons";
 import { LeadDetails } from "./lead-details";
+import { CompactTrafficSignal } from "./traffic-enrichment";
 import type { Lead } from "../lib/api-types";
 import {
   contactChannels,
@@ -147,6 +148,7 @@ function ResultsRow({
                 <strong>{lead.store_name ?? "Unnamed store"}</strong>
               )}
               <small>{displayDomain(lead)}</small>
+              <CompactTrafficSignal enrichment={lead.traffic_enrichment} />
             </span>
           </div>
         </td>

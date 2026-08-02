@@ -121,7 +121,31 @@ CSV serialization lives in `lib/csv-export.ts`. Export-all requests every result
 page at a page size of 200, preserves the backend's 25-column legacy prefix,
 appends the 13 evidence/provenance fields in backend order (38 columns total), converts null values to empty
 cells, serializes structured values as JSON, and protects spreadsheet formula-like
-text.
+text. When the optional versioned traffic contract is present, the export appends
+the same provider-prefixed scalar columns as the backend. DataForSEO, CrUX, and
+attribution columns are selected independently from the complete collected run;
+disabled sources do not create blank placeholder columns.
+
+### Optional traffic display
+
+Successful result payloads manually validate the complete consumed
+`traffic-enrichment-public-v1` boundary before any metric reaches the UI or CSV.
+Historical and off/off leads remain unchanged. Malformed known traffic members
+fail the result page closed, while unknown additive fields are ignored.
+
+Collapsed rows show at most one compact signal backed by accepted metric
+material. Expanded rows show all available estimated Google search traffic and
+tracked-market ranking footprints, every available CrUX p75 metric, collection
+period, coarse popularity rank/band, and observed device fractions. DataForSEO
+estimates are not described as total visits, and the UI explicitly states that
+CrUX does not provide visit totals. No-coverage and unavailable states remain
+distinct from measured numeric zero.
+
+Core Web Vitals assessment uses the documented p75 thresholds for LCP, INP, and
+CLS. FCP and TTFB are displayed but do not affect the verdict. An assessment is
+incomplete when any of LCP, INP, or CLS is absent. Attribution and safe external
+source/license links render only when the API includes corresponding material;
+source links do not imply provider endorsement.
 
 ## Vercel
 

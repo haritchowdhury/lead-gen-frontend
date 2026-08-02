@@ -1,0 +1,70 @@
+{
+  "capturedAt": "2026-08-02T08:55:12.968Z",
+  "fixture": {
+    "kind": "isolated local owned-run contract fixture",
+    "runId": "run_te6abcdefghijklmnop",
+    "ownerId": "user_te6_browser_fixture",
+    "auth": "local session fixture",
+    "backend": "owner-scoped local response fixture",
+    "externalCalls": false
+  },
+  "desktop": {
+    "url": "http://localhost:4102/runs/run_te6abcdefghijklmnop",
+    "title": "Lead discovery run · StoreSignal",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "bodyScrollWidth": 1440,
+    "tableScrollContained": true,
+    "expanded": "true",
+    "trafficSections": 2,
+    "abbreviations": [
+      "Largest Contentful Paint, 75th percentile",
+      "Interaction to Next Paint, 75th percentile",
+      "Cumulative Layout Shift, 75th percentile",
+      "First Contentful Paint, 75th percentile",
+      "Time to First Byte, 75th percentile"
+    ],
+    "safeExternalLinks": true,
+    "textChecks": [
+      {
+        "text": "Estimated Google search traffic",
+        "present": true
+      },
+      {
+        "text": "CrUX does not provide visit totals",
+        "present": true
+      },
+      {
+        "text": "Core Web Vitals: Pass",
+        "present": true
+      },
+      {
+        "text": "No coverage",
+        "present": false
+      }
+    ],
+    "trafficGridColumns": "547px 547px"
+  },
+  "stateOnlyLead": {
+    "expandedSecondRow": "true",
+    "noCoverage": true,
+    "originUnavailable": true,
+    "popularityNoCoverage": true,
+    "synthesizedTrafficZero": false
+  },
+  "narrow": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "bodyScrollWidth": 390,
+    "tableClientWidth": 360,
+    "tableScrollWidth": 940,
+    "expanded": "true",
+    "trafficGridColumns": "288px",
+    "metricGridColumns": "258px",
+    "attributionGridColumns": "288px"
+  }
+}
