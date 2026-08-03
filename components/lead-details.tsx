@@ -82,7 +82,7 @@ function TokenList({ label, values }: { label: string; values: string[] | undefi
   return (
     <div>
       <dt>{label}</dt>
-      <dd className="tag-list">{values.map((value) => <span key={value}>{humanizeToken(value)}</span>)}</dd>
+      <dd className="tag-list">{values.map((value, index) => <span key={`${value}-${index}`}>{humanizeToken(value)}</span>)}</dd>
     </div>
   );
 }
@@ -94,10 +94,10 @@ function TokenDisclosure({ label, values }: { label: string; values: string[] | 
       <dt>{label}</dt>
       <dd>
         <details className="token-disclosure">
-          <summary>{values.length} recorded</summary>
-          <p className="token-values">
-            {values.map((value) => humanizeToken(value)).join(" · ")}
-          </p>
+          <summary><span>{values.length} recorded</span><strong>View vocabulary</strong></summary>
+          <span className="token-values">
+            {values.map((value, index) => <span key={`${value}-${index}`}>{humanizeToken(value)}</span>)}
+          </span>
         </details>
       </dd>
     </div>
@@ -212,32 +212,37 @@ function ContactDetails({ lead }: { lead: Lead }) {
 
 function StoreFitPage({ page }: { page: StoreFitPageEvidence }) {
   return (
-    <li>
-      <strong>{humanizeToken(page.pageType)} page · strength {page.strength}/100</strong>
-      <span>Usable text length: {page.textLength.toLocaleString()}</span>
-      <EvidenceSource href={page.sourceUrl} />
+    <li className="store-fit-page">
+      <header className="evidence-row-header">
+        <strong>{humanizeToken(page.pageType)} page</strong>
+        <span>Strength {page.strength}/100</span>
+      </header>
       <dl className="fact-grid">
+        <Fact label="Usable text length" value={page.textLength.toLocaleString()} />
         <TokenList label="Matched terms" values={page.matchedTerms} />
         <TokenList label="Claim terms" values={page.claimTerms} />
         <TokenList label="Signals" values={page.signals} />
         <TokenList label="Breadth terms" values={page.breadthTerms} />
         <TokenList label="Negative signals" values={page.negativeSignals} />
       </dl>
+      <footer className="evidence-row-source"><EvidenceSource href={page.sourceUrl} /></footer>
     </li>
   );
 }
 
 function StoreFitItem({ item, index }: { item: StoreFitEvidence; index: number }) {
   return (
-    <li>
-      <strong>
-        {item.intent?.originalShopType || item.intent?.shopType || `Category evidence ${index + 1}`}
-        {` · ${humanizeToken(item.state ?? "unknown")}`}
-      </strong>
-      <span>
-        {item.accepted == null ? "Acceptance not recorded" : item.accepted ? "Accepted category match" : "Discovery attempt, not a match"}
-        {item.score == null ? "" : ` · ${item.score}/100`}
-      </span>
+    <li className="store-fit-record">
+      <header className="evidence-row-header">
+        <span className="evidence-row-title">
+          <strong>{item.intent?.originalShopType || item.intent?.shopType || `Category evidence ${index + 1}`}</strong>
+          <span>{humanizeToken(item.state ?? "unknown")}</span>
+        </span>
+        <span className="evidence-row-status">
+          {item.accepted == null ? "Acceptance not recorded" : item.accepted ? "Accepted category match" : "Discovery attempt, not a match"}
+          {item.score == null ? "" : ` · ${item.score}/100`}
+        </span>
+      </header>
       <dl className="fact-grid">
         <Fact label="Exact category input" value={item.intent?.originalShopType} />
         <Fact label="Normalized category" value={item.intent?.shopType} />
@@ -247,15 +252,15 @@ function StoreFitItem({ item, index }: { item: StoreFitEvidence; index: number }
         <TokenList label="Matched terms" values={item.matchedTerms} />
         <TokenList label="Signal kinds" values={item.signalKinds} />
       </dl>
-      <EvidenceSources urls={item.sourceUrls} />
+      <footer className="evidence-row-source"><EvidenceSources urls={item.sourceUrls} /></footer>
       {(item.breadthEvidence?.length ?? 0) > 0 && (
         <details className="nested-evidence">
           <summary>Breadth evidence ({item.breadthEvidence?.length})</summary>
-          <ul>{item.breadthEvidence?.map((breadth, breadthIndex) => (
+          <ul className="subordinate-ledger breadth-ledger">{item.breadthEvidence?.map((breadth, breadthIndex) => (
             <li key={`${breadth.sourceUrl}-${breadth.signal}-${breadthIndex}`}>
-              <strong>{humanizeToken(breadth.signal)}</strong>
-              <span>{breadth.terms.join(", ")}</span>
-              <EvidenceSource href={breadth.sourceUrl} />
+              <header className="evidence-row-header"><strong>{humanizeToken(breadth.signal)}</strong></header>
+              <dl className="fact-grid"><TokenList label="Terms" values={breadth.terms} /></dl>
+              <footer className="evidence-row-source"><EvidenceSource href={breadth.sourceUrl} /></footer>
             </li>
           ))}</ul>
         </details>
@@ -263,7 +268,7 @@ function StoreFitItem({ item, index }: { item: StoreFitEvidence; index: number }
       {(item.evidence?.length ?? 0) > 0 && (
         <details className="nested-evidence">
           <summary>Page-level store-fit evidence ({item.evidence?.length})</summary>
-          <ul>{item.evidence?.map((page, pageIndex) => (
+          <ul className="subordinate-ledger store-fit-page-ledger">{item.evidence?.map((page, pageIndex) => (
             <StoreFitPage key={`${page.sourceUrl}-${pageIndex}`} page={page} />
           ))}</ul>
         </details>
@@ -275,13 +280,16 @@ function StoreFitItem({ item, index }: { item: StoreFitEvidence; index: number }
 function CategoryList({ categories }: { categories: CategoryIntent[] }) {
   if (!categories.length) return <p className="empty-evidence">No accepted matched category intent was recorded.</p>;
   return (
-    <details className="nested-evidence">
+    <details className="nested-evidence category-intent-ledger">
       <summary>Accepted matched category intents ({categories.length})</summary>
       <ul>{categories.map((category, index) => (
         <li key={`${category.shopType}-${category.businessQualifier}-${index}`}>
-          <strong>{category.originalShopType ?? category.shopType}</strong>
-          <span>{category.shopType} · {humanizeToken(category.businessQualifier)}</span>
-          {(category.categoryVocabulary?.length ?? 0) > 0 && <span>{category.categoryVocabulary?.join(", ")}</span>}
+          <header className="evidence-row-header"><strong>{category.originalShopType ?? category.shopType}</strong></header>
+          <dl className="fact-grid">
+            <Fact label="Normalized category" value={category.shopType} />
+            <Fact label="Business qualifier" value={humanizeToken(category.businessQualifier)} />
+            <TokenDisclosure label="Category vocabulary" values={category.categoryVocabulary} />
+          </dl>
         </li>
       ))}</ul>
     </details>
@@ -290,7 +298,7 @@ function CategoryList({ categories }: { categories: CategoryIntent[] }) {
 
 function StoreEvidence({ lead }: { lead: Lead }) {
   return (
-    <DetailSection title="Category and store fit" order="03">
+    <DetailSection title="Category and store fit" order="03" className="store-evidence-section">
       <dl className="fact-grid">
         <Fact label="Exact category input" value={lead.original_shop_type} />
         <Fact label="Normalized category" value={lead.shop_type} />
@@ -400,8 +408,11 @@ function OccurrenceList({ occurrences }: { occurrences: DiscoveryOccurrence[] })
       <summary>Discovery occurrences ({occurrences.length})</summary>
       <ol className="provenance-list occurrence-list evidence-ledger-list">
         {occurrences.map((item, index) => (
-          <li key={`${item.query ?? "query"}-${item.rank ?? "rank"}-${index}`}>
-            <strong>{item.query || "Query not recorded"}</strong>
+          <li className="occurrence-record" key={`${item.query ?? "query"}-${item.rank ?? "rank"}-${index}`}>
+            <header className="evidence-row-header">
+              <span className="evidence-row-title"><strong>{item.query || "Query not recorded"}</strong><span>{item.queryGenerationReason || "Query-generation reason not recorded"}</span></span>
+              <span className="evidence-row-status">{item.rank == null ? "Rank not recorded" : `Rank ${item.rank}`}</span>
+            </header>
             <dl className="fact-grid">
               <Fact label="Exact category input" value={item.originalShopType ?? item.categoryIntent?.originalShopType} />
               <Fact label="Normalized category" value={item.shopType ?? item.categoryIntent?.shopType} />
@@ -412,11 +423,11 @@ function OccurrenceList({ occurrences }: { occurrences: DiscoveryOccurrence[] })
               <Fact label="MyShopify domain" value={item.myshopifyDomain} />
               <TokenDisclosure label="Category vocabulary" values={item.categoryVocabulary ?? item.categoryIntent?.categoryVocabulary} />
             </dl>
-            <div className="detail-links">
+            <footer className="detail-links evidence-row-source">
               {(item.querySourceUrls ?? []).map((url) => <ExternalDetailLink key={url} href={url}>Query source</ExternalDetailLink>)}
               <ExternalDetailLink href={item.resultUrl}>Requested search-result URL</ExternalDetailLink>
               <ExternalDetailLink href={item.finalUrl}>Resolved result URL</ExternalDetailLink>
-            </div>
+            </footer>
           </li>
         ))}
       </ol>
@@ -430,7 +441,7 @@ function DiscoveryDetails({ lead }: { lead: Lead }) {
   const hasDistinctGeneratedQuery =
     lead.generated_query && lead.generated_query !== primaryQuery;
   return (
-    <DetailSection title="Discovery provenance" order="04">
+    <DetailSection title="Discovery provenance" order="04" className="discovery-details-section">
       <dl className="fact-grid">
         <Fact label="Search query" value={primaryQuery} />
         <Fact label="Generated query" value={hasDistinctGeneratedQuery ? lead.generated_query : null} />

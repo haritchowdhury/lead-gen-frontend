@@ -1,0 +1,108 @@
+{
+  "fixture": "real compiled CSS with deterministic synthetic .example G10 DOM",
+  "scenarios": [
+    {
+      "label": "all-open-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 375,
+      "bodyOverflow": false,
+      "detailsWidth": 940,
+      "detailsOpen": true,
+      "disclosureCount": 17,
+      "storeFitCount": 3,
+      "pageCount": 9,
+      "occurrenceCount": 4,
+      "tokenCount": 144,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "focusTag": "BODY",
+      "focusText": "03Category and store fitExact category inputIndependent eyewear and accessories "
+    },
+    {
+      "label": "all-open-768",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyOverflow": false,
+      "detailsWidth": 940,
+      "detailsOpen": true,
+      "disclosureCount": 17,
+      "storeFitCount": 3,
+      "pageCount": 9,
+      "occurrenceCount": 4,
+      "tokenCount": 144,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "focusTag": "BODY",
+      "focusText": "03Category and store fitExact category inputIndependent eyewear and accessories "
+    },
+    {
+      "label": "all-open-1280",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyOverflow": false,
+      "detailsWidth": 1138,
+      "detailsOpen": true,
+      "disclosureCount": 17,
+      "storeFitCount": 3,
+      "pageCount": 9,
+      "occurrenceCount": 4,
+      "tokenCount": 144,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "focusTag": "BODY",
+      "focusText": "03Category and store fitExact category inputIndependent eyewear and accessories "
+    },
+    {
+      "label": "all-open-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1425,
+      "bodyOverflow": false,
+      "detailsWidth": 1138,
+      "detailsOpen": true,
+      "disclosureCount": 17,
+      "storeFitCount": 3,
+      "pageCount": 9,
+      "occurrenceCount": 4,
+      "tokenCount": 144,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "focusTag": "BODY",
+      "focusText": "03Category and store fitExact category inputIndependent eyewear and accessories "
+    }
+  ],
+  "interactions": [
+    {
+      "label": "occurrence-keyboard-focus-reopen",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1425,
+      "bodyOverflow": false,
+      "detailsWidth": 1138,
+      "detailsOpen": true,
+      "disclosureCount": 17,
+      "storeFitCount": 3,
+      "pageCount": 9,
+      "occurrenceCount": 4,
+      "tokenCount": 144,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "focusTag": "SUMMARY",
+      "focusText": "Discovery occurrences (4)"
+    }
+  ],
+  "gap": "Protected run routes require Neon authentication, so browser composition uses deterministic .example DOM against the real compiled G10 stylesheet; focused server-render tests verify production markup, field retention, order, and safe links without an auth bypass."
+}

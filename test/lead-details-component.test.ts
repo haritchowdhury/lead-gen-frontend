@@ -10,6 +10,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { denseLead, lead, trafficEnrichment } from "./fixtures.ts";
+import { humanizeToken as humanizeForTest } from "../lib/lead-presentation.ts";
 
 type Components = {
   LeadDetails: React.ComponentType<{ lead: ReturnType<typeof lead> }>;
@@ -94,7 +95,7 @@ test("actual expanded details render every full-evidence family and every contac
     "Normalized category",
     "Matched terms",
     "Page-level store-fit evidence",
-    "Usable text length:",
+    "Usable text length",
     "hello@fixture.example",
     "+12125550100",
     "Contact page",
@@ -174,6 +175,75 @@ test("G9 contact and outcome disclosures retain native semantics and every evide
   assert.match(html, /Route accepted<\/dt><dd>Yes/u);
   assert.match(html, /Positive signals/u);
   assert.match(html, /target="_blank" rel="noreferrer"/u);
+});
+
+test("G10 dense nested ledgers retain every category, store-fit, page, and discovery field in order", async () => {
+  const { LeadDetails } = await compiledComponents();
+  const base = denseLead();
+  const duplicateToken = "duplicate-looking-token";
+  const fixture = denseLead({
+    store_fit_evidence: base.store_fit_evidence?.map((item, index) => index === 0 ? {
+      ...item,
+      intent: {
+        ...item.intent!,
+        categoryVocabulary: [duplicateToken, duplicateToken, ...(item.intent?.categoryVocabulary ?? [])],
+      },
+      breadthEvidence: [{
+        sourceUrl: "https://breadth-source.example/pages/very-long-breadth-evidence",
+        signal: "catalog_breadth",
+        terms: ["first breadth term", "second breadth term"],
+      }],
+    } : item),
+  });
+  const html = renderToStaticMarkup(createElement(LeadDetails, { lead: fixture }));
+
+  assert.match(html, /class="nested-evidence evidence-ledger store-fit-ledger"/u);
+  assert.match(html, /Structured store-fit evidence \(3\)/u);
+  assert.match(html, /Page-level store-fit evidence \(3\)/u);
+  assert.match(html, /Accepted matched category intents \(1\)/u);
+  assert.match(html, /Discovery occurrences \(4\)/u);
+  assert.match(html, /class="subordinate-ledger breadth-ledger"/u);
+  assert.match(html, /class="subordinate-ledger store-fit-page-ledger"/u);
+  assert.equal((html.match(/Duplicate looking token/gu) ?? []).length, 2, "duplicate source tokens must remain duplicated");
+
+  for (const item of fixture.store_fit_evidence ?? []) {
+    for (const value of [
+      item.intent?.originalShopType,
+      item.intent?.shopType,
+      item.reason && humanizeForTest(item.reason),
+      ...(item.intent?.categoryVocabulary ?? []).map(humanizeForTest),
+      ...(item.matchedTerms ?? []).map(humanizeForTest),
+      ...(item.signalKinds ?? []).map(humanizeForTest),
+      ...(item.sourceUrls ?? []),
+    ].filter(Boolean)) assert.ok(html.includes(String(value)), `missing store-fit value: ${value}`);
+    for (const page of item.evidence ?? []) {
+      assert.ok(html.includes(page.sourceUrl));
+      assert.ok(html.includes(page.textLength.toLocaleString()));
+      for (const token of [...page.matchedTerms, ...page.claimTerms, ...page.signals, ...page.breadthTerms, ...page.negativeSignals]) {
+        assert.ok(html.includes(humanizeForTest(token)), `missing page token: ${token}`);
+      }
+    }
+  }
+  for (const occurrence of fixture.discovery_occurrences ?? []) {
+    for (const value of [occurrence.query, occurrence.queryGenerationReason, occurrence.myshopifyDomain, occurrence.resultUrl, occurrence.finalUrl, ...(occurrence.querySourceUrls ?? [])]) {
+      assert.ok(!value || html.includes(String(value)), `missing discovery value: ${value}`);
+    }
+  }
+  const occurrenceQueries = (fixture.discovery_occurrences ?? []).map(({ query }) => html.indexOf(query ?? ""));
+  assert.deepEqual([...occurrenceQueries].sort((a, b) => a - b), occurrenceQueries, "discovery occurrence order changed");
+  assert.match(html, /target="_blank" rel="noreferrer"/u);
+});
+
+test("G10 zero and unrecorded nested evidence remain explicit and do not invent disclosures", async () => {
+  const { LeadDetails } = await compiledComponents();
+  const html = renderToStaticMarkup(createElement(LeadDetails, {
+    lead: lead({ store_fit_evidence: [], matched_categories: [], discovery_occurrences: [] }),
+  }));
+  assert.match(html, /No structured store-fit evidence was recorded/u);
+  assert.match(html, /No accepted matched category intent was recorded/u);
+  assert.match(html, /Legacy row or no structured discovery provenance recorded/u);
+  assert.doesNotMatch(html, /Structured store-fit evidence \(0\)/u);
+  assert.doesNotMatch(html, /Discovery occurrences \(0\)/u);
 });
 
 test("actual table view cannot retain expanded evidence for a replaced result set", async () => {

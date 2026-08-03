@@ -1,0 +1,9 @@
+▲ Next.js 16.2.12 (Turbopack)
+- Local:         http://127.0.0.1:4327
+- Network:       http://127.0.0.1:4327
+- Environments: .env.local
+✓ Ready in 697ms
+
+ GET / 200 in 3.0s (next.js: 1092ms, application-code: 1862ms)
+ GET / 200 in 692ms (next.js: 11ms, application-code: 681ms)
+ GET /api/health 200 in 720ms (next.js: 569ms, application-code: 151ms)
