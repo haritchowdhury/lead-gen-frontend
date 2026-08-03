@@ -11,7 +11,7 @@ export function HeaderAuth({ signedIn }: { signedIn: boolean }) {
   const [pending, setPending] = useState(false);
 
   if (!signedIn) {
-    return <Link className="header-link" href="/sign-in">Sign in</Link>;
+    return <Link className="header-link header-link-primary" href="/sign-in">Sign in</Link>;
   }
 
   async function signOut() {
@@ -27,7 +27,7 @@ export function HeaderAuth({ signedIn }: { signedIn: boolean }) {
 
   return (
     <nav className="header-auth" aria-label="Account">
-      <Link className="header-link" href="/runs">My runs</Link>
+      <Link className="header-link header-link-primary" href="/runs">My runs</Link>
       <button className="header-link" type="button" disabled={pending} onClick={signOut}>
         {pending ? "Signing out…" : "Sign out"}
       </button>

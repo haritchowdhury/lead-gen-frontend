@@ -8,15 +8,15 @@ export const dynamic = "force-dynamic";
 
 export default function RunsPage() {
   return (
-    <main className="history-page">
+    <main className="app-canvas history-page">
       <div className="shell">
-        <div className="run-title-row">
+        <div className="run-title-row app-page-header">
           <div>
             <span className="eyebrow">Account workspace</span>
             <h1>My runs</h1>
             <p>Open any active or completed store discovery run.</p>
           </div>
-          <Link className="button button-primary" href="/">New discovery</Link>
+          <Link className="ds-button ds-button--primary" href="/">New discovery</Link>
         </div>
         <RunHistory />
       </div>

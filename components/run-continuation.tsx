@@ -45,8 +45,8 @@ export function RunContinuation() {
   }
 
   return (
-    <main className="auth-page">
-      <section className="auth-card continuation-card">
+    <main className="app-canvas auth-page">
+      <section className="auth-card continuation-card ds-card" aria-live="polite">
         <span className="continuation-spinner" aria-hidden="true" />
         <span className="eyebrow">Preparing your run</span>
         <h1>{error ? "We could not continue yet" : "Starting your saved search…"}</h1>
@@ -55,8 +55,8 @@ export function RunContinuation() {
         </p>
         {error && (
           <div className="continuation-actions">
-            <button className="button button-primary" onClick={retryClaim}>Try again</button>
-            <Link className="button button-secondary" href="/runs">My runs</Link>
+            <button className="ds-button ds-button--primary" onClick={retryClaim}>Try again</button>
+            <Link className="ds-button ds-button--secondary" href="/runs">My runs</Link>
           </div>
         )}
       </section>

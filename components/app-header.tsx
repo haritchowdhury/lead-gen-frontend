@@ -12,10 +12,10 @@ export async function AppHeader() {
     signedIn = false;
   }
   return (
-    <header className="site-header">
+    <header className="site-header" data-auth-state={signedIn ? "signed-in" : "signed-out"}>
       <div className="shell header-inner">
         <Link className="brand" href="/" aria-label="StoreSignal home">
-          <span className="brand-mark">
+          <span className="brand-mark" aria-hidden="true">
             <StoreIcon />
           </span>
           <span>StoreSignal</span>
@@ -28,7 +28,7 @@ export async function AppHeader() {
         </nav>
         <div className="header-actions">
           <div className="header-meta">
-            <span className="signal-dot" />
+            <span className="signal-dot" aria-hidden="true" />
             Shopify lead intelligence
           </div>
           <HeaderAuth signedIn={signedIn} />

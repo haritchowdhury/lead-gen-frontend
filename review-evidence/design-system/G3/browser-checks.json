@@ -1,0 +1,1659 @@
+{
+  "fixture": "real public/auth routes plus synthetic .example G3 shell states",
+  "scenarios": [
+    {
+      "name": "sign-in",
+      "url": "/sign-in",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inStoreSignal accountWe",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "Welcome back"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Create an account",
+          "href": "/sign-up"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "sign-in",
+      "url": "/sign-in",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyWidth": 753,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inStoreSignal accountWe",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "Welcome back"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Create an account",
+          "href": "/sign-up"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "sign-in",
+      "url": "/sign-in",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inStoreSignal accountWe",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "Welcome back"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Create an account",
+          "href": "/sign-up"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "sign-up",
+      "url": "/sign-up",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inStoreSignal accountSa",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "Save your search"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "sign-up",
+      "url": "/sign-up",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyWidth": 753,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inStoreSignal accountSa",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "Save your search"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "sign-up",
+      "url": "/sign-up",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inStoreSignal accountSa",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "Save your search"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "not-found",
+      "url": "/g3-not-found",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign in404 · Not foundThat l",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "That lead run does not exist."
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Return to StoreSignal",
+          "href": "/"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "not-found",
+      "url": "/g3-not-found",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyWidth": 753,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign in404 · Not foundThat l",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "That lead run does not exist."
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Return to StoreSignal",
+          "href": "/"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "not-found",
+      "url": "/g3-not-found",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign in404 · Not foundThat l",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "That lead run does not exist."
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Return to StoreSignal",
+          "href": "/"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "sign-up-validation",
+      "url": "/sign-up",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inStoreSignal accountSa",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": "Enter your name.",
+      "visibleLabels": [
+        "Save your search"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "sign-up-password-validation",
+      "url": "/sign-up",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inStoreSignal accountSa",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": "Password must be at least 8 characters.",
+      "visibleLabels": [
+        "Save your search"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "sign-in-pending-long-email",
+      "url": "/sign-in",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "INPUT",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "Welcome back"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "Create an account",
+          "href": "/sign-up"
+        }
+      ],
+      "rows": []
+    },
+    {
+      "name": "history-all-states",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "authState": "signed-in",
+      "focused": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_completed_with_an_intentionally_long_identifier_0Comple",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "My runs",
+        "Lead discovery run",
+        "Completed",
+        "Lead discovery run",
+        "Discovering stores",
+        "Lead discovery run",
+        "Review queries",
+        "Lead discovery run",
+        "Queued",
+        "Lead discovery run",
+        "Failed",
+        "Lead discovery run",
+        "Cancelled"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "My runs",
+          "href": "/runs"
+        },
+        {
+          "text": "New discovery",
+          "href": "/"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_completed_with_an_intentionally_lon",
+          "href": "/runs/run_g3_completed_with_an_intentionally_long_identifier_0"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_running_with_an_intentionally_long_",
+          "href": "/runs/run_g3_running_with_an_intentionally_long_identifier_1"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_awaiting_query_confirmation_with_an",
+          "href": "/runs/run_g3_awaiting_query_confirmation_with_an_intentionally_long_identifier_2"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_queued_with_an_intentionally_long_i",
+          "href": "/runs/run_g3_queued_with_an_intentionally_long_identifier_3"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_failed_with_an_intentionally_long_i",
+          "href": "/runs/run_g3_failed_with_an_intentionally_long_identifier_4"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_cancelled_with_an_intentionally_lon",
+          "href": "/runs/run_g3_cancelled_with_an_intentionally_long_identifier_5"
+        }
+      ],
+      "rows": [
+        {
+          "href": "/runs/run_g3_completed_with_an_intentionally_long_identifier_0",
+          "width": 360,
+          "status": "Completed"
+        },
+        {
+          "href": "/runs/run_g3_running_with_an_intentionally_long_identifier_1",
+          "width": 360,
+          "status": "Discovering stores"
+        },
+        {
+          "href": "/runs/run_g3_awaiting_query_confirmation_with_an_intentionally_long_identifier_2",
+          "width": 360,
+          "status": "Review queries"
+        },
+        {
+          "href": "/runs/run_g3_queued_with_an_intentionally_long_identifier_3",
+          "width": 360,
+          "status": "Queued"
+        },
+        {
+          "href": "/runs/run_g3_failed_with_an_intentionally_long_identifier_4",
+          "width": 360,
+          "status": "Failed"
+        },
+        {
+          "href": "/runs/run_g3_cancelled_with_an_intentionally_long_identifier_5",
+          "width": 360,
+          "status": "Cancelled"
+        }
+      ]
+    },
+    {
+      "name": "history-all-states",
+      "url": "/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyWidth": 753,
+      "bodyOverflow": false,
+      "authState": "signed-in",
+      "focused": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_completed_with_an_intentionally_long_identifier_0Comple",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "My runs",
+        "Lead discovery run",
+        "Completed",
+        "Lead discovery run",
+        "Discovering stores",
+        "Lead discovery run",
+        "Review queries",
+        "Lead discovery run",
+        "Queued",
+        "Lead discovery run",
+        "Failed",
+        "Lead discovery run",
+        "Cancelled"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "My runs",
+          "href": "/runs"
+        },
+        {
+          "text": "New discovery",
+          "href": "/"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_completed_with_an_intentionally_lon",
+          "href": "/runs/run_g3_completed_with_an_intentionally_long_identifier_0"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_running_with_an_intentionally_long_",
+          "href": "/runs/run_g3_running_with_an_intentionally_long_identifier_1"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_awaiting_query_confirmation_with_an",
+          "href": "/runs/run_g3_awaiting_query_confirmation_with_an_intentionally_long_identifier_2"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_queued_with_an_intentionally_long_i",
+          "href": "/runs/run_g3_queued_with_an_intentionally_long_identifier_3"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_failed_with_an_intentionally_long_i",
+          "href": "/runs/run_g3_failed_with_an_intentionally_long_identifier_4"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_cancelled_with_an_intentionally_lon",
+          "href": "/runs/run_g3_cancelled_with_an_intentionally_long_identifier_5"
+        }
+      ],
+      "rows": [
+        {
+          "href": "/runs/run_g3_completed_with_an_intentionally_long_identifier_0",
+          "width": 711,
+          "status": "Completed"
+        },
+        {
+          "href": "/runs/run_g3_running_with_an_intentionally_long_identifier_1",
+          "width": 711,
+          "status": "Discovering stores"
+        },
+        {
+          "href": "/runs/run_g3_awaiting_query_confirmation_with_an_intentionally_long_identifier_2",
+          "width": 711,
+          "status": "Review queries"
+        },
+        {
+          "href": "/runs/run_g3_queued_with_an_intentionally_long_identifier_3",
+          "width": 711,
+          "status": "Queued"
+        },
+        {
+          "href": "/runs/run_g3_failed_with_an_intentionally_long_identifier_4",
+          "width": 711,
+          "status": "Failed"
+        },
+        {
+          "href": "/runs/run_g3_cancelled_with_an_intentionally_long_identifier_5",
+          "width": 711,
+          "status": "Cancelled"
+        }
+      ]
+    },
+    {
+      "name": "history-all-states",
+      "url": "/",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "authState": "signed-in",
+      "focused": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_completed_with_an_intentionally_long_identifier_0Comple",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "My runs",
+        "Lead discovery run",
+        "Completed",
+        "Lead discovery run",
+        "Discovering stores",
+        "Lead discovery run",
+        "Review queries",
+        "Lead discovery run",
+        "Queued",
+        "Lead discovery run",
+        "Failed",
+        "Lead discovery run",
+        "Cancelled"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "My runs",
+          "href": "/runs"
+        },
+        {
+          "text": "New discovery",
+          "href": "/"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_completed_with_an_intentionally_lon",
+          "href": "/runs/run_g3_completed_with_an_intentionally_long_identifier_0"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_running_with_an_intentionally_long_",
+          "href": "/runs/run_g3_running_with_an_intentionally_long_identifier_1"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_awaiting_query_confirmation_with_an",
+          "href": "/runs/run_g3_awaiting_query_confirmation_with_an_intentionally_long_identifier_2"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_queued_with_an_intentionally_long_i",
+          "href": "/runs/run_g3_queued_with_an_intentionally_long_identifier_3"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_failed_with_an_intentionally_long_i",
+          "href": "/runs/run_g3_failed_with_an_intentionally_long_identifier_4"
+        },
+        {
+          "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_cancelled_with_an_intentionally_lon",
+          "href": "/runs/run_g3_cancelled_with_an_intentionally_long_identifier_5"
+        }
+      ],
+      "rows": [
+        {
+          "href": "/runs/run_g3_completed_with_an_intentionally_long_identifier_0",
+          "width": 1178,
+          "status": "Completed"
+        },
+        {
+          "href": "/runs/run_g3_running_with_an_intentionally_long_identifier_1",
+          "width": 1178,
+          "status": "Discovering stores"
+        },
+        {
+          "href": "/runs/run_g3_awaiting_query_confirmation_with_an_intentionally_long_identifier_2",
+          "width": 1178,
+          "status": "Review queries"
+        },
+        {
+          "href": "/runs/run_g3_queued_with_an_intentionally_long_identifier_3",
+          "width": 1178,
+          "status": "Queued"
+        },
+        {
+          "href": "/runs/run_g3_failed_with_an_intentionally_long_identifier_4",
+          "width": 1178,
+          "status": "Failed"
+        },
+        {
+          "href": "/runs/run_g3_cancelled_with_an_intentionally_long_identifier_5",
+          "width": 1178,
+          "status": "Cancelled"
+        }
+      ]
+    },
+    {
+      "name": "history-empty",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "authState": "signed-out",
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inAccount workspaceMy r",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "alert": null,
+      "visibleLabels": [
+        "My runs",
+        "No runs yet"
+      ],
+      "links": [
+        {
+          "text": "StoreSignal",
+          "href": "/"
+        },
+        {
+          "text": "How it works",
+          "href": "/#how-it-works"
+        },
+        {
+          "text": "What you get",
+          "href": "/#intelligence"
+        },
+        {
+          "text": "Use cases",
+          "href": "/#use-cases"
+        },
+        {
+          "text": "FAQ",
+          "href": "/#faq"
+        },
+        {
+          "text": "Sign in",
+          "href": "/sign-in"
+        },
+        {
+          "text": "New discovery",
+          "href": "/"
+        },
+        {
+          "text": "Start a search",
+          "href": "/"
+        }
+      ],
+      "rows": []
+    }
+  ],
+  "links": [
+    {
+      "scenario": "sign-in",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "Create an account",
+      "href": "/sign-up"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "Create an account",
+      "href": "/sign-up"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-in",
+      "text": "Create an account",
+      "href": "/sign-up"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-up",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "not-found",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "not-found",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "not-found",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "not-found",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "not-found",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "not-found",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "not-found",
+      "text": "Return to StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "not-found",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "not-found",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "not-found",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "not-found",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "not-found",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "not-found",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "not-found",
+      "text": "Return to StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "not-found",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "not-found",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "not-found",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "not-found",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "not-found",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "not-found",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "not-found",
+      "text": "Return to StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-up-validation",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-up-validation",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "sign-up-validation",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "sign-up-validation",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "sign-up-validation",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "sign-up-validation",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-up-validation",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-up-password-validation",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-up-password-validation",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "sign-up-password-validation",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "sign-up-password-validation",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "sign-up-password-validation",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "sign-up-password-validation",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-up-password-validation",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-in-pending-long-email",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "sign-in-pending-long-email",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "sign-in-pending-long-email",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "sign-in-pending-long-email",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "sign-in-pending-long-email",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "sign-in-pending-long-email",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "sign-in-pending-long-email",
+      "text": "Create an account",
+      "href": "/sign-up"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "My runs",
+      "href": "/runs"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "New discovery",
+      "href": "/"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_completed_with_an_intentionally_lon",
+      "href": "/runs/run_g3_completed_with_an_intentionally_long_identifier_0"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_running_with_an_intentionally_long_",
+      "href": "/runs/run_g3_running_with_an_intentionally_long_identifier_1"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_awaiting_query_confirmation_with_an",
+      "href": "/runs/run_g3_awaiting_query_confirmation_with_an_intentionally_long_identifier_2"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_queued_with_an_intentionally_long_i",
+      "href": "/runs/run_g3_queued_with_an_intentionally_long_identifier_3"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_failed_with_an_intentionally_long_i",
+      "href": "/runs/run_g3_failed_with_an_intentionally_long_identifier_4"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_cancelled_with_an_intentionally_lon",
+      "href": "/runs/run_g3_cancelled_with_an_intentionally_long_identifier_5"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "My runs",
+      "href": "/runs"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "New discovery",
+      "href": "/"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_completed_with_an_intentionally_lon",
+      "href": "/runs/run_g3_completed_with_an_intentionally_long_identifier_0"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_running_with_an_intentionally_long_",
+      "href": "/runs/run_g3_running_with_an_intentionally_long_identifier_1"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_awaiting_query_confirmation_with_an",
+      "href": "/runs/run_g3_awaiting_query_confirmation_with_an_intentionally_long_identifier_2"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_queued_with_an_intentionally_long_i",
+      "href": "/runs/run_g3_queued_with_an_intentionally_long_identifier_3"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_failed_with_an_intentionally_long_i",
+      "href": "/runs/run_g3_failed_with_an_intentionally_long_identifier_4"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_cancelled_with_an_intentionally_lon",
+      "href": "/runs/run_g3_cancelled_with_an_intentionally_long_identifier_5"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "My runs",
+      "href": "/runs"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "New discovery",
+      "href": "/"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_completed_with_an_intentionally_lon",
+      "href": "/runs/run_g3_completed_with_an_intentionally_long_identifier_0"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_running_with_an_intentionally_long_",
+      "href": "/runs/run_g3_running_with_an_intentionally_long_identifier_1"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_awaiting_query_confirmation_with_an",
+      "href": "/runs/run_g3_awaiting_query_confirmation_with_an_intentionally_long_identifier_2"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_queued_with_an_intentionally_long_i",
+      "href": "/runs/run_g3_queued_with_an_intentionally_long_identifier_3"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_failed_with_an_intentionally_long_i",
+      "href": "/runs/run_g3_failed_with_an_intentionally_long_identifier_4"
+    },
+    {
+      "scenario": "history-all-states",
+      "text": "Lead discovery run3 Aug 2026, 10:30 amrun_g3_cancelled_with_an_intentionally_lon",
+      "href": "/runs/run_g3_cancelled_with_an_intentionally_long_identifier_5"
+    },
+    {
+      "scenario": "history-empty",
+      "text": "StoreSignal",
+      "href": "/"
+    },
+    {
+      "scenario": "history-empty",
+      "text": "How it works",
+      "href": "/#how-it-works"
+    },
+    {
+      "scenario": "history-empty",
+      "text": "What you get",
+      "href": "/#intelligence"
+    },
+    {
+      "scenario": "history-empty",
+      "text": "Use cases",
+      "href": "/#use-cases"
+    },
+    {
+      "scenario": "history-empty",
+      "text": "FAQ",
+      "href": "/#faq"
+    },
+    {
+      "scenario": "history-empty",
+      "text": "Sign in",
+      "href": "/sign-in"
+    },
+    {
+      "scenario": "history-empty",
+      "text": "New discovery",
+      "href": "/"
+    },
+    {
+      "scenario": "history-empty",
+      "text": "Start a search",
+      "href": "/"
+    }
+  ],
+  "gaps": [
+    {
+      "state": "/runs",
+      "observedPath": "/sign-in",
+      "reason": "The existing Neon proxy redirects an unauthenticated deterministic session before the real RunHistory component mounts; compiled-CSS synthetic shell evidence covers its G3 presentation without bypassing auth."
+    }
+  ]
+}

@@ -27,6 +27,14 @@ function stateLabel(run: RunStatus): string {
   return run.state[0].toUpperCase() + run.state.slice(1);
 }
 
+function stateTone(run: RunStatus): string {
+  if (run.state === "completed") return "ds-badge--positive";
+  if (run.state === "failed" || run.state === "cancelled") return "ds-badge--danger";
+  if (run.state === "awaiting_query_confirmation") return "ds-badge--warning";
+  if (run.state === "running") return "ds-badge--signal";
+  return "";
+}
+
 export function RunHistory() {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<RunListResponse | null>(null);
@@ -53,41 +61,48 @@ export function RunHistory() {
   }
 
   if (error) {
-    return <div className="inline-error" role="alert">{error}</div>;
+    return <div className="inline-error ds-notice ds-notice--danger" role="alert">{error}</div>;
   }
   if (!data) {
-    return <div className="results-loading-card">Loading your runs…</div>;
+    return (
+      <div className="history-loading ds-card" role="status" aria-live="polite">
+        <span>Loading your runs…</span>
+        <div className="history-loading-row" aria-hidden="true"><i /><i /><i /></div>
+        <div className="history-loading-row" aria-hidden="true"><i /><i /><i /></div>
+        <div className="history-loading-row" aria-hidden="true"><i /><i /><i /></div>
+      </div>
+    );
   }
   if (!data.items.length && page === 1) {
     return (
-      <div className="empty-runs">
+      <div className="empty-runs ds-card ds-empty">
         <h2>No runs yet</h2>
         <p>Your completed and active discovery runs will appear here.</p>
-        <Link className="button button-primary" href="/">Start a search</Link>
+        <Link className="ds-button ds-button--primary" href="/">Start a search</Link>
       </div>
     );
   }
 
   return (
     <>
-      <div className="run-history-list">
+      <div className="run-history-list ds-card" aria-label="Discovery runs">
         {data.items.map((run) => (
-          <Link className="run-history-row" href={`/runs/${encodeURIComponent(run.runId)}`} key={run.runId}>
-            <div>
+          <Link className="run-history-row" href={`/runs/${encodeURIComponent(run.runId)}`} key={run.runId} aria-label={`Open ${stateLabel(run)} lead discovery run from ${formatDate(run.createdAt)}`}>
+            <div className="run-history-primary">
               <strong>Lead discovery run</strong>
               <span>{formatDate(run.createdAt)}</span>
             </div>
-            <code>{run.runId}</code>
-            <span className={`run-state run-state-${run.state}`}>{stateLabel(run)}</span>
+            <code title={run.runId}>{run.runId}</code>
+            <span className={`run-state ds-badge ${stateTone(run)}`}>{stateLabel(run)}</span>
           </Link>
         ))}
       </div>
       <div className="history-pagination">
         <span>{data.pagination.totalItems} total runs</span>
         <div>
-          <button className="button button-secondary" disabled={page <= 1} onClick={() => changePage(page - 1)}>Previous</button>
+          <button className="ds-button ds-button--secondary" disabled={page <= 1} onClick={() => changePage(page - 1)}>Previous</button>
           <span>Page {data.pagination.page} of {Math.max(1, data.pagination.totalPages)}</span>
-          <button className="button button-secondary" disabled={page >= data.pagination.totalPages} onClick={() => changePage(page + 1)}>Next</button>
+          <button className="ds-button ds-button--secondary" disabled={page >= data.pagination.totalPages} onClick={() => changePage(page + 1)}>Next</button>
         </div>
       </div>
     </>
