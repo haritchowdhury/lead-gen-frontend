@@ -1,0 +1,218 @@
+{
+  "fixture": "real compiled CSS with deterministic synthetic .example G9 DOM",
+  "scenarios": [
+    {
+      "label": "overview-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 375,
+      "bodyOverflow": false,
+      "overviewWidth": 928,
+      "contactWidth": 882,
+      "contactOpen": false,
+      "outcomeOpen": false,
+      "focusClass": "",
+      "focusTag": "BODY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    },
+    {
+      "label": "contact-open-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 375,
+      "bodyOverflow": false,
+      "overviewWidth": 928,
+      "contactWidth": 882,
+      "contactOpen": true,
+      "outcomeOpen": false,
+      "focusClass": "",
+      "focusTag": "BODY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    },
+    {
+      "label": "overview-768",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 768,
+      "bodyOverflow": false,
+      "overviewWidth": 928,
+      "contactWidth": 258,
+      "contactOpen": false,
+      "outcomeOpen": false,
+      "focusClass": "",
+      "focusTag": "BODY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    },
+    {
+      "label": "contact-open-768",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyOverflow": false,
+      "overviewWidth": 928,
+      "contactWidth": 882,
+      "contactOpen": true,
+      "outcomeOpen": false,
+      "focusClass": "",
+      "focusTag": "BODY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    },
+    {
+      "label": "overview-1280",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1280,
+      "bodyOverflow": false,
+      "overviewWidth": 1126,
+      "contactWidth": 320,
+      "contactOpen": false,
+      "outcomeOpen": false,
+      "focusClass": "",
+      "focusTag": "BODY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    },
+    {
+      "label": "contact-open-1280",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyOverflow": false,
+      "overviewWidth": 1126,
+      "contactWidth": 1080,
+      "contactOpen": true,
+      "outcomeOpen": false,
+      "focusClass": "",
+      "focusTag": "BODY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    },
+    {
+      "label": "overview-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "bodyOverflow": false,
+      "overviewWidth": 1126,
+      "contactWidth": 320,
+      "contactOpen": false,
+      "outcomeOpen": false,
+      "focusClass": "",
+      "focusTag": "BODY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    },
+    {
+      "label": "contact-open-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1425,
+      "bodyOverflow": false,
+      "overviewWidth": 1126,
+      "contactWidth": 1080,
+      "contactOpen": true,
+      "outcomeOpen": false,
+      "focusClass": "",
+      "focusTag": "BODY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    }
+  ],
+  "interactions": [
+    {
+      "label": "outcome-keyboard-focus-open",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "bodyOverflow": false,
+      "overviewWidth": 1126,
+      "contactWidth": 320,
+      "contactOpen": false,
+      "outcomeOpen": true,
+      "focusClass": "",
+      "focusTag": "SUMMARY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    },
+    {
+      "label": "contact-keyboard-focus-open",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1425,
+      "bodyOverflow": false,
+      "overviewWidth": 1126,
+      "contactWidth": 1080,
+      "contactOpen": true,
+      "outcomeOpen": true,
+      "focusClass": "",
+      "focusTag": "SUMMARY",
+      "resolvedHref": "https://resolved-storefront.example/",
+      "resolvedTarget": "_blank",
+      "resolvedRel": "noreferrer",
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "evidenceCount": 8
+    }
+  ],
+  "gap": "Protected run routes require Neon authentication, so browser composition uses deterministic .example DOM against the real compiled G9 stylesheet; focused server-render tests verify production markup and links without an auth bypass."
+}

@@ -136,14 +136,16 @@ function EvidenceSources({ urls }: { urls: string[] | undefined }) {
 function ContactEvidenceItem({ item }: { item: EvidenceItem }) {
   const decision = item.decision;
   return (
-    <li>
-      <strong>{humanizeToken(item.kind)}: {item.value}</strong>
-      <span>
+    <li className="contact-evidence-item">
+      <header className="contact-evidence-item-header">
+        <span>{humanizeToken(item.kind)}</span>
+        <strong>{item.value}</strong>
+      </header>
+      <p className="contact-evidence-meta">
         {humanizeToken(item.method)} · confidence {item.confidence}/100 · {humanizeToken(item.validationReason)}
-      </span>
-      <EvidenceSource href={item.sourceUrl} />
+      </p>
       {decision && (
-        <dl className="fact-grid">
+        <dl className="fact-grid contact-decision-grid">
           <Fact label="Decision" value={decision.accepted ? "Accepted" : "Rejected"} />
           <Fact label="Route accepted" value={decision.routeAccepted ? "Yes" : "No"} />
           <Fact label="Route reason" value={humanizeToken(decision.routeReason)} />
@@ -154,6 +156,7 @@ function ContactEvidenceItem({ item }: { item: EvidenceItem }) {
           <Fact label="Validation reason" value={humanizeToken(decision.validationReason)} />
         </dl>
       )}
+      <footer className="contact-evidence-source"><EvidenceSource href={item.sourceUrl} /></footer>
     </li>
   );
 }
@@ -194,7 +197,10 @@ function ContactDetails({ lead }: { lead: Lead }) {
       {!channels.length && <p className="empty-evidence">No validated outreach or social channel was recorded.</p>}
       {evidence.length > 0 && (
         <details className="nested-evidence contact-evidence-disclosure">
-          <summary>Contact evidence details ({evidence.length})</summary>
+          <summary>
+            <span>Contact evidence details</span>
+            <strong>{evidence.length} records</strong>
+          </summary>
           <ul className="contact-evidence-list">{evidence.map((item, index) => (
             <ContactEvidenceItem key={`${item.kind}-${item.value}-${index}`} item={item} />
           ))}</ul>
@@ -356,8 +362,10 @@ function LeadOverview({ lead }: { lead: Lead }) {
     <DetailSection title="Lead overview" order="01" emphasis className="lead-overview">
       <OutcomeBadge lead={lead} />
       <div className="lead-overview-grid">
-        <IdentityDetails lead={lead} />
-        <ScoreDetails lead={lead} />
+        <div className="lead-overview-primary">
+          <IdentityDetails lead={lead} />
+          <ScoreDetails lead={lead} />
+        </div>
         <ContactDetails lead={lead} />
       </div>
     </DetailSection>

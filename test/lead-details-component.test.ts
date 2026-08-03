@@ -9,7 +9,7 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { lead, trafficEnrichment } from "./fixtures.ts";
+import { denseLead, lead, trafficEnrichment } from "./fixtures.ts";
 
 type Components = {
   LeadDetails: React.ComponentType<{ lead: ReturnType<typeof lead> }>;
@@ -95,10 +95,10 @@ test("actual expanded details render every full-evidence family and every contac
     "Matched terms",
     "Page-level store-fit evidence",
     "Usable text length:",
-    "Email: hello@fixture.example",
-    "Phone: +12125550100",
-    "Contact page:",
-    "Social profile:",
+    "hello@fixture.example",
+    "+12125550100",
+    "Contact page",
+    "Social profile",
     "Validation reason",
     "Query-generation reason",
     "Requested search-result URL",
@@ -131,6 +131,49 @@ test("missing and unsafe optional URLs never create blank or unsafe links", asyn
   assert.doesNotMatch(html, /javascript:/u);
   assert.doesNotMatch(html, /href=""/u);
   assert.match(html, /No validated outreach or social channel was recorded/u);
+});
+
+test("G9 overview keeps resolved identity conditional and targets the resolved domain", async () => {
+  const { LeadDetails } = await compiledComponents();
+  const present = renderToStaticMarkup(createElement(LeadDetails, {
+    lead: lead({
+      resolved_domain: "resolved-store.example",
+      final_url: "https://resolved-store.example/products/observed-product",
+      canonical_url: "https://resolved-store.example/products/observed-product",
+    }),
+  }));
+  assert.match(present, /<dt>Resolved domain<\/dt><dd>resolved-store\.example<\/dd>/u);
+  assert.match(present, /href="https:\/\/resolved-store\.example\/" target="_blank" rel="noreferrer"/u);
+  assert.doesNotMatch(present, /href="https:\/\/resolved-store\.example\/products\/observed-product"[^>]*>Resolved storefront/u);
+
+  const absent = renderToStaticMarkup(createElement(LeadDetails, {
+    lead: lead({ resolved_domain: null }),
+  }));
+  assert.doesNotMatch(absent, /Resolved domain/u);
+  assert.doesNotMatch(absent, /Resolved storefront/u);
+});
+
+test("G9 contact and outcome disclosures retain native semantics and every evidence record", async () => {
+  const { LeadDetails } = await compiledComponents();
+  const fixture = denseLead();
+  const html = renderToStaticMarkup(createElement(LeadDetails, { lead: fixture }));
+  assert.match(html, /<details class="outcome-badge"><summary>/u);
+  assert.match(html, /<details class="nested-evidence contact-evidence-disclosure"><summary>/u);
+  assert.match(html, /Contact evidence details/u);
+  assert.match(html, /10 records/u);
+  assert.match(html, /Synthetic outcome evidence: long-content fixture with all disclosures\./u);
+  for (const group of Object.values(fixture.contact_evidence ?? {})) {
+    for (const item of group) {
+      assert.match(html, new RegExp(item.value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"));
+      assert.match(html, new RegExp(item.method.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&").replaceAll("_", " "), "iu"));
+      assert.match(html, new RegExp(String(item.confidence), "u"));
+      assert.match(html, new RegExp(item.sourceUrl.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"));
+    }
+  }
+  assert.match(html, /Decision<\/dt><dd>Accepted/u);
+  assert.match(html, /Route accepted<\/dt><dd>Yes/u);
+  assert.match(html, /Positive signals/u);
+  assert.match(html, /target="_blank" rel="noreferrer"/u);
 });
 
 test("actual table view cannot retain expanded evidence for a replaced result set", async () => {
