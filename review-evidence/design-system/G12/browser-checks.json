@@ -1,0 +1,394 @@
+{
+  "fixture": "real public route plus compiled-CSS synthetic complete interaction path",
+  "scenarios": [
+    {
+      "name": "landing",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 0
+    },
+    {
+      "name": "landing",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 0
+    },
+    {
+      "name": "landing",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 0
+    },
+    {
+      "name": "landing",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 0
+    },
+    {
+      "name": "landing",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 0
+    },
+    {
+      "name": "complete-path",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 3
+    },
+    {
+      "name": "complete-path",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 3
+    },
+    {
+      "name": "complete-path",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 3
+    },
+    {
+      "name": "complete-path",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 3
+    },
+    {
+      "name": "complete-path",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "minimumEssentialFont": 10,
+      "undersized": [],
+      "countryTargets": [
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "unsafeLinks": 0,
+      "openDisclosures": 3
+    }
+  ],
+  "keyboard": {
+    "count": 23,
+    "order": [
+      {
+        "tag": "BUTTON",
+        "label": "Export CSV",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "All leads 3",
+        "outline": "2px",
+        "boxShadow": "rgba(18, 35, 30, 0.06) 0px 1px 2px 0px inset"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Qualified 1",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "INPUT",
+        "label": "Search store, domain, email…",
+        "outline": "2px",
+        "boxShadow": "rgba(200, 240, 75, 0.42) 0px 0px 0px 3px, rgba(18, 35, 30, 0.82) 0px 0px 0px 5px"
+      },
+      {
+        "tag": "SELECT",
+        "label": "Lead score · High to low",
+        "outline": "2px",
+        "boxShadow": "rgba(200, 240, 75, 0.42) 0px 0px 0px 3px, rgba(18, 35, 30, 0.82) 0px 0px 0px 5px"
+      },
+      {
+        "tag": "DIV",
+        "label": "Lead results table; scroll horizontally to view all columns",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "A",
+        "label": "A deliberately long independent storefront identity",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Details",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "SUMMARY",
+        "label": "Contact evidence (1)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "View overall",
+        "outline": "2px",
+        "boxShadow": "rgba(119, 149, 66, 0.13) 0px 0px 0px 2px"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "United States(0)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "United Kingdom(1)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Canada(2)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Australia(3)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "New Zealand(4)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Germany(5)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "France(6)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "India(7)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "United Arab Emirates(8)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "path",
+        "label": "Show traffic for United States",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "SUMMARY",
+        "label": "Store-fit evidence (1)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "SUMMARY",
+        "label": "Discovery occurrences (1)",
+        "outline": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Next",
+        "outline": "2px",
+        "boxShadow": "none"
+      }
+    ],
+    "globeIncluded": true,
+    "visibleFocusCount": 23
+  },
+  "reducedMotion": {
+    "matches": true,
+    "maxAnimation": 0.00001,
+    "maxTransition": 0.00001
+  },
+  "forcedColors": {
+    "matches": true,
+    "stateBorder": "solid",
+    "marketBorder": "solid"
+  },
+  "gaps": [
+    "Protected routes still require Neon authentication; the complete-path fixture uses deterministic .example DOM with compiled production CSS and production source/render tests, without an authentication bypass.",
+    "Browser zoom was approximated through the 390px reflow target; browser UI zoom itself was not automated."
+  ]
+}

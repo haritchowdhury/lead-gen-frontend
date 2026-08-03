@@ -1,0 +1,36 @@
+{
+  "window": "G12",
+  "matrixCommand": "node scripts/g12-browser-matrix.mjs",
+  "targetWidths": [390, 768, 1024, 1280, 1440],
+  "machineChecks": "G12/browser-checks.json",
+  "screenshots": [
+    "G12/landing-390x844.png",
+    "G12/landing-768x1024.png",
+    "G12/landing-1024x768.png",
+    "G12/landing-1280x800.png",
+    "G12/landing-1440x900.png",
+    "G12/complete-path-390x844.png",
+    "G12/complete-path-768x1024.png",
+    "G12/complete-path-1024x768.png",
+    "G12/complete-path-1280x800.png",
+    "G12/complete-path-1440x900.png"
+  ],
+  "acceptedWindowChecks": [
+    "G1/browser-checks.json",
+    "G2/browser-checks.json",
+    "G3/browser-checks.json",
+    "G4/browser-checks.json",
+    "G5/browser-checks.json",
+    "G6/browser-checks.json",
+    "G7/browser-checks.json",
+    "G8/browser-checks.json",
+    "G9/browser-checks.json",
+    "G10/browser-checks.json",
+    "G11/browser-checks.json"
+  ],
+  "notes": [
+    "G12 adds the formerly missing 1024px target to both public-route and complete nested-evidence captures.",
+    "Accepted G1-G11 artifacts remain unchanged and are indexed rather than overwritten.",
+    "Protected live routes remain blocked by Neon authentication; synthetic fixtures use .example identities and compiled production CSS."
+  ]
+}
