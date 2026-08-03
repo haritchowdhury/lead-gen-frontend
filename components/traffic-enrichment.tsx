@@ -336,8 +336,8 @@ export function CompactTrafficSignal({ enrichment }: { enrichment: TrafficEnrich
 export function TrafficEnrichmentDetails({ enrichment }: { enrichment: TrafficEnrichment | undefined }) {
   if (!enrichment) return null;
   return (
-    <section className="detail-section traffic-details" aria-labelledby="traffic-enrichment-title">
-      <h3 id="traffic-enrichment-title">Traffic and site experience</h3>
+    <section className="detail-section detail-section-emphasis traffic-details" aria-labelledby="traffic-enrichment-title">
+      <h3 id="traffic-enrichment-title"><span>02</span>Traffic and site experience</h3>
       <div className="traffic-source-grid">
         <DataForSeoDetails enrichment={enrichment} />
         <CruxDetails enrichment={enrichment} />

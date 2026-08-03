@@ -1390,7 +1390,7 @@ button {
 
 .detail-row td {
   height: auto;
-  padding: 0 18px 17px !important;
+  padding: 0 18px 13px !important;
   background: #fbfcf8;
 }
 
@@ -1484,25 +1484,64 @@ button {
 
 .lead-details {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #dfe4dc;
+  border-radius: 11px;
+  background: #f2f4ef;
+  box-shadow: 0 10px 28px rgba(18, 35, 30, 0.05);
 }
 
 .detail-section {
+  position: relative;
   min-width: 0;
-  padding: 17px;
-  border: 1px solid #dfe4dc;
-  border-radius: 9px;
-  background: white;
+  padding: 13px 14px;
+  border: 1px solid rgba(198, 206, 196, 0.78);
+  border-radius: 8px;
+  background: #fffefa;
+  box-shadow: 0 1px 1px rgba(18, 35, 30, 0.025);
+}
+
+.detail-section-emphasis {
+  border-color: #cbd7b2;
+  background: linear-gradient(110deg, #fffefa 0%, #fcfef5 100%);
 }
 
 .detail-section h3 {
-  margin: 0 0 13px;
-  color: var(--muted);
-  font-size: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  color: var(--ink);
+  font-size: 9px;
   font-weight: 850;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.detail-section h3::after {
+  height: 1px;
+  flex: 1;
+  background: var(--line);
+  content: "";
+}
+
+.detail-section h3 > span {
+  display: grid;
+  width: 22px;
+  height: 18px;
+  place-items: center;
+  border-radius: 4px;
+  background: #edf1e9;
+  color: #60716a;
+  font-size: 7px;
+  letter-spacing: 0;
+}
+
+.detail-section-emphasis h3 > span {
+  background: var(--signal);
+  color: var(--ink);
 }
 
 .detail-callout,
@@ -1511,8 +1550,8 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin: 0 0 12px;
-  padding: 9px 10px;
+  margin: 0 0 9px;
+  padding: 7px 9px;
   border-radius: 7px;
   background: #f5f7f2;
   font-size: 9px;
@@ -1526,16 +1565,22 @@ button {
 .evidence-list,
 .fact-grid {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
+}
+
+.evidence-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .evidence-list > div {
   display: grid;
   grid-template-columns: 70px minmax(0, 1fr);
   gap: 5px 10px;
-  padding-bottom: 9px;
-  border-bottom: 1px solid var(--line);
+  padding: 7px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #f8f9f5;
 }
 
 .evidence-list dt,
@@ -1569,13 +1614,13 @@ button {
 }
 
 .fact-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-bottom: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 9px;
 }
 
 .fact-grid > div {
   min-width: 0;
-  padding: 8px;
+  padding: 6px 7px;
   border-radius: 6px;
   background: #f7f8f4;
 }
@@ -1599,7 +1644,7 @@ button {
 }
 
 .nested-evidence {
-  margin-top: 11px;
+  margin-top: 8px;
   font-size: 9px;
 }
 
@@ -1626,7 +1671,7 @@ button {
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
-  padding: 8px;
+  padding: 7px 8px;
   border-left: 2px solid #c8f04b;
   background: #f8faf4;
   overflow-wrap: anywhere;
@@ -1651,18 +1696,18 @@ button {
 }
 
 .traffic-details {
-  grid-column: 1 / -1;
+  grid-column: auto;
 }
 
 .traffic-source-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 7px;
 }
 
 .traffic-source-block {
   min-width: 0;
-  padding: 14px;
+  padding: 10px 11px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fbfcf8;
@@ -1673,7 +1718,7 @@ button {
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 13px;
+  margin-bottom: 9px;
 }
 
 .traffic-source-block h4,
@@ -1719,13 +1764,13 @@ button {
 .traffic-scope + .traffic-scope,
 .traffic-markets,
 .traffic-attribution {
-  margin-top: 13px;
-  padding-top: 13px;
+  margin-top: 9px;
+  padding-top: 9px;
   border-top: 1px solid var(--line);
 }
 
 .traffic-metric-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .traffic-fractions {
@@ -2514,6 +2559,10 @@ button {
   }
 
   .fact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .evidence-list {
     grid-template-columns: 1fr;
   }
 

@@ -34,10 +34,20 @@ function ExternalDetailLink({
   );
 }
 
-function DetailSection({ title, children }: { title: string; children: React.ReactNode }) {
+function DetailSection({
+  title,
+  order,
+  emphasis = false,
+  children,
+}: {
+  title: string;
+  order: string;
+  emphasis?: boolean;
+  children: React.ReactNode;
+}) {
   return (
-    <section className="detail-section">
-      <h3>{title}</h3>
+    <section className={`detail-section${emphasis ? " detail-section-emphasis" : ""}`}>
+      <h3><span>{order}</span>{title}</h3>
       {children}
     </section>
   );
@@ -100,7 +110,7 @@ function ContactDetails({ lead }: { lead: Lead }) {
     ...(lead.contact_evidence?.organizationNames ?? []),
   ];
   return (
-    <DetailSection title="Validated outreach evidence">
+    <DetailSection title="Validated outreach evidence" order="01" emphasis>
       <p className="detail-callout">
         <strong>{contactabilityLabel(lead.contactability_tier)}</strong>
         <span>{humanizeToken(lead.contactability_tier ?? "unrecorded")}</span>
@@ -126,7 +136,7 @@ function ContactDetails({ lead }: { lead: Lead }) {
       )}
       {!channels.length && <p className="empty-evidence">No validated outreach or social channel was recorded.</p>}
       {evidence.length > 0 && (
-        <details className="nested-evidence" open>
+        <details className="nested-evidence">
           <summary>Contact evidence details ({evidence.length})</summary>
           <ul>{evidence.map((item, index) => (
             <ContactEvidenceItem key={`${item.kind}-${item.value}-${index}`} item={item} />
@@ -188,7 +198,7 @@ function StoreFitItem({ item, index }: { item: StoreFitEvidence; index: number }
         </details>
       )}
       {(item.evidence?.length ?? 0) > 0 && (
-        <details className="nested-evidence" open>
+        <details className="nested-evidence">
           <summary>Page-level store-fit evidence ({item.evidence?.length})</summary>
           <ul>{item.evidence?.map((page, pageIndex) => (
             <StoreFitPage key={`${page.sourceUrl}-${pageIndex}`} page={page} />
@@ -217,7 +227,7 @@ function CategoryList({ categories }: { categories: CategoryIntent[] }) {
 
 function StoreEvidence({ lead }: { lead: Lead }) {
   return (
-    <DetailSection title="Category and store fit">
+    <DetailSection title="Category and store fit" order="03">
       <dl className="fact-grid">
         <Fact label="Exact category input" value={lead.original_shop_type} />
         <Fact label="Normalized category" value={lead.shop_type} />
@@ -227,9 +237,12 @@ function StoreEvidence({ lead }: { lead: Lead }) {
         <Fact label="Category evidence score" value={lead.relevance_score == null ? null : `${lead.relevance_score}/100`} />
       </dl>
       {(lead.store_fit_evidence?.length ?? 0) > 0 ? (
-        <ul className="provenance-list">{lead.store_fit_evidence?.map((item, index) => (
-          <StoreFitItem key={`${item.intent?.shopType ?? "fit"}-${index}`} item={item} index={index} />
-        ))}</ul>
+        <details className="nested-evidence">
+          <summary>Structured store-fit evidence ({lead.store_fit_evidence?.length})</summary>
+          <ul className="provenance-list">{lead.store_fit_evidence?.map((item, index) => (
+            <StoreFitItem key={`${item.intent?.shopType ?? "fit"}-${index}`} item={item} index={index} />
+          ))}</ul>
+        </details>
       ) : <p className="empty-evidence">No structured store-fit evidence was recorded.</p>}
       <CategoryList categories={lead.matched_categories ?? []} />
     </DetailSection>
@@ -240,7 +253,7 @@ function ScoreDetails({ lead }: { lead: Lead }) {
   const score = scorePresentation(lead);
   const components = scoreComponents(lead.score_breakdown);
   return (
-    <DetailSection title="Score semantics">
+    <DetailSection title="Score semantics" order="04">
       <p className={`detail-score score-${score.tone}`}><strong>{score.value}</strong><span>{score.label}</span></p>
       <p className="detail-copy">{score.explanation}</p>
       {components.length > 0 && (
@@ -260,7 +273,7 @@ function IdentityDetails({ lead }: { lead: Lead }) {
   const identity = lead.identity_evidence;
   const canonical = identity?.canonical;
   return (
-    <DetailSection title="Store identity">
+    <DetailSection title="Store identity" order="05">
       <dl className="fact-grid">
         <Fact label="Display hostname" value={identity?.displayHostname} />
         <Fact label="Stable hostname" value={identity?.stableHostname} />
@@ -291,36 +304,39 @@ function IdentityDetails({ lead }: { lead: Lead }) {
 function OccurrenceList({ occurrences }: { occurrences: DiscoveryOccurrence[] }) {
   if (!occurrences.length) return null;
   return (
-    <ol className="provenance-list occurrence-list">
-      {occurrences.map((item, index) => (
-        <li key={`${item.query ?? "query"}-${item.rank ?? "rank"}-${index}`}>
-          <strong>{item.query || "Query not recorded"}</strong>
-          <dl className="fact-grid">
-            <Fact label="Exact category input" value={item.originalShopType ?? item.categoryIntent?.originalShopType} />
-            <Fact label="Normalized category" value={item.shopType ?? item.categoryIntent?.shopType} />
-            <Fact label="Business qualifier" value={(item.businessQualifier ?? item.categoryIntent?.businessQualifier) && humanizeToken(item.businessQualifier ?? item.categoryIntent?.businessQualifier ?? "")} />
-            <Fact label="Query-generation reason" value={item.queryGenerationReason} />
-            <Fact label="Rank" value={item.rank} />
-            <Fact label="Query score" value={item.queryScore} />
-            <Fact label="Resolved domain" value={item.resolvedDomain} />
-            <Fact label="MyShopify domain" value={item.myshopifyDomain} />
-            <TokenList label="Category vocabulary" values={item.categoryVocabulary ?? item.categoryIntent?.categoryVocabulary} />
-          </dl>
-          <div className="detail-links">
-            {(item.querySourceUrls ?? []).map((url) => <ExternalDetailLink key={url} href={url}>Query source</ExternalDetailLink>)}
-            <ExternalDetailLink href={item.resultUrl}>Requested search-result URL</ExternalDetailLink>
-            <ExternalDetailLink href={item.finalUrl}>Observed final URL</ExternalDetailLink>
-          </div>
-        </li>
-      ))}
-    </ol>
+    <details className="nested-evidence">
+      <summary>Discovery occurrences ({occurrences.length})</summary>
+      <ol className="provenance-list occurrence-list">
+        {occurrences.map((item, index) => (
+          <li key={`${item.query ?? "query"}-${item.rank ?? "rank"}-${index}`}>
+            <strong>{item.query || "Query not recorded"}</strong>
+            <dl className="fact-grid">
+              <Fact label="Exact category input" value={item.originalShopType ?? item.categoryIntent?.originalShopType} />
+              <Fact label="Normalized category" value={item.shopType ?? item.categoryIntent?.shopType} />
+              <Fact label="Business qualifier" value={(item.businessQualifier ?? item.categoryIntent?.businessQualifier) && humanizeToken(item.businessQualifier ?? item.categoryIntent?.businessQualifier ?? "")} />
+              <Fact label="Query-generation reason" value={item.queryGenerationReason} />
+              <Fact label="Rank" value={item.rank} />
+              <Fact label="Query score" value={item.queryScore} />
+              <Fact label="Resolved domain" value={item.resolvedDomain} />
+              <Fact label="MyShopify domain" value={item.myshopifyDomain} />
+              <TokenList label="Category vocabulary" values={item.categoryVocabulary ?? item.categoryIntent?.categoryVocabulary} />
+            </dl>
+            <div className="detail-links">
+              {(item.querySourceUrls ?? []).map((url) => <ExternalDetailLink key={url} href={url}>Query source</ExternalDetailLink>)}
+              <ExternalDetailLink href={item.resultUrl}>Requested search-result URL</ExternalDetailLink>
+              <ExternalDetailLink href={item.finalUrl}>Observed final URL</ExternalDetailLink>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </details>
   );
 }
 
 function DiscoveryDetails({ lead }: { lead: Lead }) {
   const occurrences = lead.discovery_occurrences ?? [];
   return (
-    <DetailSection title="Discovery provenance">
+    <DetailSection title="Discovery provenance" order="06">
       <dl className="fact-grid">
         <Fact label="Generated query" value={lead.generated_query} />
         <Fact label="Search query" value={lead.search_query} />
@@ -340,7 +356,7 @@ function DiscoveryDetails({ lead }: { lead: Lead }) {
 
 function OutcomeDetails({ lead }: { lead: Lead }) {
   return (
-    <DetailSection title="Outcome evidence">
+    <DetailSection title="Outcome evidence" order="07">
       <dl className="fact-grid">
         <Fact label="Status" value={humanizeToken(lead.status)} />
         <Fact label="Rejection reason" value={lead.rejection_reason && humanizeToken(lead.rejection_reason)} />
@@ -356,10 +372,10 @@ export function LeadDetails({ lead }: { lead: Lead }) {
   return (
     <div className="lead-details">
       <ContactDetails lead={lead} />
+      <TrafficEnrichmentDetails enrichment={lead.traffic_enrichment} />
       <StoreEvidence lead={lead} />
       <ScoreDetails lead={lead} />
       <IdentityDetails lead={lead} />
-      <TrafficEnrichmentDetails enrichment={lead.traffic_enrichment} />
       <DiscoveryDetails lead={lead} />
       <OutcomeDetails lead={lead} />
     </div>
