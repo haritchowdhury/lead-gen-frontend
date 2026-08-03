@@ -1,25 +1,13 @@
 import type {
   CruxOriginMetrics,
-  DataForSeoTrafficMetrics,
   TrafficEnrichment,
   TrafficSourceState,
 } from "../lib/api-types";
 import { safeExternalUrl } from "../lib/lead-presentation";
+import { TrafficMarketExplorer } from "./traffic-globe";
 
 type MetricRating = "good" | "needs_improvement" | "poor";
 type CoreWebVitalsAssessment = MetricRating | "incomplete";
-
-const COUNTRY_NAMES = {
-  US: "United States",
-  GB: "United Kingdom",
-  CA: "Canada",
-  AU: "Australia",
-  NZ: "New Zealand",
-  DE: "Germany",
-  FR: "France",
-  IN: "India",
-  AE: "United Arab Emirates",
-} as const;
 
 const numberFormatter = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
 const percentageFormatter = new Intl.NumberFormat(undefined, {
@@ -104,22 +92,6 @@ function Metric({ label, value }: { label: React.ReactNode; value: React.ReactNo
   return <div><dt>{label}</dt><dd>{value}</dd></div>;
 }
 
-function SearchMetrics({ metrics }: { metrics: DataForSeoTrafficMetrics }) {
-  return (
-    <dl className="fact-grid traffic-metric-grid">
-      <Metric label="Estimated Google search traffic" value={formattedNumber(metrics.estimated_google_search_traffic)} />
-      <Metric label="Organic estimated traffic" value={formattedNumber(metrics.organic_estimated_traffic)} />
-      <Metric label="Organic ranking footprint" value={formattedNumber(metrics.organic_keyword_count)} />
-      <Metric label="Paid estimated traffic" value={formattedNumber(metrics.paid_estimated_traffic)} />
-      <Metric label="Paid ranking footprint" value={formattedNumber(metrics.paid_keyword_count)} />
-      <Metric label="Featured-snippet estimated traffic" value={formattedNumber(metrics.featured_snippet_estimated_traffic)} />
-      <Metric label="Featured-snippet keyword count" value={formattedNumber(metrics.featured_snippet_keyword_count)} />
-      <Metric label="Local-pack estimated traffic" value={formattedNumber(metrics.local_pack_estimated_traffic)} />
-      <Metric label="Local-pack keyword count" value={formattedNumber(metrics.local_pack_keyword_count)} />
-    </dl>
-  );
-}
-
 function DataForSeoDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
   const source = enrichment.dataforseo;
   if (!source) return null;
@@ -133,24 +105,8 @@ function DataForSeoDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
         </div>
         <SourceState state={source.state} />
       </header>
-      {source.worldwide && (
-        <div className="traffic-scope">
-          <h5>Worldwide</h5>
-          <SearchMetrics metrics={source.worldwide} />
-        </div>
-      )}
-      {(source.markets?.length ?? 0) > 0 && (
-        <div className="traffic-markets">
-          <h5>Tracked markets</h5>
-          {source.markets?.map((market) => (
-            <details key={market.country_code} className="nested-evidence">
-              <summary>
-                {COUNTRY_NAMES[market.country_code]} ({market.country_code}) · {formattedNumber(market.estimated_google_search_traffic)} estimated
-              </summary>
-              <SearchMetrics metrics={market} />
-            </details>
-          ))}
-        </div>
+      {(source.worldwide || (source.markets?.length ?? 0) > 0) && (
+        <TrafficMarketExplorer worldwide={source.worldwide} markets={source.markets ?? []} />
       )}
       {!material && (
         <p className="empty-evidence">

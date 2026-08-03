@@ -57,6 +57,7 @@ function compiledComponents(): Promise<Components> {
       "--strict",
       "--skipLibCheck",
       "--esModuleInterop",
+      "--resolveJsonModule",
       "components/lead-details.tsx",
       "components/results-table.tsx",
     ], { cwd: frontendRoot, encoding: "utf8" });
@@ -153,6 +154,8 @@ test("traffic details render every available metric, truthful labels, and attrib
     "Organic ranking footprint",
     "Featured-snippet keyword count",
     "India (IN)",
+    "Interactive globe",
+    "Drag to rotate",
     "Chrome UX Report",
     "CrUX does not provide visit totals",
     "Core Web Vitals: Pass",
