@@ -52,7 +52,7 @@ export function ResultsFilters({
   }, [filters.search, onChange, search]);
 
   return (
-    <div className="results-controls">
+    <div className="results-controls" aria-label="Lead results controls">
       <div className="status-tabs" role="group" aria-label="Filter by lead status">
         {STATUS_OPTIONS.map((option) => (
           <button
@@ -62,7 +62,9 @@ export function ResultsFilters({
             onClick={() => onChange({ status: option.value, page: 1 })}
           >
             {option.label}
-            <span>{counts[option.countKey]}</span>
+            <span aria-label={`${counts[option.countKey]} leads`}>
+              {counts[option.countKey]}
+            </span>
           </button>
         ))}
       </div>

@@ -53,7 +53,7 @@ export function ResultsTableView({
 
   if (loading && !leads.length) {
     return (
-      <div className="table-skeleton" aria-label="Loading leads">
+      <div className="table-skeleton" role="status" aria-label="Loading leads">
         {Array.from({ length: 6 }, (_, index) => (
           <span key={index} />
         ))}
@@ -72,15 +72,29 @@ export function ResultsTableView({
   }
 
   return (
-    <div className={`table-wrap ${loading ? "is-refreshing" : ""}`}>
+    <div
+      className={`table-wrap ${loading ? "is-refreshing" : ""}`}
+      aria-busy={loading}
+      tabIndex={0}
+      aria-label="Lead results table; scroll horizontally to view all columns"
+    >
       <table className="results-table">
+        <colgroup>
+          <col className="store-column" />
+          <col className="category-column" />
+          <col className="reachability-column" />
+          <col className="rank-column" />
+          <col className="score-column" />
+          <col className="status-column" />
+          <col className="toggle-column" />
+        </colgroup>
         <thead>
           <tr>
             <th>Store</th>
             <th>Category</th>
-            <th>Contact</th>
-            <th>Rank</th>
-            <th>Evidence rank</th>
+            <th>Reachability</th>
+            <th className="numeric-heading">Rank</th>
+            <th className="numeric-heading">Score</th>
             <th>Status</th>
             <th>
               <span className="sr-only">Details</span>
@@ -127,6 +141,8 @@ function ResultsRow({
     safeExternalUrl(lead.contact_url) ? "Contact page" : null,
     channels.some(({ kind }) => kind === "social_profile") ? "Social" : null,
   ].filter((value): value is string => Boolean(value));
+  const visibleChannels = compactChannels.slice(0, 2);
+  const remainingChannelCount = compactChannels.length - visibleChannels.length;
 
   return (
     <>
@@ -147,13 +163,15 @@ function ResultsRow({
               ) : (
                 <strong>{lead.store_name ?? "Unnamed store"}</strong>
               )}
-              <small>{displayDomain(lead)}</small>
+              <small title={displayDomain(lead)}>{displayDomain(lead)}</small>
               <CompactTrafficSignal enrichment={lead.traffic_enrichment} />
             </span>
           </div>
         </td>
         <td>
-          <span className="category-pill">{lead.shop_type ?? "Uncategorized"}</span>
+          <span className="category-pill" title={lead.shop_type ?? "Uncategorized"}>
+            {lead.shop_type ?? "Uncategorized"}
+          </span>
           {lead.business_qualifier && (
             <small className="cell-note">{humanizeToken(lead.business_qualifier)}</small>
           )}
@@ -165,7 +183,12 @@ function ResultsRow({
             </span>
             {compactChannels.length ? (
               <span className="channel-list" aria-label={`Available channels: ${compactChannels.join(", ")}`}>
-                {compactChannels.map((channel) => <i key={channel}>{channel}</i>)}
+                {visibleChannels.map((channel) => <i key={channel}>{channel}</i>)}
+                {remainingChannelCount > 0 && (
+                  <i title={compactChannels.slice(2).join(", ")}>
+                    +{remainingChannelCount}
+                  </i>
+                )}
               </span>
             ) : (
               <small>No validated channel</small>
@@ -207,7 +230,9 @@ function ResultsRow({
       {isExpanded && (
         <tr className="detail-row" id={detailId}>
           <td colSpan={7}>
-            <LeadDetails lead={lead} />
+            <div className="lead-expansion-shell">
+              <LeadDetails lead={lead} />
+            </div>
           </td>
         </tr>
       )}

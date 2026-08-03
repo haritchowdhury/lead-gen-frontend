@@ -1,0 +1,578 @@
+{
+  "fixture": "real compiled CSS with deterministic synthetic .example result-table DOM",
+  "scenarios": [
+    {
+      "label": "collapsed-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyOverflow": false,
+      "overflowingElements": [
+        {
+          "tag": "BUTTON",
+          "className": "",
+          "left": 329,
+          "right": 408
+        },
+        {
+          "tag": "SPAN",
+          "className": "",
+          "left": 378,
+          "right": 398
+        },
+        {
+          "tag": "TABLE",
+          "className": "results-table",
+          "left": 15,
+          "right": 1235
+        },
+        {
+          "tag": "COLGROUP",
+          "className": "",
+          "left": 15,
+          "right": 1235
+        },
+        {
+          "tag": "COL",
+          "className": "store-column",
+          "left": 15,
+          "right": 518
+        },
+        {
+          "tag": "COL",
+          "className": "category-column",
+          "left": 518,
+          "right": 669
+        },
+        {
+          "tag": "COL",
+          "className": "reachability-column",
+          "left": 669,
+          "right": 845
+        },
+        {
+          "tag": "COL",
+          "className": "rank-column",
+          "left": 845,
+          "right": 902
+        }
+      ],
+      "tableScrollable": true,
+      "tableViewportWidth": 360,
+      "tableContentWidth": 1220,
+      "expanded": "false",
+      "expandedLabel": null,
+      "shellWidth": null,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Lead workspaceYour store leadsReview evidence and focus on qualified prospects.All leads 128Qualified 82Rejected 41Failed 5Search leadsSort leadsLead score · High to lowGoogle rank · Best firstStoreCategoryReachabilityRankScoreStatusDetailsTThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleEst. Google search 1,248independent eyewear and accessoriesIndependent brandDirect outreachEmail+3#190Evidence rank v2qualified›01 Lead overviewThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomequalifiedZZero Score Studiozero-score.examplehomewaresIndependent brandContact page onlyContact page#9990Evidence rank v2rejected›01 Lead overviewZero Score Studiozero-score.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomerejectedUUnnamed storeDomain unavailableUncategorized—No outreach methodNo validated channel——Not scoredfailed›01 Lead overviewUnnamed storeDomain unavailableScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomefailedPage 1 of 7PreviousNext",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "expanded-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 375,
+      "bodyOverflow": false,
+      "overflowingElements": [
+        {
+          "tag": "BUTTON",
+          "className": "",
+          "left": 329,
+          "right": 408
+        },
+        {
+          "tag": "SPAN",
+          "className": "",
+          "left": 378,
+          "right": 398
+        },
+        {
+          "tag": "TABLE",
+          "className": "results-table",
+          "left": 15,
+          "right": 1235
+        },
+        {
+          "tag": "COLGROUP",
+          "className": "",
+          "left": 15,
+          "right": 1235
+        },
+        {
+          "tag": "COL",
+          "className": "store-column",
+          "left": 15,
+          "right": 518
+        },
+        {
+          "tag": "COL",
+          "className": "category-column",
+          "left": 518,
+          "right": 669
+        },
+        {
+          "tag": "COL",
+          "className": "reachability-column",
+          "left": 669,
+          "right": 845
+        },
+        {
+          "tag": "COL",
+          "className": "rank-column",
+          "left": 845,
+          "right": 902
+        }
+      ],
+      "tableScrollable": true,
+      "tableViewportWidth": 345,
+      "tableContentWidth": 1220,
+      "expanded": "true",
+      "expandedLabel": "Hide details for The Extremely Long Independent Eyewear and Accessories Store Name",
+      "shellWidth": 1184,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Lead workspaceYour store leadsReview evidence and focus on qualified prospects.All leads 128Qualified 82Rejected 41Failed 5Search leadsSort leadsLead score · High to lowGoogle rank · Best firstStoreCategoryReachabilityRankScoreStatusDetailsTThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleEst. Google search 1,248independent eyewear and accessoriesIndependent brandDirect outreachEmail+3#190Evidence rank v2qualified›01 Lead overviewThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomequalifiedZZero Score Studiozero-score.examplehomewaresIndependent brandContact page onlyContact page#9990Evidence rank v2rejected›01 Lead overviewZero Score Studiozero-score.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomerejectedUUnnamed storeDomain unavailableUncategorized—No outreach methodNo validated channel——Not scoredfailed›01 Lead overviewUnnamed storeDomain unavailableScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomefailedPage 1 of 7PreviousNext",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "collapsed-768",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 768,
+      "bodyOverflow": false,
+      "overflowingElements": [
+        {
+          "tag": "TABLE",
+          "className": "results-table",
+          "left": 21,
+          "right": 1241
+        },
+        {
+          "tag": "COLGROUP",
+          "className": "",
+          "left": 21,
+          "right": 1241
+        },
+        {
+          "tag": "COL",
+          "className": "reachability-column",
+          "left": 675,
+          "right": 851
+        },
+        {
+          "tag": "COL",
+          "className": "rank-column",
+          "left": 851,
+          "right": 908
+        },
+        {
+          "tag": "COL",
+          "className": "score-column",
+          "left": 908,
+          "right": 1084
+        },
+        {
+          "tag": "COL",
+          "className": "status-column",
+          "left": 1084,
+          "right": 1180
+        },
+        {
+          "tag": "COL",
+          "className": "toggle-column",
+          "left": 1180,
+          "right": 1241
+        },
+        {
+          "tag": "THEAD",
+          "className": "",
+          "left": 21,
+          "right": 1241
+        }
+      ],
+      "tableScrollable": true,
+      "tableViewportWidth": 726,
+      "tableContentWidth": 1220,
+      "expanded": "false",
+      "expandedLabel": null,
+      "shellWidth": null,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Lead workspaceYour store leadsReview evidence and focus on qualified prospects.All leads 128Qualified 82Rejected 41Failed 5Search leadsSort leadsLead score · High to lowGoogle rank · Best firstStoreCategoryReachabilityRankScoreStatusDetailsTThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleEst. Google search 1,248independent eyewear and accessoriesIndependent brandDirect outreachEmail+3#190Evidence rank v2qualified›01 Lead overviewThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomequalifiedZZero Score Studiozero-score.examplehomewaresIndependent brandContact page onlyContact page#9990Evidence rank v2rejected›01 Lead overviewZero Score Studiozero-score.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomerejectedUUnnamed storeDomain unavailableUncategorized—No outreach methodNo validated channel——Not scoredfailed›01 Lead overviewUnnamed storeDomain unavailableScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomefailedPage 1 of 7PreviousNext",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "expanded-768",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 768,
+      "bodyOverflow": false,
+      "overflowingElements": [
+        {
+          "tag": "TABLE",
+          "className": "results-table",
+          "left": 21,
+          "right": 1241
+        },
+        {
+          "tag": "COLGROUP",
+          "className": "",
+          "left": 21,
+          "right": 1241
+        },
+        {
+          "tag": "COL",
+          "className": "reachability-column",
+          "left": 675,
+          "right": 851
+        },
+        {
+          "tag": "COL",
+          "className": "rank-column",
+          "left": 851,
+          "right": 908
+        },
+        {
+          "tag": "COL",
+          "className": "score-column",
+          "left": 908,
+          "right": 1084
+        },
+        {
+          "tag": "COL",
+          "className": "status-column",
+          "left": 1084,
+          "right": 1180
+        },
+        {
+          "tag": "COL",
+          "className": "toggle-column",
+          "left": 1180,
+          "right": 1241
+        },
+        {
+          "tag": "THEAD",
+          "className": "",
+          "left": 21,
+          "right": 1241
+        }
+      ],
+      "tableScrollable": true,
+      "tableViewportWidth": 726,
+      "tableContentWidth": 1220,
+      "expanded": "true",
+      "expandedLabel": "Hide details for The Extremely Long Independent Eyewear and Accessories Store Name",
+      "shellWidth": 1184,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Lead workspaceYour store leadsReview evidence and focus on qualified prospects.All leads 128Qualified 82Rejected 41Failed 5Search leadsSort leadsLead score · High to lowGoogle rank · Best firstStoreCategoryReachabilityRankScoreStatusDetailsTThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleEst. Google search 1,248independent eyewear and accessoriesIndependent brandDirect outreachEmail+3#190Evidence rank v2qualified›01 Lead overviewThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomequalifiedZZero Score Studiozero-score.examplehomewaresIndependent brandContact page onlyContact page#9990Evidence rank v2rejected›01 Lead overviewZero Score Studiozero-score.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomerejectedUUnnamed storeDomain unavailableUncategorized—No outreach methodNo validated channel——Not scoredfailed›01 Lead overviewUnnamed storeDomain unavailableScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomefailedPage 1 of 7PreviousNext",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "collapsed-1280",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1280,
+      "bodyOverflow": false,
+      "overflowingElements": [],
+      "tableScrollable": true,
+      "tableViewportWidth": 1178,
+      "tableContentWidth": 1220,
+      "expanded": "false",
+      "expandedLabel": null,
+      "shellWidth": null,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Lead workspaceYour store leadsReview evidence and focus on qualified prospects.All leads 128Qualified 82Rejected 41Failed 5Search leadsSort leadsLead score · High to lowGoogle rank · Best firstStoreCategoryReachabilityRankScoreStatusDetailsTThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleEst. Google search 1,248independent eyewear and accessoriesIndependent brandDirect outreachEmail+3#190Evidence rank v2qualified›01 Lead overviewThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomequalifiedZZero Score Studiozero-score.examplehomewaresIndependent brandContact page onlyContact page#9990Evidence rank v2rejected›01 Lead overviewZero Score Studiozero-score.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomerejectedUUnnamed storeDomain unavailableUncategorized—No outreach methodNo validated channel——Not scoredfailed›01 Lead overviewUnnamed storeDomain unavailableScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomefailedPage 1 of 7PreviousNext",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "expanded-1280",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyOverflow": false,
+      "overflowingElements": [],
+      "tableScrollable": true,
+      "tableViewportWidth": 1178,
+      "tableContentWidth": 1220,
+      "expanded": "true",
+      "expandedLabel": "Hide details for The Extremely Long Independent Eyewear and Accessories Store Name",
+      "shellWidth": 1184,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Lead workspaceYour store leadsReview evidence and focus on qualified prospects.All leads 128Qualified 82Rejected 41Failed 5Search leadsSort leadsLead score · High to lowGoogle rank · Best firstStoreCategoryReachabilityRankScoreStatusDetailsTThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleEst. Google search 1,248independent eyewear and accessoriesIndependent brandDirect outreachEmail+3#190Evidence rank v2qualified›01 Lead overviewThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomequalifiedZZero Score Studiozero-score.examplehomewaresIndependent brandContact page onlyContact page#9990Evidence rank v2rejected›01 Lead overviewZero Score Studiozero-score.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomerejectedUUnnamed storeDomain unavailableUncategorized—No outreach methodNo validated channel——Not scoredfailed›01 Lead overviewUnnamed storeDomain unavailableScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomefailedPage 1 of 7PreviousNext",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "collapsed-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "bodyOverflow": false,
+      "overflowingElements": [],
+      "tableScrollable": true,
+      "tableViewportWidth": 1178,
+      "tableContentWidth": 1220,
+      "expanded": "false",
+      "expandedLabel": null,
+      "shellWidth": null,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Lead workspaceYour store leadsReview evidence and focus on qualified prospects.All leads 128Qualified 82Rejected 41Failed 5Search leadsSort leadsLead score · High to lowGoogle rank · Best firstStoreCategoryReachabilityRankScoreStatusDetailsTThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleEst. Google search 1,248independent eyewear and accessoriesIndependent brandDirect outreachEmail+3#190Evidence rank v2qualified›01 Lead overviewThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomequalifiedZZero Score Studiozero-score.examplehomewaresIndependent brandContact page onlyContact page#9990Evidence rank v2rejected›01 Lead overviewZero Score Studiozero-score.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomerejectedUUnnamed storeDomain unavailableUncategorized—No outreach methodNo validated channel——Not scoredfailed›01 Lead overviewUnnamed storeDomain unavailableScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomefailedPage 1 of 7PreviousNext",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "expanded-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "bodyOverflow": false,
+      "overflowingElements": [],
+      "tableScrollable": true,
+      "tableViewportWidth": 1178,
+      "tableContentWidth": 1220,
+      "expanded": "true",
+      "expandedLabel": "Hide details for The Extremely Long Independent Eyewear and Accessories Store Name",
+      "shellWidth": 1184,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Lead workspaceYour store leadsReview evidence and focus on qualified prospects.All leads 128Qualified 82Rejected 41Failed 5Search leadsSort leadsLead score · High to lowGoogle rank · Best firstStoreCategoryReachabilityRankScoreStatusDetailsTThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleEst. Google search 1,248independent eyewear and accessoriesIndependent brandDirect outreachEmail+3#190Evidence rank v2qualified›01 Lead overviewThe Extremely Long Independent Eyewear and Accessories Store Namevery-long-store-domain.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomequalifiedZZero Score Studiozero-score.examplehomewaresIndependent brandContact page onlyContact page#9990Evidence rank v2rejected›01 Lead overviewZero Score Studiozero-score.exampleScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomerejectedUUnnamed storeDomain unavailableUncategorized—No outreach methodNo validated channel——Not scoredfailed›01 Lead overviewUnnamed storeDomain unavailableScore semanticsDeterministic evidence rank.Outreach evidenceFull contact information remains available.OutcomefailedPage 1 of 7PreviousNext",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    }
+  ],
+  "interactions": [
+    {
+      "label": "open-first-with-keyboard-target",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "bodyOverflow": false,
+      "overflowingElements": [],
+      "tableScrollable": true,
+      "tableViewportWidth": 1178,
+      "tableContentWidth": 1220,
+      "expanded": "true",
+      "expandedLabel": "Hide details for The Extremely Long Independent Eyewear and Accessories Store Name",
+      "shellWidth": 1184,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Hide details for The Extremely Long Independent Eyewear and Accessories Store Name",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "close-first",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "bodyOverflow": false,
+      "overflowingElements": [],
+      "tableScrollable": true,
+      "tableViewportWidth": 1178,
+      "tableContentWidth": 1220,
+      "expanded": "false",
+      "expandedLabel": null,
+      "shellWidth": null,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Show details for The Extremely Long Independent Eyewear and Accessories Store Name",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "open-another",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "bodyOverflow": false,
+      "overflowingElements": [],
+      "tableScrollable": true,
+      "tableViewportWidth": 1178,
+      "tableContentWidth": 1220,
+      "expanded": "true",
+      "expandedLabel": "Hide details for Zero Score Studio",
+      "shellWidth": 1184,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Show details for The Extremely Long Independent Eyewear and Accessories Store Name",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "filter-clears-expanded",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "bodyOverflow": false,
+      "overflowingElements": [],
+      "tableScrollable": true,
+      "tableViewportWidth": 1178,
+      "tableContentWidth": 1220,
+      "expanded": "false",
+      "expandedLabel": null,
+      "shellWidth": null,
+      "selectedTab": "Qualified 82",
+      "focusedLabel": "Show details for The Extremely Long Independent Eyewear and Accessories Store Name",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    },
+    {
+      "label": "narrow-horizontal-scroll",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1440,
+      "bodyOverflow": false,
+      "overflowingElements": [],
+      "tableScrollable": true,
+      "tableViewportWidth": 1178,
+      "tableContentWidth": 1220,
+      "expanded": "false",
+      "expandedLabel": null,
+      "shellWidth": null,
+      "selectedTab": "All leads 128",
+      "focusedLabel": "Lead results table; scroll horizontally to view all columns",
+      "visibleHeadings": [
+        "Store",
+        "Category",
+        "Reachability",
+        "Rank",
+        "Score",
+        "Status",
+        "Details"
+      ],
+      "minimumEssentialFont": 10
+    }
+  ],
+  "states": [
+    {
+      "state": "loading",
+      "bodyOverflow": false
+    },
+    {
+      "state": "empty",
+      "bodyOverflow": false
+    }
+  ],
+  "gap": "Protected run routes require Neon authentication, so browser composition uses deterministic .example DOM against the real compiled G8 stylesheet; focused source and render tests verify unchanged production behavior without an auth bypass."
+}
