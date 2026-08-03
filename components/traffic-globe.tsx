@@ -2,7 +2,7 @@
 
 import { geoGraticule10, geoOrthographic, geoPath } from "d3-geo";
 import type { Feature, FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { feature } from "topojson-client";
 import type { GeometryCollection, Topology } from "topojson-specification";
 import worldAtlas from "world-atlas/countries-110m.json";
@@ -27,6 +27,18 @@ const COUNTRY_META: Record<CountryCode, { name: string; numericId: string; cente
 const numberFormatter = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
 const VIEWBOX_SIZE = 320;
 const INITIAL_ROTATION: Rotation = [-12, -18, 0];
+const SHOWCASE_MARKETS = (Object.keys(COUNTRY_META) as CountryCode[]).map((country_code) => ({
+  country_code,
+  estimated_google_search_traffic: 0,
+  organic_estimated_traffic: 0,
+  organic_keyword_count: 0,
+  paid_estimated_traffic: 0,
+  paid_keyword_count: 0,
+  featured_snippet_estimated_traffic: 0,
+  featured_snippet_keyword_count: 0,
+  local_pack_estimated_traffic: 0,
+  local_pack_keyword_count: 0,
+}));
 
 type Atlas = Topology<{ countries: GeometryCollection<GeoJsonProperties> }>;
 
@@ -74,11 +86,18 @@ function prefersReducedMotion(): boolean {
 export function TrafficMarketExplorer({
   worldwide,
   markets,
+  showcase = false,
+  showcaseLabel,
 }: {
   worldwide?: DataForSeoTrafficMetrics;
   markets: DataForSeoMarketTraffic[];
+  showcase?: boolean;
+  showcaseLabel?: string;
 }) {
   const [selectedCode, setSelectedCode] = useState<CountryCode | null>(null);
+  const id = useId().replaceAll(":", "");
+  const oceanGradientId = `traffic-globe-ocean-${id}`;
+  const shadowFilterId = `traffic-globe-shadow-${id}`;
   const [rotation, setRotation] = useState<Rotation>(INITIAL_ROTATION);
   const rotationRef = useRef<Rotation>(INITIAL_ROTATION);
   const animationRef = useRef<number | null>(null);
@@ -190,8 +209,8 @@ export function TrafficMarketExplorer({
   }
 
   return (
-    <div className={`traffic-market-explorer${markets.length ? "" : " is-worldwide-only"}`}>
-      <section className="traffic-market-data" aria-live="polite" aria-atomic="true">
+    <div className={`traffic-market-explorer${showcase ? " traffic-showcase-explorer" : markets.length ? "" : " is-worldwide-only"}`}>
+      {!showcase && <section className="traffic-market-data" aria-live="polite" aria-atomic="true">
         <header>
           <div>
             <span className="traffic-scope-kicker">Traffic scope</span>
@@ -204,13 +223,24 @@ export function TrafficMarketExplorer({
         ) : (
           <p className="empty-evidence">Worldwide metrics were not returned. Select an available market to inspect its data.</p>
         )}
-      </section>
+      </section>}
 
-      {markets.length > 0 && <section className="traffic-globe-panel" aria-labelledby="traffic-markets-title">
-        <div className="traffic-country-nav">
+      {markets.length > 0 && <section
+        className={`traffic-globe-panel${showcase ? " landing-traffic-globe-panel" : ""}`}
+        {...(showcase
+          ? { "aria-label": "High-value global traffic markets" }
+          : { "aria-labelledby": "traffic-markets-title" })}
+      >
+        <div className={showcase ? "landing-globe-copy" : "traffic-country-nav"}>
           <div>
-            <span className="traffic-scope-kicker">Available markets</span>
-            <h5 id="traffic-markets-title">Explore by country</h5>
+            {showcase ? (
+              <span className="eyebrow">{showcaseLabel ?? "Explore our global coverage"}</span>
+            ) : (
+              <>
+                <span className="traffic-scope-kicker">Available markets</span>
+                <h5 id="traffic-markets-title">Explore by country</h5>
+              </>
+            )}
           </div>
           <div className="traffic-country-links" aria-label="Available traffic markets">
             {markets.map((market) => {
@@ -244,17 +274,17 @@ export function TrafficMarketExplorer({
             onPointerCancel={handlePointerUp}
           >
             <defs>
-              <radialGradient id="traffic-globe-ocean" cx="35%" cy="28%" r="74%">
+              <radialGradient id={oceanGradientId} cx="35%" cy="28%" r="74%">
                 <stop offset="0" stopColor="#f8fbea" />
                 <stop offset="0.72" stopColor="#e9f1d8" />
                 <stop offset="1" stopColor="#dce8c4" />
               </radialGradient>
-              <filter id="traffic-globe-shadow" x="-30%" y="-30%" width="160%" height="170%">
+              <filter id={shadowFilterId} x="-30%" y="-30%" width="160%" height="170%">
                 <feDropShadow dx="0" dy="9" stdDeviation="10" floodColor="#26340f" floodOpacity="0.16" />
               </filter>
             </defs>
-            <circle className="traffic-globe-shadow" cx="160" cy="160" r="145" filter="url(#traffic-globe-shadow)" />
-            <path className="traffic-globe-ocean" d={path({ type: "Sphere" }) ?? undefined} />
+            <circle className="traffic-globe-shadow" cx="160" cy="160" r="145" filter={`url(#${shadowFilterId})`} />
+            <path className="traffic-globe-ocean" style={{ fill: `url(#${oceanGradientId})` }} d={path({ type: "Sphere" }) ?? undefined} />
             <path className="traffic-globe-grid" d={path(geoGraticule10()) ?? undefined} />
             <path className="traffic-globe-land" d={path(countryFeatures) ?? undefined} aria-hidden="true" />
             <g className="traffic-globe-markets">
@@ -288,4 +318,8 @@ export function TrafficMarketExplorer({
       </section>}
     </div>
   );
+}
+
+export function TrafficGlobeShowcase({ label }: { label?: string }) {
+  return <TrafficMarketExplorer markets={SHOWCASE_MARKETS} showcase showcaseLabel={label} />;
 }

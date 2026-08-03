@@ -38,16 +38,35 @@ function DetailSection({
   title,
   order,
   emphasis = false,
+  className,
   children,
 }: {
   title: string;
   order: string;
   emphasis?: boolean;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className={`detail-section${emphasis ? " detail-section-emphasis" : ""}`}>
+    <section className={`detail-section${emphasis ? " detail-section-emphasis" : ""}${className ? ` ${className}` : ""}`}>
       <h3><span>{order}</span>{title}</h3>
+      {children}
+    </section>
+  );
+}
+
+function OverviewPanel({
+  title,
+  className,
+  children,
+}: {
+  title: string;
+  className: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className={`lead-overview-panel ${className}`}>
+      <h4>{title}</h4>
       {children}
     </section>
   );
@@ -85,10 +104,10 @@ function TokenDisclosure({ label, values }: { label: string; values: string[] | 
   );
 }
 
-function EvidenceSource({ href }: { href: string | undefined }) {
+function EvidenceSource({ href, label = "Evidence source" }: { href: string | undefined; label?: string }) {
   if (!href) return <span>Source not recorded</span>;
   return safeExternalUrl(href)
-    ? <ExternalDetailLink href={href}>Evidence source</ExternalDetailLink>
+    ? <ExternalDetailLink href={href}>{label}</ExternalDetailLink>
     : <span>Unsafe source URL omitted</span>;
 }
 
@@ -149,13 +168,13 @@ function ContactDetails({ lead }: { lead: Lead }) {
     ...(lead.contact_evidence?.organizationNames ?? []),
   ];
   return (
-    <DetailSection title="Validated outreach evidence" order="01" emphasis>
+    <OverviewPanel title="Outreach evidence" className="overview-outreach">
       <p className="detail-callout">
         <strong>{contactabilityLabel(lead.contactability_tier)}</strong>
         <span>{humanizeToken(lead.contactability_tier ?? "unrecorded")}</span>
       </p>
       {channels.length > 0 && (
-        <dl className="evidence-list">
+        <ul className="outreach-channel-list">
           {channels.map((channel) => {
             const source = channel.kind === "email"
               ? lead.email_source_url
@@ -163,26 +182,25 @@ function ContactDetails({ lead }: { lead: Lead }) {
                 ? lead.phone_source_url
                 : channel.value;
             return (
-              <div key={`${channel.kind}-${channel.value}`}>
-                <dt>{channel.label}</dt>
-                <dd>{channel.href ? <a href={channel.href}>{channel.value}</a> : channel.value}</dd>
-                <dt>Source</dt>
-                <dd><EvidenceSource href={source ?? undefined} /></dd>
-              </div>
+              <li key={`${channel.kind}-${channel.value}`}>
+                <span>{channel.label}</span>
+                <strong>{channel.href ? <a href={channel.href}>{channel.value}</a> : channel.value}</strong>
+                <EvidenceSource href={source ?? undefined} label="Source" />
+              </li>
             );
           })}
-        </dl>
+        </ul>
       )}
       {!channels.length && <p className="empty-evidence">No validated outreach or social channel was recorded.</p>}
       {evidence.length > 0 && (
-        <details className="nested-evidence">
+        <details className="nested-evidence contact-evidence-disclosure">
           <summary>Contact evidence details ({evidence.length})</summary>
-          <ul>{evidence.map((item, index) => (
+          <ul className="contact-evidence-list">{evidence.map((item, index) => (
             <ContactEvidenceItem key={`${item.kind}-${item.value}-${index}`} item={item} />
           ))}</ul>
         </details>
       )}
-    </DetailSection>
+    </OverviewPanel>
   );
 }
 
@@ -292,7 +310,7 @@ function ScoreDetails({ lead }: { lead: Lead }) {
   const score = scorePresentation(lead);
   const components = scoreComponents(lead.score_breakdown);
   return (
-    <DetailSection title="Score semantics" order="04">
+    <OverviewPanel title="Score semantics" className="overview-score">
       <p className={`detail-score score-${score.tone}`}><strong>{score.value}</strong><span>{score.label}</span></p>
       <p className="detail-copy">{score.explanation}</p>
       {components.length > 0 && (
@@ -304,18 +322,19 @@ function ScoreDetails({ lead }: { lead: Lead }) {
         </dl>
       )}
       <small className="version-note">Pipeline {lead.pipeline_version ?? "legacy/unversioned"} · Scoring {lead.scoring_version ?? "legacy/unversioned"} · {humanizeToken(lead.score_semantics)}</small>
-    </DetailSection>
+    </OverviewPanel>
   );
 }
 
 function IdentityDetails({ lead }: { lead: Lead }) {
   const identity = lead.identity_evidence;
   const canonical = identity?.canonical;
-  const resolvedStorefront = lead.final_url ?? lead.canonical_url;
+  const resolvedStorefront = lead.resolved_domain ? `https://${lead.resolved_domain}` : null;
   return (
-    <DetailSection title="Store identity" order="05">
+    <OverviewPanel title="Store identity" className="overview-identity">
       <dl className="fact-grid">
         <Fact label="MyShopify domain" value={lead.myshopify_domain} />
+        <Fact label="Resolved domain" value={lead.resolved_domain} />
         <Fact label="Identity confidence" value={lead.identity_confidence == null ? null : `${lead.identity_confidence}/100`} />
         <Fact label="Evidence confidence" value={identity?.confidence == null ? null : `${identity.confidence}/100`} />
         <Fact label="Resolution method" value={identity?.method && humanizeToken(identity.method)} />
@@ -328,7 +347,41 @@ function IdentityDetails({ lead }: { lead: Lead }) {
       <div className="detail-links">
         <ExternalDetailLink href={resolvedStorefront}>Resolved storefront</ExternalDetailLink>
       </div>
+    </OverviewPanel>
+  );
+}
+
+function LeadOverview({ lead }: { lead: Lead }) {
+  return (
+    <DetailSection title="Lead overview" order="01" emphasis className="lead-overview">
+      <OutcomeBadge lead={lead} />
+      <div className="lead-overview-grid">
+        <IdentityDetails lead={lead} />
+        <ScoreDetails lead={lead} />
+        <ContactDetails lead={lead} />
+      </div>
     </DetailSection>
+  );
+}
+
+function OutcomeBadge({ lead }: { lead: Lead }) {
+  const hasNote = Boolean(lead.rejection_reason || lead.error || lead.additional_information);
+  return (
+    <details className="outcome-badge">
+      <summary>
+        <span>Outcome</span>
+        <strong>{humanizeToken(lead.status)}</strong>
+      </summary>
+      <div className="outcome-badge-popover">
+        <dl className="fact-grid">
+          <Fact label="Status" value={humanizeToken(lead.status)} />
+          <Fact label="Rejection reason" value={lead.rejection_reason && humanizeToken(lead.rejection_reason)} />
+          <Fact label="Processing error" value={lead.error} />
+        </dl>
+        {lead.additional_information && <p className="detail-copy preserve-text">{lead.additional_information}</p>}
+        {!hasNote && <p className="empty-evidence">No additional outcome note was recorded.</p>}
+      </div>
+    </details>
   );
 }
 
@@ -354,7 +407,7 @@ function OccurrenceList({ occurrences }: { occurrences: DiscoveryOccurrence[] })
             <div className="detail-links">
               {(item.querySourceUrls ?? []).map((url) => <ExternalDetailLink key={url} href={url}>Query source</ExternalDetailLink>)}
               <ExternalDetailLink href={item.resultUrl}>Requested search-result URL</ExternalDetailLink>
-              <ExternalDetailLink href={item.finalUrl}>Resolved storefront</ExternalDetailLink>
+              <ExternalDetailLink href={item.finalUrl}>Resolved result URL</ExternalDetailLink>
             </div>
           </li>
         ))}
@@ -369,7 +422,7 @@ function DiscoveryDetails({ lead }: { lead: Lead }) {
   const hasDistinctGeneratedQuery =
     lead.generated_query && lead.generated_query !== primaryQuery;
   return (
-    <DetailSection title="Discovery provenance" order="06">
+    <DetailSection title="Discovery provenance" order="04">
       <dl className="fact-grid">
         <Fact label="Search query" value={primaryQuery} />
         <Fact label="Generated query" value={hasDistinctGeneratedQuery ? lead.generated_query : null} />
@@ -387,30 +440,13 @@ function DiscoveryDetails({ lead }: { lead: Lead }) {
   );
 }
 
-function OutcomeDetails({ lead }: { lead: Lead }) {
-  return (
-    <DetailSection title="Outcome evidence" order="07">
-      <dl className="fact-grid">
-        <Fact label="Status" value={humanizeToken(lead.status)} />
-        <Fact label="Rejection reason" value={lead.rejection_reason && humanizeToken(lead.rejection_reason)} />
-        <Fact label="Processing error" value={lead.error} />
-      </dl>
-      {lead.additional_information && <p className="detail-copy preserve-text">{lead.additional_information}</p>}
-      {!lead.rejection_reason && !lead.error && !lead.additional_information && <p className="empty-evidence">No additional outcome note was recorded.</p>}
-    </DetailSection>
-  );
-}
-
 export function LeadDetails({ lead }: { lead: Lead }) {
   return (
     <div className="lead-details">
-      <ContactDetails lead={lead} />
+      <LeadOverview lead={lead} />
       <TrafficEnrichmentDetails enrichment={lead.traffic_enrichment} />
       <StoreEvidence lead={lead} />
-      <ScoreDetails lead={lead} />
-      <IdentityDetails lead={lead} />
       <DiscoveryDetails lead={lead} />
-      <OutcomeDetails lead={lead} />
     </div>
   );
 }

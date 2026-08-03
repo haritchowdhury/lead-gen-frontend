@@ -9,7 +9,17 @@ import { parseStartRunResponse } from "@/lib/api-validation";
 import { ApiRequestError, apiRequest, errorMessage } from "@/lib/client-api";
 import { parseCategories } from "@/lib/category-validation";
 
-const SUGGESTIONS = ["Clothing", "Eyewear", "Home decor", "Pet supplies"];
+const SUGGESTIONS = [
+  "Clothing",
+  "Eyewear",
+  "Home decor",
+  "Pet supplies",
+  "Skincare",
+  "Jewelry",
+  "Fitness",
+  "Baby products",
+  "Kitchenware",
+];
 
 export function RunForm() {
   const router = useRouter();
@@ -72,17 +82,17 @@ export function RunForm() {
   }
 
   return (
-    <form className="run-form-card" onSubmit={submit}>
+    <form id="start-discovery" className="run-form-card run-start-form" onSubmit={submit}>
       <div className="form-heading-row">
         <div>
-          <span className="eyebrow">New discovery run</span>
-          <h2>What kind of stores are you looking for?</h2>
+          <span className="eyebrow">Start a new search</span>
+          <h2>What kind of stores do you want to meet?</h2>
         </div>
         <span className="step-badge">01</span>
       </div>
 
       <label className="field-label" htmlFor="shop-types">
-        Store categories
+        Describe your ideal stores
         <span>One category per line</span>
       </label>
       <div className="textarea-wrap">
@@ -104,11 +114,11 @@ export function RunForm() {
         </span>
       </div>
       <p className="field-help" id="category-help">
-        Be specific. Product-focused categories usually produce stronger stores.
+        The more focused you are, the stronger your results will be.
       </p>
 
       <div className="suggestions" aria-label="Suggested categories">
-        <span>Try:</span>
+        <span>Need inspiration?</span>
         {SUGGESTIONS.map((suggestion) => (
           <button
             type="button"
@@ -130,15 +140,14 @@ export function RunForm() {
 
       <div className="form-footer">
         <p>
-          We generate a reviewable query list first. Store scraping starts only
-          after you confirm it.
+          Review and approve your search before discovery begins.
         </p>
         <button
           className="button button-primary"
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Generating queries…" : "Generate queries"}
+          {isSubmitting ? "Building your search…" : "Build my search"}
           {!isSubmitting && <ArrowRightIcon />}
         </button>
       </div>

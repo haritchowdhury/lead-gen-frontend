@@ -81,6 +81,14 @@ function compiledComponents(): Promise<Components> {
 test("actual expanded details render every full-evidence family and every contact channel", async () => {
   const { LeadDetails } = await compiledComponents();
   const html = renderToStaticMarkup(createElement(LeadDetails, { lead: lead() }));
+  assert.ok(html.indexOf("Lead overview") < html.indexOf("Category and store fit"));
+  assert.ok(html.indexOf("Store identity") < html.indexOf("Score semantics"));
+  assert.ok(html.indexOf("Score semantics") < html.indexOf("Outreach evidence"));
+  assert.match(html, /outcome-badge/u);
+  assert.match(html, /contact-evidence-disclosure/u);
+  assert.match(html, /href="https:\/\/fixture\.example\/"[^>]*>Resolved storefront/u);
+  assert.doesNotMatch(html, /href="https:\/\/fixture\.example\/products\/frames"[^>]*>Resolved storefront/u);
+  assert.doesNotMatch(html, /<h3><span>05<\/span>Outcome evidence/u);
   for (const expected of [
     "Eyewear Brand",
     "Normalized category",
@@ -96,6 +104,7 @@ test("actual expanded details render every full-evidence family and every contac
     "Requested search-result URL",
     "Resolved storefront",
     "MyShopify domain",
+    "Resolved domain",
     "fixture.example",
     "Canonical verification",
     "Evidence rank v2",

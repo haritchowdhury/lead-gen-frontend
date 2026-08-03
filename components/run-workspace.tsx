@@ -10,11 +10,11 @@ import {
 } from "react";
 
 import { ExportCsvButton } from "@/components/export-csv-button";
+import { CumulativeTrafficSection } from "@/components/cumulative-traffic";
 import { CopyIcon, PlusIcon, RefreshIcon } from "@/components/icons";
 import { LandingHeroCopy, LandingProcess } from "@/components/landing-sections";
 import { ResultsFilters } from "@/components/results-filters";
 import { ResultsTable } from "@/components/results-table";
-import { RunEvidence } from "@/components/run-evidence";
 import { RunProgress } from "@/components/run-progress";
 import { QueryEditor } from "@/components/query-editor";
 import type {
@@ -236,7 +236,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
       <main>
         <section className="hero query-review-hero">
           <div className="shell hero-grid query-review-grid">
-            <LandingHeroCopy />
+            <LandingHeroCopy variant="review" />
             <div>
               {connectionWarning && (
                 <div className="warning-banner" role="status">
@@ -253,7 +253,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
             </div>
           </div>
         </section>
-        <LandingProcess />
+        <LandingProcess variant="review" />
       </main>
     );
   }
@@ -347,6 +347,11 @@ export function RunWorkspace({ runId }: { runId: string }) {
                   />
                 </div>
 
+                <CumulativeTrafficSection
+                  runId={runId}
+                  refreshVersion={resultsPollVersion}
+                />
+
                 <div className="results-panel">
                   <ResultsFilters
                     filters={filters}
@@ -372,7 +377,6 @@ export function RunWorkspace({ runId }: { runId: string }) {
                 Loading stored results…
               </div>
             )}
-            <RunEvidence runId={runId} />
           </section>
         )}
       </div>

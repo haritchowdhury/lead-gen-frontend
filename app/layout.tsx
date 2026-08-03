@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s · StoreSignal",
   },
   description:
-    "Discover, qualify, and export high-intent Shopify store leads.",
+    "Find relevant Shopify stores, uncover ways to reach them, and build a prospect list backed by evidence.",
 };
 
 export default function RootLayout({
@@ -25,4 +25,3 @@ export default function RootLayout({
     </html>
   );
 }
-

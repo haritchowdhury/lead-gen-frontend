@@ -216,11 +216,11 @@ export function QueryEditor({
   }
 
   return (
-    <section className="run-form-card query-editor-card">
+    <section id="query-review" className="run-form-card query-editor-card">
       <div className="form-heading-row query-editor-heading">
         <div>
           <span className="eyebrow">Query review · revision {querySet.revision}</span>
-          <h2>Review your generated searches</h2>
+          <h2>Review your searches</h2>
         </div>
         <span className="step-badge">02</span>
       </div>
@@ -289,7 +289,7 @@ export function QueryEditor({
             {busy === "saving" ? "Saving…" : "Save changes"}
           </button>
           <button className="button button-primary" type="button" onClick={() => void start()} disabled={dirty || hasVisibleErrors || !rows.length || busy !== null}>
-            {busy === "starting" ? "Starting…" : "Continue to scraping"}
+            {busy === "starting" ? "Finding your stores…" : "Find my stores"}
             {busy !== "starting" && <ArrowRightIcon />}
           </button>
         </div>

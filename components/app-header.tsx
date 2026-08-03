@@ -20,6 +20,12 @@ export async function AppHeader() {
           </span>
           <span>StoreSignal</span>
         </Link>
+        <nav className="site-nav" aria-label="Product navigation">
+          <Link href="/#how-it-works">How it works</Link>
+          <Link href="/#intelligence">What you get</Link>
+          <Link href="/#use-cases">Use cases</Link>
+          <Link href="/#faq">FAQ</Link>
+        </nav>
         <div className="header-actions">
           <div className="header-meta">
             <span className="signal-dot" />
