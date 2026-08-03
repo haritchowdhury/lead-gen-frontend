@@ -3869,6 +3869,329 @@ button {
   }
 }
 
+/* G5 — lower landing-page rhythm, editorial previews, CTA, and footer. */
+.marketing-flow {
+  color: var(--color-ink);
+  background: var(--color-canvas);
+}
+
+.marketing-flow section[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+.marketing-flow .landing-problem,
+.marketing-flow .evidence-section,
+.marketing-flow .use-cases-section,
+.marketing-flow .faq-section {
+  background: var(--color-surface);
+}
+
+.marketing-flow .process-section,
+.marketing-flow .control-section {
+  background: var(--color-inverse);
+}
+
+.marketing-flow .intelligence-section,
+.marketing-flow .market-section,
+.marketing-flow .final-cta {
+  background: var(--color-canvas);
+}
+
+.marketing-flow .landing-problem {
+  position: relative;
+  padding-block: clamp(5rem, 8vw, 7.5rem);
+  border-top: 1px solid var(--color-line);
+}
+
+.marketing-flow .landing-problem::before {
+  position: absolute;
+  top: 0;
+  left: max(1rem, calc((100vw - 1180px) / 2));
+  width: min(7rem, 22vw);
+  height: 0.25rem;
+  background: var(--color-signal);
+  content: "";
+}
+
+.marketing-flow .problem-layout {
+  align-items: start;
+}
+
+.marketing-flow .problem-copy {
+  padding-top: var(--space-2);
+}
+
+.marketing-flow .outcome-strip {
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+.marketing-flow .outcome-strip article {
+  min-height: 0;
+  padding-block: var(--space-8);
+}
+
+.marketing-flow .outcome-strip h3 {
+  margin-top: var(--space-8);
+}
+
+.marketing-flow .process-section {
+  padding-block: clamp(5rem, 8vw, 7rem);
+}
+
+.marketing-flow .process-grid {
+  overflow: visible;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0;
+}
+
+.marketing-flow .process-card,
+.marketing-flow .process-card.featured {
+  min-height: 18rem;
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  border: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: var(--color-inverse-ink);
+}
+
+.marketing-flow .process-card:last-child {
+  border-right: 0;
+}
+
+.marketing-flow .process-card.featured {
+  box-shadow: inset 0 0.25rem 0 var(--color-signal);
+}
+
+.marketing-flow .process-card.featured > svg,
+.marketing-flow .process-card > svg {
+  color: var(--color-signal);
+}
+
+.marketing-flow .process-card.featured .process-number,
+.marketing-flow .process-number {
+  color: #a8b5ae;
+}
+
+.marketing-flow .process-card.featured p,
+.marketing-flow .process-card p {
+  color: #b9c4be;
+}
+
+.marketing-flow .intelligence-section {
+  padding-block: clamp(5rem, 9vw, 7.5rem);
+  background-image: none;
+}
+
+.marketing-flow .intelligence-grid {
+  gap: var(--space-4);
+}
+
+.marketing-flow .intelligence-card {
+  min-height: 19rem;
+  border-color: var(--color-line);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  box-shadow: 0 1rem 2.5rem rgba(18, 35, 30, 0.055);
+}
+
+.marketing-flow .intelligence-card-dark {
+  border-color: var(--color-inverse);
+  background: var(--color-inverse);
+}
+
+.marketing-flow .intelligence-card-wide {
+  min-height: 14rem;
+  background: var(--color-surface-inset);
+  box-shadow: none;
+}
+
+.marketing-flow .priority-preview {
+  border-color: var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: 0 0.75rem 2rem rgba(18, 35, 30, 0.06);
+}
+
+.marketing-flow .evidence-section {
+  padding-block: clamp(5rem, 8vw, 7rem);
+  border-block: 1px solid var(--color-line);
+}
+
+.marketing-flow .evidence-list-marketing > div {
+  min-height: 4rem;
+}
+
+.marketing-flow .evidence-list-marketing span,
+.marketing-flow .market-board-label,
+.marketing-flow .footer-grid nav strong,
+.marketing-flow .footer-base {
+  font-size: 0.6875rem;
+}
+
+.marketing-flow .market-section {
+  padding-block: clamp(5rem, 8vw, 7rem);
+  background: var(--color-signal);
+}
+
+.marketing-flow .market-copy small,
+.marketing-flow .final-cta small {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.marketing-flow .market-board {
+  padding: clamp(2rem, 4vw, 3rem);
+  border-color: rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-panel);
+  background: var(--color-inverse);
+  box-shadow: 0.75rem 0.75rem 0 rgba(255, 254, 250, 0.62);
+}
+
+.marketing-flow .market-pills span {
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.6875rem;
+}
+
+.marketing-flow .use-cases-section {
+  padding-block: clamp(5rem, 8vw, 7rem);
+}
+
+.marketing-flow .use-case-grid article {
+  min-height: 14rem;
+}
+
+.marketing-flow .control-section {
+  padding-block: clamp(5rem, 8vw, 7rem);
+}
+
+.marketing-flow .control-points h3 {
+  font-size: 1rem;
+}
+
+.marketing-flow .control-points p {
+  font-size: 0.8125rem;
+}
+
+.marketing-flow .faq-section {
+  padding-block: clamp(5rem, 8vw, 7rem);
+}
+
+.marketing-flow .faq-list summary {
+  min-height: 4rem;
+  padding-block: var(--space-5);
+  font-size: 0.9375rem;
+}
+
+.marketing-flow .faq-list summary:focus-visible {
+  border-radius: var(--radius-control);
+  outline: 2px solid var(--color-ink);
+  outline-offset: 0.25rem;
+}
+
+.marketing-flow .faq-list details p {
+  font-size: 0.875rem;
+}
+
+.marketing-flow .final-cta {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(5.5rem, 10vw, 8rem);
+  background-image: none;
+}
+
+.marketing-flow .final-cta::before {
+  position: absolute;
+  inset: 2rem max(1rem, calc((100vw - 1180px) / 2));
+  z-index: 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  box-shadow: 0 1rem 3rem rgba(18, 35, 30, 0.05);
+  content: "";
+}
+
+.marketing-flow .final-cta-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.marketing-flow .final-cta h2 {
+  font-size: clamp(3rem, 7vw, 5rem);
+}
+
+.marketing-flow .site-footer {
+  padding: clamp(3.5rem, 6vw, 5rem) 0 var(--space-6);
+  background: var(--color-inverse);
+}
+
+.marketing-flow .footer-grid {
+  gap: clamp(2.5rem, 7vw, 6rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.marketing-flow .footer-grid nav a {
+  min-height: 1.5rem;
+  font-size: 0.8125rem;
+}
+
+.marketing-flow .footer-grid nav a:focus-visible,
+.marketing-flow .footer-brand a:focus-visible,
+.marketing-flow .marketing-text-link:focus-visible {
+  border-radius: 0.25rem;
+  outline: 2px solid var(--color-signal);
+  outline-offset: 0.25rem;
+}
+
+@media (max-width: 1080px) {
+  .marketing-flow .process-card,
+  .marketing-flow .process-card.featured {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+}
+
+@media (max-width: 780px) {
+  .marketing-flow .problem-layout,
+  .marketing-flow .evidence-layout,
+  .marketing-flow .market-layout,
+  .marketing-flow .control-layout,
+  .marketing-flow .faq-layout {
+    gap: var(--space-8);
+  }
+
+  .marketing-flow .process-card,
+  .marketing-flow .process-card.featured {
+    min-height: 0;
+    padding: var(--space-6) 0 var(--space-8);
+    border-right: 0;
+  }
+
+  .marketing-flow .process-card.featured {
+    box-shadow: inset 0.25rem 0 0 var(--color-signal);
+    padding-left: var(--space-5);
+  }
+
+  .marketing-flow .intelligence-card,
+  .marketing-flow .intelligence-card-wide {
+    min-height: 0;
+  }
+
+  .marketing-flow .market-board {
+    box-shadow: 0.5rem 0.5rem 0 rgba(255, 254, 250, 0.62);
+  }
+
+  .marketing-flow .final-cta::before {
+    inset-inline: var(--space-4);
+  }
+}
+
+@media (max-width: 520px) {
+  .marketing-flow .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Marketing landing page */
 
 .site-nav {

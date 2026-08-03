@@ -1,0 +1,293 @@
+{
+  "fixture": "real public landing route with synthetic query-review target check",
+  "scenarios": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "documentHeight": 12122,
+      "bodyOverflow": false,
+      "sections": {
+        ".landing-problem": {
+          "top": 1904,
+          "width": 390,
+          "height": 1248
+        },
+        ".process-section": {
+          "top": 3153,
+          "width": 390,
+          "height": 1454
+        },
+        ".intelligence-section": {
+          "top": 4606,
+          "width": 390,
+          "height": 1730
+        },
+        ".evidence-section": {
+          "top": 6336,
+          "width": 390,
+          "height": 935
+        },
+        ".market-section": {
+          "top": 7272,
+          "width": 390,
+          "height": 829
+        },
+        ".use-cases-section": {
+          "top": 8101,
+          "width": 390,
+          "height": 1301
+        },
+        ".control-section": {
+          "top": 9402,
+          "width": 390,
+          "height": 743
+        },
+        ".faq-section": {
+          "top": 10146,
+          "width": 390,
+          "height": 855
+        },
+        ".final-cta": {
+          "top": 11001,
+          "width": 390,
+          "height": 495
+        },
+        ".site-footer": {
+          "top": 11496,
+          "width": 390,
+          "height": 626
+        }
+      },
+      "faqCount": 7,
+      "footerNavCount": 2,
+      "ctaHref": "#start-discovery",
+      "processHref": "#start-discovery",
+      "marketingClaims": "LEAVE THE LIST-BUILDING BEHIND\nYour next great customer should not be buried in a spreadsheet.\n\nFinding a store is easy. Knowing whether it is relevant, active, reachable, and worth your time is the hard part.\n\nStoreSignal brings that research together, giving you a clearer list of prospects and a better reason to contact each one.\n\n01\nLess searching\n\nStart with the market you want—not hours of tabs, directories, and copied domains.\n\n02\nLess guessing\n\nSee why a store fits before you invest time writing the perfect message.\n\n03\nMore confidence\n\nReach out with useful context and a clearer sense of opportunity.\n\nFROM MARKET IDEA TO MEANINGFUL OUTREACH\nA better lead list in four simple steps.\n\nStoreSignal handles the repetitive research while keeping the important decisions visible and under your control.\n\n01\nDescribe your market\n\nTell us what your ideal Shopify stores sell.\n\n02\nShape the search\n\nReview every search and adjust it until the direction feels right.\n\n03\nLet us do the digging\n\nWe find matching stores, qualify their fit, and uncover ways to reach them.\n\n04\nFocus on the best\n\nCompare prospects, explore the evidence, and export your shortlist.\n\nStart finding stores\nKNOW MORE BEFORE YOU SAY HELLO\nEvery lead comes with a reason to care.\n\nA useful lead is more than a name and an email address. StoreSignal gives you the context to decide who belongs on your list—and how to approach them.\n\nTHE RIGHT BUSINESS\nKnow the store behind the domain.\n\nUnderstand what it sells, how closely it matches your market, and whether it is genuinely running on Shopify.\n\nIdentity verified\nCategory matched\nTHE RIGHT CONTACT\nFind a real way in.\n\nBring available emails, phones, contact pages, and social profiles into one place.\n\nTHE RIGHT MOMENT\n09\nmarkets, one clearer picture.\n\nSee where a store appears in search and where demand may be waiting.\n\nTHE RIGHT PRIORITY\nTurn a crowded market into a confident shortlist.\n01\nStrong fit\nQualified\n02\nContact ready\nQualified\n03\nWorth a look\nReview\nCONFIDENCE YOU CAN INSPECT\nNo mystery scores. No unexplained recommendations.\n\nWhen StoreSignal recommends a lead, you can see why. Review the storefront, category match, contact sources, search presence, and signals behind its position on your list.\n\nBecause better outreach begins with knowing what is true.\n\n01\nStore identity\n02\nProduct and category fit\n03\nContact sources\n04\nSearch visibility\n05\nMarket presence\n06\nLead strength\nSEE THE BIGGER MARKET\nDiscover where attention is already growing.\n\nExplore the search presence behind one prospect or your entire lead list. Move between worldwide and country-level views to see where your next opportunity may be waiting.\n\nSearch visibility estimates are not private storefront analytics.\nGLOBAL MARKET VISIBILITY\nOne store.\nNine markets.\nA clearer picture.\nUS\nGB\nCA\nAU\nNZ\nDE\nFR\nIN\nAE\nBUILT FOR AMBITIOUS OUTREACH\nWhatever you sell, start with stores that need it.\n\nBetter targeting makes every offer stronger.\n\n01\nEcommerce agencies\n\nFind stores that fit your design, development, advertising, SEO, or retention expertise.\n\n02\nShopify technology teams\n\nReach merchants more likely to benefit from your app, integration, or platform.\n\n03\nWholesale brands\n\nDiscover retailers that belong in your distribution and stockist network.\n\n04\nPartnership teams\n\nFind relevant brands for collaborations, affiliates, suppliers, and strategic relationships.\n\nYOU STAY IN CONTROL\nStoreSignal does the research. You make the call.\n\nReview the strategy before discovery. Inspect the reasoning behind every lead. Export the complete result whenever you are ready.\n\nNothing begins without your approval\n\nYou see and shape the searches first.\n\nNothing important is hidden\n\nThe evidence behind each lead remains available.\n\nNothing locks you in\n\nYour complete results are ready to export.\n\nQUESTIONS, ANSWERED\nGood to know before you begin.\n\nStoreSignal is built for focused, evidence-led Shopify prospecting.\n\nWhat is StoreSignal?\n+\nWhat should I search for?\n+\nCan I change the searches StoreSignal creates?\n+\nWhat contact information can I find?\n+\nHow are leads ranked?\n+\nDoes traffic mean actual website visitors?\n+\nCan I export my leads?\n+\nYOUR NEXT OPPORTUNITY IS ALREADY OUT THERE\nFind the stores worth knowing.\n\nStart with a category. Finish with a focused list of Shopify prospects you are ready to approach.\n\nFind my next leads\nYou approve the search before discovery begins.\nStoreSignal\n\nFind, understand, and reach the Shopify stores that fit your business.\n\nPRODUCT\nHow it works\nWhat you get\nUse cases\nACCOUNT\nMy runs\nSign in\nCreate account\n© 2026 STORESIGNAL\nSHOPIFY LEAD INTELLIGENCE"
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "documentHeight": 10671,
+      "bodyOverflow": false,
+      "sections": {
+        ".landing-problem": {
+          "top": 1342,
+          "width": 753,
+          "height": 1064
+        },
+        ".process-section": {
+          "top": 2406,
+          "width": 753,
+          "height": 1418
+        },
+        ".intelligence-section": {
+          "top": 3824,
+          "width": 753,
+          "height": 1674
+        },
+        ".evidence-section": {
+          "top": 5498,
+          "width": 753,
+          "height": 828
+        },
+        ".market-section": {
+          "top": 6326,
+          "width": 753,
+          "height": 710
+        },
+        ".use-cases-section": {
+          "top": 7037,
+          "width": 753,
+          "height": 1276
+        },
+        ".control-section": {
+          "top": 8313,
+          "width": 753,
+          "height": 691
+        },
+        ".faq-section": {
+          "top": 9003,
+          "width": 753,
+          "height": 774
+        },
+        ".final-cta": {
+          "top": 9778,
+          "width": 753,
+          "height": 452
+        },
+        ".site-footer": {
+          "top": 10230,
+          "width": 753,
+          "height": 442
+        }
+      },
+      "faqCount": 7,
+      "footerNavCount": 2,
+      "ctaHref": "#start-discovery",
+      "processHref": "#start-discovery",
+      "marketingClaims": "LEAVE THE LIST-BUILDING BEHIND\nYour next great customer should not be buried in a spreadsheet.\n\nFinding a store is easy. Knowing whether it is relevant, active, reachable, and worth your time is the hard part.\n\nStoreSignal brings that research together, giving you a clearer list of prospects and a better reason to contact each one.\n\n01\nLess searching\n\nStart with the market you want—not hours of tabs, directories, and copied domains.\n\n02\nLess guessing\n\nSee why a store fits before you invest time writing the perfect message.\n\n03\nMore confidence\n\nReach out with useful context and a clearer sense of opportunity.\n\nFROM MARKET IDEA TO MEANINGFUL OUTREACH\nA better lead list in four simple steps.\n\nStoreSignal handles the repetitive research while keeping the important decisions visible and under your control.\n\n01\nDescribe your market\n\nTell us what your ideal Shopify stores sell.\n\n02\nShape the search\n\nReview every search and adjust it until the direction feels right.\n\n03\nLet us do the digging\n\nWe find matching stores, qualify their fit, and uncover ways to reach them.\n\n04\nFocus on the best\n\nCompare prospects, explore the evidence, and export your shortlist.\n\nStart finding stores\nKNOW MORE BEFORE YOU SAY HELLO\nEvery lead comes with a reason to care.\n\nA useful lead is more than a name and an email address. StoreSignal gives you the context to decide who belongs on your list—and how to approach them.\n\nTHE RIGHT BUSINESS\nKnow the store behind the domain.\n\nUnderstand what it sells, how closely it matches your market, and whether it is genuinely running on Shopify.\n\nIdentity verified\nCategory matched\nTHE RIGHT CONTACT\nFind a real way in.\n\nBring available emails, phones, contact pages, and social profiles into one place.\n\nTHE RIGHT MOMENT\n09\nmarkets, one clearer picture.\n\nSee where a store appears in search and where demand may be waiting.\n\nTHE RIGHT PRIORITY\nTurn a crowded market into a confident shortlist.\n01\nStrong fit\nQualified\n02\nContact ready\nQualified\n03\nWorth a look\nReview\nCONFIDENCE YOU CAN INSPECT\nNo mystery scores. No unexplained recommendations.\n\nWhen StoreSignal recommends a lead, you can see why. Review the storefront, category match, contact sources, search presence, and signals behind its position on your list.\n\nBecause better outreach begins with knowing what is true.\n\n01\nStore identity\n02\nProduct and category fit\n03\nContact sources\n04\nSearch visibility\n05\nMarket presence\n06\nLead strength\nSEE THE BIGGER MARKET\nDiscover where attention is already growing.\n\nExplore the search presence behind one prospect or your entire lead list. Move between worldwide and country-level views to see where your next opportunity may be waiting.\n\nSearch visibility estimates are not private storefront analytics.\nGLOBAL MARKET VISIBILITY\nOne store.\nNine markets.\nA clearer picture.\nUS\nGB\nCA\nAU\nNZ\nDE\nFR\nIN\nAE\nBUILT FOR AMBITIOUS OUTREACH\nWhatever you sell, start with stores that need it.\n\nBetter targeting makes every offer stronger.\n\n01\nEcommerce agencies\n\nFind stores that fit your design, development, advertising, SEO, or retention expertise.\n\n02\nShopify technology teams\n\nReach merchants more likely to benefit from your app, integration, or platform.\n\n03\nWholesale brands\n\nDiscover retailers that belong in your distribution and stockist network.\n\n04\nPartnership teams\n\nFind relevant brands for collaborations, affiliates, suppliers, and strategic relationships.\n\nYOU STAY IN CONTROL\nStoreSignal does the research. You make the call.\n\nReview the strategy before discovery. Inspect the reasoning behind every lead. Export the complete result whenever you are ready.\n\nNothing begins without your approval\n\nYou see and shape the searches first.\n\nNothing important is hidden\n\nThe evidence behind each lead remains available.\n\nNothing locks you in\n\nYour complete results are ready to export.\n\nQUESTIONS, ANSWERED\nGood to know before you begin.\n\nStoreSignal is built for focused, evidence-led Shopify prospecting.\n\nWhat is StoreSignal?\n+\nWhat should I search for?\n+\nCan I change the searches StoreSignal creates?\n+\nWhat contact information can I find?\n+\nHow are leads ranked?\n+\nDoes traffic mean actual website visitors?\n+\nCan I export my leads?\n+\nYOUR NEXT OPPORTUNITY IS ALREADY OUT THERE\nFind the stores worth knowing.\n\nStart with a category. Finish with a focused list of Shopify prospects you are ready to approach.\n\nFind my next leads\nYou approve the search before discovery begins.\nStoreSignal\n\nFind, understand, and reach the Shopify stores that fit your business.\n\nPRODUCT\nHow it works\nWhat you get\nUse cases\nACCOUNT\nMy runs\nSign in\nCreate account\n© 2026 STORESIGNAL\nSHOPIFY LEAD INTELLIGENCE"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "documentHeight": 7840,
+      "bodyOverflow": false,
+      "sections": {
+        ".landing-problem": {
+          "top": 1203,
+          "width": 1265,
+          "height": 703
+        },
+        ".process-section": {
+          "top": 1906,
+          "width": 1265,
+          "height": 830
+        },
+        ".intelligence-section": {
+          "top": 2735,
+          "width": 1265,
+          "height": 1093
+        },
+        ".evidence-section": {
+          "top": 3828,
+          "width": 1265,
+          "height": 592
+        },
+        ".market-section": {
+          "top": 4420,
+          "width": 1265,
+          "height": 556
+        },
+        ".use-cases-section": {
+          "top": 4975,
+          "width": 1265,
+          "height": 707
+        },
+        ".control-section": {
+          "top": 5683,
+          "width": 1265,
+          "height": 503
+        },
+        ".faq-section": {
+          "top": 6186,
+          "width": 1265,
+          "height": 661
+        },
+        ".final-cta": {
+          "top": 6847,
+          "width": 1265,
+          "height": 641
+        },
+        ".site-footer": {
+          "top": 7487,
+          "width": 1265,
+          "height": 353
+        }
+      },
+      "faqCount": 7,
+      "footerNavCount": 2,
+      "ctaHref": "#start-discovery",
+      "processHref": "#start-discovery",
+      "marketingClaims": "LEAVE THE LIST-BUILDING BEHIND\nYour next great customer should not be buried in a spreadsheet.\n\nFinding a store is easy. Knowing whether it is relevant, active, reachable, and worth your time is the hard part.\n\nStoreSignal brings that research together, giving you a clearer list of prospects and a better reason to contact each one.\n\n01\nLess searching\n\nStart with the market you want—not hours of tabs, directories, and copied domains.\n\n02\nLess guessing\n\nSee why a store fits before you invest time writing the perfect message.\n\n03\nMore confidence\n\nReach out with useful context and a clearer sense of opportunity.\n\nFROM MARKET IDEA TO MEANINGFUL OUTREACH\nA better lead list in four simple steps.\n\nStoreSignal handles the repetitive research while keeping the important decisions visible and under your control.\n\n01\nDescribe your market\n\nTell us what your ideal Shopify stores sell.\n\n02\nShape the search\n\nReview every search and adjust it until the direction feels right.\n\n03\nLet us do the digging\n\nWe find matching stores, qualify their fit, and uncover ways to reach them.\n\n04\nFocus on the best\n\nCompare prospects, explore the evidence, and export your shortlist.\n\nStart finding stores\nKNOW MORE BEFORE YOU SAY HELLO\nEvery lead comes with a reason to care.\n\nA useful lead is more than a name and an email address. StoreSignal gives you the context to decide who belongs on your list—and how to approach them.\n\nTHE RIGHT BUSINESS\nKnow the store behind the domain.\n\nUnderstand what it sells, how closely it matches your market, and whether it is genuinely running on Shopify.\n\nIdentity verified\nCategory matched\nTHE RIGHT CONTACT\nFind a real way in.\n\nBring available emails, phones, contact pages, and social profiles into one place.\n\nTHE RIGHT MOMENT\n09\nmarkets, one clearer picture.\n\nSee where a store appears in search and where demand may be waiting.\n\nTHE RIGHT PRIORITY\nTurn a crowded market into a confident shortlist.\n01\nStrong fit\nQualified\n02\nContact ready\nQualified\n03\nWorth a look\nReview\nCONFIDENCE YOU CAN INSPECT\nNo mystery scores. No unexplained recommendations.\n\nWhen StoreSignal recommends a lead, you can see why. Review the storefront, category match, contact sources, search presence, and signals behind its position on your list.\n\nBecause better outreach begins with knowing what is true.\n\n01\nStore identity\n02\nProduct and category fit\n03\nContact sources\n04\nSearch visibility\n05\nMarket presence\n06\nLead strength\nSEE THE BIGGER MARKET\nDiscover where attention is already growing.\n\nExplore the search presence behind one prospect or your entire lead list. Move between worldwide and country-level views to see where your next opportunity may be waiting.\n\nSearch visibility estimates are not private storefront analytics.\nGLOBAL MARKET VISIBILITY\nOne store.\nNine markets.\nA clearer picture.\nUS\nGB\nCA\nAU\nNZ\nDE\nFR\nIN\nAE\nBUILT FOR AMBITIOUS OUTREACH\nWhatever you sell, start with stores that need it.\n\nBetter targeting makes every offer stronger.\n\n01\nEcommerce agencies\n\nFind stores that fit your design, development, advertising, SEO, or retention expertise.\n\n02\nShopify technology teams\n\nReach merchants more likely to benefit from your app, integration, or platform.\n\n03\nWholesale brands\n\nDiscover retailers that belong in your distribution and stockist network.\n\n04\nPartnership teams\n\nFind relevant brands for collaborations, affiliates, suppliers, and strategic relationships.\n\nYOU STAY IN CONTROL\nStoreSignal does the research. You make the call.\n\nReview the strategy before discovery. Inspect the reasoning behind every lead. Export the complete result whenever you are ready.\n\nNothing begins without your approval\n\nYou see and shape the searches first.\n\nNothing important is hidden\n\nThe evidence behind each lead remains available.\n\nNothing locks you in\n\nYour complete results are ready to export.\n\nQUESTIONS, ANSWERED\nGood to know before you begin.\n\nStoreSignal is built for focused, evidence-led Shopify prospecting.\n\nWhat is StoreSignal?\n+\nWhat should I search for?\n+\nCan I change the searches StoreSignal creates?\n+\nWhat contact information can I find?\n+\nHow are leads ranked?\n+\nDoes traffic mean actual website visitors?\n+\nCan I export my leads?\n+\nYOUR NEXT OPPORTUNITY IS ALREADY OUT THERE\nFind the stores worth knowing.\n\nStart with a category. Finish with a focused list of Shopify prospects you are ready to approach.\n\nFind my next leads\nYou approve the search before discovery begins.\nStoreSignal\n\nFind, understand, and reach the Shopify stores that fit your business.\n\nPRODUCT\nHow it works\nWhat you get\nUse cases\nACCOUNT\nMy runs\nSign in\nCreate account\n© 2026 STORESIGNAL\nSHOPIFY LEAD INTELLIGENCE"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1425,
+      "documentHeight": 8093,
+      "bodyOverflow": false,
+      "sections": {
+        ".landing-problem": {
+          "top": 1274,
+          "width": 1425,
+          "height": 736
+        },
+        ".process-section": {
+          "top": 2011,
+          "width": 1425,
+          "height": 852
+        },
+        ".intelligence-section": {
+          "top": 2862,
+          "width": 1425,
+          "height": 1105
+        },
+        ".evidence-section": {
+          "top": 3967,
+          "width": 1425,
+          "height": 611
+        },
+        ".market-section": {
+          "top": 4578,
+          "width": 1425,
+          "height": 583
+        },
+        ".use-cases-section": {
+          "top": 5162,
+          "width": 1425,
+          "height": 729
+        },
+        ".control-section": {
+          "top": 5891,
+          "width": 1425,
+          "height": 522
+        },
+        ".faq-section": {
+          "top": 6413,
+          "width": 1425,
+          "height": 680
+        },
+        ".final-cta": {
+          "top": 7093,
+          "width": 1425,
+          "height": 641
+        },
+        ".site-footer": {
+          "top": 7734,
+          "width": 1425,
+          "height": 359
+        }
+      },
+      "faqCount": 7,
+      "footerNavCount": 2,
+      "ctaHref": "#start-discovery",
+      "processHref": "#start-discovery",
+      "marketingClaims": "LEAVE THE LIST-BUILDING BEHIND\nYour next great customer should not be buried in a spreadsheet.\n\nFinding a store is easy. Knowing whether it is relevant, active, reachable, and worth your time is the hard part.\n\nStoreSignal brings that research together, giving you a clearer list of prospects and a better reason to contact each one.\n\n01\nLess searching\n\nStart with the market you want—not hours of tabs, directories, and copied domains.\n\n02\nLess guessing\n\nSee why a store fits before you invest time writing the perfect message.\n\n03\nMore confidence\n\nReach out with useful context and a clearer sense of opportunity.\n\nFROM MARKET IDEA TO MEANINGFUL OUTREACH\nA better lead list in four simple steps.\n\nStoreSignal handles the repetitive research while keeping the important decisions visible and under your control.\n\n01\nDescribe your market\n\nTell us what your ideal Shopify stores sell.\n\n02\nShape the search\n\nReview every search and adjust it until the direction feels right.\n\n03\nLet us do the digging\n\nWe find matching stores, qualify their fit, and uncover ways to reach them.\n\n04\nFocus on the best\n\nCompare prospects, explore the evidence, and export your shortlist.\n\nStart finding stores\nKNOW MORE BEFORE YOU SAY HELLO\nEvery lead comes with a reason to care.\n\nA useful lead is more than a name and an email address. StoreSignal gives you the context to decide who belongs on your list—and how to approach them.\n\nTHE RIGHT BUSINESS\nKnow the store behind the domain.\n\nUnderstand what it sells, how closely it matches your market, and whether it is genuinely running on Shopify.\n\nIdentity verified\nCategory matched\nTHE RIGHT CONTACT\nFind a real way in.\n\nBring available emails, phones, contact pages, and social profiles into one place.\n\nTHE RIGHT MOMENT\n09\nmarkets, one clearer picture.\n\nSee where a store appears in search and where demand may be waiting.\n\nTHE RIGHT PRIORITY\nTurn a crowded market into a confident shortlist.\n01\nStrong fit\nQualified\n02\nContact ready\nQualified\n03\nWorth a look\nReview\nCONFIDENCE YOU CAN INSPECT\nNo mystery scores. No unexplained recommendations.\n\nWhen StoreSignal recommends a lead, you can see why. Review the storefront, category match, contact sources, search presence, and signals behind its position on your list.\n\nBecause better outreach begins with knowing what is true.\n\n01\nStore identity\n02\nProduct and category fit\n03\nContact sources\n04\nSearch visibility\n05\nMarket presence\n06\nLead strength\nSEE THE BIGGER MARKET\nDiscover where attention is already growing.\n\nExplore the search presence behind one prospect or your entire lead list. Move between worldwide and country-level views to see where your next opportunity may be waiting.\n\nSearch visibility estimates are not private storefront analytics.\nGLOBAL MARKET VISIBILITY\nOne store.\nNine markets.\nA clearer picture.\nUS\nGB\nCA\nAU\nNZ\nDE\nFR\nIN\nAE\nBUILT FOR AMBITIOUS OUTREACH\nWhatever you sell, start with stores that need it.\n\nBetter targeting makes every offer stronger.\n\n01\nEcommerce agencies\n\nFind stores that fit your design, development, advertising, SEO, or retention expertise.\n\n02\nShopify technology teams\n\nReach merchants more likely to benefit from your app, integration, or platform.\n\n03\nWholesale brands\n\nDiscover retailers that belong in your distribution and stockist network.\n\n04\nPartnership teams\n\nFind relevant brands for collaborations, affiliates, suppliers, and strategic relationships.\n\nYOU STAY IN CONTROL\nStoreSignal does the research. You make the call.\n\nReview the strategy before discovery. Inspect the reasoning behind every lead. Export the complete result whenever you are ready.\n\nNothing begins without your approval\n\nYou see and shape the searches first.\n\nNothing important is hidden\n\nThe evidence behind each lead remains available.\n\nNothing locks you in\n\nYour complete results are ready to export.\n\nQUESTIONS, ANSWERED\nGood to know before you begin.\n\nStoreSignal is built for focused, evidence-led Shopify prospecting.\n\nWhat is StoreSignal?\n+\nWhat should I search for?\n+\nCan I change the searches StoreSignal creates?\n+\nWhat contact information can I find?\n+\nHow are leads ranked?\n+\nDoes traffic mean actual website visitors?\n+\nCan I export my leads?\n+\nYOUR NEXT OPPORTUNITY IS ALREADY OUT THERE\nFind the stores worth knowing.\n\nStart with a category. Finish with a focused list of Shopify prospects you are ready to approach.\n\nFind my next leads\nYou approve the search before discovery begins.\nStoreSignal\n\nFind, understand, and reach the Shopify stores that fit your business.\n\nPRODUCT\nHow it works\nWhat you get\nUse cases\nACCOUNT\nMy runs\nSign in\nCreate account\n© 2026 STORESIGNAL\nSHOPIFY LEAD INTELLIGENCE"
+    }
+  ],
+  "interactions": [
+    {
+      "name": "faq-keyboard",
+      "open": true,
+      "focused": true,
+      "outlineStyle": "solid",
+      "outlineWidth": "2px"
+    },
+    {
+      "name": "sticky-anchor",
+      "hash": "#how-it-works",
+      "top": 543,
+      "headerHeight": 61,
+      "viewportHeight": 844
+    },
+    {
+      "name": "query-review-target-fixture",
+      "href": "#query-review",
+      "labels": [
+        "Start finding stores",
+        "Find my next leads"
+      ]
+    }
+  ]
+}

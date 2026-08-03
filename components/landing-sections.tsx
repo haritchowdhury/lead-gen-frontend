@@ -70,6 +70,7 @@ export function LandingProcess({ variant = "start" }: { variant?: LandingVariant
 
   return (
     <>
+      <div className="marketing-flow">
       <section className="landing-problem" id="what-you-get">
         <div className="shell problem-layout">
           <div className="problem-statement">
@@ -178,7 +179,7 @@ export function LandingProcess({ variant = "start" }: { variant?: LandingVariant
               ["How are leads ranked?", "StoreSignal uses recorded signals such as store identity, category fit, contact availability, and Shopify verification. The evidence remains available for inspection."],
               ["Does traffic mean actual website visitors?", "No. Traffic figures are search-visibility estimates, not private storefront analytics or confirmed website visits."],
               ["Can I export my leads?", "Yes. Export the complete lead list and its available research data to CSV."],
-            ].map(([question, answer]) => <details key={question}><summary>{question}<span>+</span></summary><p>{answer}</p></details>)}
+            ].map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}
           </div>
         </div>
       </section>
@@ -190,11 +191,12 @@ export function LandingProcess({ variant = "start" }: { variant?: LandingVariant
       <footer className="site-footer">
         <div className="shell footer-grid">
           <div className="footer-brand"><Link className="brand" href="/" aria-label="StoreSignal home"><span>StoreSignal</span></Link><p>Find, understand, and reach the Shopify stores that fit your business.</p></div>
-          <nav aria-label="Product"><strong>Product</strong><Link href="/#how-it-works">How it works</Link><Link href="/#what-you-get">What you get</Link><Link href="/#use-cases">Use cases</Link></nav>
+          <nav aria-label="Product"><strong>Product</strong><Link href="#how-it-works">How it works</Link><Link href="#what-you-get">What you get</Link><Link href="#use-cases">Use cases</Link></nav>
           <nav aria-label="Account"><strong>Account</strong><Link href="/runs">My runs</Link><Link href="/sign-in">Sign in</Link><Link href="/sign-up">Create account</Link></nav>
         </div>
         <div className="shell footer-base"><span>© 2026 StoreSignal</span><span>Shopify lead intelligence</span></div>
       </footer>
+      </div>
     </>
   );
 }
