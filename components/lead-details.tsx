@@ -68,11 +68,50 @@ function TokenList({ label, values }: { label: string; values: string[] | undefi
   );
 }
 
+function TokenDisclosure({ label, values }: { label: string; values: string[] | undefined }) {
+  if (!values?.length) return null;
+  return (
+    <div className="token-fact">
+      <dt>{label}</dt>
+      <dd>
+        <details className="token-disclosure">
+          <summary>{values.length} recorded</summary>
+          <p className="token-values">
+            {values.map((value) => humanizeToken(value)).join(" · ")}
+          </p>
+        </details>
+      </dd>
+    </div>
+  );
+}
+
 function EvidenceSource({ href }: { href: string | undefined }) {
   if (!href) return <span>Source not recorded</span>;
   return safeExternalUrl(href)
     ? <ExternalDetailLink href={href}>Evidence source</ExternalDetailLink>
     : <span>Unsafe source URL omitted</span>;
+}
+
+function EvidenceSources({ urls }: { urls: string[] | undefined }) {
+  const uniqueUrls = [...new Set(urls ?? [])];
+  if (!uniqueUrls.length) return null;
+  if (uniqueUrls.length === 1) {
+    return (
+      <div className="detail-links evidence-source-links">
+        <ExternalDetailLink href={uniqueUrls[0]}>Evidence source</ExternalDetailLink>
+      </div>
+    );
+  }
+  return (
+    <details className="source-disclosure">
+      <summary>{uniqueUrls.length} evidence sources</summary>
+      <div className="detail-links evidence-source-links">
+        {uniqueUrls.map((url, index) => (
+          <ExternalDetailLink key={url} href={url}>Source {index + 1}</ExternalDetailLink>
+        ))}
+      </div>
+    </details>
+  );
 }
 
 function ContactEvidenceItem({ item }: { item: EvidenceItem }) {
@@ -180,11 +219,11 @@ function StoreFitItem({ item, index }: { item: StoreFitEvidence; index: number }
         <Fact label="Normalized category" value={item.intent?.shopType} />
         <Fact label="Business qualifier" value={item.intent?.businessQualifier && humanizeToken(item.intent.businessQualifier)} />
         <Fact label="Reason" value={item.reason && humanizeToken(item.reason)} />
-        <TokenList label="Category vocabulary" values={item.intent?.categoryVocabulary} />
+        <TokenDisclosure label="Category vocabulary" values={item.intent?.categoryVocabulary} />
         <TokenList label="Matched terms" values={item.matchedTerms} />
         <TokenList label="Signal kinds" values={item.signalKinds} />
       </dl>
-      {(item.sourceUrls ?? []).map((url) => <EvidenceSource key={url} href={url} />)}
+      <EvidenceSources urls={item.sourceUrls} />
       {(item.breadthEvidence?.length ?? 0) > 0 && (
         <details className="nested-evidence">
           <summary>Breadth evidence ({item.breadthEvidence?.length})</summary>
@@ -237,9 +276,9 @@ function StoreEvidence({ lead }: { lead: Lead }) {
         <Fact label="Category evidence score" value={lead.relevance_score == null ? null : `${lead.relevance_score}/100`} />
       </dl>
       {(lead.store_fit_evidence?.length ?? 0) > 0 ? (
-        <details className="nested-evidence">
+        <details className="nested-evidence evidence-ledger store-fit-ledger">
           <summary>Structured store-fit evidence ({lead.store_fit_evidence?.length})</summary>
-          <ul className="provenance-list">{lead.store_fit_evidence?.map((item, index) => (
+          <ul className="provenance-list evidence-ledger-list">{lead.store_fit_evidence?.map((item, index) => (
             <StoreFitItem key={`${item.intent?.shopType ?? "fit"}-${index}`} item={item} index={index} />
           ))}</ul>
         </details>
@@ -272,30 +311,22 @@ function ScoreDetails({ lead }: { lead: Lead }) {
 function IdentityDetails({ lead }: { lead: Lead }) {
   const identity = lead.identity_evidence;
   const canonical = identity?.canonical;
+  const resolvedStorefront = lead.final_url ?? lead.canonical_url;
   return (
     <DetailSection title="Store identity" order="05">
       <dl className="fact-grid">
-        <Fact label="Display hostname" value={identity?.displayHostname} />
-        <Fact label="Stable hostname" value={identity?.stableHostname} />
-        <Fact label="Resolved domain" value={lead.resolved_domain} />
         <Fact label="MyShopify domain" value={lead.myshopify_domain} />
         <Fact label="Identity confidence" value={lead.identity_confidence == null ? null : `${lead.identity_confidence}/100`} />
         <Fact label="Evidence confidence" value={identity?.confidence == null ? null : `${identity.confidence}/100`} />
         <Fact label="Resolution method" value={identity?.method && humanizeToken(identity.method)} />
         <Fact label="Merged occurrences" value={identity?.mergedOccurrenceCount} />
-        <TokenList label="Observed hostnames" values={identity?.observedHostnames} />
-      </dl>
-      {canonical && (
-        <dl className="fact-grid">
-          <Fact label="Canonical hostname" value={canonical.hostname} />
-          <Fact label="Canonical trust" value={canonical.trusted ? "Verified equivalent" : "Unverified evidence"} />
+        <Fact label="Canonical verification" value={canonical && (canonical.trusted ? "Verified equivalent" : "Unverified evidence")} />
+        {canonical && (
           <Fact label="Canonical reason" value={canonical.reason && humanizeToken(canonical.reason)} />
-        </dl>
-      )}
+        )}
+      </dl>
       <div className="detail-links">
-        <ExternalDetailLink href={lead.final_url}>Observed final storefront URL</ExternalDetailLink>
-        <ExternalDetailLink href={lead.canonical_url}>Lead canonical URL</ExternalDetailLink>
-        <ExternalDetailLink href={canonical?.url}>Canonical evidence URL</ExternalDetailLink>
+        <ExternalDetailLink href={resolvedStorefront}>Resolved storefront</ExternalDetailLink>
       </div>
     </DetailSection>
   );
@@ -304,9 +335,9 @@ function IdentityDetails({ lead }: { lead: Lead }) {
 function OccurrenceList({ occurrences }: { occurrences: DiscoveryOccurrence[] }) {
   if (!occurrences.length) return null;
   return (
-    <details className="nested-evidence">
+    <details className="nested-evidence evidence-ledger occurrence-ledger">
       <summary>Discovery occurrences ({occurrences.length})</summary>
-      <ol className="provenance-list occurrence-list">
+      <ol className="provenance-list occurrence-list evidence-ledger-list">
         {occurrences.map((item, index) => (
           <li key={`${item.query ?? "query"}-${item.rank ?? "rank"}-${index}`}>
             <strong>{item.query || "Query not recorded"}</strong>
@@ -317,14 +348,13 @@ function OccurrenceList({ occurrences }: { occurrences: DiscoveryOccurrence[] })
               <Fact label="Query-generation reason" value={item.queryGenerationReason} />
               <Fact label="Rank" value={item.rank} />
               <Fact label="Query score" value={item.queryScore} />
-              <Fact label="Resolved domain" value={item.resolvedDomain} />
               <Fact label="MyShopify domain" value={item.myshopifyDomain} />
-              <TokenList label="Category vocabulary" values={item.categoryVocabulary ?? item.categoryIntent?.categoryVocabulary} />
+              <TokenDisclosure label="Category vocabulary" values={item.categoryVocabulary ?? item.categoryIntent?.categoryVocabulary} />
             </dl>
             <div className="detail-links">
               {(item.querySourceUrls ?? []).map((url) => <ExternalDetailLink key={url} href={url}>Query source</ExternalDetailLink>)}
               <ExternalDetailLink href={item.resultUrl}>Requested search-result URL</ExternalDetailLink>
-              <ExternalDetailLink href={item.finalUrl}>Observed final URL</ExternalDetailLink>
+              <ExternalDetailLink href={item.finalUrl}>Resolved storefront</ExternalDetailLink>
             </div>
           </li>
         ))}
@@ -335,11 +365,14 @@ function OccurrenceList({ occurrences }: { occurrences: DiscoveryOccurrence[] })
 
 function DiscoveryDetails({ lead }: { lead: Lead }) {
   const occurrences = lead.discovery_occurrences ?? [];
+  const primaryQuery = lead.search_query ?? lead.generated_query;
+  const hasDistinctGeneratedQuery =
+    lead.generated_query && lead.generated_query !== primaryQuery;
   return (
     <DetailSection title="Discovery provenance" order="06">
       <dl className="fact-grid">
-        <Fact label="Generated query" value={lead.generated_query} />
-        <Fact label="Search query" value={lead.search_query} />
+        <Fact label="Search query" value={primaryQuery} />
+        <Fact label="Generated query" value={hasDistinctGeneratedQuery ? lead.generated_query : null} />
         <Fact label="Query-generation reason" value={lead.query_generation_reason} />
         <Fact label="Query score" value={lead.query_score} />
         <Fact label="Representative rank" value={lead.google_rank} />

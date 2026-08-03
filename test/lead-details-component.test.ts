@@ -93,10 +93,10 @@ test("actual expanded details render every full-evidence family and every contac
     "Validation reason",
     "Query-generation reason",
     "Requested search-result URL",
-    "Observed final URL",
-    "Display hostname",
+    "Resolved storefront",
+    "MyShopify domain",
     "fixture.example",
-    "Canonical trust",
+    "Canonical verification",
     "Evidence rank v2",
   ]) {
     assert.match(html, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"));

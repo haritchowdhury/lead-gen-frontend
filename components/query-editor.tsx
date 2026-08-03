@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { ArrowRightIcon, PlusIcon } from "@/components/icons";
 import type { QuerySet, RunQuery, StartScrapeResponse } from "@/lib/api-types";
 import { parseQuerySet, parseStartScrapeResponse } from "@/lib/api-validation";
 import { ApiRequestError, apiRequest, errorMessage } from "@/lib/client-api";
@@ -207,63 +208,74 @@ export function QueryEditor({
   }
 
   if (!querySet) {
-    return <section className="query-editor-card">Loading saved queries…</section>;
+    return (
+      <section className="run-form-card query-editor-card query-editor-loading">
+        Loading saved queries…
+      </section>
+    );
   }
 
   return (
-    <section className="query-editor-card">
-      <div className="query-editor-heading">
+    <section className="run-form-card query-editor-card">
+      <div className="form-heading-row query-editor-heading">
         <div>
           <span className="eyebrow">Query review · revision {querySet.revision}</span>
-          <h2>Review the searches before scraping</h2>
-          <p>Edit product phrases, add coverage, or remove weak searches. The backend checks the exact saved revision.</p>
+          <h2>Review your generated searches</h2>
         </div>
-        <span className="query-total">{rows.length} queries</span>
+        <span className="step-badge">02</span>
       </div>
 
       {error && <div className="inline-error" role="alert">{error}</div>}
 
       {grouped.map(({ category, rows: categoryRows }) => (
         <div className="query-category" key={category.categoryIndex}>
-          <div className="query-category-heading">
-            <div>
-              <h3>{category.originalShopType}</h3>
-              <span>{categoryRows.length}/20 queries</span>
-            </div>
-            <button type="button" onClick={() => addRow(category.categoryIndex)} disabled={categoryRows.length >= 20 || busy !== null}>
-              + Add query
+          <div className="field-label query-category-heading">
+            <h3>{category.originalShopType}</h3>
+            <span>{categoryRows.length}/20 queries</span>
+          </div>
+          <div className="query-list-wrap">
+            {categoryRows.map((row, index) => (
+              <div className="query-row" key={row.clientKey}>
+                <div className="query-row-main">
+                  <input
+                    aria-label={`Query ${index + 1} for ${category.originalShopType}`}
+                    value={row.query}
+                    maxLength={200}
+                    onChange={(event) => updateRow(row.clientKey, { query: event.target.value })}
+                    disabled={!querySet.editable || busy !== null}
+                  />
+                  <div className="query-meta">
+                    <span className={`query-badge source-${row.source}`}>{row.source.replace("_", " ")}</span>
+                    {row.queryScore !== null && <span>Score {row.queryScore}</span>}
+                    {row.generationReason && <span>{row.generationReason}</span>}
+                  </div>
+                  {(row.localError || row.rejectionReason) && (
+                    <p className="query-error">{(row.localError || row.rejectionReason || "").replaceAll("_", " ")}</p>
+                  )}
+                </div>
+                <div className="query-actions">
+                  <button type="button" aria-label="Move query up" onClick={() => moveRow(row, -1)} disabled={index === 0 || busy !== null}>↑</button>
+                  <button type="button" aria-label="Move query down" onClick={() => moveRow(row, 1)} disabled={index === categoryRows.length - 1 || busy !== null}>↓</button>
+                  <button type="button" aria-label="Delete query" onClick={() => deleteRow(row)} disabled={busy !== null}>Delete</button>
+                </div>
+              </div>
+            ))}
+            <button
+              className="suggestion-chip query-add-button"
+              type="button"
+              onClick={() => addRow(category.categoryIndex)}
+              disabled={categoryRows.length >= 20 || busy !== null}
+            >
+              <PlusIcon /> Add query
             </button>
           </div>
-          {categoryRows.map((row, index) => (
-            <div className="query-row" key={row.clientKey}>
-              <div className="query-row-main">
-                <input
-                  aria-label={`Query ${index + 1} for ${category.originalShopType}`}
-                  value={row.query}
-                  maxLength={200}
-                  onChange={(event) => updateRow(row.clientKey, { query: event.target.value })}
-                  disabled={!querySet.editable || busy !== null}
-                />
-                <div className="query-meta">
-                  <span className={`query-badge source-${row.source}`}>{row.source.replace("_", " ")}</span>
-                  {row.queryScore !== null && <span>Score {row.queryScore}</span>}
-                  {row.generationReason && <span>{row.generationReason}</span>}
-                </div>
-                {(row.localError || row.rejectionReason) && (
-                  <p className="query-error">{(row.localError || row.rejectionReason || "").replaceAll("_", " ")}</p>
-                )}
-              </div>
-              <div className="query-actions">
-                <button type="button" aria-label="Move query up" onClick={() => moveRow(row, -1)} disabled={index === 0 || busy !== null}>↑</button>
-                <button type="button" aria-label="Move query down" onClick={() => moveRow(row, 1)} disabled={index === categoryRows.length - 1 || busy !== null}>↓</button>
-                <button type="button" aria-label="Delete query" onClick={() => deleteRow(row)} disabled={busy !== null}>Delete</button>
-              </div>
-            </div>
-          ))}
+          <p className="field-help">
+            Edit the product phrase while keeping the Shopify search prefix.
+          </p>
         </div>
       ))}
 
-      <div className="query-editor-footer">
+      <div className="form-footer query-editor-footer">
         <div>
           {deleted && (
             <button type="button" onClick={() => { setRows((current) => [...current, deleted]); setDeleted(null); }}>
@@ -278,6 +290,7 @@ export function QueryEditor({
           </button>
           <button className="button button-primary" type="button" onClick={() => void start()} disabled={dirty || hasVisibleErrors || !rows.length || busy !== null}>
             {busy === "starting" ? "Starting…" : "Continue to scraping"}
+            {busy !== "starting" && <ArrowRightIcon />}
           </button>
         </div>
       </div>

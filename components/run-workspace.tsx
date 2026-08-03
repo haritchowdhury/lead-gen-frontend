@@ -11,6 +11,7 @@ import {
 
 import { ExportCsvButton } from "@/components/export-csv-button";
 import { CopyIcon, PlusIcon, RefreshIcon } from "@/components/icons";
+import { LandingHeroCopy, LandingProcess } from "@/components/landing-sections";
 import { ResultsFilters } from "@/components/results-filters";
 import { ResultsTable } from "@/components/results-table";
 import { RunEvidence } from "@/components/run-evidence";
@@ -94,6 +95,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
   const [reloadVersion, setReloadVersion] = useState(0);
   const [copied, setCopied] = useState(false);
   const [statusReloadVersion, setStatusReloadVersion] = useState(0);
+  const [resultsPollVersion, setResultsPollVersion] = useState(0);
   const filters = useMemo(
     () => filtersFromParams(new URLSearchParams(searchParams.toString())),
     [searchParams],
@@ -116,6 +118,9 @@ export function RunWorkspace({ runId }: { runId: string }) {
         );
         if (disposed) return;
         setRun(nextRun);
+        if (nextRun.resultsAvailable) {
+          setResultsPollVersion((value) => value + 1);
+        }
         setStatusError(null);
         setConnectionWarning(null);
         failureCount = 0;
@@ -165,7 +170,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
         }
       });
     return () => controller.abort();
-  }, [query, reloadVersion, run?.resultsAvailable, runId]);
+  }, [query, reloadVersion, resultsPollVersion, run?.resultsAvailable, runId]);
 
   const changeFilters = useCallback(
     (patch: Partial<ResultFilters>) => {
@@ -226,6 +231,33 @@ export function RunWorkspace({ runId }: { runId: string }) {
     run.state === "failed" || run.state === "cancelled" ? run.error : null;
   const currentResults = loadedQuery === query ? results : null;
 
+  if (run.state === "awaiting_query_confirmation") {
+    return (
+      <main>
+        <section className="hero query-review-hero">
+          <div className="shell hero-grid query-review-grid">
+            <LandingHeroCopy />
+            <div>
+              {connectionWarning && (
+                <div className="warning-banner" role="status">
+                  <RefreshIcon />
+                  {connectionWarning}
+                </div>
+              )}
+              <QueryEditor
+                runId={runId}
+                onStarted={() =>
+                  setStatusReloadVersion((value) => value + 1)
+                }
+              />
+            </div>
+          </div>
+        </section>
+        <LandingProcess />
+      </main>
+    );
+  }
+
   return (
     <main className="run-page">
       <div className="shell">
@@ -265,13 +297,6 @@ export function RunWorkspace({ runId }: { runId: string }) {
         )}
 
         <RunProgress run={run} />
-
-        {run.state === "awaiting_query_confirmation" && (
-          <QueryEditor
-            runId={runId}
-            onStarted={() => setStatusReloadVersion((value) => value + 1)}
-          />
-        )}
 
         {run.resultsAvailable && (
           <section className="results-section">

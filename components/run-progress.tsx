@@ -22,14 +22,27 @@ function formatDuration(start: string | null, end: string | null): string {
 export function RunProgress({ run }: RunProgressProps) {
   const percent = stagePercent(run.stage, run.state);
   const active = run.state === "queued" || run.state === "running";
+  const isQueryPreparation =
+    run.phase === "query_planning" || run.phase === "query_review";
+  const storesAnalyzed =
+    run.progress.storesQualified +
+    run.progress.storesRejected +
+    run.progress.storeProcessingFailures;
+  const trafficState = trafficProgressState(run);
 
   return (
-    <section className={`progress-card state-${run.state}`}>
+    <section
+      className={`progress-card state-${run.state} ${isQueryPreparation ? "progress-card-query" : "progress-card-pipeline"}`}
+    >
       <div className="progress-head">
         <div className="progress-stage">
           <span className={`state-indicator ${active ? "is-active" : ""}`} />
           <div>
-            <span className="eyebrow">Current stage</span>
+            <span className="eyebrow">
+              {isQueryPreparation
+                ? "Preparing your search plan"
+                : "Current stage"}
+            </span>
             <h2>{stageLabel(run.stage)}</h2>
           </div>
         </div>
@@ -50,28 +63,84 @@ export function RunProgress({ run }: RunProgressProps) {
         <span style={{ width: `${percent}%` }} />
       </div>
 
-      <div className="progress-metrics">
-        <div>
-          <strong>
-            {run.progress.shopTypesProcessed}
-            <small>/{run.progress.shopTypesTotal}</small>
-          </strong>
-          <span>Categories researched</span>
+      {isQueryPreparation ? (
+        <div className="progress-metrics progress-metrics-query">
+          <ProgressCount
+            value={run.progress.shopTypesProcessed}
+            total={run.progress.shopTypesTotal}
+            label="Categories researched"
+          />
+          <ProgressCount
+            value={run.progress.queryCandidatesGenerated}
+            label="Search ideas created"
+          />
+          <ProgressCount
+            value={run.progress.queryCandidatesValidated}
+            label="Ideas checked"
+          />
+          <ProgressCount
+            value={run.progress.queriesSelected}
+            label="Searches ready"
+          />
         </div>
-        <div>
-          <strong>{run.progress.queriesSelected}</strong>
-          <span>Searches selected</span>
+      ) : (
+        <div className="progress-metrics progress-metrics-pipeline">
+          <ProgressCount
+            value={run.progress.queriesProcessed}
+            total={run.progress.queriesTotal}
+            label="Searches processed"
+          />
+          <ProgressCount
+            value={run.progress.storesDiscovered}
+            label="Stores discovered"
+          />
+          <ProgressCount
+            value={storesAnalyzed}
+            total={run.progress.storesDiscovered || undefined}
+            label="Contacts analyzed"
+          />
+          <div className={`progress-metric-state traffic-${trafficState.tone}`}>
+            <strong>{trafficState.label}</strong>
+            <span>Traffic analysis</span>
+          </div>
         </div>
-        <div>
-          <strong>{run.progress.storesDiscovered}</strong>
-          <span>Stores discovered</span>
-        </div>
-        <div>
-          <strong>{run.progress.outputRows}</strong>
-          <span>Lead records</span>
-        </div>
-      </div>
+      )}
     </section>
   );
 }
 
+function ProgressCount({
+  value,
+  total,
+  label,
+}: {
+  value: number;
+  total?: number;
+  label: string;
+}) {
+  return (
+    <div>
+      <strong>
+        {value.toLocaleString()}
+        {total !== undefined && <small>/{total.toLocaleString()}</small>}
+      </strong>
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function trafficProgressState(run: RunStatus): {
+  label: "Waiting" | "Analyzing" | "Complete" | "Stopped";
+  tone: "waiting" | "active" | "complete" | "stopped";
+} {
+  if (run.state === "failed" || run.state === "cancelled") {
+    return { label: "Stopped", tone: "stopped" };
+  }
+  if (run.stage === "enriching_traffic") {
+    return { label: "Analyzing", tone: "active" };
+  }
+  if (run.stage === "writing_results" || run.state === "completed") {
+    return { label: "Complete", tone: "complete" };
+  }
+  return { label: "Waiting", tone: "waiting" };
+}
