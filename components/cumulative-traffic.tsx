@@ -69,7 +69,14 @@ export function CumulativeTrafficSection({
           <p className="empty-evidence">No lead-level search traffic estimates are available yet.</p>
         )
       ) : (
-        <div className="cumulative-traffic-loading" aria-label="Loading cumulative traffic"><span /><span /></div>
+        <div
+          className="cumulative-traffic-loading"
+          aria-label="Loading cumulative traffic"
+          role="status"
+        >
+          <span />
+          <span />
+        </div>
       )}
     </section>
   );

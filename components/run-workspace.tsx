@@ -15,7 +15,7 @@ import { CopyIcon, PlusIcon, RefreshIcon } from "@/components/icons";
 import { LandingHeroCopy, LandingProcess } from "@/components/landing-sections";
 import { ResultsFilters } from "@/components/results-filters";
 import { ResultsTable } from "@/components/results-table";
-import { RunProgress } from "@/components/run-progress";
+import { RunLoadingSkeleton, RunProgress } from "@/components/run-progress";
 import { QueryEditor } from "@/components/query-editor";
 import type {
   LeadStatus,
@@ -29,6 +29,7 @@ import {
   apiRequest,
   errorMessage,
 } from "@/lib/client-api";
+import { runStateLabel, runStateTone } from "@/lib/run-presentation";
 
 const RETRY_DELAYS = [3_000, 5_000, 10_000, 15_000];
 const SORT_FIELDS = new Set<ResultFilters["sortBy"]>([
@@ -200,7 +201,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
     return (
       <main className="run-page">
         <div className="shell">
-          <div className="fatal-card">
+          <div className="fatal-card ds-card ds-notice ds-notice--danger">
             <span className="eyebrow">Run unavailable</span>
             <h1>{statusError}</h1>
             <p>
@@ -218,11 +219,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
   if (!run) {
     return (
       <main className="run-page">
-        <div className="shell run-loading">
-          <span />
-          <span />
-          <span />
-        </div>
+        <RunLoadingSkeleton />
       </main>
     );
   }
@@ -239,7 +236,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
             <LandingHeroCopy variant="review" />
             <div>
               {connectionWarning && (
-                <div className="warning-banner" role="status">
+                <div className="warning-banner ds-notice ds-notice--warning" role="status">
                   <RefreshIcon />
                   {connectionWarning}
                 </div>
@@ -283,14 +280,14 @@ export function RunWorkspace({ runId }: { runId: string }) {
         </div>
 
         {connectionWarning && (
-          <div className="warning-banner" role="status">
+          <div className="warning-banner ds-notice ds-notice--warning" role="status">
             <RefreshIcon />
             {connectionWarning}
           </div>
         )}
 
         {terminalError && (
-          <div className="error-banner" role="alert">
+          <div className="error-banner ds-notice ds-notice--danger" role="alert">
             <strong>{terminalError.message}</strong>
             <span>Error code: {terminalError.code}</span>
           </div>
@@ -309,7 +306,12 @@ export function RunWorkspace({ runId }: { runId: string }) {
                   the complete dataset.
                 </p>
               </div>
-              <ExportCsvButton runId={runId} />
+              <div className="results-heading-utilities">
+                <span className={`ds-badge ${runStateTone(run.state)}`}>
+                  {runStateLabel(run.state)}
+                </span>
+                <ExportCsvButton runId={runId} />
+              </div>
             </div>
 
             {resultsError?.query === query ? (
@@ -324,7 +326,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
               </div>
             ) : currentResults ? (
               <>
-                <div className="summary-grid">
+                <div className="summary-grid" aria-label="Run result totals">
                   <SummaryCard
                     label="All leads"
                     value={currentResults.summary.total}

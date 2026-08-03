@@ -1,0 +1,169 @@
+{
+  "fixture": "real compiled CSS with deterministic synthetic .example completed-results DOM",
+  "scenarios": [
+    {
+      "label": "full-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "bodyOverflow": false,
+      "summaryCells": 4,
+      "trafficMetrics": 9,
+      "countryNavBottomLeft": true,
+      "heroHeight": 1634,
+      "trafficHeight": 955,
+      "tableVisible": false,
+      "scope": "Worldwide",
+      "selected": null,
+      "exportErrorVisible": false
+    },
+    {
+      "label": "full-768",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "bodyOverflow": false,
+      "summaryCells": 4,
+      "trafficMetrics": 9,
+      "countryNavBottomLeft": true,
+      "heroHeight": 823,
+      "trafficHeight": 363,
+      "tableVisible": true,
+      "scope": "Worldwide",
+      "selected": null,
+      "exportErrorVisible": false
+    },
+    {
+      "label": "full-1280",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyOverflow": false,
+      "summaryCells": 4,
+      "trafficMetrics": 9,
+      "countryNavBottomLeft": true,
+      "heroHeight": 874,
+      "trafficHeight": 415,
+      "tableVisible": true,
+      "scope": "Worldwide",
+      "selected": null,
+      "exportErrorVisible": false
+    },
+    {
+      "label": "full-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "summaryCells": 4,
+      "trafficMetrics": 9,
+      "countryNavBottomLeft": true,
+      "heroHeight": 874,
+      "trafficHeight": 415,
+      "tableVisible": true,
+      "scope": "Worldwide",
+      "selected": null,
+      "exportErrorVisible": false
+    }
+  ],
+  "states": [
+    {
+      "state": "export-error",
+      "headingHeightBefore": 102.6875,
+      "headingHeightAfter": 102.6875,
+      "layoutShift": false
+    },
+    {
+      "label": "loading",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "summaryCells": 4,
+      "trafficMetrics": 0,
+      "countryNavBottomLeft": null,
+      "heroHeight": 777,
+      "trafficHeight": 318,
+      "tableVisible": true,
+      "scope": null,
+      "selected": null,
+      "exportErrorVisible": false
+    },
+    {
+      "label": "error",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "summaryCells": 4,
+      "trafficMetrics": 0,
+      "countryNavBottomLeft": null,
+      "heroHeight": 611,
+      "trafficHeight": 152,
+      "tableVisible": true,
+      "scope": null,
+      "selected": null,
+      "exportErrorVisible": false
+    },
+    {
+      "label": "no-data",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "summaryCells": 4,
+      "trafficMetrics": 0,
+      "countryNavBottomLeft": null,
+      "heroHeight": 601,
+      "trafficHeight": 142,
+      "tableVisible": true,
+      "scope": null,
+      "selected": null,
+      "exportErrorVisible": false
+    }
+  ],
+  "interactions": [
+    {
+      "label": "selected-country",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "summaryCells": 4,
+      "trafficMetrics": 9,
+      "countryNavBottomLeft": true,
+      "heroHeight": 874,
+      "trafficHeight": 415,
+      "tableVisible": true,
+      "scope": "United States",
+      "selected": "United States(US)",
+      "exportErrorVisible": false
+    },
+    {
+      "label": "worldwide-reset",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "summaryCells": 4,
+      "trafficMetrics": 9,
+      "countryNavBottomLeft": true,
+      "heroHeight": 874,
+      "trafficHeight": 415,
+      "tableVisible": true,
+      "scope": "Worldwide",
+      "selected": null,
+      "exportErrorVisible": false
+    }
+  ],
+  "gap": "Protected run routes require Neon authentication, so browser composition uses deterministic .example DOM against the real compiled G7 stylesheet; pure aggregation, exact source, CSV, and interaction contracts verify production behavior without an auth bypass."
+}

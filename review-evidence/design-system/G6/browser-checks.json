@@ -1,0 +1,179 @@
+{
+  "fixture": "real compiled CSS with deterministic synthetic .example runtime DOM",
+  "scenarios": [
+    {
+      "fixture": "skeleton",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyOverflow": false,
+      "card": {
+        "x": 14,
+        "width": 362,
+        "height": 258
+      },
+      "metricCount": 4,
+      "progressValue": null,
+      "traffic": null,
+      "reconnecting": false
+    },
+    {
+      "fixture": "skeleton",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1280,
+      "bodyOverflow": false,
+      "card": {
+        "x": 50,
+        "width": 1180,
+        "height": 178
+      },
+      "metricCount": 4,
+      "progressValue": null,
+      "traffic": null,
+      "reconnecting": false
+    },
+    {
+      "fixture": "planning",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyOverflow": false,
+      "card": {
+        "x": 14,
+        "width": 362,
+        "height": 352
+      },
+      "metricCount": 4,
+      "progressValue": "26",
+      "traffic": null,
+      "reconnecting": false
+    },
+    {
+      "fixture": "planning",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1280,
+      "bodyOverflow": false,
+      "card": {
+        "x": 50,
+        "width": 1180,
+        "height": 226
+      },
+      "metricCount": 4,
+      "progressValue": "26",
+      "traffic": null,
+      "reconnecting": false
+    },
+    {
+      "fixture": "pipeline",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyOverflow": false,
+      "card": {
+        "x": 14,
+        "width": 362,
+        "height": 355
+      },
+      "metricCount": 4,
+      "progressValue": "84",
+      "traffic": "Analyzing",
+      "reconnecting": true
+    },
+    {
+      "fixture": "pipeline",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1280,
+      "bodyOverflow": false,
+      "card": {
+        "x": 50,
+        "width": 1180,
+        "height": 228
+      },
+      "metricCount": 4,
+      "progressValue": "84",
+      "traffic": "Analyzing",
+      "reconnecting": true
+    }
+  ],
+  "sequences": [
+    {
+      "state": "queued",
+      "stage": "Waiting to start",
+      "traffic": "Waiting",
+      "percent": "3",
+      "queries": "4/11",
+      "stores": "23",
+      "contacts": "10/23"
+    },
+    {
+      "state": "running",
+      "stage": "Discovering Shopify stores",
+      "traffic": "Waiting",
+      "percent": "63",
+      "queries": "4/11",
+      "stores": "23",
+      "contacts": "10/23"
+    },
+    {
+      "state": "running",
+      "stage": "Adding traffic insights",
+      "traffic": "Analyzing",
+      "percent": "84",
+      "queries": "4/11",
+      "stores": "23",
+      "contacts": "10/23"
+    },
+    {
+      "state": "running",
+      "stage": "Saving your results",
+      "traffic": "Complete",
+      "percent": "95",
+      "queries": "4/11",
+      "stores": "23",
+      "contacts": "10/23"
+    },
+    {
+      "state": "completed",
+      "stage": "Run completed",
+      "traffic": "Complete",
+      "percent": "100",
+      "queries": "4/11",
+      "stores": "23",
+      "contacts": "10/23"
+    },
+    {
+      "state": "failed",
+      "stage": "Run failed",
+      "traffic": "Stopped",
+      "percent": "100",
+      "queries": "4/11",
+      "stores": "23",
+      "contacts": "10/23"
+    },
+    {
+      "state": "cancelled",
+      "stage": "Run cancelled",
+      "traffic": "Stopped",
+      "percent": "100",
+      "queries": "4/11",
+      "stores": "23",
+      "contacts": "10/23"
+    }
+  ],
+  "gap": "Protected run routes require Neon authentication, so browser composition uses deterministic .example DOM against the real compiled G6 stylesheet; focused source and pure mapping tests verify production state fields and polling invariants."
+}

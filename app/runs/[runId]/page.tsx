@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { RunLoadingSkeleton } from "@/components/run-progress";
 import { RunWorkspace } from "@/components/run-workspace";
 
 const RUN_ID_PATTERN = /^run_[A-Za-z0-9_-]{16,80}$/u;
@@ -22,11 +23,7 @@ export default async function RunPage({
     <Suspense
       fallback={
         <main className="run-page">
-          <div className="shell run-loading">
-            <span />
-            <span />
-            <span />
-          </div>
+          <RunLoadingSkeleton />
         </main>
       }
     >
@@ -34,4 +31,3 @@ export default async function RunPage({
     </Suspense>
   );
 }
-

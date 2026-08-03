@@ -1,4 +1,5 @@
 import type { RunStatus } from "@/lib/api-types";
+import { runStateLabel, runStateTone, trafficProgressState } from "@/lib/run-presentation";
 import { stageLabel, stagePercent } from "@/lib/stages";
 
 type RunProgressProps = {
@@ -32,7 +33,9 @@ export function RunProgress({ run }: RunProgressProps) {
 
   return (
     <section
-      className={`progress-card state-${run.state} ${isQueryPreparation ? "progress-card-query" : "progress-card-pipeline"}`}
+      className={`progress-card ds-card state-${run.state} ${isQueryPreparation ? "progress-card-query" : "progress-card-pipeline"}`}
+      aria-busy={active}
+      aria-live="polite"
     >
       <div className="progress-head">
         <div className="progress-stage">
@@ -47,7 +50,7 @@ export function RunProgress({ run }: RunProgressProps) {
           </div>
         </div>
         <div className="progress-state">
-          <span>{run.state}</span>
+          <span className={`ds-badge ${runStateTone(run.state)}`}>{runStateLabel(run.state)}</span>
           <small>{formatDuration(run.startedAt, run.completedAt)}</small>
         </div>
       </div>
@@ -119,7 +122,7 @@ function ProgressCount({
   label: string;
 }) {
   return (
-    <div>
+    <div className="progress-count">
       <strong>
         {value.toLocaleString()}
         {total !== undefined && <small>/{total.toLocaleString()}</small>}
@@ -129,18 +132,17 @@ function ProgressCount({
   );
 }
 
-function trafficProgressState(run: RunStatus): {
-  label: "Waiting" | "Analyzing" | "Complete" | "Stopped";
-  tone: "waiting" | "active" | "complete" | "stopped";
-} {
-  if (run.state === "failed" || run.state === "cancelled") {
-    return { label: "Stopped", tone: "stopped" };
-  }
-  if (run.stage === "enriching_traffic") {
-    return { label: "Analyzing", tone: "active" };
-  }
-  if (run.stage === "writing_results" || run.state === "completed") {
-    return { label: "Complete", tone: "complete" };
-  }
-  return { label: "Waiting", tone: "waiting" };
+export function RunLoadingSkeleton() {
+  return (
+    <div className="shell run-loading" role="status" aria-live="polite" aria-label="Loading discovery run">
+      <div className="run-loading-title" aria-hidden="true">
+        <span /><span /><span />
+      </div>
+      <div className="run-loading-progress ds-card" aria-hidden="true">
+        <div><i /><span><b /><b /></span><em /></div>
+        <span className="run-loading-track" />
+        <div className="run-loading-metrics"><i /><i /><i /><i /></div>
+      </div>
+    </div>
+  );
 }
