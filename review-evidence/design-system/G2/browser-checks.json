@@ -1,0 +1,569 @@
+{
+  "fixture": "synthetic G2 primitive matrix and public routes",
+  "scenarios": [
+    {
+      "name": "landing-regression",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inL",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "focusBoxShadow": "none",
+      "tokens": [
+        [
+          "--color-canvas",
+          "#f4f3ed"
+        ],
+        [
+          "--color-surface",
+          "#fffefa"
+        ],
+        [
+          "--color-ink",
+          "#12231e"
+        ],
+        [
+          "--color-signal",
+          "#c8f04b"
+        ],
+        [
+          "--elevation-inset",
+          "inset 0 1px 2px #12231e0f"
+        ],
+        [
+          "--elevation-card",
+          "0 10px 28px #12231e0f"
+        ],
+        [
+          "--elevation-floating",
+          "0 24px 60px #1629221f"
+        ]
+      ],
+      "primitiveRects": []
+    },
+    {
+      "name": "landing-regression",
+      "url": "/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyWidth": 753,
+      "bodyOverflow": false,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inL",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "focusBoxShadow": "none",
+      "tokens": [
+        [
+          "--color-canvas",
+          "#f4f3ed"
+        ],
+        [
+          "--color-surface",
+          "#fffefa"
+        ],
+        [
+          "--color-ink",
+          "#12231e"
+        ],
+        [
+          "--color-signal",
+          "#c8f04b"
+        ],
+        [
+          "--elevation-inset",
+          "inset 0 1px 2px #12231e0f"
+        ],
+        [
+          "--elevation-card",
+          "0 10px 28px #12231e0f"
+        ],
+        [
+          "--elevation-floating",
+          "0 24px 60px #1629221f"
+        ]
+      ],
+      "primitiveRects": []
+    },
+    {
+      "name": "landing-regression",
+      "url": "/",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inL",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "focusBoxShadow": "none",
+      "tokens": [
+        [
+          "--color-canvas",
+          "#f4f3ed"
+        ],
+        [
+          "--color-surface",
+          "#fffefa"
+        ],
+        [
+          "--color-ink",
+          "#12231e"
+        ],
+        [
+          "--color-signal",
+          "#c8f04b"
+        ],
+        [
+          "--elevation-inset",
+          "inset 0 1px 2px #12231e0f"
+        ],
+        [
+          "--elevation-card",
+          "0 10px 28px #12231e0f"
+        ],
+        [
+          "--elevation-floating",
+          "0 24px 60px #1629221f"
+        ]
+      ],
+      "primitiveRects": []
+    },
+    {
+      "name": "auth-focus",
+      "url": "/sign-in",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "focused": "StoreSignal home",
+      "focusOutline": "rgb(18, 35, 30) solid 2px",
+      "focusBoxShadow": "none",
+      "tokens": [
+        [
+          "--color-canvas",
+          "#f4f3ed"
+        ],
+        [
+          "--color-surface",
+          "#fffefa"
+        ],
+        [
+          "--color-ink",
+          "#12231e"
+        ],
+        [
+          "--color-signal",
+          "#c8f04b"
+        ],
+        [
+          "--elevation-inset",
+          "inset 0 1px 2px #12231e0f"
+        ],
+        [
+          "--elevation-card",
+          "0 10px 28px #12231e0f"
+        ],
+        [
+          "--elevation-floating",
+          "0 24px 60px #1629221f"
+        ]
+      ],
+      "primitiveRects": []
+    },
+    {
+      "name": "primitive-matrix",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "focused": "Synthetic focus field",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "focusBoxShadow": "none",
+      "tokens": [
+        [
+          "--color-canvas",
+          "#f4f3ed"
+        ],
+        [
+          "--color-surface",
+          "#fffefa"
+        ],
+        [
+          "--color-ink",
+          "#12231e"
+        ],
+        [
+          "--color-signal",
+          "#c8f04b"
+        ],
+        [
+          "--elevation-inset",
+          "inset 0 1px 2px #12231e0f"
+        ],
+        [
+          "--elevation-card",
+          "0 10px 28px #12231e0f"
+        ],
+        [
+          "--elevation-floating",
+          "0 24px 60px #1629221f"
+        ]
+      ],
+      "primitiveRects": [
+        {
+          "className": "ds-section-header",
+          "width": 342,
+          "height": 68
+        },
+        {
+          "className": "ds-section-header__copy",
+          "width": 245,
+          "height": 68
+        },
+        {
+          "className": "ds-eyebrow",
+          "width": 245,
+          "height": 18
+        },
+        {
+          "className": "ds-badge ds-badge--signal",
+          "width": 51,
+          "height": 24
+        },
+        {
+          "className": "ds-card",
+          "width": 342,
+          "height": 846
+        },
+        {
+          "className": "ds-card__body",
+          "width": 340,
+          "height": 844
+        },
+        {
+          "className": "ds-button ds-button--primary",
+          "width": 284,
+          "height": 40
+        },
+        {
+          "className": "ds-button ds-button--secondary",
+          "width": 95,
+          "height": 40
+        },
+        {
+          "className": "ds-button ds-button--inverse",
+          "width": 76,
+          "height": 40
+        },
+        {
+          "className": "ds-button ds-button--primary",
+          "width": 84,
+          "height": 40
+        },
+        {
+          "className": "ds-button ds-button--primary",
+          "width": 81,
+          "height": 40
+        },
+        {
+          "className": "ds-badge ds-badge--positive",
+          "width": 60,
+          "height": 24
+        },
+        {
+          "className": "ds-badge ds-badge--warning",
+          "width": 62,
+          "height": 24
+        },
+        {
+          "className": "ds-badge ds-badge--danger",
+          "width": 56,
+          "height": 24
+        },
+        {
+          "className": "ds-field",
+          "width": 308,
+          "height": 40
+        },
+        {
+          "className": "ds-notice ds-notice--positive",
+          "width": 308,
+          "height": 44
+        },
+        {
+          "className": "ds-notice ds-notice--warning",
+          "width": 308,
+          "height": 44
+        },
+        {
+          "className": "ds-notice ds-notice--danger",
+          "width": 308,
+          "height": 44
+        },
+        {
+          "className": "ds-inset",
+          "width": 308,
+          "height": 93
+        },
+        {
+          "className": "ds-metric",
+          "width": 282,
+          "height": 67
+        },
+        {
+          "className": "ds-metric__label",
+          "width": 282,
+          "height": 17
+        },
+        {
+          "className": "ds-metric__value",
+          "width": 282,
+          "height": 24
+        },
+        {
+          "className": "ds-metric__detail",
+          "width": 282,
+          "height": 18
+        },
+        {
+          "className": "ds-disclosure",
+          "width": 308,
+          "height": 71
+        },
+        {
+          "className": "ds-disclosure__body",
+          "width": 308,
+          "height": 30
+        },
+        {
+          "className": "ds-skeleton",
+          "width": 308,
+          "height": 16
+        },
+        {
+          "className": "ds-empty",
+          "width": 308,
+          "height": 192
+        }
+      ]
+    },
+    {
+      "name": "primitive-matrix-reduced-motion",
+      "url": "/",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "focused": "Synthetic focus field",
+      "focusOutline": "rgb(18, 35, 30) none 0px",
+      "focusBoxShadow": "none",
+      "tokens": [
+        [
+          "--color-canvas",
+          "#f4f3ed"
+        ],
+        [
+          "--color-surface",
+          "#fffefa"
+        ],
+        [
+          "--color-ink",
+          "#12231e"
+        ],
+        [
+          "--color-signal",
+          "#c8f04b"
+        ],
+        [
+          "--elevation-inset",
+          "inset 0 1px 2px #12231e0f"
+        ],
+        [
+          "--elevation-card",
+          "0 10px 28px #12231e0f"
+        ],
+        [
+          "--elevation-floating",
+          "0 24px 60px #1629221f"
+        ]
+      ],
+      "primitiveRects": [
+        {
+          "className": "ds-section-header",
+          "width": 712,
+          "height": 68
+        },
+        {
+          "className": "ds-section-header__copy",
+          "width": 245,
+          "height": 68
+        },
+        {
+          "className": "ds-eyebrow",
+          "width": 245,
+          "height": 18
+        },
+        {
+          "className": "ds-badge ds-badge--signal",
+          "width": 51,
+          "height": 24
+        },
+        {
+          "className": "ds-card",
+          "width": 712,
+          "height": 750
+        },
+        {
+          "className": "ds-card__body",
+          "width": 710,
+          "height": 748
+        },
+        {
+          "className": "ds-button ds-button--primary",
+          "width": 284,
+          "height": 40
+        },
+        {
+          "className": "ds-button ds-button--secondary",
+          "width": 95,
+          "height": 40
+        },
+        {
+          "className": "ds-button ds-button--inverse",
+          "width": 76,
+          "height": 40
+        },
+        {
+          "className": "ds-button ds-button--primary",
+          "width": 84,
+          "height": 40
+        },
+        {
+          "className": "ds-button ds-button--primary",
+          "width": 81,
+          "height": 40
+        },
+        {
+          "className": "ds-badge ds-badge--positive",
+          "width": 60,
+          "height": 24
+        },
+        {
+          "className": "ds-badge ds-badge--warning",
+          "width": 62,
+          "height": 24
+        },
+        {
+          "className": "ds-badge ds-badge--danger",
+          "width": 56,
+          "height": 24
+        },
+        {
+          "className": "ds-field",
+          "width": 678,
+          "height": 40
+        },
+        {
+          "className": "ds-notice ds-notice--positive",
+          "width": 678,
+          "height": 44
+        },
+        {
+          "className": "ds-notice ds-notice--warning",
+          "width": 678,
+          "height": 44
+        },
+        {
+          "className": "ds-notice ds-notice--danger",
+          "width": 678,
+          "height": 44
+        },
+        {
+          "className": "ds-inset",
+          "width": 678,
+          "height": 93
+        },
+        {
+          "className": "ds-metric",
+          "width": 652,
+          "height": 67
+        },
+        {
+          "className": "ds-metric__label",
+          "width": 652,
+          "height": 17
+        },
+        {
+          "className": "ds-metric__value",
+          "width": 652,
+          "height": 24
+        },
+        {
+          "className": "ds-metric__detail",
+          "width": 652,
+          "height": 18
+        },
+        {
+          "className": "ds-disclosure",
+          "width": 678,
+          "height": 71
+        },
+        {
+          "className": "ds-disclosure__body",
+          "width": 678,
+          "height": 30
+        },
+        {
+          "className": "ds-skeleton",
+          "width": 678,
+          "height": 16
+        },
+        {
+          "className": "ds-empty",
+          "width": 678,
+          "height": 192
+        }
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "state": "/runs",
+      "observedPath": "/sign-in",
+      "reason": "Existing unauthenticated Neon proxy redirect prevents current results and expanded-lead browser regression capture; no auth behavior was changed in G2."
+    },
+    {
+      "state": "/runs/run_g1queryreviewfixture",
+      "observedPath": "/sign-in",
+      "reason": "Existing unauthenticated Neon proxy redirect prevents current results and expanded-lead browser regression capture; no auth behavior was changed in G2."
+    },
+    {
+      "state": "/runs/run_g1completedfixture",
+      "observedPath": "/sign-in",
+      "reason": "Existing unauthenticated Neon proxy redirect prevents current results and expanded-lead browser regression capture; no auth behavior was changed in G2."
+    }
+  ],
+  "reducedMotion": {
+    "matches": true,
+    "transitionDuration": "1e-05s",
+    "animationDuration": "1e-05s"
+  }
+}
