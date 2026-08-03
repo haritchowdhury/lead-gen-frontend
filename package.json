@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --experimental-strip-types --test test/*.test.ts",
+    "test:browser:real-components": "node scripts/g-r1-real-component-browser.mjs",
     "check": "npm run lint && npm run test && npm run build"
   },
   "engines": {

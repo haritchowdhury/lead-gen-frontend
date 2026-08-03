@@ -1,0 +1,29 @@
+{
+  "command": "npm run test:browser:real-components",
+  "provenance": "Synthetic .example data from test/fixtures.ts; production React components mounted by app/design-fixture/page.tsx.",
+  "screenshots": [
+    "completed-all-open-real-1024x768.png",
+    "completed-all-open-real-1280x800.png",
+    "completed-all-open-real-1440x900.png",
+    "completed-all-open-real-390x844.png",
+    "completed-all-open-real-768x1024.png",
+    "completed-overview-real-1024x768.png",
+    "completed-overview-real-1280x800.png",
+    "completed-overview-real-1440x900.png",
+    "completed-overview-real-390x844.png",
+    "completed-overview-real-768x1024.png",
+    "landing-real-1024x768.png",
+    "landing-real-1280x800.png",
+    "landing-real-1440x900.png",
+    "landing-real-390x844.png",
+    "landing-real-768x1024.png",
+    "query-planning-real-1280x800.png",
+    "query-planning-real-390x844.png",
+    "query-review-real-1280x800.png",
+    "query-review-real-390x844.png",
+    "runtime-recovered-real-1280x800.png",
+    "runtime-recovered-real-390x844.png"
+  ],
+  "machineChecks": "browser-checks.json",
+  "serverLog": "browser-server.log"
+}

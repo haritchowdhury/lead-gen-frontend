@@ -1,0 +1,1065 @@
+{
+  "fixture": "actual production React components with pre-hydration synthetic .example API interception",
+  "routeGate": {
+    "protectedStatus": 307,
+    "protectedLocation": "/sign-in",
+    "fixtureFlagClientVisible": false
+  },
+  "publicLanding": [
+    {
+      "name": "landing-real",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "fixtureSurface": null,
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Meet the Shopify stores your business was made for.",
+        "What kind of stores do you want to meet?",
+        "Your next great customer should not be buried in a spreadsheet.",
+        "Less searching",
+        "Less guessing",
+        "More confidence",
+        "A better lead list in four simple steps.",
+        "Describe your market",
+        "Shape the search",
+        "Let us do the digging",
+        "Focus on the best",
+        "Every lead comes with a reason to care.",
+        "Know the store behind the domain.",
+        "Find a real way in.",
+        "markets, one clearer picture.",
+        "Turn a crowded market into a confident shortlist.",
+        "No mystery scores. No unexplained recommendations.",
+        "Discover where attention is already growing.",
+        "Whatever you sell, start with stores that need it.",
+        "Ecommerce agencies"
+      ],
+      "reactControlledInputs": 0,
+      "widths": [],
+      "openDisclosures": 0,
+      "evidenceCounts": {
+        "contacts": 0,
+        "storeFit": 0,
+        "storeFitPages": 0,
+        "occurrences": 0,
+        "vocabularyTokens": 0
+      },
+      "selectedMarket": null
+    },
+    {
+      "name": "landing-real",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "fixtureSurface": null,
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Meet the Shopify stores your business was made for.",
+        "What kind of stores do you want to meet?",
+        "Your next great customer should not be buried in a spreadsheet.",
+        "Less searching",
+        "Less guessing",
+        "More confidence",
+        "A better lead list in four simple steps.",
+        "Describe your market",
+        "Shape the search",
+        "Let us do the digging",
+        "Focus on the best",
+        "Every lead comes with a reason to care.",
+        "Know the store behind the domain.",
+        "Find a real way in.",
+        "markets, one clearer picture.",
+        "Turn a crowded market into a confident shortlist.",
+        "No mystery scores. No unexplained recommendations.",
+        "Discover where attention is already growing.",
+        "Whatever you sell, start with stores that need it.",
+        "Ecommerce agencies"
+      ],
+      "reactControlledInputs": 0,
+      "widths": [],
+      "openDisclosures": 0,
+      "evidenceCounts": {
+        "contacts": 0,
+        "storeFit": 0,
+        "storeFitPages": 0,
+        "occurrences": 0,
+        "vocabularyTokens": 0
+      },
+      "selectedMarket": null
+    },
+    {
+      "name": "landing-real",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "fixtureSurface": null,
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Meet the Shopify stores your business was made for.",
+        "What kind of stores do you want to meet?",
+        "Your next great customer should not be buried in a spreadsheet.",
+        "Less searching",
+        "Less guessing",
+        "More confidence",
+        "A better lead list in four simple steps.",
+        "Describe your market",
+        "Shape the search",
+        "Let us do the digging",
+        "Focus on the best",
+        "Every lead comes with a reason to care.",
+        "Know the store behind the domain.",
+        "Find a real way in.",
+        "markets, one clearer picture.",
+        "Turn a crowded market into a confident shortlist.",
+        "No mystery scores. No unexplained recommendations.",
+        "Discover where attention is already growing.",
+        "Whatever you sell, start with stores that need it.",
+        "Ecommerce agencies"
+      ],
+      "reactControlledInputs": 0,
+      "widths": [],
+      "openDisclosures": 0,
+      "evidenceCounts": {
+        "contacts": 0,
+        "storeFit": 0,
+        "storeFitPages": 0,
+        "occurrences": 0,
+        "vocabularyTokens": 0
+      },
+      "selectedMarket": null
+    },
+    {
+      "name": "landing-real",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "fixtureSurface": null,
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Meet the Shopify stores your business was made for.",
+        "What kind of stores do you want to meet?",
+        "Your next great customer should not be buried in a spreadsheet.",
+        "Less searching",
+        "Less guessing",
+        "More confidence",
+        "A better lead list in four simple steps.",
+        "Describe your market",
+        "Shape the search",
+        "Let us do the digging",
+        "Focus on the best",
+        "Every lead comes with a reason to care.",
+        "Know the store behind the domain.",
+        "Find a real way in.",
+        "markets, one clearer picture.",
+        "Turn a crowded market into a confident shortlist.",
+        "No mystery scores. No unexplained recommendations.",
+        "Discover where attention is already growing.",
+        "Whatever you sell, start with stores that need it.",
+        "Ecommerce agencies"
+      ],
+      "reactControlledInputs": 0,
+      "widths": [],
+      "openDisclosures": 0,
+      "evidenceCounts": {
+        "contacts": 0,
+        "storeFit": 0,
+        "storeFitPages": 0,
+        "occurrences": 0,
+        "vocabularyTokens": 0
+      },
+      "selectedMarket": null
+    },
+    {
+      "name": "landing-real",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixtureSurface": null,
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Meet the Shopify stores your business was made for.",
+        "What kind of stores do you want to meet?",
+        "Your next great customer should not be buried in a spreadsheet.",
+        "Less searching",
+        "Less guessing",
+        "More confidence",
+        "A better lead list in four simple steps.",
+        "Describe your market",
+        "Shape the search",
+        "Let us do the digging",
+        "Focus on the best",
+        "Every lead comes with a reason to care.",
+        "Know the store behind the domain.",
+        "Find a real way in.",
+        "markets, one clearer picture.",
+        "Turn a crowded market into a confident shortlist.",
+        "No mystery scores. No unexplained recommendations.",
+        "Discover where attention is already growing.",
+        "Whatever you sell, start with stores that need it.",
+        "Ecommerce agencies"
+      ],
+      "reactControlledInputs": 0,
+      "widths": [],
+      "openDisclosures": 0,
+      "evidenceCounts": {
+        "contacts": 0,
+        "storeFit": 0,
+        "storeFitPages": 0,
+        "occurrences": 0,
+        "vocabularyTokens": 0
+      },
+      "selectedMarket": null
+    }
+  ],
+  "queryReview": {
+    "initial": {
+      "rows": 5,
+      "first": "site:myshopify.com/products synthetic fixture product phrase 1",
+      "requests": [
+        {
+          "path": "/api/runs/run_fixture_query_review",
+          "search": "",
+          "method": "GET",
+          "at": 942,
+          "body": null
+        },
+        {
+          "path": "/api/runs/run_fixture_query_review/queries",
+          "search": "",
+          "method": "GET",
+          "at": 1161,
+          "body": null
+        }
+      ]
+    },
+    "revision": "Query review · revision 4",
+    "queryValue": "site:myshopify.com/products synthetic fixture product phrase 1 revised",
+    "saveRequests": [
+      {
+        "path": "/api/runs/run_fixture_query_review/queries",
+        "search": "",
+        "method": "PUT",
+        "at": 1292,
+        "body": "{\"revision\":3,\"queries\":[{\"id\":\"query_fixture_0\",\"categoryIndex\":0,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 1 revised\"},{\"id\":\"query_fixture_1\",\"categoryIndex\":0,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 2\"},{\"id\":\"query_fixture_2\",\"categoryIndex\":0,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 3\"},{\"id\":\"query_fixture_3\",\"categoryIndex\":1,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 4\"},{\"id\":\"query_fixture_4\",\"categoryIndex\":1,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 5\"}]}"
+      }
+    ],
+    "startRequests": [
+      {
+        "path": "/api/runs/run_fixture_query_review/start",
+        "search": "",
+        "method": "POST",
+        "at": 1417,
+        "body": "{\"revision\":4}"
+      }
+    ],
+    "actualReactInputs": 5
+  },
+  "runtime": {
+    "first": {
+      "stage": "Discovering Shopify stores",
+      "counts": [
+        "4/11",
+        "23",
+        "10/23",
+        "Waiting"
+      ],
+      "traffic": "Waiting"
+    },
+    "interrupted": {
+      "warning": "Connection interrupted. Your run is still safe; reconnecting automatically.",
+      "requests": [
+        {
+          "path": "/api/runs/run_fixture_runtime",
+          "search": "",
+          "method": "GET",
+          "at": 449,
+          "body": null
+        },
+        {
+          "path": "/api/runs/run_fixture_runtime",
+          "search": "",
+          "method": "GET",
+          "at": 3457,
+          "body": null
+        }
+      ]
+    },
+    "recovered": {
+      "stage": "Adding traffic insights",
+      "counts": [
+        "8/11",
+        "31",
+        "14/31",
+        "Analyzing"
+      ],
+      "traffic": "Analyzing",
+      "requests": [
+        {
+          "path": "/api/runs/run_fixture_runtime",
+          "search": "",
+          "method": "GET",
+          "at": 449,
+          "body": null
+        },
+        {
+          "path": "/api/runs/run_fixture_runtime",
+          "search": "",
+          "method": "GET",
+          "at": 3457,
+          "body": null
+        },
+        {
+          "path": "/api/runs/run_fixture_runtime",
+          "search": "",
+          "method": "GET",
+          "at": 6459,
+          "body": null
+        }
+      ]
+    }
+  },
+  "completed": [
+    {
+      "name": "completed-all-open-real",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "fixtureSurface": "production-components",
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Lead discovery run",
+        "Run completed",
+        "Your store leads",
+        "Cumulative traffic landscape",
+        "01Lead overview",
+        "02Traffic and site experience",
+        "03Category and store fit",
+        "04Discovery provenance"
+      ],
+      "reactControlledInputs": 1,
+      "widths": [
+        {
+          "className": "results-panel",
+          "clientWidth": 360,
+          "scrollWidth": 2371,
+          "top": 2122,
+          "left": 14,
+          "right": 376
+        },
+        {
+          "className": "table-wrap ",
+          "clientWidth": 360,
+          "scrollWidth": 2419,
+          "top": 2286,
+          "left": 15,
+          "right": 375
+        },
+        {
+          "className": "lead-expansion-shell",
+          "clientWidth": 2381,
+          "scrollWidth": 2381,
+          "top": 2399,
+          "left": 33,
+          "right": 2416
+        },
+        {
+          "className": "lead-details",
+          "clientWidth": 322,
+          "scrollWidth": 322,
+          "top": 2402,
+          "left": 36,
+          "right": 360
+        },
+        {
+          "className": "provenance-list occurrence-list evidence-ledger-list",
+          "clientWidth": 288,
+          "scrollWidth": 288,
+          "top": 21946,
+          "left": 54,
+          "right": 342
+        }
+      ],
+      "openDisclosures": 16,
+      "evidenceCounts": {
+        "contacts": 10,
+        "storeFit": 3,
+        "storeFitPages": 9,
+        "occurrences": 4,
+        "vocabularyTokens": 96
+      },
+      "selectedMarket": null
+    },
+    {
+      "name": "completed-all-open-real",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "fixtureSurface": "production-components",
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Lead discovery run",
+        "Run completed",
+        "Your store leads",
+        "Cumulative traffic landscape",
+        "01Lead overview",
+        "02Traffic and site experience",
+        "03Category and store fit",
+        "04Discovery provenance"
+      ],
+      "reactControlledInputs": 1,
+      "widths": [
+        {
+          "className": "results-panel",
+          "clientWidth": 711,
+          "scrollWidth": 2371,
+          "top": -1212,
+          "left": 20,
+          "right": 733
+        },
+        {
+          "className": "table-wrap ",
+          "clientWidth": 711,
+          "scrollWidth": 2419,
+          "top": -1096,
+          "left": 21,
+          "right": 732
+        },
+        {
+          "className": "lead-expansion-shell",
+          "clientWidth": 2381,
+          "scrollWidth": 2381,
+          "top": -983,
+          "left": 18,
+          "right": 2401
+        },
+        {
+          "className": "lead-details",
+          "clientWidth": 2375,
+          "scrollWidth": 2375,
+          "top": -980,
+          "left": 21,
+          "right": 2398
+        },
+        {
+          "className": "provenance-list occurrence-list evidence-ledger-list",
+          "clientWidth": 2341,
+          "scrollWidth": 2341,
+          "top": 7802,
+          "left": 39,
+          "right": 2380
+        }
+      ],
+      "openDisclosures": 16,
+      "evidenceCounts": {
+        "contacts": 10,
+        "storeFit": 3,
+        "storeFitPages": 9,
+        "occurrences": 4,
+        "vocabularyTokens": 96
+      },
+      "selectedMarket": null
+    },
+    {
+      "name": "completed-all-open-real",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "fixtureSurface": "production-components",
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Lead discovery run",
+        "Run completed",
+        "Your store leads",
+        "Cumulative traffic landscape",
+        "01Lead overview",
+        "02Traffic and site experience",
+        "03Category and store fit",
+        "04Discovery provenance"
+      ],
+      "reactControlledInputs": 1,
+      "widths": [
+        {
+          "className": "results-panel",
+          "clientWidth": 967,
+          "scrollWidth": 2371,
+          "top": -182,
+          "left": 20,
+          "right": 989
+        },
+        {
+          "className": "table-wrap ",
+          "clientWidth": 967,
+          "scrollWidth": 2419,
+          "top": -116,
+          "left": 21,
+          "right": 988
+        },
+        {
+          "className": "lead-expansion-shell",
+          "clientWidth": 2381,
+          "scrollWidth": 2381,
+          "top": -3,
+          "left": 18,
+          "right": 2401
+        },
+        {
+          "className": "lead-details",
+          "clientWidth": 2375,
+          "scrollWidth": 2375,
+          "top": 0,
+          "left": 21,
+          "right": 2398
+        },
+        {
+          "className": "provenance-list occurrence-list evidence-ledger-list",
+          "clientWidth": 2341,
+          "scrollWidth": 2341,
+          "top": 8781,
+          "left": 39,
+          "right": 2380
+        }
+      ],
+      "openDisclosures": 16,
+      "evidenceCounts": {
+        "contacts": 10,
+        "storeFit": 3,
+        "storeFitPages": 9,
+        "occurrences": 4,
+        "vocabularyTokens": 96
+      },
+      "selectedMarket": null
+    },
+    {
+      "name": "completed-all-open-real",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "fixtureSurface": "production-components",
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Lead discovery run",
+        "Run completed",
+        "Your store leads",
+        "Cumulative traffic landscape",
+        "01Lead overview",
+        "02Traffic and site experience",
+        "03Category and store fit",
+        "04Discovery provenance"
+      ],
+      "reactControlledInputs": 1,
+      "widths": [
+        {
+          "className": "results-panel",
+          "clientWidth": 1178,
+          "scrollWidth": 2371,
+          "top": -182,
+          "left": 43,
+          "right": 1223
+        },
+        {
+          "className": "table-wrap ",
+          "clientWidth": 1178,
+          "scrollWidth": 2419,
+          "top": -116,
+          "left": 44,
+          "right": 1222
+        },
+        {
+          "className": "lead-expansion-shell",
+          "clientWidth": 2381,
+          "scrollWidth": 2381,
+          "top": -3,
+          "left": 41,
+          "right": 2424
+        },
+        {
+          "className": "lead-details",
+          "clientWidth": 2375,
+          "scrollWidth": 2375,
+          "top": 0,
+          "left": 44,
+          "right": 2421
+        },
+        {
+          "className": "provenance-list occurrence-list evidence-ledger-list",
+          "clientWidth": 2341,
+          "scrollWidth": 2341,
+          "top": 8782,
+          "left": 62,
+          "right": 2403
+        }
+      ],
+      "openDisclosures": 16,
+      "evidenceCounts": {
+        "contacts": 10,
+        "storeFit": 3,
+        "storeFitPages": 9,
+        "occurrences": 4,
+        "vocabularyTokens": 96
+      },
+      "selectedMarket": null
+    },
+    {
+      "name": "completed-all-open-real",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixtureSurface": "production-components",
+      "bodyOverflow": false,
+      "visibleHeadings": [
+        "Lead discovery run",
+        "Run completed",
+        "Your store leads",
+        "Cumulative traffic landscape",
+        "01Lead overview",
+        "02Traffic and site experience",
+        "03Category and store fit",
+        "04Discovery provenance"
+      ],
+      "reactControlledInputs": 1,
+      "widths": [
+        {
+          "className": "results-panel",
+          "clientWidth": 1178,
+          "scrollWidth": 2371,
+          "top": -182,
+          "left": 123,
+          "right": 1303
+        },
+        {
+          "className": "table-wrap ",
+          "clientWidth": 1178,
+          "scrollWidth": 2419,
+          "top": -116,
+          "left": 124,
+          "right": 1302
+        },
+        {
+          "className": "lead-expansion-shell",
+          "clientWidth": 2381,
+          "scrollWidth": 2381,
+          "top": -3,
+          "left": 121,
+          "right": 2504
+        },
+        {
+          "className": "lead-details",
+          "clientWidth": 2375,
+          "scrollWidth": 2375,
+          "top": 0,
+          "left": 124,
+          "right": 2501
+        },
+        {
+          "className": "provenance-list occurrence-list evidence-ledger-list",
+          "clientWidth": 2341,
+          "scrollWidth": 2341,
+          "top": 8782,
+          "left": 142,
+          "right": 2483
+        }
+      ],
+      "openDisclosures": 16,
+      "evidenceCounts": {
+        "contacts": 10,
+        "storeFit": 3,
+        "storeFitPages": 9,
+        "occurrences": 4,
+        "vocabularyTokens": 96
+      },
+      "selectedMarket": null
+    }
+  ],
+  "interactions": {
+    "queryPlanning": {
+      "stage": "Validating search ideas",
+      "metricLabels": [
+        "Categories researched",
+        "Search ideas created",
+        "Ideas checked",
+        "Searches ready"
+      ],
+      "count": 4
+    },
+    "terminal": {
+      "alert": "Synthetic fixture failure.Error code: SYNTHETIC_FAILURE",
+      "state": "Failed"
+    },
+    "results": {
+      "resolvedLink": {
+        "href": "https://very-long-store-domain.example/",
+        "rel": "noreferrer",
+        "target": "_blank"
+      },
+      "replacement": {
+        "expandedLabels": [
+          "Hide details for Partial Traffic Fixture"
+        ],
+        "visibleLead": "01Lead overview"
+      },
+      "filterState": {
+        "url": "/design-fixture?status=qualified",
+        "expanded": 0,
+        "selected": "Qualified2"
+      },
+      "searchSortState": {
+        "url": "/design-fixture?search=Fixture&sortBy=store_name&sortDirection=asc",
+        "resultRequests": [
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=25&sortBy=lead_score&sortDirection=desc",
+            "method": "GET",
+            "at": 654,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 779,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 782,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=25&sortBy=lead_score&sortDirection=desc&status=qualified",
+            "method": "GET",
+            "at": 10910,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 10978,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 10980,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=25&sortBy=lead_score&sortDirection=desc",
+            "method": "GET",
+            "at": 11322,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 11404,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 11407,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=25&sortBy=store_name&sortDirection=asc",
+            "method": "GET",
+            "at": 11607,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 11712,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 11724,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=25&sortBy=store_name&sortDirection=asc&search=Fixture",
+            "method": "GET",
+            "at": 12304,
+            "body": null
+          }
+        ]
+      },
+      "paginationState": {
+        "url": "/design-fixture?page=2",
+        "names": [
+          "Unavailable Coverage Fixture"
+        ]
+      },
+      "csv": {
+        "error": "Synthetic CSV failure.",
+        "exportRequests": [
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 1425,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 1563,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 1566,
+            "body": null
+          },
+          {
+            "path": "/api/runs/run_fixture_completed/results",
+            "search": "?page=1&pageSize=200",
+            "method": "GET",
+            "at": 1794,
+            "body": null
+          }
+        ]
+      },
+      "globe": {
+        "selectedByText": "United States (US)",
+        "selectedByKeyboard": {
+          "button": "Canada (CA)",
+          "focus": "Show traffic for Canada"
+        },
+        "selectedAfterDrag": "Canada (CA)",
+        "resetLabel": "Worldwide",
+        "unsupportedControls": 0,
+        "aggregateMarkets": 9,
+        "individualMarkets": 9,
+        "showcaseCoveredOnPublicRoute": true
+      },
+      "focusOrder": [
+        {
+          "tag": "A",
+          "label": "StoreSignal home",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "How it works",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "What you get",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Use cases",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "FAQ",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Sign in",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "← New discovery",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "run_fixture_completed",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "New run",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Export all CSV",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "United States (US)",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "United Kingdom (GB)",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Canada (CA)",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Australia (AU)",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "New Zealand (NZ)",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Germany (DE)",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "France (FR)",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "India (IN)",
+          "visible": true
+        }
+      ]
+    }
+  },
+  "requestLog": {
+    "queryReview": [
+      {
+        "path": "/api/runs/run_fixture_query_review",
+        "search": "",
+        "method": "GET",
+        "at": 942,
+        "body": null
+      },
+      {
+        "path": "/api/runs/run_fixture_query_review/queries",
+        "search": "",
+        "method": "GET",
+        "at": 1161,
+        "body": null
+      },
+      {
+        "path": "/api/runs/run_fixture_query_review/queries",
+        "search": "",
+        "method": "PUT",
+        "at": 1292,
+        "body": "{\"revision\":3,\"queries\":[{\"id\":\"query_fixture_0\",\"categoryIndex\":0,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 1 revised\"},{\"id\":\"query_fixture_1\",\"categoryIndex\":0,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 2\"},{\"id\":\"query_fixture_2\",\"categoryIndex\":0,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 3\"},{\"id\":\"query_fixture_3\",\"categoryIndex\":1,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 4\"},{\"id\":\"query_fixture_4\",\"categoryIndex\":1,\"query\":\"site:myshopify.com/products synthetic fixture product phrase 5\"}]}"
+      },
+      {
+        "path": "/api/runs/run_fixture_query_review/start",
+        "search": "",
+        "method": "POST",
+        "at": 1417,
+        "body": "{\"revision\":4}"
+      },
+      {
+        "path": "/api/runs/run_fixture_query_review",
+        "search": "",
+        "method": "GET",
+        "at": 1541,
+        "body": null
+      }
+    ],
+    "runtime": [
+      {
+        "path": "/api/runs/run_fixture_runtime",
+        "search": "",
+        "method": "GET",
+        "at": 449,
+        "body": null
+      },
+      {
+        "path": "/api/runs/run_fixture_runtime",
+        "search": "",
+        "method": "GET",
+        "at": 3457,
+        "body": null
+      },
+      {
+        "path": "/api/runs/run_fixture_runtime",
+        "search": "",
+        "method": "GET",
+        "at": 6459,
+        "body": null
+      }
+    ],
+    "completed": [
+      {
+        "path": "/api/runs/run_fixture_completed",
+        "search": "",
+        "method": "GET",
+        "at": 1344,
+        "body": null
+      },
+      {
+        "path": "/api/runs/run_fixture_completed/results",
+        "search": "?page=1&pageSize=25&sortBy=lead_score&sortDirection=desc",
+        "method": "GET",
+        "at": 1416,
+        "body": null
+      },
+      {
+        "path": "/api/runs/run_fixture_completed/results",
+        "search": "?page=1&pageSize=200",
+        "method": "GET",
+        "at": 1425,
+        "body": null
+      },
+      {
+        "path": "/api/runs/run_fixture_completed/results",
+        "search": "?page=1&pageSize=200",
+        "method": "GET",
+        "at": 1563,
+        "body": null
+      },
+      {
+        "path": "/api/runs/run_fixture_completed/results",
+        "search": "?page=1&pageSize=200",
+        "method": "GET",
+        "at": 1566,
+        "body": null
+      },
+      {
+        "path": "/api/runs/run_fixture_completed/results",
+        "search": "?page=1&pageSize=200",
+        "method": "GET",
+        "at": 1794,
+        "body": null
+      }
+    ]
+  },
+  "residuals": []
+}

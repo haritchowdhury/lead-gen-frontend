@@ -1,6 +1,6 @@
 # StoreSignal visual-system execution checklist
 
-**Status:** READY FOR SEQUENTIAL EXECUTION  
+**Status:** CORRECTIVE ACTION REQUIRED — execute G-R1 through G-R4 sequentially
 **Authority:** This file is the sole implementation checklist for the StoreSignal visual-system migration.  
 **Parent reviewer:** Root/parent agent. Implementation agents may complete only their assigned window and may not declare the migration complete.  
 **Execution model:** G1 through G12 are sequential. Do not parallelize windows because they share the global style system and later windows consume earlier visual contracts.
@@ -1047,3 +1047,272 @@ The parent must answer all items before assigning G1:
 - [x] Parent review and append-only corrections prevent unchecked cross-window gaps.
 
 **Planning result:** Ready to assign G1. No implementation window has started.
+
+---
+
+## 10. Parent review findings and corrective execution plan
+
+**Review date:** 2026-08-04
+**Review result:** Not accepted. G1–G12 implementation artifacts exist, but the migration cannot be marked complete until G-R1 through G-R4 pass.
+**Resume point after compaction:** Assign only G-R1 using the universal assignment text. Do not begin G-R2 until the parent independently reviews G-R1 source and evidence.
+
+The original G1–G12 status boxes remain unchanged because the required parent dependency gates were not recorded during execution. Do not retroactively claim that those gates occurred. G-R4 owns an honest execution ledger and final reconciliation after the technical corrections are complete.
+
+### Confirmed parent findings
+
+| Finding | Severity | Observed evidence | Required correction |
+|---|---|---|---|
+| Expanded lead content remains 882–940px wide at 390/768px inside the table scroller | High | `G9/browser-checks.json`, `G10/browser-checks.json`, `app/globals.css` table/expansion rules | G-R2 |
+| Protected application evidence is hand-authored HTML injected into the landing document rather than the shipped React components | High | `scripts/g6-browser-regression.mjs` through `scripts/g12-browser-matrix.mjs`; especially G12 `document.body.innerHTML` | G-R1 |
+| Sequential parent gates and status updates were not recorded; G6/G7 share commit `80b2454` | Medium/process | Checklist status fields, G6/G7 handoffs, Git history | G-R4 |
+| The stylesheet grew to 6,671 lines and retains uncontrolled raw values, fragmented feature order, and late cascade guards | Medium/design-system | `app/globals.css`, G12 handoff repository-audit findings | G-R3 |
+
+## G-R1 — Real-component deterministic browser harness
+
+**Status:** [ ] Not started
+**Token budget:** 30k
+**Finding and severity:** High — current protected-route screenshots and interaction records exercise injected replica markup, not the production React component tree.
+**Violated invariants:** V2–V10 and parent completion criteria requiring evidence appropriate to each behavioral claim.
+
+### Dependencies and preconditions
+
+- G1–G12 commits and evidence are present at or after `448d521`.
+- No authenticated Neon session is required or requested for this correction.
+- The worktree must be clean before editing. Preserve all unrelated work if that is no longer true.
+
+### Required reading and exact reproduction
+
+- Read this complete checklist, `AGENTS.md`, G1, G6–G12 handoffs, and current browser scripts.
+- Read the installed Next.js guides completely before code changes: project structure, layouts/pages, server/client components, CSS, route handlers if used, and proxy.
+- Reproduce `node scripts/g12-browser-matrix.mjs` and confirm that `scripts/g12-browser-matrix.mjs` removes scripts and assigns hand-written markup to `document.body.innerHTML`.
+- Confirm G1's protected-route redirect gap without modifying `proxy.ts`, authentication, or API authorization.
+
+### Root cause and ownership
+
+- Root cause: the authenticated `/runs/*` proxy redirects before client fixtures mount, so later windows substituted CSS-only HTML replicas.
+- Owns a deterministic, non-production-data browser fixture surface; fixture-only supporting components; browser harnesses; fixture tests; and `review-evidence/design-system/G-R1/*`.
+- May minimally export existing presentation components when required for direct fixture composition, without changing their runtime behavior.
+- May add a development/test-only Next.js fixture route outside `/runs/*` only if it fails closed with `notFound()` unless an explicit local fixture environment flag is set. The production build must expose no usable fixture data or authentication bypass.
+
+### Non-goals
+
+- Do not change `proxy.ts`, Neon Auth, API authorization, backend requests, polling intervals, retry behavior, parsers, data contracts, or production navigation.
+- Do not redesign any page or correct the responsive defect owned by G-R2.
+- Do not preserve the old injected-DOM checks as primary proof. They may remain only as explicitly labelled CSS smoke tests.
+
+### Ordered tasks
+
+- [x] Build a deterministic fixture surface that renders the actual production components and synthetic `.example` data.
+- [x] Cover the real `RunWorkspace` state machine where feasible by intercepting its existing client requests before hydration, or render its actual exported child components where interception cannot truthfully reproduce a state. Record which method proves each state.
+- [ ] Cover query review/edit/save/start, query-planning loader, discovery loader, reconnect warning, terminal states, completed results, filters, sort, search debounce, pagination, CSV trigger/error presentation, row expansion/replacement, outcome, contacts, store fit, vocabulary, occurrences, individual traffic, aggregate traffic, and all globe modes.
+- [x] Exercise actual React event handlers; do not bolt replacement listeners onto fixture HTML.
+- [ ] Add machine-readable assertions for request paths/counts, URL state, polling cadence under fake time or bounded observation, selected market, expanded IDs, disclosure state, link targets, visible data labels, element rectangles, internal/body overflow, and focus order.
+- [x] Ensure all fixture routes/data fail closed in ordinary production configuration and add a test for that gate.
+- [x] Replace G12's primary complete-path matrix with the real-component harness while retaining the real public landing route capture.
+
+### Adversarial verification
+
+- Present/absent resolved domain and a product-path `final_url`.
+- Zero, missing, partial, no-coverage, and unavailable traffic.
+- Unsupported globe country, keyboard country selection, pointer selection, drag suppression, and worldwide reset.
+- Rapid filter changes, result replacement while a lead is expanded, polling failure/recovery, and query start after save.
+- Every nested disclosure open with long unbroken URLs and duplicate vocabulary tokens.
+- Verify that no fixture API, route, or flag grants access to real protected data.
+
+### Required tests and commands
+
+- Add focused tests proving actual component imports/rendering, production fail-closed behavior, and absence of copied application markup in the primary harness.
+- Run the new real-component browser harness at 390x844, 768x1024, 1024x768, 1280x800, and 1440x900.
+- Run the unchanged G1 baseline tests and G6–G12 focused source/render tests.
+- Run all standard verification commands.
+
+### Acceptance
+
+- Primary protected-application evidence comes from the production React components and their real handlers, not `innerHTML` replicas.
+- Every behavior named above has component/runtime evidence or an exact, narrowly stated residual blocker accepted by the parent.
+- Fixture infrastructure is unreachable or returns 404 without an explicit local test flag and cannot bypass `/runs/*` authentication.
+- No production behavior or presentation changes.
+
+### Handoff and stop condition
+
+Write `review-evidence/design-system/G-R1_HANDOFF.md`, index all evidence, and stop. Do not begin G-R2. The parent must inspect the fixture gate, actual imports, network records, and browser interactions before checking G-R1 complete.
+
+## G-R2 — Responsive expanded-row reflow and nested evidence containment
+
+**Status:** [ ] Not started
+**Token budget:** 34k
+**Finding and severity:** High — expanded overview/contact content measures 928/882px and nested store-fit/discovery content measures 940px at a 390px viewport, making expanded evidence depend on sideways table scrolling and visibly clipping long content.
+**Violated invariants:** V9; G9 acceptance prohibiting clipped URLs; G10 acceptance requiring nested content to stack cleanly at every viewport.
+
+### Dependencies
+
+- G-R1 checked complete by the parent.
+- The G-R1 real-component fixture must reproduce the current oversized expanded-row measurements before editing.
+
+### Required reading and exact reproduction
+
+- Read this checklist, G8–G12 and G-R1 handoffs, installed Next.js CSS/server-client guides, and the complete current results/lead-detail component and stylesheet sources.
+- In the actual component harness, expand a dense lead at 390 and 768 with contact, vocabulary, structured store fit, all page evidence, occurrences, and traffic disclosures open.
+- Record table scroll width, expansion-shell width, each top-level section width, disclosure scroll/client widths, long-link rectangles, and current horizontal scroll dependency.
+
+### Root cause and ownership
+
+- Root cause: `.results-table` keeps a 980px minimum canvas and the expanded `<tr>/<td>` inherits that canvas; the existing narrow `.lead-details` width rule does not establish a genuinely viewport-sized expansion composition.
+- Owns `components/results-table.tsx` only if markup separation is necessary, responsive expansion selectors in `app/globals.css`, focused tests, G-R2 browser harness/evidence, and minimal lead-detail hooks required for measurement.
+- G-R1 harness code may be extended only to add G-R2 scenarios and assertions.
+
+### Non-goals
+
+- Preserve the collapsed desktop table, its intentional horizontal scrolling on narrow screens, filters, sort, pagination, expansion state, and all lead data.
+- Do not redesign the visual hierarchy accepted in G9–G11, change evidence order, remove fields, change link derivation, or alter globe/data behavior.
+- Do not solve the defect by hiding overflow, truncating required values, shrinking essential text, or accepting horizontal scrolling inside expanded evidence.
+
+### Ordered tasks
+
+- [ ] Decouple the expanded evidence canvas from the table's 980px collapsed-row canvas at widths below the table breakpoint.
+- [ ] Prefer the smallest valid markup/CSS correction. If table layout cannot provide a true viewport-width detail surface, render the expansion as a semantically adjacent full-width region while preserving one-expanded-row state and truthful control relationships.
+- [ ] Make identity, score, and outreach stack without blank columns; ensure the outcome popover remains inside the visible viewport.
+- [ ] Make contact values, decision grids, source links, traffic explorer, vocabulary, store-fit/page ledgers, and occurrences wrap and stack to the expansion width.
+- [ ] Preserve horizontal table access for collapsed columns while ensuring opening evidence never requires left/right scrolling to read it.
+- [ ] Add regression assertions that fail when any expansion section exceeds its visible expansion viewport.
+
+### Adversarial verification
+
+- 320px minimum document width plus the required 390, 768, 1024, 1280, and 1440 targets.
+- Table initially scrolled left, center, and right before expanding a row.
+- Extremely long unbroken domain, URL, email, query, validation reason, and vocabulary token.
+- All nested disclosures open simultaneously, then repeatedly closed/reopened.
+- Outcome badge opened near both viewport edges; keyboard focus must remain visible.
+- Result replacement/filter/page change must clear or retain expansion exactly as the current contract specifies.
+
+### Required tests and commands
+
+- Add component tests for any markup/ARIA relationship change and preserve all existing field-count/order/link assertions.
+- G-R1 real-component browser matrix must assert, at 390 and 768: expansion width no greater than its visible viewport; every disclosure `scrollWidth <= clientWidth` except explicitly scrollable non-evidence controls; no clipped required link/value; no body overflow.
+- Rerun unchanged G8, G9, G10, G11, and G12 focused tests and the G-R1 matrix.
+- Run all standard verification commands.
+
+### Acceptance
+
+- Expanded evidence is readable without horizontal scrolling at 390 and 768, even though collapsed table columns may still scroll.
+- No overview, contact, traffic, store-fit, category, page, occurrence, or provenance region exceeds the visible expansion canvas.
+- No clipped URL, giant blank column, hidden field, type below the minimum contract, focus regression, or behavior change.
+- Desktop 1280/1440 composition remains compact and materially unchanged except where required to share corrected structure.
+
+### Handoff and stop condition
+
+Write `review-evidence/design-system/G-R2_HANDOFF.md`, include before/after rectangle evidence and screenshots, and stop. Do not begin stylesheet consolidation. The parent must reproduce narrow all-open behavior before checking G-R2 complete.
+
+## G-R3 — Stylesheet architecture and semantic-token consolidation
+
+**Status:** [ ] Not started
+**Token budget:** 36k
+**Finding and severity:** Medium — the migration added another raw visual system and late cascade guards instead of completing the intended semantic-token consolidation.
+**Violated contract:** G2 acceptance that later windows can proceed without new raw shadow/radius systems; G12 stylesheet-organization and raw-drift review requirements.
+
+### Dependencies
+
+- G-R2 checked complete by the parent with accepted screenshots and machine measurements.
+- G-R1 supplies the real-component visual regression matrix used as the no-regression gate.
+
+### Required reading and baseline inventory
+
+- Read this checklist, `DESIGN_SYSTEM_MIGRATION_PLAN.md`, G2/G4–G5/G8–G12/G-R2 handoffs, installed Next.js CSS guide, Sportz67 references named by G2, and all of `app/globals.css`.
+- Record baseline stylesheet line count, unique raw colors, raw shadows, numeric radii, breakpoints, `!important` uses, duplicate selectors, unused selectors, and the selectors relying on G10–G12 cascade guards.
+- Capture baseline real-component screenshots and computed design tokens before editing.
+
+### Root cause and ownership
+
+- Root cause: sequential windows appended feature styles around legacy blocks, introduced raw marketing/application values, and compensated with late high-specificity cascade guards rather than reorganizing the stylesheet.
+- Owns `app/globals.css`, semantic token definitions, deletion of selectors proven unused repository-wide, CSS contract tests, and `review-evidence/design-system/G-R3/*`.
+- Component class changes are allowed only as mechanical hooks needed to remove ambiguity; no markup composition or behavior changes.
+
+### Non-goals
+
+- No visual redesign, copy change, feature change, dependency addition, Tailwind conversion, CSS-module conversion, dark mode, or global typography replacement.
+- Do not delete legacy selectors without `rg`, actual-component browser coverage, and computed-style proof.
+- Do not flatten purposeful landing-page art direction into generic application cards.
+
+### Ordered tasks
+
+- [ ] Organize CSS in one predictable order: tokens, reset/base, shared primitives, shell/auth/history, landing, query/runtime, results/table, expanded evidence, traffic, responsive rules colocated with their owner, then global accessibility/motion overrides.
+- [ ] Replace migrated-selector raw colors, shadows, and radii with the locked semantic roles or explicitly named component tokens derived from them.
+- [ ] Reduce all surfaces to the three elevation roles and the established radius vocabulary unless a documented shape is semantically unique.
+- [ ] Remove redundant cascade guards by placing canonical rules after their true dependencies and lowering unnecessary specificity.
+- [ ] Merge safe duplicate/near-identical media-query groups without changing breakpoint behavior; document deliberately retained breakpoints.
+- [ ] Remove unused primitives/selectors only with repository-wide proof. If `components/ui/primitives.tsx` remains unused, either adopt it mechanically where behavior-neutral or remove it and document why CSS primitives remain authoritative.
+- [ ] Produce before/after metrics and a selector/token migration map.
+
+### Adversarial verification
+
+- Every public/auth/history/query/runtime/results/expanded/traffic state from G-R1.
+- Hover, active, disabled, loading, focus-visible, reduced-motion, and forced-colors states.
+- Long content, all disclosures open, every viewport, and collapsed table horizontal scrolling.
+- Compare computed color, type, radius, elevation, spacing, visibility, and bounding rectangles for unintended drift.
+
+### Required tests and commands
+
+- Add a CSS architecture contract that rejects uncontrolled new raw shadows/radii/colors in migrated feature groups while allowing the root token declarations and explicitly documented exceptions.
+- Run a repository-wide unused-selector scan and store the report.
+- Rerun the unchanged G-R1/G-R2 browser matrix and all original window tests.
+- Run all standard verification commands.
+
+### Acceptance
+
+- No uncontrolled raw color, radius, or shadow system remains in migrated selectors.
+- Canonical feature rules no longer depend on late G10–G12 font-size cascade guards.
+- Stylesheet metrics materially improve and every retained exception is named with a reason.
+- Real-component screenshots and machine checks show no unintended composition, behavior, data, accessibility, or responsive regression.
+
+### Handoff and stop condition
+
+Write `review-evidence/design-system/G-R3_HANDOFF.md` with the before/after inventory and visual-diff evidence, then stop. Do not update historical completion records or declare the migration complete.
+
+## G-R4 — Execution-ledger reconciliation and final parent reliability review
+
+**Status:** [ ] Not started
+**Token budget:** 24k
+**Owner:** Parent agent only.
+**Finding and severity:** Medium/process — G1–G12 dependency approvals were not recorded, all original status fields remain not started, and G6/G7 were committed together despite separate handoff boundary claims.
+
+### Dependencies
+
+- G-R1, G-R2, and G-R3 independently reviewed and checked complete by the parent.
+- Clean worktree and reproducible handoffs/evidence for every corrective window.
+
+### Required reconciliation
+
+- [ ] Record the immutable G1–G12 commit map and explicitly note that historical sequential parent gates cannot be retroactively proven.
+- [ ] Compare each G1–G12 changed production file with its declared ownership and record exceptions, including the combined `80b2454` G6/G7 commit.
+- [ ] Replace ambiguous status reporting with an appended execution ledger containing: implemented commit, handoff present, parent source review, evidence quality, corrective dependency, and final disposition.
+- [ ] Do not rewrite handoffs or mark an original dependency gate as historically completed when it was not recorded.
+- [ ] Independently inspect G-R1–G-R3 source and rerun their focused checks rather than accepting handoff summaries.
+- [ ] Complete every still-applicable item in Section 7 using the real-component harness.
+- [ ] Recompare evidence-field inventories, behavior-sensitive effects, request paths, filters, CSV, expansion, links, traffic aggregation, globe interaction, responsive layout, focus, reduced motion, and forced colors.
+- [ ] Rerun all standard verification commands and the full real-component five-width matrix from clean processes.
+- [ ] Inspect final screenshots at every target width and record any remaining unknown as a new append-only corrective window rather than silently accepting it.
+
+### Acceptance
+
+- The ledger truthfully distinguishes implementation, missing historical approval, current independent verification, and corrected evidence.
+- All technical completion criteria in Section 7 pass with appropriate source, test, and real-component browser proof.
+- No unresolved finding contradicts V1–V12 or the locked visual contract.
+- Only the parent updates the checklist's final status to complete.
+
+### Handoff and stop condition
+
+Write `review-evidence/design-system/G-R4_PARENT_REVIEW.md`. If any concrete finding remains, append G-R5 or later and stop. Otherwise update the authoritative status and completion ledger, report the final command/evidence results, and declare the migration complete.
+
+## 11. Corrective execution order
+
+Execute strictly in this order:
+
+1. **G-R1:** establish trustworthy real-component browser proof.
+2. **Parent gate:** independently inspect G-R1 and mark only G-R1 complete.
+3. **G-R2:** fix narrow expanded evidence using the G-R1 harness.
+4. **Parent gate:** reproduce G-R2 before/after measurements and mark only G-R2 complete.
+5. **G-R3:** consolidate CSS after layout is stable.
+6. **Parent gate:** inspect CSS inventory and full visual regression evidence.
+7. **G-R4:** parent-only historical reconciliation and final reliability review.
+
+Do not parallelize these windows. G-R2 depends on G-R1's trustworthy harness; G-R3 depends on G-R2's accepted layout; G-R4 depends on all technical corrections.
