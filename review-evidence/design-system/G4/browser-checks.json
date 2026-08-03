@@ -1,0 +1,475 @@
+{
+  "fixture": "real landing plus compiled-CSS synthetic .example query review",
+  "scenarios": [
+    {
+      "name": "landing",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 61,
+        "width": 390,
+        "height": 1843
+      },
+      "globe": {
+        "x": 16,
+        "y": 607,
+        "width": 359,
+        "height": 359
+      },
+      "form": {
+        "x": 14,
+        "y": 1162,
+        "width": 362,
+        "height": 682
+      },
+      "categoryValue": "",
+      "categoryCount": "0 categories",
+      "suggestionCount": 9,
+      "button": {
+        "text": "Build my search",
+        "disabled": false
+      },
+      "alert": null,
+      "selectedCountry": null,
+      "queryValues": [],
+      "visibleMetrics": false
+    },
+    {
+      "name": "landing",
+      "url": "/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyWidth": 753,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 61,
+        "width": 753,
+        "height": 1281
+      },
+      "globe": {
+        "x": 426,
+        "y": 109,
+        "width": 307,
+        "height": 307
+      },
+      "form": {
+        "x": 20,
+        "y": 655,
+        "width": 713,
+        "height": 623
+      },
+      "categoryValue": "",
+      "categoryCount": "0 categories",
+      "suggestionCount": 9,
+      "button": {
+        "text": "Build my search",
+        "disabled": false
+      },
+      "alert": null,
+      "selectedCountry": null,
+      "queryValues": [],
+      "visibleMetrics": false
+    },
+    {
+      "name": "landing",
+      "url": "/",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 65,
+        "width": 1265,
+        "height": 1138
+      },
+      "globe": {
+        "x": 51,
+        "y": 521,
+        "width": 432,
+        "height": 432
+      },
+      "form": {
+        "x": 709,
+        "y": 129,
+        "width": 513,
+        "height": 692
+      },
+      "categoryValue": "",
+      "categoryCount": "0 categories",
+      "suggestionCount": 9,
+      "button": {
+        "text": "Build my search",
+        "disabled": false
+      },
+      "alert": null,
+      "selectedCountry": null,
+      "queryValues": [],
+      "visibleMetrics": false
+    },
+    {
+      "name": "landing",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1425,
+      "bodyWidth": 1425,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 65,
+        "width": 1425,
+        "height": 1209
+      },
+      "globe": {
+        "x": 131,
+        "y": 581,
+        "width": 432,
+        "height": 432
+      },
+      "form": {
+        "x": 793,
+        "y": 137,
+        "width": 510,
+        "height": 694
+      },
+      "categoryValue": "",
+      "categoryCount": "0 categories",
+      "suggestionCount": 9,
+      "button": {
+        "text": "Build my search",
+        "disabled": false
+      },
+      "alert": null,
+      "selectedCountry": null,
+      "queryValues": [],
+      "visibleMetrics": false
+    },
+    {
+      "name": "landing-empty-error",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 61,
+        "width": 390,
+        "height": 1895
+      },
+      "globe": {
+        "x": 16,
+        "y": 607,
+        "width": 359,
+        "height": 359
+      },
+      "form": {
+        "x": 14,
+        "y": 1162,
+        "width": 362,
+        "height": 734
+      },
+      "categoryValue": "",
+      "categoryCount": "0 categories",
+      "suggestionCount": 9,
+      "button": {
+        "text": "Build my search",
+        "disabled": false
+      },
+      "alert": "Add at least one store category to start.",
+      "selectedCountry": null,
+      "queryValues": [],
+      "visibleMetrics": false
+    },
+    {
+      "name": "landing-maximum-error",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 61,
+        "width": 390,
+        "height": 1895
+      },
+      "globe": {
+        "x": 16,
+        "y": 607,
+        "width": 359,
+        "height": 359
+      },
+      "form": {
+        "x": 14,
+        "y": 1162,
+        "width": 362,
+        "height": 734
+      },
+      "categoryValue": "Category 0\nCategory 1\nCategory 2\nCategory 3\nCategory 4\nCategory 5\nCategory 6\nCategory 7\nCategory 8\nCategory 9\nCategory 10\nCategory 11\nCategory 12\nCategory 13\nCategory 14\nCategory 15\nCategory 16\nCategory 17\nCategory 18\nCategory 19\nCategory 20\nCategory 21\nCategory 22\nCategory 23\nCategory 24\nCategory 25\nCategory 26\nCategory 27\nCategory 28\nCategory 29\nCategory 30\nCategory 31\nCategory 32\nCategory 33\nCategory 34\nCategory 35\nCategory 36\nCategory 37\nCategory 38\nCategory 39\nCategory 40\nCategory 41\nCategory 42\nCategory 43\nCategory 44\nCategory 45\nCategory 46\nCategory 47\nCategory 48\nCategory 49\nCategory 50\nCategory 51\nCategory 52\nCategory 53\nCategory 54\nCategory 55\nCategory 56\nCategory 57\nCategory 58\nCategory 59\nCategory 60\nCategory 61\nCategory 62\nCategory 63\nCategory 64\nCategory 65\nCategory 66\nCategory 67\nCategory 68\nCategory 69\nCategory 70\nCategory 71\nCategory 72\nCategory 73\nCategory 74\nCategory 75\nCategory 76\nCategory 77\nCategory 78\nCategory 79\nCategory 80\nCategory 81\nCategory 82\nCategory 83\nCategory 84\nCategory 85\nCategory 86\nCategory 87\nCategory 88\nCategory 89\nCategory 90\nCategory 91\nCategory 92\nCategory 93\nCategory 94\nCategory 95\nCategory 96\nCategory 97\nCategory 98\nCategory 99\nCategory 100",
+      "categoryCount": "101 categories",
+      "suggestionCount": 9,
+      "button": {
+        "text": "Build my search",
+        "disabled": false
+      },
+      "alert": "Use no more than 100 categories in one run.",
+      "selectedCountry": null,
+      "queryValues": [],
+      "visibleMetrics": false
+    },
+    {
+      "name": "landing-pending",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 61,
+        "width": 390,
+        "height": 1843
+      },
+      "globe": {
+        "x": 16,
+        "y": 607,
+        "width": 359,
+        "height": 359
+      },
+      "form": {
+        "x": 14,
+        "y": 1162,
+        "width": 362,
+        "height": 682
+      },
+      "categoryValue": "Independent sustainable home and lifestyle stores",
+      "categoryCount": "1 category",
+      "suggestionCount": 9,
+      "button": {
+        "text": "Building your search…",
+        "disabled": true
+      },
+      "alert": null,
+      "selectedCountry": null,
+      "queryValues": [],
+      "visibleMetrics": false
+    },
+    {
+      "name": "query-review",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 61,
+        "width": 390,
+        "height": 2095
+      },
+      "globe": {
+        "x": 16,
+        "y": 562,
+        "width": 359,
+        "height": 359
+      },
+      "form": {
+        "x": 14,
+        "y": 1117,
+        "width": 362,
+        "height": 979
+      },
+      "categoryValue": null,
+      "categoryCount": null,
+      "suggestionCount": 1,
+      "button": {
+        "text": "Find my stores",
+        "disabled": true
+      },
+      "alert": "Every category needs at least one correctly formatted query.",
+      "selectedCountry": null,
+      "queryValues": [
+        "site:myshopify.com/products intentionally long sustainable home collection",
+        "site:myshopify.com/products artisan homewares with a deliberately long phrase",
+        "invalid query"
+      ],
+      "visibleMetrics": false
+    },
+    {
+      "name": "query-review",
+      "url": "/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyWidth": 753,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 61,
+        "width": 753,
+        "height": 1357
+      },
+      "globe": {
+        "x": 426,
+        "y": 109,
+        "width": 307,
+        "height": 307
+      },
+      "form": {
+        "x": 20,
+        "y": 679,
+        "width": 713,
+        "height": 675
+      },
+      "categoryValue": null,
+      "categoryCount": null,
+      "suggestionCount": 1,
+      "button": {
+        "text": "Find my stores",
+        "disabled": true
+      },
+      "alert": "Every category needs at least one correctly formatted query.",
+      "selectedCountry": null,
+      "queryValues": [
+        "site:myshopify.com/products intentionally long sustainable home collection",
+        "site:myshopify.com/products artisan homewares with a deliberately long phrase",
+        "invalid query"
+      ],
+      "visibleMetrics": false
+    },
+    {
+      "name": "query-review",
+      "url": "/",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 65,
+        "width": 1265,
+        "height": 1087
+      },
+      "globe": {
+        "x": 51,
+        "y": 470,
+        "width": 432,
+        "height": 432
+      },
+      "form": {
+        "x": 709,
+        "y": 129,
+        "width": 513,
+        "height": 738
+      },
+      "categoryValue": null,
+      "categoryCount": null,
+      "suggestionCount": 1,
+      "button": {
+        "text": "Find my stores",
+        "disabled": true
+      },
+      "alert": "Every category needs at least one correctly formatted query.",
+      "selectedCountry": null,
+      "queryValues": [
+        "site:myshopify.com/products intentionally long sustainable home collection",
+        "site:myshopify.com/products artisan homewares with a deliberately long phrase",
+        "invalid query"
+      ],
+      "visibleMetrics": false
+    },
+    {
+      "name": "query-review",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "documentWidth": 1425,
+      "bodyWidth": 1425,
+      "bodyOverflow": false,
+      "hero": {
+        "x": 0,
+        "y": 65,
+        "width": 1425,
+        "height": 1209
+      },
+      "globe": {
+        "x": 131,
+        "y": 581,
+        "width": 432,
+        "height": 432
+      },
+      "form": {
+        "x": 793,
+        "y": 137,
+        "width": 510,
+        "height": 739
+      },
+      "categoryValue": null,
+      "categoryCount": null,
+      "suggestionCount": 1,
+      "button": {
+        "text": "Find my stores",
+        "disabled": true
+      },
+      "alert": "Every category needs at least one correctly formatted query.",
+      "selectedCountry": null,
+      "queryValues": [
+        "site:myshopify.com/products intentionally long sustainable home collection",
+        "site:myshopify.com/products artisan homewares with a deliberately long phrase",
+        "invalid query"
+      ],
+      "visibleMetrics": false
+    }
+  ],
+  "interactions": [
+    {
+      "countryBefore": "false",
+      "countryAfter": "true",
+      "supportedCountrySelected": true,
+      "globeDragChangedPath": true
+    }
+  ],
+  "gaps": [
+    {
+      "state": "real query review",
+      "reason": "The existing auth proxy prevents a deterministic unauthenticated run fixture from mounting. Browser evidence uses the real compiled G4 CSS with synthetic .example DOM; focused source tests preserve production load/edit/add/remove/reorder/save/start contracts."
+    }
+  ]
+}

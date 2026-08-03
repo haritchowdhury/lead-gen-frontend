@@ -209,14 +209,14 @@ export function QueryEditor({
 
   if (!querySet) {
     return (
-      <section className="run-form-card query-editor-card query-editor-loading">
+      <section className="run-form-card query-editor-card query-editor-loading ds-card" role="status" aria-live="polite">
         Loading saved queries…
       </section>
     );
   }
 
   return (
-    <section id="query-review" className="run-form-card query-editor-card">
+    <section id="query-review" className="run-form-card query-editor-card ds-card" aria-busy={busy !== null}>
       <div className="form-heading-row query-editor-heading">
         <div>
           <span className="eyebrow">Query review · revision {querySet.revision}</span>
@@ -225,7 +225,7 @@ export function QueryEditor({
         <span className="step-badge">02</span>
       </div>
 
-      {error && <div className="inline-error" role="alert">{error}</div>}
+      {error && <div className="inline-error ds-notice ds-notice--danger" role="alert">{error}</div>}
 
       {grouped.map(({ category, rows: categoryRows }) => (
         <div className="query-category" key={category.categoryIndex}>
@@ -238,6 +238,7 @@ export function QueryEditor({
               <div className="query-row" key={row.clientKey}>
                 <div className="query-row-main">
                   <input
+                    className="ds-field-control"
                     aria-label={`Query ${index + 1} for ${category.originalShopType}`}
                     value={row.query}
                     maxLength={200}
@@ -285,10 +286,10 @@ export function QueryEditor({
           {dirty && <span>Unsaved changes</span>}
         </div>
         <div>
-          <button className="button button-secondary" type="button" onClick={() => void save()} disabled={!dirty || busy !== null}>
+          <button className="button button-secondary ds-button ds-button--secondary" type="button" onClick={() => void save()} disabled={!dirty || busy !== null}>
             {busy === "saving" ? "Saving…" : "Save changes"}
           </button>
-          <button className="button button-primary" type="button" onClick={() => void start()} disabled={dirty || hasVisibleErrors || !rows.length || busy !== null}>
+          <button className="button button-primary ds-button ds-button--primary" type="button" onClick={() => void start()} disabled={dirty || hasVisibleErrors || !rows.length || busy !== null}>
             {busy === "starting" ? "Finding your stores…" : "Find my stores"}
             {busy !== "starting" && <ArrowRightIcon />}
           </button>

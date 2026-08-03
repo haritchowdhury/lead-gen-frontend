@@ -17,30 +17,32 @@ export function LandingHeroCopy({ variant = "start" }: { variant?: LandingVarian
   const reviewing = variant === "review";
 
   return (
-    <div className="hero-copy">
-      {reviewing ? (
-        <span className="health-chip health-online"><span className="health-dot" /> Search plan ready</span>
-      ) : (
-        <BackendStatus />
-      )}
-      <p className="hero-kicker">{reviewing ? "One quick review" : "Smarter Shopify prospecting starts here"}</p>
-      <h1>
+    <div className={`hero-copy${reviewing ? " is-review" : " is-start"}`}>
+      <div className="hero-message">
         {reviewing ? (
-          <>Make sure we are looking in the <span className="accent-underline">right places.</span></>
+          <span className="health-chip health-online"><span className="health-dot" /> Search plan ready</span>
         ) : (
-          <>Meet the Shopify stores your business was <span className="accent-underline">made for.</span></>
+          <BackendStatus />
         )}
-      </h1>
-      <p className="hero-intro">
-        {reviewing
-          ? "We turned your categories into focused searches designed to uncover relevant Shopify stores. Shape the plan, then begin when the direction feels right."
-          : "Tell us who you want to reach. StoreSignal finds the right stores, uncovers the best ways to contact them, and shows you which leads deserve your attention."}
-      </p>
-      <div className="value-list">
-        {(reviewing
-          ? ["Adjust any search", "Add another angle", "Start only when it feels right"]
-          : ["Find better-fit stores", "See how to reach them", "Enter every conversation informed"]
-        ).map((item) => <span key={item}><CheckIcon /> {item}</span>)}
+        <p className="hero-kicker">{reviewing ? "One quick review" : "Smarter Shopify prospecting starts here"}</p>
+        <h1>
+          {reviewing ? (
+            <>Make sure we are looking in the <span className="accent-underline">right places.</span></>
+          ) : (
+            <>Meet the Shopify stores your business was <span className="accent-underline">made for.</span></>
+          )}
+        </h1>
+        <p className="hero-intro">
+          {reviewing
+            ? "We turned your categories into focused searches designed to uncover relevant Shopify stores. Shape the plan, then begin when the direction feels right."
+            : "Tell us who you want to reach. StoreSignal finds the right stores, uncovers the best ways to contact them, and shows you which leads deserve your attention."}
+        </p>
+        <div className="value-list">
+          {(reviewing
+            ? ["Adjust any search", "Add another angle", "Start only when it feels right"]
+            : ["Find better-fit stores", "See how to reach them", "Enter every conversation informed"]
+          ).map((item) => <span key={item}><CheckIcon /> {item}</span>)}
+        </div>
       </div>
       <TrafficGlobeShowcase label={reviewing ? "Your market is bigger than one location" : "Opportunity has no borders"} />
     </div>

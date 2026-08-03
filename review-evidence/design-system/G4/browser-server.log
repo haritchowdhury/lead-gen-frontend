@@ -1,0 +1,21 @@
+
+> storesignal-frontend@0.1.0 dev
+> next dev --hostname 127.0.0.1 --port 4321
+
+▲ Next.js 16.2.12 (Turbopack)
+- Local:         http://127.0.0.1:4321
+- Network:       http://127.0.0.1:4321
+- Environments: .env.local
+✓ Ready in 668ms
+
+ GET / 200 in 2.8s (next.js: 1072ms, application-code: 1739ms)
+ GET / 200 in 729ms (next.js: 9ms, application-code: 719ms)
+ GET /api/health 200 in 225ms (next.js: 92ms, application-code: 133ms)
+ GET / 200 in 709ms (next.js: 5ms, application-code: 704ms)
+ GET /api/health 200 in 125ms (next.js: 6ms, application-code: 119ms)
+ GET / 200 in 503ms (next.js: 8ms, application-code: 495ms)
+ GET /api/health 200 in 117ms (next.js: 7ms, application-code: 111ms)
+ GET / 200 in 580ms (next.js: 148ms, application-code: 433ms)
+ GET /api/health 200 in 388ms (next.js: 4ms, application-code: 384ms)
+ GET / 200 in 438ms (next.js: 7ms, application-code: 432ms)
+ GET /api/health 200 in 208ms (next.js: 8ms, application-code: 199ms)

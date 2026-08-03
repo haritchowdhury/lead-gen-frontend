@@ -234,7 +234,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
   if (run.state === "awaiting_query_confirmation") {
     return (
       <main>
-        <section className="hero query-review-hero">
+        <section className="hero landing-hero query-review-hero">
           <div className="shell hero-grid query-review-grid">
             <LandingHeroCopy variant="review" />
             <div>

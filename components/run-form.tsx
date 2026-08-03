@@ -82,7 +82,7 @@ export function RunForm() {
   }
 
   return (
-    <form id="start-discovery" className="run-form-card run-start-form" onSubmit={submit}>
+    <form id="start-discovery" className="run-form-card run-start-form ds-card" onSubmit={submit} aria-busy={isSubmitting}>
       <div className="form-heading-row">
         <div>
           <span className="eyebrow">Start a new search</span>
@@ -95,7 +95,7 @@ export function RunForm() {
         Describe your ideal stores
         <span>One category per line</span>
       </label>
-      <div className="textarea-wrap">
+      <div className="textarea-wrap ds-field">
         <textarea
           id="shop-types"
           value={input}
@@ -143,7 +143,7 @@ export function RunForm() {
           Review and approve your search before discovery begins.
         </p>
         <button
-          className="button button-primary"
+          className="button button-primary ds-button ds-button--primary"
           type="submit"
           disabled={isSubmitting}
         >

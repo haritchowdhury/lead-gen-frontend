@@ -3,8 +3,8 @@ import { RunForm } from "@/components/run-form";
 
 export default function Home() {
   return (
-    <main>
-      <section className="hero">
+    <main className="landing-page">
+      <section className="hero landing-hero">
         <div className="shell hero-grid">
           <LandingHeroCopy />
           <RunForm />
