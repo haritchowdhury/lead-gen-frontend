@@ -1,0 +1,26 @@
+{
+  "command": "node --experimental-strip-types scripts/g1-browser-baseline.mjs",
+  "machineChecks": "browser-checks.json",
+  "serverLog": "browser-server.log",
+  "inventory": "inventory.json",
+  "screenshots": [
+    "landing-390x844.png",
+    "landing-768x1024.png",
+    "landing-1280x800.png",
+    "sign-in-390x844.png",
+    "sign-in-1280x800.png",
+    "sign-up-390x844.png",
+    "not-found-390x844.png",
+    "not-found-1280x800.png"
+  ],
+  "excludedAsUnproven": [
+    "query review",
+    "query loader",
+    "discovery loader",
+    "run history",
+    "completed results",
+    "expanded lead and nested disclosures",
+    "cumulative and individual traffic interaction",
+    "authenticated empty/error states"
+  ]
+}

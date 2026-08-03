@@ -1,0 +1,279 @@
+{
+  "fixture": "synthetic .example/.invalid G1 fixture",
+  "scenarios": [
+    {
+      "name": "landing",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "expanded": 0,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inL",
+      "selectedCountry": null,
+      "resolvedStorefront": null,
+      "table": null,
+      "visibleLabels": [
+        "Meet the Shopify stores your business was made for.",
+        "What kind of stores do you want to meet?",
+        "Your next great customer should not be buried in a spreadsheet.",
+        "Less searching",
+        "Less guessing",
+        "More confidence",
+        "A better lead list in four simple steps.",
+        "Describe your market",
+        "Shape the search",
+        "Let us do the digging",
+        "Focus on the best",
+        "Every lead comes with a reason to care.",
+        "Know the store behind the domain.",
+        "Find a real way in.",
+        "markets, one clearer picture.",
+        "Turn a crowded market into a confident shortlist.",
+        "No mystery scores. No unexplained recommendations.",
+        "Discover where attention is already growing.",
+        "Whatever you sell, start with stores that need it.",
+        "Ecommerce agencies",
+        "Shopify technology teams",
+        "Wholesale brands",
+        "Partnership teams",
+        "StoreSignal does the research. You make the call.",
+        "Nothing begins without your approval",
+        "Nothing important is hidden",
+        "Nothing locks you in",
+        "Good to know before you begin.",
+        "What is StoreSignal?+",
+        "What should I search for?+",
+        "Can I change the searches StoreSignal creates?+",
+        "What contact information can I find?+",
+        "How are leads ranked?+",
+        "Does traffic mean actual website visitors?+",
+        "Can I export my leads?+",
+        "Find the stores worth knowing."
+      ]
+    },
+    {
+      "name": "landing",
+      "url": "/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "documentWidth": 753,
+      "bodyWidth": 753,
+      "bodyOverflow": false,
+      "expanded": 0,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inL",
+      "selectedCountry": null,
+      "resolvedStorefront": null,
+      "table": null,
+      "visibleLabels": [
+        "Meet the Shopify stores your business was made for.",
+        "What kind of stores do you want to meet?",
+        "Your next great customer should not be buried in a spreadsheet.",
+        "Less searching",
+        "Less guessing",
+        "More confidence",
+        "A better lead list in four simple steps.",
+        "Describe your market",
+        "Shape the search",
+        "Let us do the digging",
+        "Focus on the best",
+        "Every lead comes with a reason to care.",
+        "Know the store behind the domain.",
+        "Find a real way in.",
+        "markets, one clearer picture.",
+        "Turn a crowded market into a confident shortlist.",
+        "No mystery scores. No unexplained recommendations.",
+        "Discover where attention is already growing.",
+        "Whatever you sell, start with stores that need it.",
+        "Ecommerce agencies",
+        "Shopify technology teams",
+        "Wholesale brands",
+        "Partnership teams",
+        "StoreSignal does the research. You make the call.",
+        "Nothing begins without your approval",
+        "Nothing important is hidden",
+        "Nothing locks you in",
+        "Good to know before you begin.",
+        "What is StoreSignal?+",
+        "What should I search for?+",
+        "Can I change the searches StoreSignal creates?+",
+        "What contact information can I find?+",
+        "How are leads ranked?+",
+        "Does traffic mean actual website visitors?+",
+        "Can I export my leads?+",
+        "Find the stores worth knowing."
+      ]
+    },
+    {
+      "name": "landing",
+      "url": "/",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "expanded": 0,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inL",
+      "selectedCountry": null,
+      "resolvedStorefront": null,
+      "table": null,
+      "visibleLabels": [
+        "Meet the Shopify stores your business was made for.",
+        "What kind of stores do you want to meet?",
+        "Your next great customer should not be buried in a spreadsheet.",
+        "Less searching",
+        "Less guessing",
+        "More confidence",
+        "A better lead list in four simple steps.",
+        "Describe your market",
+        "Shape the search",
+        "Let us do the digging",
+        "Focus on the best",
+        "Every lead comes with a reason to care.",
+        "Know the store behind the domain.",
+        "Find a real way in.",
+        "markets, one clearer picture.",
+        "Turn a crowded market into a confident shortlist.",
+        "No mystery scores. No unexplained recommendations.",
+        "Discover where attention is already growing.",
+        "Whatever you sell, start with stores that need it.",
+        "Ecommerce agencies",
+        "Shopify technology teams",
+        "Wholesale brands",
+        "Partnership teams",
+        "StoreSignal does the research. You make the call.",
+        "Nothing begins without your approval",
+        "Nothing important is hidden",
+        "Nothing locks you in",
+        "Good to know before you begin.",
+        "What is StoreSignal?+",
+        "What should I search for?+",
+        "Can I change the searches StoreSignal creates?+",
+        "What contact information can I find?+",
+        "How are leads ranked?+",
+        "Does traffic mean actual website visitors?+",
+        "Can I export my leads?+",
+        "Find the stores worth knowing."
+      ]
+    },
+    {
+      "name": "sign-in",
+      "url": "/sign-in",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "expanded": 0,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inS",
+      "selectedCountry": null,
+      "resolvedStorefront": null,
+      "table": null,
+      "visibleLabels": [
+        "Welcome back"
+      ]
+    },
+    {
+      "name": "sign-in",
+      "url": "/sign-in",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "expanded": 0,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inS",
+      "selectedCountry": null,
+      "resolvedStorefront": null,
+      "table": null,
+      "visibleLabels": [
+        "Welcome back"
+      ]
+    },
+    {
+      "name": "sign-up",
+      "url": "/sign-up",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "expanded": 0,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign inS",
+      "selectedCountry": null,
+      "resolvedStorefront": null,
+      "table": null,
+      "visibleLabels": [
+        "Save your search"
+      ]
+    },
+    {
+      "name": "not-found",
+      "url": "/g1-synthetic-not-found",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "bodyOverflow": false,
+      "expanded": 0,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign in4",
+      "selectedCountry": null,
+      "resolvedStorefront": null,
+      "table": null,
+      "visibleLabels": [
+        "That lead run does not exist."
+      ]
+    },
+    {
+      "name": "not-found",
+      "url": "/g1-synthetic-not-found",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "documentWidth": 1265,
+      "bodyWidth": 1265,
+      "bodyOverflow": false,
+      "expanded": 0,
+      "focused": "StoreSignalHow it worksWhat you getUse casesFAQShopify lead intelligenceSign in4",
+      "selectedCountry": null,
+      "resolvedStorefront": null,
+      "table": null,
+      "visibleLabels": [
+        "That lead run does not exist."
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "state": "/runs",
+      "reason": "The real Next.js authentication proxy redirects unauthenticated deterministic sessions before page/client fixtures execute. G1 does not alter or bypass authentication.",
+      "observedPath": "/sign-in"
+    },
+    {
+      "state": "/runs/run_g1queryreviewfixture",
+      "reason": "The real Next.js authentication proxy redirects unauthenticated deterministic sessions before page/client fixtures execute. G1 does not alter or bypass authentication.",
+      "observedPath": "/sign-in"
+    },
+    {
+      "state": "/runs/run_g1completedfixture",
+      "reason": "The real Next.js authentication proxy redirects unauthenticated deterministic sessions before page/client fixtures execute. G1 does not alter or bypass authentication.",
+      "observedPath": "/sign-in"
+    }
+  ]
+}

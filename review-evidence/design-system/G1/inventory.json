@@ -1,0 +1,35 @@
+{
+  "baseline": {
+    "commit": "8aa4bed597b4d056cf85e2e1eea892c1f9b22ff3",
+    "branch": "main",
+    "initialStatus": "clean",
+    "node": "v24.14.1",
+    "npm": "11.11.0",
+    "chrome": "146.0.7680.164",
+    "next": "16.2.12"
+  },
+  "routes": [
+    { "path": "/", "states": ["landing", "category input", "validation", "pending submission"], "interactions": ["category add/remove", "suggestions", "form submit", "globe drag", "country selection", "marketing anchors", "FAQ disclosures"] },
+    { "path": "/sign-in", "states": ["idle", "client validation error", "pending", "service error"], "interactions": ["submit", "create-account link"] },
+    { "path": "/sign-up", "states": ["idle", "client validation error", "pending", "service error"], "interactions": ["submit", "sign-in link"] },
+    { "path": "/runs", "protected": true, "states": ["loading", "empty", "populated", "pagination", "error"], "interactions": ["open run", "previous page", "next page"] },
+    { "path": "/runs/continue", "protected": true, "states": ["claiming", "claim error", "retry"], "interactions": ["retry", "my-runs link"] },
+    { "path": "/runs/[runId]", "protected": true, "states": ["initial loader", "query review", "queued", "running", "reconnecting", "failed", "cancelled", "completed", "results loading", "results error", "empty results"], "interactions": ["query edit/add/delete/reorder/save/start", "copy run ID", "filter", "search", "sort", "pagination", "CSV export", "row expand/collapse", "nested disclosures", "external links", "traffic country select/reset/drag"] },
+    { "path": "/_not-found", "states": ["not found"], "interactions": ["return home"] }
+  ],
+  "fixtureCoverage": [
+    "long store name/domain/URL",
+    "many category tokens",
+    "many contact items",
+    "multiple discovery occurrences",
+    "multiple store-fit records and page records",
+    "outcome evidence",
+    "resolved domain present and absent",
+    "measured zero traffic",
+    "missing traffic",
+    "partial traffic",
+    "all nine tracked markets",
+    "multiple query-review categories and queries"
+  ],
+  "browserGap": "Protected routes redirect through the real Next.js authentication proxy before client fixture interception. No deterministic local Neon session fixture is checked into the repository, and G1 does not alter or bypass authentication."
+}

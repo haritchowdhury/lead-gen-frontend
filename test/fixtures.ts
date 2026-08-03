@@ -1,10 +1,37 @@
 import type {
+  DataForSeoMarketTraffic,
   Lead,
+  QuerySet,
   ResultPage,
   RunProgress,
   RunStatus,
   TrafficEnrichment,
 } from "../lib/api-types.ts";
+
+const marketCodes: DataForSeoMarketTraffic["country_code"][] = [
+  "US", "GB", "CA", "AU", "NZ", "DE", "FR", "IN", "AE",
+];
+
+function trafficMetrics(value: number) {
+  return {
+    estimated_google_search_traffic: value,
+    organic_estimated_traffic: value,
+    organic_keyword_count: value,
+    paid_estimated_traffic: 0,
+    paid_keyword_count: 0,
+    featured_snippet_estimated_traffic: 0,
+    featured_snippet_keyword_count: 0,
+    local_pack_estimated_traffic: 0,
+    local_pack_keyword_count: 0,
+  };
+}
+
+export function allTrackedMarkets(): DataForSeoMarketTraffic[] {
+  return marketCodes.map((country_code, index) => ({
+    country_code,
+    ...trafficMetrics(index),
+  }));
+}
 
 export function trafficEnrichment(): TrafficEnrichment {
   return {
@@ -209,6 +236,90 @@ export function lead(overrides: Partial<Lead> = {}): Lead {
     matched_categories: [{ originalShopType: "Eyewear Brand", shopType: "eyewear", businessQualifier: "brand", categoryVocabulary: ["eyewear"] }],
     score_semantics: "evidence_rank_v2",
     ...overrides,
+  };
+}
+
+export function denseLead(overrides: Partial<Lead> = {}): Lead {
+  const longSlug = "independent-hand-finished-acetate-eyewear-and-accessories-".repeat(4);
+  const categories = Array.from({ length: 18 }, (_, index) => `category-token-${index + 1}-${longSlug}`);
+  const contacts = Array.from({ length: 6 }, (_, index) => ({
+    kind: "email",
+    value: `partnerships-${index + 1}@very-long-store-domain-${index + 1}.example`,
+    sourceUrl: `https://very-long-store-domain.example/pages/${longSlug}${index + 1}`,
+    method: "mailto",
+    confidence: 90 - index,
+    validationReason: `synthetic_validation_reason_${index + 1}`,
+  }));
+  const base = lead();
+  const storeFit = Array.from({ length: 3 }, (_, index) => ({
+    ...base.store_fit_evidence![0],
+    matchedTerms: categories.slice(index, index + 8),
+    sourceUrls: [`https://very-long-store-domain.example/collections/${longSlug}${index}`],
+    evidence: Array.from({ length: 3 }, (_, pageIndex) => ({
+      ...base.store_fit_evidence![0].evidence![0],
+      sourceUrl: `https://very-long-store-domain.example/collections/${longSlug}${index}-${pageIndex}`,
+      matchedTerms: categories.slice(pageIndex, pageIndex + 6),
+    })),
+  }));
+  const occurrences = Array.from({ length: 4 }, (_, index) => ({
+    ...base.discovery_occurrences![0],
+    query: `site:myshopify.com/products ${longSlug}${index}`,
+    rank: index + 1,
+    resultUrl: `https://dense-fixture.myshopify.com/products/${longSlug}${index}`,
+    finalUrl: `https://very-long-store-domain.example/products/${longSlug}${index}`,
+    categoryVocabulary: categories,
+  }));
+  return lead({
+    id: "lead_dense_fixture",
+    store_name: `The Extremely Long Independent Store Name ${longSlug}`,
+    myshopify_domain: `very-long-${longSlug}.myshopify.com`,
+    final_url: `https://very-long-store-domain.example/products/${longSlug}`,
+    canonical_url: `https://very-long-store-domain.example/products/${longSlug}`,
+    resolved_domain: "very-long-store-domain.example",
+    additional_information: "Synthetic outcome evidence: long-content fixture with all disclosures.",
+    store_fit_evidence: storeFit,
+    contact_evidence: { ...base.contact_evidence, emails: contacts },
+    discovery_occurrences: occurrences,
+    matched_categories: [{
+      originalShopType: "Independent Eyewear and Accessories Brand",
+      shopType: "eyewear and accessories",
+      businessQualifier: "brand",
+      categoryVocabulary: categories,
+    }],
+    traffic_enrichment: {
+      ...trafficEnrichment(),
+      dataforseo: {
+        ...trafficEnrichment().dataforseo!,
+        state: "available",
+        worldwide: trafficMetrics(0),
+        markets: allTrackedMarkets(),
+      },
+    },
+    ...overrides,
+  });
+}
+
+export function querySet(): QuerySet {
+  return {
+    runId: "run_abcdefghijklmnop",
+    revision: 3,
+    editable: true,
+    categories: [
+      { categoryIndex: 0, originalShopType: "Independent Eyewear Brand", shopType: "eyewear", businessQualifier: "brand" },
+      { categoryIndex: 1, originalShopType: "Outdoor Equipment Retailer", shopType: "outdoor equipment", businessQualifier: "retailer" },
+    ],
+    queries: Array.from({ length: 5 }, (_, index) => ({
+      id: `query_fixture_${index}`,
+      categoryIndex: index < 3 ? 0 : 1,
+      sequence: index,
+      query: `site:myshopify.com/products synthetic fixture product phrase ${index + 1}`,
+      source: "generated" as const,
+      validationState: "valid" as const,
+      rejectionReason: null,
+      queryScore: 80 - index,
+      generationReason: "Synthetic deterministic query fixture.",
+      probedAt: "2026-08-01T00:00:00.000Z",
+    })),
   };
 }
 
