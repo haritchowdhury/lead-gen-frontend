@@ -3403,6 +3403,194 @@ button {
 .traffic-attribution-links { display: flex; flex-wrap: wrap; gap: 8px; }
 .traffic-attribution-links a { color: #496e14; font-weight: 800; }
 
+/* G11 — individual traffic analysis */
+.traffic-details {
+  padding-top: 9px;
+  border-top: 1px solid var(--line-dark);
+}
+
+.traffic-details-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 7px;
+}
+
+.traffic-details-header h3 { margin-bottom: 2px; }
+
+.traffic-details-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.traffic-source-count {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.traffic-details .traffic-source-grid {
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.traffic-details .traffic-source-block {
+  padding: 11px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.traffic-details .traffic-source-header {
+  margin-bottom: 8px;
+}
+
+.traffic-provider-label {
+  display: block;
+  margin-bottom: 2px;
+  color: #71805d;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.traffic-details .traffic-source-block h4,
+.traffic-details .traffic-attribution h4 { font-size: 13px; }
+
+.traffic-details .traffic-source-block header p,
+.traffic-details .traffic-attribution > p { font-size: 10px; }
+
+.traffic-details .traffic-state {
+  padding: 3px 7px;
+  font-size: 10px;
+}
+
+.traffic-details .traffic-market-explorer {
+  grid-template-columns: minmax(0, 1.12fr) minmax(240px, 0.88fr);
+  gap: 10px;
+  margin-top: 7px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcf8;
+}
+
+.traffic-details .traffic-market-data { padding: 3px; }
+
+.traffic-details .traffic-country-nav {
+  width: calc(56% - 10px);
+  padding: 0 11px 9px;
+}
+
+.traffic-details .traffic-scope {
+  padding: 8px 0 0;
+}
+
+.traffic-details .traffic-scope + .traffic-scope {
+  margin-top: 8px;
+  padding-top: 9px;
+}
+
+.traffic-scope-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.traffic-details .traffic-scope-header h5 {
+  margin: 0;
+  font-size: 11px;
+}
+
+.traffic-details .traffic-metric-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.traffic-details .traffic-fractions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.traffic-details .traffic-assessment {
+  font-size: 10px;
+}
+
+.traffic-details .vital-rating,
+.traffic-details .traffic-observation,
+.traffic-details .traffic-attribution li { font-size: 10px; }
+
+.traffic-details .traffic-observation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 12px;
+  padding-top: 5px;
+  border-top: 1px dashed var(--line);
+}
+
+.traffic-details .traffic-attribution {
+  margin-top: 0;
+  padding-top: 11px;
+}
+
+.traffic-details .traffic-attribution ul {
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.traffic-details .traffic-attribution li {
+  padding: 8px 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.traffic-details .traffic-attribution li + li {
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+}
+
+@media (max-width: 720px) {
+  .traffic-details-header,
+  .traffic-details .traffic-source-header,
+  .traffic-details .traffic-assessment {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .traffic-details .traffic-market-explorer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .traffic-details .traffic-globe-panel { grid-row: 2; }
+
+  .traffic-details .traffic-country-nav {
+    position: static;
+    width: auto;
+    padding: 7px 3px 5px;
+  }
+
+  .traffic-details .traffic-globe { width: min(76%, 240px); }
+
+  .traffic-details .traffic-metric-grid,
+  .traffic-details .traffic-fractions,
+  .traffic-details .traffic-attribution ul { grid-template-columns: minmax(0, 1fr); }
+
+  .traffic-details .traffic-attribution li + li {
+    padding-left: 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+}
+
 .run-evidence { padding-top: 28px; }
 .run-evidence-heading { margin-bottom: 14px; }
 .run-evidence-heading h2 { margin: 5px 0 6px; font-size: 23px; letter-spacing: -0.035em; }
@@ -6383,4 +6571,44 @@ button {
     flex-basis: auto;
     text-align: left;
   }
+}
+
+/* G11 cascade guard: individual traffic stays legible inside the legacy table canvas. */
+.lead-details .traffic-details h3,
+.lead-details .traffic-details h4,
+.lead-details .traffic-details h5,
+.lead-details .traffic-details h6,
+.lead-details .traffic-details p,
+.lead-details .traffic-details dt,
+.lead-details .traffic-details .traffic-scope-kicker,
+.lead-details .traffic-details .traffic-country-links button,
+.lead-details .traffic-details .traffic-country-links button span,
+.lead-details .traffic-details .traffic-globe-instruction,
+.lead-details .traffic-details .traffic-overall-button,
+.lead-details .traffic-details .traffic-provider-label,
+.lead-details .traffic-details .traffic-source-count,
+.lead-details .traffic-details .traffic-state,
+.lead-details .traffic-details .traffic-attribution li,
+.lead-details .traffic-details .traffic-attribution li small,
+.lead-details .traffic-details .traffic-attribution-links a { font-size: 10px; }
+
+.lead-details .traffic-details dd { font-size: 11px; }
+
+@media (max-width: 720px) {
+  .lead-details .traffic-details .traffic-market-explorer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lead-details .traffic-details .traffic-market-data,
+  .lead-details .traffic-details .traffic-globe-panel { grid-row: auto; }
+
+  .lead-details .traffic-details .traffic-country-nav {
+    position: static;
+    width: auto;
+    padding: 7px 3px 5px;
+  }
+
+  .lead-details .traffic-details .traffic-metric-grid,
+  .lead-details .traffic-details .traffic-fractions,
+  .lead-details .traffic-details .traffic-attribution ul { grid-template-columns: minmax(0, 1fr); }
 }

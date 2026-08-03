@@ -1,0 +1,119 @@
+{
+  "fixture": "real compiled CSS with deterministic synthetic .example traffic DOM",
+  "scenarios": [
+    {
+      "mode": "showcase",
+      "viewport": 390,
+      "bodyOverflow": false,
+      "marketButtons": 18,
+      "metricCount": 0,
+      "minimumFont": 9,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "showcase",
+      "viewport": 768,
+      "bodyOverflow": false,
+      "marketButtons": 18,
+      "metricCount": 0,
+      "minimumFont": 9,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "showcase",
+      "viewport": 1280,
+      "bodyOverflow": false,
+      "marketButtons": 18,
+      "metricCount": 0,
+      "minimumFont": 9,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "showcase",
+      "viewport": 1440,
+      "bodyOverflow": false,
+      "marketButtons": 18,
+      "metricCount": 0,
+      "minimumFont": 9,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "aggregate",
+      "viewport": 390,
+      "bodyOverflow": false,
+      "marketButtons": 9,
+      "metricCount": 9,
+      "minimumFont": 7,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "aggregate",
+      "viewport": 768,
+      "bodyOverflow": false,
+      "marketButtons": 9,
+      "metricCount": 9,
+      "minimumFont": 7,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "aggregate",
+      "viewport": 1280,
+      "bodyOverflow": false,
+      "marketButtons": 9,
+      "metricCount": 9,
+      "minimumFont": 7,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "aggregate",
+      "viewport": 1440,
+      "bodyOverflow": false,
+      "marketButtons": 9,
+      "metricCount": 9,
+      "minimumFont": 7,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "individual",
+      "viewport": 390,
+      "bodyOverflow": false,
+      "marketButtons": 9,
+      "metricCount": 14,
+      "minimumFont": 10,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "individual",
+      "viewport": 768,
+      "bodyOverflow": false,
+      "marketButtons": 9,
+      "metricCount": 14,
+      "minimumFont": 10,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "individual",
+      "viewport": 1280,
+      "bodyOverflow": false,
+      "marketButtons": 9,
+      "metricCount": 14,
+      "minimumFont": 10,
+      "unsafeLinks": 0
+    },
+    {
+      "mode": "individual",
+      "viewport": 1440,
+      "bodyOverflow": false,
+      "marketButtons": 9,
+      "metricCount": 14,
+      "minimumFont": 10,
+      "unsafeLinks": 0
+    }
+  ],
+  "interaction": {
+    "selected": "United Arab Emirates(8)",
+    "pressed": "true",
+    "unsupportedControls": 0
+  },
+  "gap": "Protected routes require Neon authentication; deterministic .example DOM uses the real compiled stylesheet, while production markup and interaction contracts are covered by focused tests without an auth bypass."
+}

@@ -97,9 +97,10 @@ function DataForSeoDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
   if (!source) return null;
   const material = source.worldwide || source.markets?.length;
   return (
-    <section className="traffic-source-block" aria-labelledby="dataforseo-traffic-title">
-      <header>
+    <section className="traffic-source-block traffic-source-dataforseo" aria-labelledby="dataforseo-traffic-title">
+      <header className="traffic-source-header">
         <div>
+          <span className="traffic-provider-label">DataForSEO Labs</span>
           <h4 id="dataforseo-traffic-title">Estimated Google search traffic</h4>
           <p>Search-demand estimates; these are not total website visits.</p>
         </div>
@@ -116,11 +117,10 @@ function DataForSeoDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
         </p>
       )}
       {(source.target || source.observed_at) && (
-        <p className="traffic-observation">
-          {source.target ? `Target: ${source.target}` : ""}
-          {source.target && source.observed_at ? " · " : ""}
-          {source.observed_at ? `Observed ${formattedDate(source.observed_at)}` : ""}
-        </p>
+        <footer className="traffic-observation">
+          {source.target && <span>Target: {source.target}</span>}
+          {source.observed_at && <span>Observed {formattedDate(source.observed_at)}</span>}
+        </footer>
       )}
     </section>
   );
@@ -169,17 +169,21 @@ function CruxDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
   const metrics = origin.metrics;
   const assessment = coreWebVitalsAssessment(metrics);
   return (
-    <section className="traffic-source-block" aria-labelledby="crux-traffic-title">
-      <header>
+    <section className="traffic-source-block traffic-source-crux" aria-labelledby="crux-traffic-title">
+      <header className="traffic-source-header">
         <div>
+          <span className="traffic-provider-label">Google CrUX</span>
           <h4 id="crux-traffic-title">Chrome UX Report</h4>
           <p>Observed user-experience and coarse popularity data. CrUX does not provide visit totals.</p>
         </div>
         <SourceState state={source.state} />
       </header>
 
-      <div className="traffic-scope">
-        <h5>Origin performance</h5>
+      <section className="traffic-scope" aria-labelledby="crux-origin-title">
+        <header className="traffic-scope-header">
+          <h5 id="crux-origin-title">Origin performance</h5>
+          <SourceState state={origin.state} />
+        </header>
         {origin.state === "available" ? (
           <>
             <p className={`traffic-assessment assessment-${assessment}`}>
@@ -199,10 +203,11 @@ function CruxDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
                 <Fractions fractions={origin.observed_form_factor_fractions} />
               </>
             )}
-            <p className="traffic-observation">
-              {origin.collection_period && `Collection ${formattedCalendarDate(origin.collection_period.first_date)}–${formattedCalendarDate(origin.collection_period.last_date)}`}
-              {origin.observed_at && ` · Observed ${formattedDate(origin.observed_at)}`}
-            </p>
+            {(origin.origin || origin.collection_period || origin.observed_at) && <footer className="traffic-observation">
+              {origin.origin && <span>Origin: {origin.origin}</span>}
+              {origin.collection_period && <span>Collection {formattedCalendarDate(origin.collection_period.first_date)}–${formattedCalendarDate(origin.collection_period.last_date)}</span>}
+              {origin.observed_at && <span>Observed {formattedDate(origin.observed_at)}</span>}
+            </footer>}
           </>
         ) : (
           <p className="empty-evidence">
@@ -211,10 +216,13 @@ function CruxDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
               : "Current CrUX origin metrics are unavailable."}
           </p>
         )}
-      </div>
+      </section>
 
-      <div className="traffic-scope">
-        <h5>Navigation popularity</h5>
+      <section className="traffic-scope" aria-labelledby="crux-popularity-title">
+        <header className="traffic-scope-header">
+          <h5 id="crux-popularity-title">Navigation popularity</h5>
+          <SourceState state={popularity.state} />
+        </header>
         {popularity.state === "available" && popularity.popularity_rank !== undefined ? (
           <>
             <dl className="fact-grid traffic-metric-grid">
@@ -228,7 +236,10 @@ function CruxDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
                 <Fractions fractions={popularity.observed_device_fractions} />
               </>
             )}
-            <p className="traffic-observation">Observed {formattedDate(popularity.observed_at)}</p>
+            {(popularity.origin || popularity.observed_at) && <footer className="traffic-observation">
+              {popularity.origin && <span>Origin: {popularity.origin}</span>}
+              {popularity.observed_at && <span>Observed {formattedDate(popularity.observed_at)}</span>}
+            </footer>}
           </>
         ) : (
           <p className="empty-evidence">
@@ -237,7 +248,7 @@ function CruxDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
               : "CrUX popularity metrics are unavailable."}
           </p>
         )}
-      </div>
+      </section>
     </section>
   );
 }
@@ -291,9 +302,16 @@ export function CompactTrafficSignal({ enrichment }: { enrichment: TrafficEnrich
 
 export function TrafficEnrichmentDetails({ enrichment }: { enrichment: TrafficEnrichment | undefined }) {
   if (!enrichment) return null;
+  const providerCount = Number(Boolean(enrichment.dataforseo)) + Number(Boolean(enrichment.crux));
   return (
     <section className="detail-section detail-section-emphasis traffic-details" aria-labelledby="traffic-enrichment-title">
-      <h3 id="traffic-enrichment-title"><span>02</span>Traffic and site experience</h3>
+      <header className="traffic-details-header">
+        <div>
+          <h3 id="traffic-enrichment-title"><span>02</span>Traffic and site experience</h3>
+          <p>Lead-level search visibility and observed site experience, reported by source.</p>
+        </div>
+        <span className="traffic-source-count">{providerCount} {providerCount === 1 ? "provider" : "providers"}</span>
+      </header>
       <div className="traffic-source-grid">
         <DataForSeoDetails enrichment={enrichment} />
         <CruxDetails enrichment={enrichment} />

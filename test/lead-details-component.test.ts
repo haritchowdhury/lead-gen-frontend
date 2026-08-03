@@ -291,6 +291,15 @@ test("traffic details render every available metric, truthful labels, and attrib
     assert.match(html, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"));
   }
   assert.match(html, /target="_blank" rel="noreferrer"/u);
+  assert.match(html, /2 providers/u);
+  assert.equal((html.match(/traffic-source-block/g) ?? []).length, 2);
+  assert.equal((html.match(/traffic-scope-header/g) ?? []).length, 2);
+  assert.match(html, /Origin: https:\/\/fixture\.example/u);
+  assert.match(html, /Collection Jul 1/u);
+  assert.match(html, /Jul 28, 2026/u);
+  assert.match(html, /Target: fixture\.example/u);
+  assert.match(html, /traffic-state-partial/u);
+  assert.ok((html.match(/traffic-state-available/g) ?? []).length >= 3);
 });
 
 test("CrUX date-only collection dates render as the same calendar date across timezones", async () => {
@@ -334,18 +343,21 @@ test("traffic render matrix preserves historical, single-source, both, and state
     lead: lead({ traffic_enrichment: dataOnly }),
   }));
   assert.match(dataHtml, /Estimated Google search traffic/u);
+  assert.match(dataHtml, /1 provider/u);
   assert.doesNotMatch(dataHtml, /CrUX does not provide visit totals/u);
 
   const cruxHtml = renderToStaticMarkup(createElement(LeadDetails, {
     lead: lead({ traffic_enrichment: cruxOnly }),
   }));
   assert.match(cruxHtml, /CrUX does not provide visit totals/u);
+  assert.match(cruxHtml, /1 provider/u);
   assert.doesNotMatch(cruxHtml, /DataForSEO metrics/u);
 
   const stateHtml = renderToStaticMarkup(createElement(LeadDetails, {
     lead: lead({ traffic_enrichment: noCoverage }),
   }));
   assert.match(stateHtml, /No DataForSEO coverage/u);
+  assert.match(stateHtml, /1 provider/u);
   assert.doesNotMatch(stateHtml, />0</u);
 
   const collapsed = renderToStaticMarkup(createElement(ResultsTableView, {
