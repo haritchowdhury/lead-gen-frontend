@@ -88,13 +88,17 @@ export function TrafficMarketExplorer({
   markets,
   showcase = false,
   showcaseLabel,
+  selectedCountry,
+  onCountryChange,
 }: {
   worldwide?: DataForSeoTrafficMetrics;
   markets: DataForSeoMarketTraffic[];
   showcase?: boolean;
   showcaseLabel?: string;
+  selectedCountry?: CountryCode | null;
+  onCountryChange?: (country: CountryCode | null) => void;
 }) {
-  const [selectedCode, setSelectedCode] = useState<CountryCode | null>(null);
+  const [localSelectedCode, setLocalSelectedCode] = useState<CountryCode | null>(null);
   const id = useId().replaceAll(":", "");
   const oceanGradientId = `traffic-globe-ocean-${id}`;
   const shadowFilterId = `traffic-globe-shadow-${id}`;
@@ -112,7 +116,9 @@ export function TrafficMarketExplorer({
     () => new Map(markets.map((market) => [COUNTRY_META[market.country_code].numericId, market.country_code])),
     [markets],
   );
-  const activeCode = selectedCode && marketsByCode.has(selectedCode) ? selectedCode : null;
+  const activeCode = (selectedCountry ?? localSelectedCode) && marketsByCode.has(selectedCountry ?? localSelectedCode as CountryCode)
+    ? (selectedCountry ?? localSelectedCode)
+    : null;
   const activeMetrics = activeCode ? marketsByCode.get(activeCode) : worldwide;
   const activeLabel = activeCode ? COUNTRY_META[activeCode].name : "Worldwide";
 
@@ -137,7 +143,8 @@ export function TrafficMarketExplorer({
   }
 
   function rotateToCountry(code: CountryCode) {
-    setSelectedCode(code);
+    setLocalSelectedCode(code);
+    onCountryChange?.(code);
     const [longitude, latitude] = COUNTRY_META[code].center;
     const target: Rotation = [-longitude, -latitude, 0];
     if (animationRef.current !== null) cancelAnimationFrame(animationRef.current);
@@ -165,7 +172,8 @@ export function TrafficMarketExplorer({
   }
 
   function showOverall() {
-    setSelectedCode(null);
+    setLocalSelectedCode(null);
+    onCountryChange?.(null);
   }
 
   function handlePointerDown(event: React.PointerEvent<SVGSVGElement>) {

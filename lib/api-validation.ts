@@ -972,7 +972,7 @@ export function parseTrafficOverview(value: unknown): TrafficOverview {
     throw new ApiPayloadError("trafficOverview.scope.leadsWithTraffic");
   }
   const worldwide = optional(source, "worldwide", "trafficOverview", dataForSeoMetrics);
-  const markets = array(source.markets, "trafficOverview.markets", (market, marketPath) => {
+  const parseMarkets = (value: unknown, path: string): DataForSeoMarketTraffic[] => array(value, path, (market, marketPath) => {
     const marketSource = record(market, marketPath);
     return {
       country_code: oneOf(
@@ -983,6 +983,7 @@ export function parseTrafficOverview(value: unknown): TrafficOverview {
       ...dataForSeoMetrics(marketSource, marketPath),
     } as DataForSeoMarketTraffic;
   });
+  const markets = parseMarkets(source.markets, "trafficOverview.markets");
   const positions = markets.map(({ country_code }) => DATAFORSEO_COUNTRIES.indexOf(country_code));
   if (new Set(positions).size !== positions.length ||
       positions.some((position, index) => index > 0 && position <= positions[index - 1])) {
@@ -998,6 +999,32 @@ export function parseTrafficOverview(value: unknown): TrafficOverview {
     scope: { search, matchedLeads, leadsWithTraffic },
     ...(worldwide ? { worldwide } : {}),
     markets,
+    queries: source.queries === undefined ? [] : array(source.queries, "trafficOverview.queries", (query, queryPath) => {
+      const querySource = record(query, queryPath);
+      const queryText = nullableText(querySource.query, `${queryPath}.query`);
+      if (queryText !== null && (!queryText.trim() || queryText !== queryText.trim())) {
+        throw new ApiPayloadError(`${queryPath}.query`);
+      }
+      const shopsFound = nonNegativeInteger(querySource.shopsFound, `${queryPath}.shopsFound`);
+      const queryLeadsWithTraffic = nonNegativeInteger(querySource.leadsWithTraffic, `${queryPath}.leadsWithTraffic`);
+      if (queryLeadsWithTraffic > shopsFound) throw new ApiPayloadError(`${queryPath}.leadsWithTraffic`);
+      const queryWorldwide = optional(querySource, "worldwide", queryPath, dataForSeoMetrics);
+      const queryMarkets = parseMarkets(querySource.markets, `${queryPath}.markets`);
+      const queryPositions = queryMarkets.map(({ country_code }) => DATAFORSEO_COUNTRIES.indexOf(country_code));
+      if (new Set(queryPositions).size !== queryPositions.length ||
+          queryPositions.some((position, index) => index > 0 && position <= queryPositions[index - 1])) {
+        throw new ApiPayloadError(`${queryPath}.markets`);
+      }
+      const queryHasMaterial = queryWorldwide !== undefined || queryMarkets.length > 0;
+      if (queryHasMaterial !== (queryLeadsWithTraffic > 0)) throw new ApiPayloadError(`${queryPath}.leadsWithTraffic`);
+      return {
+        query: queryText,
+        shopsFound,
+        leadsWithTraffic: queryLeadsWithTraffic,
+        ...(queryWorldwide ? { worldwide: queryWorldwide } : {}),
+        markets: queryMarkets,
+      };
+    }),
   };
 }
 

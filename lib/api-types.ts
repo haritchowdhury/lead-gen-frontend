@@ -421,6 +421,15 @@ export type TrafficOverview = {
   };
   worldwide?: DataForSeoTrafficMetrics;
   markets: DataForSeoMarketTraffic[];
+  queries: TrafficQuerySummary[];
+};
+
+export type TrafficQuerySummary = {
+  query: string | null;
+  shopsFound: number;
+  leadsWithTraffic: number;
+  worldwide?: DataForSeoTrafficMetrics;
+  markets: DataForSeoMarketTraffic[];
 };
 
 export type QueryAudit = {

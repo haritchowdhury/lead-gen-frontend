@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 
 import { SearchIcon } from "./icons";
 import { TrafficMarketExplorer } from "./traffic-globe";
-import type { TrafficOverview } from "../lib/api-types";
+import { QueryTrafficHeatmap } from "./query-traffic-heatmap";
+import type { DataForSeoMarketTraffic, TrafficOverview } from "../lib/api-types";
 import { parseTrafficOverview } from "../lib/api-validation";
 import { apiRequest, errorMessage } from "../lib/client-api";
 
@@ -22,6 +23,8 @@ export function CumulativeTrafficSection({
   onSearchChange: (value: string) => void;
 }) {
   const [overview, setOverview] = useState<TrafficOverview | null>(null);
+  const [queryOverview, setQueryOverview] = useState<TrafficOverview | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<DataForSeoMarketTraffic["country_code"] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const requestKey = `${runId}:${committedSearch}:${refreshVersion}`;
   const [settledRequestKey, setSettledRequestKey] = useState<string | null>(null);
@@ -40,6 +43,7 @@ export function CumulativeTrafficSection({
       .then((nextOverview) => {
         if (disposed) return;
         setOverview(nextOverview);
+        setSelectedCountry((current) => current && nextOverview.markets.some((market) => market.country_code === current) ? current : null);
         setError(null);
         setSettledRequestKey(requestKey);
       })
@@ -54,6 +58,25 @@ export function CumulativeTrafficSection({
       controller.abort();
     };
   }, [committedSearch, refreshVersion, requestKey, runId]);
+
+  // Query demand is intentionally run-wide; it must not change with the lead-table search.
+  useEffect(() => {
+    let disposed = false;
+    const controller = new AbortController();
+    apiRequest<TrafficOverview>(
+      `/api/runs/${encodeURIComponent(runId)}/traffic-overview`,
+      { signal: controller.signal },
+      parseTrafficOverview,
+    ).then((nextOverview) => {
+      if (!disposed) setQueryOverview(nextOverview);
+    }).catch(() => {
+      // The scoped globe still remains useful if the optional query map is unavailable.
+    });
+    return () => {
+      disposed = true;
+      controller.abort();
+    };
+  }, [refreshVersion, runId]);
 
   const loading = settledRequestKey !== requestKey;
   const hasTraffic = Boolean(overview?.worldwide || overview?.markets.length);
@@ -98,15 +121,25 @@ export function CumulativeTrafficSection({
 
       {error && <p className="cumulative-traffic-error" role="alert">{error}</p>}
       {overview ? (
-        hasTraffic ? (
-          <TrafficMarketExplorer worldwide={overview.worldwide} markets={overview.markets} />
-        ) : (
-          <p className="empty-evidence">
-            {overview.scope.matchedLeads === 0
-              ? "No stores match this search."
-              : "No search traffic estimates are available for these stores."}
-          </p>
-        )
+        <>
+          <QueryTrafficHeatmap
+            queries={queryOverview?.queries ?? []}
+            selectedCountry={selectedCountry}
+            onCountryChange={setSelectedCountry}
+          />
+          {hasTraffic ? (
+            <TrafficMarketExplorer worldwide={overview.worldwide} markets={overview.markets}
+              selectedCountry={selectedCountry}
+              onCountryChange={setSelectedCountry}
+            />
+          ) : (
+            <p className="empty-evidence">
+              {overview.scope.matchedLeads === 0
+                ? "No stores match this search."
+                : "No search traffic estimates are available for these stores."}
+            </p>
+          )}
+        </>
       ) : !error ? (
         <div
           className="cumulative-traffic-loading"
