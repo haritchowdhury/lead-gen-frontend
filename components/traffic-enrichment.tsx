@@ -179,7 +179,8 @@ function CruxDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
         <SourceState state={source.state} />
       </header>
 
-      <section className="traffic-scope" aria-labelledby="crux-origin-title">
+      <div className="crux-detail-row">
+        <section className="traffic-scope" aria-labelledby="crux-origin-title">
         <header className="traffic-scope-header">
           <h5 id="crux-origin-title">Origin performance</h5>
           <SourceState state={origin.state} />
@@ -216,9 +217,9 @@ function CruxDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
               : "Current CrUX origin metrics are unavailable."}
           </p>
         )}
-      </section>
+        </section>
 
-      <section className="traffic-scope" aria-labelledby="crux-popularity-title">
+        <section className="traffic-scope" aria-labelledby="crux-popularity-title">
         <header className="traffic-scope-header">
           <h5 id="crux-popularity-title">Navigation popularity</h5>
           <SourceState state={popularity.state} />
@@ -248,7 +249,8 @@ function CruxDetails({ enrichment }: { enrichment: TrafficEnrichment }) {
               : "CrUX popularity metrics are unavailable."}
           </p>
         )}
-      </section>
+        </section>
+      </div>
     </section>
   );
 }

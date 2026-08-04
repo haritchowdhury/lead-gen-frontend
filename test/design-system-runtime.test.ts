@@ -36,6 +36,9 @@ test("query planning renders distinct zero and nonzero metric states", () => {
   assert.match(component, /value=\{run\.progress\.queryCandidatesValidated\}/u);
   assert.match(component, /value=\{run\.progress\.queriesSelected\}/u);
   assert.match(component, /aria-busy=\{active\}/u);
+  const css = source("app/globals.css");
+  assert.match(css, /\.run-page \.progress-card-pipeline\.state-completed/u);
+  assert.match(css, /A completed run becomes a quiet two-row status strip/u);
 });
 
 test("pipeline counters remain independent and traffic maps to each real state", () => {
@@ -71,6 +74,16 @@ test("route and client fallbacks share an eventual-content skeleton", () => {
   assert.match(component, /run-loading-metrics/u);
   assert.match(route, /<RunLoadingSkeleton \/>/u);
   assert.match(workspace, /<RunLoadingSkeleton \/>/u);
+});
+
+test("completed runs opt into the compact pre-traffic workspace treatment", () => {
+  const workspace = source("components/run-workspace.tsx");
+  const css = source("app/globals.css");
+
+  assert.match(workspace, /className=\{`run-page run-page-\$\{run\.state\}`\}/u);
+  assert.match(css, /Completed-run masthead and lead overview share one compact pre-traffic toolbar/u);
+  assert.match(css, /\.run-page\.run-page-completed \.results-section/u);
+  assert.match(css, /\.run-page\.run-page-completed \.summary-grid/u);
 });
 
 test("runtime state labels and semantic tones cover every state", () => {

@@ -332,7 +332,6 @@ function ScoreDetails({ lead }: { lead: Lead }) {
           {components.map((component) => <Fact key={component.label} label={component.label} value={`+${component.value}`} />)}
           <Fact label="Total" value={lead.score_breakdown?.total} />
           <Fact label="Breakdown version" value={lead.score_breakdown?.version} />
-          <Fact label="Breakdown semantics" value={lead.score_breakdown?.semantics} />
         </dl>
       )}
       <small className="version-note">Pipeline {lead.pipeline_version ?? "legacy/unversioned"} · Scoring {lead.scoring_version ?? "legacy/unversioned"} · {humanizeToken(lead.score_semantics)}</small>
@@ -371,8 +370,8 @@ function LeadOverview({ lead }: { lead: Lead }) {
       <OutcomeBadge lead={lead} />
       <div className="lead-overview-grid">
         <div className="lead-overview-primary">
-          <IdentityDetails lead={lead} />
           <ScoreDetails lead={lead} />
+          <IdentityDetails lead={lead} />
         </div>
         <ContactDetails lead={lead} />
       </div>

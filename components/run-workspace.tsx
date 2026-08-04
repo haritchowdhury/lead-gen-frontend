@@ -279,7 +279,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
   }
 
   return (
-    <main className="run-page">
+    <main className={`run-page run-page-${run.state}`}>
       <div className="shell">
         <div className="run-title-row">
           <div>

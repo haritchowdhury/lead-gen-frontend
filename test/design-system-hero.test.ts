@@ -33,6 +33,7 @@ test("query review retains load, edit, add, remove, reorder, save, and start beh
   assert.match(editor, /QUERY_LIST_INVALID/u);
   assert.match(editor, /`\/api\/runs\/\$\{encodeURIComponent\(runId\)\}\/start`/u);
   assert.match(editor, /disabled=\{dirty \|\| hasVisibleErrors \|\| !rows\.length \|\| busy !== null\}/u);
+  assert.match(editor, /className="query-editor-scroll"/u);
 });
 
 test("showcase stays metric-free while shared globe interaction remains intact", () => {
@@ -58,5 +59,8 @@ test("landing and review use the same G4 hero composition without owning lower s
   assert.match(hero, /TrafficGlobeShowcase/u);
   assert.match(css, /G4 — landing and query-review hero composition/u);
   assert.match(css, /\.landing-hero \.run-form-card/u);
+  assert.match(css, /--landing-form-height: 49rem/u);
+  assert.match(css, /\.landing-hero \.query-editor-scroll/u);
+  assert.match(css, /scrollbar-width: thin/u);
   assert.doesNotMatch(css.slice(css.indexOf("G4 —")), /\.process-section\s*\{/u);
 });

@@ -225,56 +225,58 @@ export function QueryEditor({
         <span className="step-badge">02</span>
       </div>
 
-      {error && <div className="inline-error ds-notice ds-notice--danger" role="alert">{error}</div>}
+      <div className="query-editor-scroll">
+        {error && <div className="inline-error ds-notice ds-notice--danger" role="alert">{error}</div>}
 
-      {grouped.map(({ category, rows: categoryRows }) => (
-        <div className="query-category" key={category.categoryIndex}>
-          <div className="field-label query-category-heading">
-            <h3>{category.originalShopType}</h3>
-            <span>{categoryRows.length}/20 queries</span>
-          </div>
-          <div className="query-list-wrap">
-            {categoryRows.map((row, index) => (
-              <div className="query-row" key={row.clientKey}>
-                <div className="query-row-main">
-                  <input
-                    className="ds-field-control"
-                    aria-label={`Query ${index + 1} for ${category.originalShopType}`}
-                    value={row.query}
-                    maxLength={200}
-                    onChange={(event) => updateRow(row.clientKey, { query: event.target.value })}
-                    disabled={!querySet.editable || busy !== null}
-                  />
-                  <div className="query-meta">
-                    <span className={`query-badge source-${row.source}`}>{row.source.replace("_", " ")}</span>
-                    {row.queryScore !== null && <span>Score {row.queryScore}</span>}
-                    {row.generationReason && <span>{row.generationReason}</span>}
+        {grouped.map(({ category, rows: categoryRows }) => (
+          <div className="query-category" key={category.categoryIndex}>
+            <div className="field-label query-category-heading">
+              <h3>{category.originalShopType}</h3>
+              <span>{categoryRows.length}/20 queries</span>
+            </div>
+            <div className="query-list-wrap">
+              {categoryRows.map((row, index) => (
+                <div className="query-row" key={row.clientKey}>
+                  <div className="query-row-main">
+                    <input
+                      className="ds-field-control"
+                      aria-label={`Query ${index + 1} for ${category.originalShopType}`}
+                      value={row.query}
+                      maxLength={200}
+                      onChange={(event) => updateRow(row.clientKey, { query: event.target.value })}
+                      disabled={!querySet.editable || busy !== null}
+                    />
+                    <div className="query-meta">
+                      <span className={`query-badge source-${row.source}`}>{row.source.replace("_", " ")}</span>
+                      {row.queryScore !== null && <span>Score {row.queryScore}</span>}
+                      {row.generationReason && <span>{row.generationReason}</span>}
+                    </div>
+                    {(row.localError || row.rejectionReason) && (
+                      <p className="query-error">{(row.localError || row.rejectionReason || "").replaceAll("_", " ")}</p>
+                    )}
                   </div>
-                  {(row.localError || row.rejectionReason) && (
-                    <p className="query-error">{(row.localError || row.rejectionReason || "").replaceAll("_", " ")}</p>
-                  )}
+                  <div className="query-actions">
+                    <button type="button" aria-label="Move query up" onClick={() => moveRow(row, -1)} disabled={index === 0 || busy !== null}>↑</button>
+                    <button type="button" aria-label="Move query down" onClick={() => moveRow(row, 1)} disabled={index === categoryRows.length - 1 || busy !== null}>↓</button>
+                    <button type="button" aria-label="Delete query" onClick={() => deleteRow(row)} disabled={busy !== null}>Delete</button>
+                  </div>
                 </div>
-                <div className="query-actions">
-                  <button type="button" aria-label="Move query up" onClick={() => moveRow(row, -1)} disabled={index === 0 || busy !== null}>↑</button>
-                  <button type="button" aria-label="Move query down" onClick={() => moveRow(row, 1)} disabled={index === categoryRows.length - 1 || busy !== null}>↓</button>
-                  <button type="button" aria-label="Delete query" onClick={() => deleteRow(row)} disabled={busy !== null}>Delete</button>
-                </div>
-              </div>
-            ))}
-            <button
-              className="suggestion-chip query-add-button"
-              type="button"
-              onClick={() => addRow(category.categoryIndex)}
-              disabled={categoryRows.length >= 20 || busy !== null}
-            >
-              <PlusIcon /> Add query
-            </button>
+              ))}
+              <button
+                className="suggestion-chip query-add-button"
+                type="button"
+                onClick={() => addRow(category.categoryIndex)}
+                disabled={categoryRows.length >= 20 || busy !== null}
+              >
+                <PlusIcon /> Add query
+              </button>
+            </div>
+            <p className="field-help">
+              Edit the product phrase while keeping the Shopify search prefix.
+            </p>
           </div>
-          <p className="field-help">
-            Edit the product phrase while keeping the Shopify search prefix.
-          </p>
-        </div>
-      ))}
+        ))}
+      </div>
 
       <div className="form-footer query-editor-footer">
         <div>

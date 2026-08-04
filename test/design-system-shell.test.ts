@@ -45,10 +45,12 @@ test("My runs presents identifiable run dossiers without rendering run IDs", () 
   assert.match(history, /Rejected/);
   assert.match(history, /storeProcessingFailures/);
   assert.match(history, /run-history-progress/);
+  assert.match(history, /Traffic \{trafficProgressState\(run\)\.label\.toLowerCase\(\)\}/);
   assert.match(history, /activityLabel\(run\)/);
   assert.doesNotMatch(history, /<code/u);
   assert.match(css, /\.run-history-outcomes\s*\{/u);
   assert.match(css, /\.run-history-row\.is-awaiting_query_confirmation/u);
+  assert.match(css, /\.run-traffic-state\.is-complete/u);
 });
 
 test("G3 preserves continuation outcomes and not-found target", () => {

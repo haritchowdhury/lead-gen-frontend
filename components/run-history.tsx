@@ -7,6 +7,7 @@ import { ChevronIcon } from "@/components/icons";
 import type { RunListResponse, RunStatus } from "@/lib/api-types";
 import { parseRunListResponse } from "@/lib/api-validation";
 import { apiRequest, errorMessage } from "@/lib/client-api";
+import { trafficProgressState } from "@/lib/run-presentation";
 import { stageLabel, stagePercent } from "@/lib/stages";
 
 const PAGE_SIZE = 20;
@@ -159,6 +160,9 @@ export function RunHistory() {
             </div>
             <div className="run-history-status">
               <span className={`run-state ds-badge ${stateTone(run)}`}>{stateLabel(run)}</span>
+              <span className={`run-traffic-state is-${trafficProgressState(run).tone}`}>
+                <i /> Traffic {trafficProgressState(run).label.toLowerCase()}
+              </span>
               {(run.state === "queued" || run.state === "running") && (
                 <span className="run-history-progress" aria-label={`${stagePercent(run.stage, run.state)} percent complete`}>
                   <i style={{ width: `${stagePercent(run.stage, run.state)}%` }} />
