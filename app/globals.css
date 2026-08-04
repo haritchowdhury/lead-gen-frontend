@@ -6617,7 +6617,8 @@ button {
 .traffic-country-links button,
 .landing-hero .landing-globe-copy .traffic-country-links button,
 .cumulative-traffic .traffic-country-links button {
-  min-height: 2.75rem;
+  min-height: 1.5rem;
+  line-height: 1.2;
   font-size: 10px;
 }
 

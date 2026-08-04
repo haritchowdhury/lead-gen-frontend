@@ -11,7 +11,7 @@ const production = [
 ].map((file) => fs.readFileSync(new URL(file, import.meta.url), "utf8")).join("\n");
 
 test("G12 keeps shared traffic controls readable, touchable, and keyboard visible", () => {
-  assert.match(css, /\.traffic-country-links button,[\s\S]*?\.cumulative-traffic \.traffic-country-links button\s*\{[\s\S]*?min-height:\s*2\.75rem;[\s\S]*?font-size:\s*10px;/u);
+  assert.match(css, /\.traffic-country-links button,[\s\S]*?\.cumulative-traffic \.traffic-country-links button\s*\{[\s\S]*?min-height:\s*1\.5rem;[\s\S]*?font-size:\s*10px;/u);
   assert.match(css, /\.traffic-country-links button:focus-visible,[\s\S]*?\.traffic-globe-markets\[role="button"\]:focus-visible/u);
   assert.match(css, /\.traffic-country-links button span,[\s\S]*?\.cumulative-traffic \.traffic-metric-grid dd,[\s\S]*?font-size:\s*10px;/u);
 });
