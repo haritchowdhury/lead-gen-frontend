@@ -105,6 +105,7 @@ export function TrafficMarketExplorer({
   const [rotation, setRotation] = useState<Rotation>(INITIAL_ROTATION);
   const rotationRef = useRef<Rotation>(INITIAL_ROTATION);
   const animationRef = useRef<number | null>(null);
+  const externalSelectionRef = useRef<CountryCode | null>(null);
   const dragRef = useRef<{ pointerId: number; x: number; y: number; rotation: Rotation; moved: boolean } | null>(null);
   const suppressClickRef = useRef(false);
 
@@ -170,6 +171,16 @@ export function TrafficMarketExplorer({
     };
     animationRef.current = requestAnimationFrame(animate);
   }
+
+  useEffect(() => {
+    if (!selectedCountry) {
+      externalSelectionRef.current = null;
+      return;
+    }
+    if (externalSelectionRef.current === selectedCountry) return;
+    externalSelectionRef.current = selectedCountry;
+    rotateToCountry(selectedCountry);
+  }, [selectedCountry]);
 
   function showOverall() {
     setLocalSelectedCode(null);
