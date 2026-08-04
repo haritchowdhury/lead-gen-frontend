@@ -9,6 +9,7 @@ import {
 import { LeadDetails } from "./lead-details";
 import { CompactTrafficSignal } from "./traffic-enrichment";
 import type { Lead } from "../lib/api-types";
+import type { MasterLead } from "../lib/api-types";
 import {
   contactChannels,
   contactabilityLabel,
@@ -232,11 +233,37 @@ function ResultsRow({
           <td colSpan={7}>
             <div className="lead-expansion-shell">
               <LeadDetails lead={lead} />
+              {"master" in lead && <MasterDiscoveryHistory lead={lead as MasterLead} />}
             </div>
           </td>
         </tr>
       )}
     </>
+  );
+}
+
+function MasterDiscoveryHistory({ lead }: { lead: MasterLead }) {
+  const formatter = new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+  return (
+    <section className="detail-section master-discovery-history">
+      <h3><span>05</span>Discovery history</h3>
+      <p className="detail-copy">
+        First discovered {formatter.format(new Date(lead.master.first_discovered_at))} · seen in {lead.master.discovery_count.toLocaleString()} {lead.master.discovery_count === 1 ? "run" : "runs"}.
+      </p>
+      <ul className="detail-links master-run-links">
+        {lead.master.runs.map((run) => (
+          <li key={run.href}>
+            <a href={run.href}>Run from {formatter.format(new Date(run.discovered_at))}</a>
+          </li>
+        ))}
+      </ul>
+      {lead.master.profile_updated_at && (
+        <small className="version-note">Live profile updated {formatter.format(new Date(lead.master.profile_updated_at))}</small>
+      )}
+    </section>
   );
 }
 

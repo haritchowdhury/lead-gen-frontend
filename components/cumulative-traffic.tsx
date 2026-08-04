@@ -11,12 +11,16 @@ import { apiRequest, errorMessage } from "../lib/client-api";
 
 export function CumulativeTrafficSection({
   runId,
+  endpoint,
+  live = false,
   refreshVersion,
   search,
   committedSearch,
   onSearchChange,
 }: {
   runId: string;
+  endpoint?: string;
+  live?: boolean;
   refreshVersion: number;
   search: string;
   committedSearch: string;
@@ -36,7 +40,7 @@ export function CumulativeTrafficSection({
     if (committedSearch) parameters.set("search", committedSearch);
     const query = parameters.toString();
     apiRequest<TrafficOverview>(
-      `/api/runs/${encodeURIComponent(runId)}/traffic-overview${query ? `?${query}` : ""}`,
+      `${endpoint ?? `/api/runs/${encodeURIComponent(runId)}/traffic-overview`}${query ? `?${query}` : ""}`,
       { signal: controller.signal },
       parseTrafficOverview,
     )
@@ -57,14 +61,14 @@ export function CumulativeTrafficSection({
       disposed = true;
       controller.abort();
     };
-  }, [committedSearch, refreshVersion, requestKey, runId]);
+  }, [committedSearch, endpoint, refreshVersion, requestKey, runId]);
 
   // Query demand is intentionally run-wide; it must not change with the lead-table search.
   useEffect(() => {
     let disposed = false;
     const controller = new AbortController();
     apiRequest<TrafficOverview>(
-      `/api/runs/${encodeURIComponent(runId)}/traffic-overview`,
+      endpoint ?? `/api/runs/${encodeURIComponent(runId)}/traffic-overview`,
       { signal: controller.signal },
       parseTrafficOverview,
     ).then((nextOverview) => {
@@ -76,7 +80,7 @@ export function CumulativeTrafficSection({
       disposed = true;
       controller.abort();
     };
-  }, [refreshVersion, runId]);
+  }, [endpoint, refreshVersion, runId]);
 
   const loading = settledRequestKey !== requestKey;
   const hasTraffic = Boolean(overview?.worldwide || overview?.markets.length);
@@ -91,11 +95,10 @@ export function CumulativeTrafficSection({
       <header>
         <div>
           <span className="eyebrow">Global traffic explorer</span>
-          <h3 id="cumulative-traffic-title">Cumulative traffic landscape</h3>
           <p>
             {scoped
-              ? "Traffic summed across stores matching this search. Clear it to return to the complete run."
-              : "Traffic summed across the complete run. Search here to focus the globe and lead list together."}
+              ? `Traffic summed across ${live ? "live shops" : "stores"} matching this search. Clear it to return to the complete ${live ? "collection" : "run"}.`
+              : `Traffic summed once per shop across the complete ${live ? "live collection" : "run"}. Search here to focus the globe and lead list together.`}
           </p>
         </div>
         <div className="cumulative-traffic-actions">
@@ -126,6 +129,7 @@ export function CumulativeTrafficSection({
             queries={queryOverview?.queries ?? []}
             selectedCountry={selectedCountry}
             onCountryChange={setSelectedCountry}
+            live={live}
           />
           {hasTraffic ? (
             <TrafficMarketExplorer worldwide={overview.worldwide} markets={overview.markets}

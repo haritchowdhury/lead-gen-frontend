@@ -411,6 +411,27 @@ export type ResultPage = {
   items: Lead[];
 };
 
+export type MasterLead = Lead & {
+  master: {
+    shop_id: string;
+    first_discovered_at: string;
+    last_discovered_at: string;
+    discovery_count: number;
+    lifecycle_status: string | null;
+    notes: string | null;
+    tags: string[];
+    archived: boolean;
+    profile_updated_at: string | null;
+    runs: Array<{ href: string; discovered_at: string }>;
+    discovery_queries: string[];
+  };
+};
+
+export type MasterLeadPage = {
+  pagination: ResultPage["pagination"];
+  items: MasterLead[];
+};
+
 export type TrafficOverview = {
   version: "traffic-overview-v1";
   runId: string;

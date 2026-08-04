@@ -20,6 +20,8 @@ import type {
   QueryAuditPage,
   QuerySet,
   ResultPage,
+  MasterLeadPage,
+  MasterLead,
   RunDiagnostic,
   RunIntentResponse,
   RunListResponse,
@@ -950,6 +952,41 @@ export function parseResultPage(value: unknown): ResultPage {
     },
     pagination: pagination(source.pagination, "results.pagination"),
     items: array(source.items, "results.items", parseLead),
+  };
+}
+
+export function parseMasterLeadPage(value: unknown): MasterLeadPage {
+  const source = record(value, "masterLeads");
+  return {
+    pagination: pagination(source.pagination, "masterLeads.pagination"),
+    items: array(source.items, "masterLeads.items", (value, path) => {
+      const raw = record(value, path);
+      const lead = parseLead(raw, path);
+      const master = record(raw.master, `${path}.master`);
+      return {
+        ...lead,
+        master: {
+          shop_id: text(master.shop_id, `${path}.master.shop_id`),
+          first_discovered_at: isoTimestamp(master.first_discovered_at, `${path}.master.first_discovered_at`),
+          last_discovered_at: isoTimestamp(master.last_discovered_at, `${path}.master.last_discovered_at`),
+          discovery_count: nonNegativeInteger(master.discovery_count, `${path}.master.discovery_count`),
+          lifecycle_status: nullableText(master.lifecycle_status, `${path}.master.lifecycle_status`),
+          notes: nullableText(master.notes, `${path}.master.notes`),
+          tags: stringArray(master.tags, `${path}.master.tags`),
+          archived: boolean(master.archived, `${path}.master.archived`),
+          profile_updated_at: master.profile_updated_at === null
+            ? null
+            : isoTimestamp(master.profile_updated_at, `${path}.master.profile_updated_at`),
+          runs: array(master.runs, `${path}.master.runs`, (entry, runPath) => {
+            const run = record(entry, runPath);
+            const href = text(run.href, `${runPath}.href`);
+            if (!/^\/runs\/run_[A-Za-z0-9_-]{16,80}$/u.test(href)) throw new ApiPayloadError(`${runPath}.href`);
+            return { href, discovered_at: isoTimestamp(run.discovered_at, `${runPath}.discovered_at`) };
+          }),
+          discovery_queries: stringArray(master.discovery_queries, `${path}.master.discovery_queries`),
+        },
+      } satisfies MasterLead;
+    }),
   };
 }
 

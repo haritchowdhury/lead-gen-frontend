@@ -27,6 +27,7 @@ export function HeaderAuth({ signedIn }: { signedIn: boolean }) {
 
   return (
     <nav className="header-auth" aria-label="Account">
+      <Link className="header-link" href="/leads">My leads</Link>
       <Link className="header-link header-link-primary" href="/runs">My runs</Link>
       <button className="header-link" type="button" disabled={pending} onClick={signOut}>
         {pending ? "Signing out…" : "Sign out"}

@@ -27,10 +27,12 @@ export function QueryTrafficHeatmap({
   queries,
   selectedCountry,
   onCountryChange,
+  live = false,
 }: {
   queries: TrafficQuerySummary[];
   selectedCountry: CountryCode | null;
   onCountryChange: (country: CountryCode | null) => void;
+  live?: boolean;
 }) {
   const availableCountries = [...new Set(queries.flatMap((query) => query.markets.map((market) => market.country_code)))];
   const values = queries.map((query) => trafficForQuery(query, selectedCountry)?.estimated_google_search_traffic ?? 0);
@@ -43,7 +45,7 @@ export function QueryTrafficHeatmap({
         <div>
           <span className="eyebrow">Query traffic intelligence</span>
           <h3 id="query-traffic-title">Traffic by discovery query</h3>
-          <p>Compare the search opportunities behind every query in this run.</p>
+          <p>Compare the search opportunities behind every query in this {live ? "lead collection" : "run"}.</p>
         </div>
         <div className="query-traffic-filters" aria-label="Filter query traffic by country">
           <button type="button" className={!selectedCountry ? "is-selected" : undefined} onClick={() => onCountryChange(null)}>Worldwide</button>
@@ -87,7 +89,7 @@ export function QueryTrafficHeatmap({
           })}
         </div>
       ) : (
-        <p className="empty-evidence">No generated queries are available for this run.</p>
+        <p className="empty-evidence">No generated queries are available for this {live ? "lead collection" : "run"}.</p>
       )}
       <p className="query-traffic-note">Showing {scopeLabel.toLowerCase()} traffic · darker cells indicate greater estimated search demand.</p>
     </section>
