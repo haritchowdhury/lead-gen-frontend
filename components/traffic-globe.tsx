@@ -112,8 +112,9 @@ export function TrafficMarketExplorer({
     () => new Map(markets.map((market) => [COUNTRY_META[market.country_code].numericId, market.country_code])),
     [markets],
   );
-  const activeMetrics = selectedCode ? marketsByCode.get(selectedCode) : worldwide;
-  const activeLabel = selectedCode ? COUNTRY_META[selectedCode].name : "Worldwide";
+  const activeCode = selectedCode && marketsByCode.has(selectedCode) ? selectedCode : null;
+  const activeMetrics = activeCode ? marketsByCode.get(activeCode) : worldwide;
+  const activeLabel = activeCode ? COUNTRY_META[activeCode].name : "Worldwide";
 
   const projection = useMemo(
     () => geoOrthographic()
@@ -216,7 +217,7 @@ export function TrafficMarketExplorer({
             <span className="traffic-scope-kicker">Traffic scope</span>
             <h5>{activeLabel}</h5>
           </div>
-          {selectedCode && <button type="button" className="traffic-overall-button" onClick={showOverall}>View overall</button>}
+          {activeCode && <button type="button" className="traffic-overall-button" onClick={showOverall}>View overall</button>}
         </header>
         {activeMetrics ? (
           <SearchMetrics metrics={activeMetrics} />
@@ -245,7 +246,7 @@ export function TrafficMarketExplorer({
           <div className="traffic-country-links" aria-label="Available traffic markets">
             {markets.map((market) => {
               const meta = COUNTRY_META[market.country_code];
-              const selected = selectedCode === market.country_code;
+              const selected = activeCode === market.country_code;
               return (
                 <button
                   key={market.country_code}
@@ -291,7 +292,7 @@ export function TrafficMarketExplorer({
               {countryFeatures.features.map((country) => {
                 const code = availableIds.get(normalizedNumericId(country.id));
                 if (!code) return null;
-                const selected = selectedCode === code;
+                const selected = activeCode === code;
                 return (
                   <path
                     key={code}

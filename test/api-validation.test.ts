@@ -12,6 +12,7 @@ import {
   parseRunListResponse,
   parseRunStatus,
   parseStartRunResponse,
+  parseTrafficOverview,
 } from "../lib/api-validation.ts";
 import { lead, resultPage, runStatus, trafficEnrichment } from "./fixtures.ts";
 
@@ -77,6 +78,44 @@ test("traffic enrichment preserves partial and no-coverage states without invent
   };
   const parsed = parseResultPage(resultPage([lead({ traffic_enrichment: noCoverage })]));
   assert.deepEqual(parsed.items[0].traffic_enrichment?.dataforseo, { state: "no_coverage" });
+});
+
+test("traffic overview validates aggregate scope, metric invariants, and market ordering", () => {
+  const traffic = trafficEnrichment().dataforseo!;
+  const payload = {
+    version: "traffic-overview-v1",
+    runId: "run_abcdefghijklmnop",
+    scope: { search: "fixture", matchedLeads: 3, leadsWithTraffic: 2 },
+    worldwide: traffic.worldwide,
+    markets: traffic.markets,
+  };
+  const parsed = parseTrafficOverview(payload);
+  assert.equal(parsed.scope.search, "fixture");
+  assert.equal(parsed.worldwide?.estimated_google_search_traffic, 12);
+  assert.equal(parsed.markets[0].country_code, "IN");
+
+  assert.throws(
+    () => parseTrafficOverview({
+      ...payload,
+      scope: { ...payload.scope, leadsWithTraffic: 4 },
+    }),
+    ApiPayloadError,
+  );
+  assert.throws(
+    () => parseTrafficOverview({
+      ...payload,
+      scope: { search: " fixture ", matchedLeads: 3, leadsWithTraffic: 2 },
+    }),
+    ApiPayloadError,
+  );
+  assert.throws(
+    () => parseTrafficOverview({
+      ...payload,
+      worldwide: undefined,
+      markets: [],
+    }),
+    ApiPayloadError,
+  );
 });
 
 test("malformed consumed traffic members fail the entire result page closed", () => {

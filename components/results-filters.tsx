@@ -1,8 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
-import { SearchIcon } from "@/components/icons";
 import type { LeadStatus, ResultFilters } from "@/lib/api-types";
 
 type FilterPatch = Partial<ResultFilters>;
@@ -34,23 +29,6 @@ export function ResultsFilters({
   onChange,
   counts,
 }: ResultsFiltersProps) {
-  const [search, setSearch] = useState(filters.search);
-  const [lastFilterSearch, setLastFilterSearch] = useState(filters.search);
-
-  if (filters.search !== lastFilterSearch) {
-    setLastFilterSearch(filters.search);
-    setSearch(filters.search);
-  }
-
-  useEffect(() => {
-    if (search === filters.search) return;
-    const timer = window.setTimeout(
-      () => onChange({ search: search.trim(), page: 1 }),
-      350,
-    );
-    return () => window.clearTimeout(timer);
-  }, [filters.search, onChange, search]);
-
   return (
     <div className="results-controls" aria-label="Lead results controls">
       <div className="status-tabs" role="group" aria-label="Filter by lead status">
@@ -70,17 +48,6 @@ export function ResultsFilters({
       </div>
 
       <div className="filter-tools">
-        <label className="search-field">
-          <SearchIcon />
-          <span className="sr-only">Search leads</span>
-          <input
-            type="search"
-            value={search}
-            maxLength={200}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search store, domain, email…"
-          />
-        </label>
         <label className="select-field">
           <span className="sr-only">Sort leads</span>
           <select

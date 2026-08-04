@@ -32,6 +32,7 @@ import type {
   StoreFitPageEvidence,
   TrafficAttribution,
   TrafficEnrichment,
+  TrafficOverview,
   TrafficSourceState,
 } from "@/lib/api-types";
 
@@ -942,6 +943,54 @@ export function parseResultPage(value: unknown): ResultPage {
     },
     pagination: pagination(source.pagination, "results.pagination"),
     items: array(source.items, "results.items", parseLead),
+  };
+}
+
+export function parseTrafficOverview(value: unknown): TrafficOverview {
+  const source = record(value, "trafficOverview");
+  const scope = record(source.scope, "trafficOverview.scope");
+  const search = nullableText(scope.search, "trafficOverview.scope.search");
+  if (search !== null && (!search.length || search.length > 200 || search !== search.trim())) {
+    throw new ApiPayloadError("trafficOverview.scope.search");
+  }
+  const matchedLeads = nonNegativeInteger(
+    scope.matchedLeads,
+    "trafficOverview.scope.matchedLeads",
+  );
+  const leadsWithTraffic = nonNegativeInteger(
+    scope.leadsWithTraffic,
+    "trafficOverview.scope.leadsWithTraffic",
+  );
+  if (leadsWithTraffic > matchedLeads) {
+    throw new ApiPayloadError("trafficOverview.scope.leadsWithTraffic");
+  }
+  const worldwide = optional(source, "worldwide", "trafficOverview", dataForSeoMetrics);
+  const markets = array(source.markets, "trafficOverview.markets", (market, marketPath) => {
+    const marketSource = record(market, marketPath);
+    return {
+      country_code: oneOf(
+        marketSource.country_code,
+        DATAFORSEO_COUNTRIES,
+        `${marketPath}.country_code`,
+      ),
+      ...dataForSeoMetrics(marketSource, marketPath),
+    } as DataForSeoMarketTraffic;
+  });
+  const positions = markets.map(({ country_code }) => DATAFORSEO_COUNTRIES.indexOf(country_code));
+  if (new Set(positions).size !== positions.length ||
+      positions.some((position, index) => index > 0 && position <= positions[index - 1])) {
+    throw new ApiPayloadError("trafficOverview.markets");
+  }
+  const hasMaterial = worldwide !== undefined || markets.length > 0;
+  if (hasMaterial !== (leadsWithTraffic > 0)) {
+    throw new ApiPayloadError("trafficOverview.scope.leadsWithTraffic");
+  }
+  return {
+    version: oneOf(source.version, ["traffic-overview-v1"] as const, "trafficOverview.version"),
+    runId: text(source.runId, "trafficOverview.runId"),
+    scope: { search, matchedLeads, leadsWithTraffic },
+    ...(worldwide ? { worldwide } : {}),
+    markets,
   };
 }
 

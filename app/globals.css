@@ -1713,6 +1713,36 @@ button {
   white-space: nowrap;
 }
 
+.cumulative-traffic-actions {
+  display: flex;
+  min-width: min(100%, 300px);
+  align-items: flex-end;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.traffic-overview-search {
+  width: min(300px, 100%);
+}
+
+.traffic-overview-search input {
+  width: 100%;
+  border-color: #cbd9ad;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.cumulative-traffic.is-refreshing .cumulative-traffic-coverage::after {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: #77a823;
+  content: "";
+  animation: signal-pulse 1.2s ease-in-out infinite;
+}
+
 .cumulative-traffic .traffic-market-explorer {
   grid-template-columns: minmax(0, 1fr) minmax(340px, 0.9fr);
   gap: 20px;
@@ -4145,6 +4175,15 @@ button {
   .cumulative-traffic > header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .cumulative-traffic-actions {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .traffic-overview-search {
+    width: 100%;
   }
 
   .cumulative-traffic .traffic-market-explorer {

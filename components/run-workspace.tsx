@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -81,7 +81,6 @@ function formatDate(value: string): string {
 }
 
 export function RunWorkspace({ runId }: { runId: string }) {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [run, setRun] = useState<RunStatus | null>(null);
@@ -102,6 +101,13 @@ export function RunWorkspace({ runId }: { runId: string }) {
     [searchParams],
   );
   const query = useMemo(() => resultsQuery(filters), [filters]);
+  const [searchDraft, setSearchDraft] = useState(filters.search);
+  const [lastFilterSearch, setLastFilterSearch] = useState(filters.search);
+
+  if (filters.search !== lastFilterSearch) {
+    setLastFilterSearch(filters.search);
+    setSearchDraft(filters.search);
+  }
 
   useEffect(() => {
     let disposed = false;
@@ -153,6 +159,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
 
   useEffect(() => {
     if (!run?.resultsAvailable) return;
+    let disposed = false;
     const controller = new AbortController();
     apiRequest<ResultPage>(
         `/api/runs/${encodeURIComponent(runId)}/results?${query}`,
@@ -160,17 +167,21 @@ export function RunWorkspace({ runId }: { runId: string }) {
         parseResultPage,
       )
       .then((nextResults) => {
+        if (disposed) return;
         setResults(nextResults);
         setLoadedQuery(query);
         setResultsError(null);
       })
       .catch((requestError: unknown) => {
-        if ((requestError as { name?: string }).name !== "AbortError") {
+        if (!disposed && (requestError as { name?: string }).name !== "AbortError") {
           setLoadedQuery(query);
           setResultsError({ query, message: errorMessage(requestError) });
         }
       });
-    return () => controller.abort();
+    return () => {
+      disposed = true;
+      controller.abort();
+    };
   }, [query, reloadVersion, resultsPollVersion, run?.resultsAvailable, runId]);
 
   const changeFilters = useCallback(
@@ -184,12 +195,24 @@ export function RunWorkspace({ runId }: { runId: string }) {
       if (next.sortDirection !== "desc")
         params.set("sortDirection", next.sortDirection);
       const suffix = params.toString();
-      router.replace(`${pathname}${suffix ? `?${suffix}` : ""}`, {
-        scroll: false,
-      });
+      window.history.replaceState(
+        null,
+        "",
+        `${pathname}${suffix ? `?${suffix}` : ""}`,
+      );
     },
-    [filters, pathname, router],
+    [filters, pathname],
   );
+
+  useEffect(() => {
+    const search = searchDraft.trim();
+    if (search === filters.search) return;
+    const timer = window.setTimeout(
+      () => changeFilters({ search, page: 1 }),
+      350,
+    );
+    return () => window.clearTimeout(timer);
+  }, [changeFilters, filters.search, searchDraft]);
 
   async function copyRunId() {
     await navigator.clipboard.writeText(runId);
@@ -226,7 +249,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
 
   const terminalError =
     run.state === "failed" || run.state === "cancelled" ? run.error : null;
-  const currentResults = loadedQuery === query ? results : null;
+  const resultsRefreshing = results !== null && loadedQuery !== query;
 
   if (run.state === "awaiting_query_confirmation") {
     return (
@@ -314,7 +337,71 @@ export function RunWorkspace({ runId }: { runId: string }) {
               </div>
             </div>
 
-            {resultsError?.query === query ? (
+            {results ? (
+              <>
+                <div className="summary-grid" aria-label="Run result totals">
+                  <SummaryCard
+                    label="All leads"
+                    value={results.summary.total}
+                    tone="neutral"
+                  />
+                  <SummaryCard
+                    label="Qualified"
+                    value={results.summary.qualified}
+                    tone="positive"
+                  />
+                  <SummaryCard
+                    label="Rejected"
+                    value={results.summary.rejected}
+                    tone="muted"
+                  />
+                  <SummaryCard
+                    label="Failed"
+                    value={results.summary.failed}
+                    tone="danger"
+                  />
+                </div>
+
+                <CumulativeTrafficSection
+                  runId={runId}
+                  refreshVersion={resultsPollVersion}
+                  search={searchDraft}
+                  committedSearch={filters.search}
+                  onSearchChange={setSearchDraft}
+                />
+
+                {resultsError?.query === query && (
+                  <div className="inline-error" role="alert">
+                    <span>{resultsError.message}</span>
+                    <button
+                      type="button"
+                      onClick={() => setReloadVersion((value) => value + 1)}
+                    >
+                      Try again
+                    </button>
+                  </div>
+                )}
+
+                <div className="results-panel">
+                  <ResultsFilters
+                    filters={filters}
+                    onChange={changeFilters}
+                    counts={results.summary}
+                  />
+                  <ResultsTable
+                    key={runId}
+                    leads={results.items}
+                    loading={resultsRefreshing}
+                  />
+                  <Pagination
+                    page={results.pagination.page}
+                    totalPages={results.pagination.totalPages}
+                    totalItems={results.pagination.totalItems}
+                    onPage={(page) => changeFilters({ page })}
+                  />
+                </div>
+              </>
+            ) : resultsError?.query === query ? (
               <div className="inline-error" role="alert">
                 <span>{resultsError.message}</span>
                 <button
@@ -324,55 +411,6 @@ export function RunWorkspace({ runId }: { runId: string }) {
                   Try again
                 </button>
               </div>
-            ) : currentResults ? (
-              <>
-                <div className="summary-grid" aria-label="Run result totals">
-                  <SummaryCard
-                    label="All leads"
-                    value={currentResults.summary.total}
-                    tone="neutral"
-                  />
-                  <SummaryCard
-                    label="Qualified"
-                    value={currentResults.summary.qualified}
-                    tone="positive"
-                  />
-                  <SummaryCard
-                    label="Rejected"
-                    value={currentResults.summary.rejected}
-                    tone="muted"
-                  />
-                  <SummaryCard
-                    label="Failed"
-                    value={currentResults.summary.failed}
-                    tone="danger"
-                  />
-                </div>
-
-                <CumulativeTrafficSection
-                  runId={runId}
-                  refreshVersion={resultsPollVersion}
-                />
-
-                <div className="results-panel">
-                  <ResultsFilters
-                    filters={filters}
-                    onChange={changeFilters}
-                    counts={currentResults.summary}
-                  />
-                  <ResultsTable
-                    key={`${runId}:${query}:${currentResults.items.map(({ id }) => id).join(",")}`}
-                    leads={currentResults.items}
-                    loading={loadedQuery !== query}
-                  />
-                  <Pagination
-                    page={currentResults.pagination.page}
-                    totalPages={currentResults.pagination.totalPages}
-                    totalItems={currentResults.pagination.totalItems}
-                    onPage={(page) => changeFilters({ page })}
-                  />
-                </div>
-              </>
             ) : (
               <div className="results-loading-card">
                 <RefreshIcon />

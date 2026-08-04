@@ -39,5 +39,5 @@ test("G11 shared globe selection, reset, supported-market, and mode contracts re
   assert.match(globe, /onClick=\{\(\) => handleCountryClick\(code\)\}/u);
   assert.match(globe, /showcase \? "landing-globe-copy" : "traffic-country-nav"/u);
   assert.match(globe, /TrafficGlobeShowcase/u);
-  assert.match(aggregate, /<TrafficMarketExplorer worldwide=\{aggregate\.worldwide\} markets=\{aggregate\.markets\}/u);
+  assert.match(aggregate, /<TrafficMarketExplorer worldwide=\{overview\.worldwide\} markets=\{overview\.markets\}/u);
 });

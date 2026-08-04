@@ -49,7 +49,7 @@ test("G7 cumulative traffic preserves zero, missing, partial, and full coverage"
   assert.deepEqual(full.markets.map(({ country_code }) => country_code), ["US", "IN"]);
 });
 
-test("G7 overview sources remain independent of table filters and export behavior", () => {
+test("G7 overview uses its dedicated global search API without changing export behavior", () => {
   const workspace = fs.readFileSync(
     new URL("../components/run-workspace.tsx", import.meta.url),
     "utf8",
@@ -63,14 +63,15 @@ test("G7 overview sources remain independent of table filters and export behavio
     "utf8",
   );
 
-  assert.match(workspace, /currentResults\.summary\.total/u);
-  assert.match(workspace, /currentResults\.summary\.qualified/u);
-  assert.match(workspace, /currentResults\.summary\.rejected/u);
-  assert.match(workspace, /currentResults\.summary\.failed/u);
+  assert.match(workspace, /results\.summary\.total/u);
+  assert.match(workspace, /results\.summary\.qualified/u);
+  assert.match(workspace, /results\.summary\.rejected/u);
+  assert.match(workspace, /results\.summary\.failed/u);
   assert.match(workspace, /aria-label="Run result totals"/u);
   assert.match(workspace, /runStateLabel\(run\.state\)/u);
-  assert.match(traffic, /results\?page=\$\{page\}&pageSize=200/u);
-  assert.doesNotMatch(traffic, /sortBy|sortDirection|status=|search=/u);
+  assert.match(traffic, /\/traffic-overview/u);
+  assert.match(traffic, /parameters\.set\("search", committedSearch\)/u);
+  assert.doesNotMatch(traffic, /pageSize=200|sortBy|sortDirection|status=/u);
   assert.match(exporter, /collectAllLeads/u);
   assert.match(exporter, /downloadLeadsCsv\(leads, runId\)/u);
   assert.match(exporter, /className="export-error" role="alert"/u);

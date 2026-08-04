@@ -20,8 +20,10 @@ const css = fs.readFileSync(
 );
 
 test("G8 preserves filter debounce, sort options, paging, and URL-backed changes", () => {
-  assert.match(filters, /window\.setTimeout\([\s\S]*350/u);
-  assert.match(filters, /search: search\.trim\(\), page: 1/u);
+  assert.match(workspace, /window\.setTimeout\([\s\S]*350/u);
+  assert.match(workspace, /const search = searchDraft\.trim\(\)/u);
+  assert.match(workspace, /changeFilters\(\{ search, page: 1 \}\)/u);
+  assert.match(workspace, /committedSearch=\{filters\.search\}/u);
   assert.match(filters, /onChange\(\{ status: option\.value, page: 1 \}\)/u);
   for (const option of [
     "lead_score:desc",
@@ -33,7 +35,7 @@ test("G8 preserves filter debounce, sort options, paging, and URL-backed changes
   ]) {
     assert.match(filters, new RegExp(`value="${option}"`, "u"));
   }
-  assert.match(workspace, /router\.replace\([\s\S]*scroll: false/u);
+  assert.match(workspace, /window\.history\.replaceState\(/u);
   assert.match(workspace, /onPage=\{\(page\) => changeFilters\(\{ page \}\)\}/u);
   assert.match(workspace, /disabled=\{page <= 1\}/u);
   assert.match(workspace, /disabled=\{page >= totalPages\}/u);

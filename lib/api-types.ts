@@ -410,6 +410,18 @@ export type ResultPage = {
   items: Lead[];
 };
 
+export type TrafficOverview = {
+  version: "traffic-overview-v1";
+  runId: string;
+  scope: {
+    search: string | null;
+    matchedLeads: number;
+    leadsWithTraffic: number;
+  };
+  worldwide?: DataForSeoTrafficMetrics;
+  markets: DataForSeoMarketTraffic[];
+};
+
 export type QueryAudit = {
   sequence: number;
   shop_type: string | null;
