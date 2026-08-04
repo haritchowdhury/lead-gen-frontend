@@ -281,17 +281,135 @@ function identityEvidence(value: unknown, path: string): IdentityEvidence {
   };
 }
 
+function exactKeys(source: UnknownRecord, expected: readonly string[], path: string): void {
+  const actual = Object.keys(source).sort();
+  const wanted = [...expected].sort();
+  if (actual.length !== wanted.length || actual.some((key, index) => key !== wanted[index])) {
+    throw new ApiPayloadError(path);
+  }
+}
+
+function trafficPointsV3(value: number, path: string): number {
+  if (!Number.isFinite(value) || value < 0) throw new ApiPayloadError(path);
+  return value >= 100_000 ? 40 : Math.min(40, Math.round(8 * Math.log10(value + 1)));
+}
+
+function cruxRatingV3(metric: "lcp" | "inp" | "cls", value: number, path: string) {
+  if (!Number.isFinite(value) || value < 0) throw new ApiPayloadError(path);
+  const [good, poor] = {
+    lcp: [2500, 4000],
+    inp: [200, 500],
+    cls: [0.1, 0.25],
+  }[metric];
+  return value <= good ? "good" : value <= poor ? "needs_improvement" : "poor";
+}
+
+function v3Evidence(value: unknown, path: string): NonNullable<ScoreBreakdown["evidence"]> {
+  const source = record(value, path);
+  exactKeys(source, ["traffic", "crux"], path);
+  const traffic = record(source.traffic, `${path}.traffic`);
+  exactKeys(traffic, [
+    "state", "metric", "value", "transform", "sourceContractVersion", "observedAt",
+  ], `${path}.traffic`);
+  const trafficValue = nonNegativeNumber(traffic.value, `${path}.traffic.value`);
+  if (
+    traffic.state !== "measured" ||
+    traffic.metric !== "estimated_google_search_traffic" ||
+    traffic.transform !== "log10_v1" ||
+    traffic.sourceContractVersion !== "dataforseo-traffic-v1"
+  ) throw new ApiPayloadError(`${path}.traffic`);
+  const trafficObservedAt = isoTimestamp(traffic.observedAt, `${path}.traffic.observedAt`);
+  if (new Date(trafficObservedAt).toISOString() !== trafficObservedAt) {
+    throw new ApiPayloadError(`${path}.traffic.observedAt`);
+  }
+  const parsedTraffic = {
+    state: "measured" as const,
+    metric: "estimated_google_search_traffic" as const,
+    value: trafficValue,
+    transform: "log10_v1" as const,
+    sourceContractVersion: "dataforseo-traffic-v1" as const,
+    observedAt: trafficObservedAt,
+  };
+
+  const crux = record(source.crux, `${path}.crux`);
+  const cruxState = oneOf(
+    crux.state,
+    ["available", "partial", "no_coverage", "unavailable", "disabled"] as const,
+    `${path}.crux.state`,
+  );
+  if (["disabled", "no_coverage", "unavailable"].includes(cruxState)) {
+    exactKeys(crux, ["state"], `${path}.crux`);
+    return { traffic: parsedTraffic, crux: { state: cruxState as "disabled" | "no_coverage" | "unavailable" } };
+  }
+  const metricDefinitions = [
+    ["lcp", "largestContentfulPaintP75Ms"],
+    ["inp", "interactionToNextPaintP75Ms"],
+    ["cls", "cumulativeLayoutShiftP75"],
+  ] as const;
+  const present = metricDefinitions.filter(([, key]) => crux[key] !== undefined);
+  exactKeys(crux, [
+    "state", "ratings", "sourceContractVersion", "observedAt", ...present.map(([, key]) => key),
+  ], `${path}.crux`);
+  if (present.length === 0 || (cruxState === "available") !== (present.length === 3) ||
+      crux.sourceContractVersion !== "crux-origin-metrics-v1") {
+    throw new ApiPayloadError(`${path}.crux`);
+  }
+  const ratingsSource = record(crux.ratings, `${path}.crux.ratings`);
+  exactKeys(ratingsSource, present.map(([metric]) => metric), `${path}.crux.ratings`);
+  const ratings: Partial<Record<"lcp" | "inp" | "cls", "good" | "needs_improvement" | "poor">> = {};
+  const parsedMetrics: {
+    largestContentfulPaintP75Ms?: number;
+    interactionToNextPaintP75Ms?: number;
+    cumulativeLayoutShiftP75?: string;
+  } = {};
+  for (const [metric, key] of present) {
+    const numeric = metric === "cls"
+      ? Number(decimalString(crux[key], `${path}.crux.${key}`))
+      : nonNegativeNumber(crux[key], `${path}.crux.${key}`);
+    const rating = cruxRatingV3(metric, numeric, `${path}.crux.${key}`);
+    if (ratingsSource[metric] !== rating) throw new ApiPayloadError(`${path}.crux.ratings.${metric}`);
+    ratings[metric] = rating;
+    if (metric === "cls") parsedMetrics.cumulativeLayoutShiftP75 = crux[key] as string;
+    if (metric === "lcp") parsedMetrics.largestContentfulPaintP75Ms = numeric;
+    if (metric === "inp") parsedMetrics.interactionToNextPaintP75Ms = numeric;
+  }
+  const cruxObservedAt = isoTimestamp(crux.observedAt, `${path}.crux.observedAt`);
+  if (new Date(cruxObservedAt).toISOString() !== cruxObservedAt) {
+    throw new ApiPayloadError(`${path}.crux.observedAt`);
+  }
+  return {
+    traffic: parsedTraffic,
+    crux: {
+      state: cruxState,
+      ...parsedMetrics,
+      ratings,
+      sourceContractVersion: "crux-origin-metrics-v1",
+      observedAt: cruxObservedAt,
+    },
+  };
+}
+
 function scoreBreakdown(value: unknown, path: string): ScoreBreakdown {
   const source = record(value, path);
+  const version = integer(source.version, `${path}.version`);
+  exactKeys(
+    source,
+    version === 3
+      ? ["version", "components", "total", "semantics", "evidence"]
+      : ["version", "components", "total", "semantics"],
+    path,
+  );
   const rawComponents = record(source.components, `${path}.components`);
   const components = Object.fromEntries(
     Object.entries(rawComponents).map(([key, item]) => [key, number(item, `${path}.components.${key}`)]),
   );
+  const evidence = source.evidence === undefined ? undefined : v3Evidence(source.evidence, `${path}.evidence`);
   return {
-    version: number(source.version, `${path}.version`),
+    version,
     components,
-    total: number(source.total, `${path}.total`),
+    total: integer(source.total, `${path}.total`),
     ...(optional(source, "semantics", path, text) === undefined ? {} : { semantics: optional(source, "semantics", path, text) }),
+    ...(evidence === undefined ? {} : { evidence }),
   };
 }
 
@@ -301,6 +419,14 @@ const V2_SCORE_COMPONENTS = [
   "categoryFit",
   "contactEvidence",
 ] as const;
+const V3_SCORE_COMPONENT_MAXIMA = {
+  identity: 11,
+  shopifyValidation: 14,
+  categoryFit: 16,
+  contactEvidence: 14,
+  traffic: 40,
+  crux: 5,
+} as const;
 
 export function assertLeadScoreState(
   lead: Pick<Lead,
@@ -310,7 +436,8 @@ export function assertLeadScoreState(
 ): void {
   const unversioned = lead.pipeline_version === null && lead.scoring_version === null;
   const v2 = lead.pipeline_version === 2 && lead.scoring_version === 2;
-  if (!unversioned && !v2) throw new ApiPayloadError(`${path}.versions`);
+  const v3 = lead.pipeline_version === 2 && lead.scoring_version === 3;
+  if (!unversioned && !v2 && !v3) throw new ApiPayloadError(`${path}.versions`);
 
   if (unversioned) {
     if (lead.score_semantics !== "legacy_v1") {
@@ -319,7 +446,7 @@ export function assertLeadScoreState(
     return;
   }
 
-  if (lead.status !== "qualified") {
+  if (v2 && lead.status !== "qualified") {
     if (
       lead.lead_score !== null ||
       lead.score_breakdown !== null ||
@@ -330,14 +457,76 @@ export function assertLeadScoreState(
     return;
   }
 
-  if (
+  if (v2 && (
     lead.score_semantics !== "evidence_rank_v2" ||
     lead.lead_score === null ||
     !Number.isSafeInteger(lead.lead_score) ||
     lead.lead_score < 0 ||
     lead.lead_score > 100 ||
     lead.score_breakdown === null
-  ) {
+  )) {
+    throw new ApiPayloadError(`${path}.score_state`);
+  }
+  if (v3) {
+    if (lead.status !== "qualified") {
+      if (lead.lead_score !== null || lead.score_breakdown !== null ||
+          lead.score_semantics !== "not_scored_v3") {
+        throw new ApiPayloadError(`${path}.score_state`);
+      }
+      return;
+    }
+    if (lead.lead_score === null || lead.score_breakdown === null) {
+      if (lead.lead_score !== null || lead.score_breakdown !== null ||
+          lead.score_semantics !== "insufficient_traffic_v3") {
+        throw new ApiPayloadError(`${path}.score_state`);
+      }
+      return;
+    }
+    if (lead.score_semantics !== "traffic_evidence_rank_v3" ||
+        !Number.isSafeInteger(lead.lead_score) || lead.lead_score < 0 || lead.lead_score > 100) {
+      throw new ApiPayloadError(`${path}.score_state`);
+    }
+    const breakdown = lead.score_breakdown;
+    if (breakdown.version !== 3 || breakdown.total !== lead.lead_score ||
+        breakdown.semantics !== "deterministic_traffic_evidence_rank_not_probability" ||
+        !breakdown.evidence) throw new ApiPayloadError(`${path}.score_breakdown`);
+    const keys = Object.keys(breakdown.components).sort();
+    const expectedKeys = Object.keys(V3_SCORE_COMPONENT_MAXIMA).sort();
+    if (keys.length !== expectedKeys.length || keys.some((key, index) => key !== expectedKeys[index])) {
+      throw new ApiPayloadError(`${path}.score_breakdown.components`);
+    }
+    const componentTotal = Object.entries(V3_SCORE_COMPONENT_MAXIMA).reduce((sum, [key, maximum]) => {
+      const component = breakdown.components[key];
+      if (!Number.isSafeInteger(component) || (component as number) < 0 || (component as number) > maximum) {
+        throw new ApiPayloadError(`${path}.score_breakdown.components.${key}`);
+      }
+      return sum + (component as number);
+    }, 0);
+    if (componentTotal !== breakdown.total ||
+        breakdown.components.traffic !== trafficPointsV3(
+          breakdown.evidence.traffic.value,
+          `${path}.score_breakdown.evidence.traffic.value`,
+        )) throw new ApiPayloadError(`${path}.score_breakdown`);
+    const crux = breakdown.evidence.crux;
+    let rawCruxPoints = 0;
+    if (crux.state === "available" || crux.state === "partial") {
+      for (const [metric, key, maximum] of [
+        ["lcp", "largestContentfulPaintP75Ms", 2],
+        ["inp", "interactionToNextPaintP75Ms", 2],
+        ["cls", "cumulativeLayoutShiftP75", 1],
+      ] as const) {
+        if (crux[key] === undefined) continue;
+        const rating = crux.ratings[metric];
+        rawCruxPoints += rating === "good" ? maximum : rating === "needs_improvement" ? maximum / 2 : 0;
+      }
+    }
+    if (breakdown.components.crux !== Math.round(rawCruxPoints)) {
+      throw new ApiPayloadError(`${path}.score_breakdown.components.crux`);
+    }
+    return;
+  }
+
+  if (!v2 || lead.score_breakdown === null || lead.lead_score === null) {
     throw new ApiPayloadError(`${path}.score_state`);
   }
   const breakdown = lead.score_breakdown;
@@ -782,7 +971,10 @@ export function parseLead(value: unknown, path = "lead"): Lead {
     score_breakdown: source.score_breakdown === null ? null : scoreBreakdown(source.score_breakdown, `${path}.score_breakdown`),
     discovery_occurrences: source.discovery_occurrences === null ? null : array(source.discovery_occurrences, `${path}.discovery_occurrences`, occurrence),
     matched_categories: source.matched_categories === null ? null : array(source.matched_categories, `${path}.matched_categories`, categoryIntent),
-    score_semantics: oneOf(source.score_semantics, ["legacy_v1", "not_scored_v2", "evidence_rank_v2"], `${path}.score_semantics`),
+    score_semantics: oneOf(source.score_semantics, [
+      "legacy_v1", "not_scored_v2", "evidence_rank_v2",
+      "insufficient_traffic_v3", "not_scored_v3", "traffic_evidence_rank_v3",
+    ], `${path}.score_semantics`),
   } as Omit<Lead, (typeof nullableTexts)[number] | (typeof nullableNumbers)[number]> & Partial<Lead>;
   for (const key of nullableTexts) result[key] = nullableText(source[key], `${path}.${key}`);
   for (const key of nullableNumbers) result[key] = nullableNumber(source[key], `${path}.${key}`);

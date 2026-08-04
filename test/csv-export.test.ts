@@ -59,7 +59,7 @@ function lead(overrides: Partial<Lead> = {}): Lead {
 test("preserves the exact 25-column legacy prefix and appends durable evidence fields", () => {
   const [header] = serializeLeadsToCsv([lead()]).split("\r\n");
   assert.equal(header, CSV_HEADERS.join(","));
-  assert.equal(CSV_HEADERS.length, 38);
+  assert.equal(CSV_HEADERS.length, 39);
   assert.deepEqual(CSV_HEADERS.slice(0, 25), [
     "shop_type", "generated_query", "query_score", "query_generation_reason",
     "search_query", "google_rank", "google_result_url", "myshopify_domain",

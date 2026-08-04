@@ -28,7 +28,10 @@ export type ContactabilityTier =
 export type ScoreSemantics =
   | "legacy_v1"
   | "not_scored_v2"
-  | "evidence_rank_v2";
+  | "evidence_rank_v2"
+  | "insufficient_traffic_v3"
+  | "not_scored_v3"
+  | "traffic_evidence_rank_v3";
 export type JsonValue =
   | string
   | number
@@ -125,10 +128,33 @@ export type ScoreBreakdown = {
     shopifyValidation?: number;
     categoryFit?: number;
     contactEvidence?: number;
+    traffic?: number;
+    crux?: number;
     [key: string]: number | undefined;
   };
   total: number;
   semantics?: string;
+  evidence?: {
+    traffic: {
+      state: "measured";
+      metric: "estimated_google_search_traffic";
+      value: number;
+      transform: "log10_v1";
+      sourceContractVersion: "dataforseo-traffic-v1";
+      observedAt: string;
+    };
+    crux:
+      | { state: "disabled" | "no_coverage" | "unavailable" }
+      | {
+          state: "available" | "partial";
+          largestContentfulPaintP75Ms?: number;
+          interactionToNextPaintP75Ms?: number;
+          cumulativeLayoutShiftP75?: string;
+          ratings: Partial<Record<"lcp" | "inp" | "cls", "good" | "needs_improvement" | "poor">>;
+          sourceContractVersion: "crux-origin-metrics-v1";
+          observedAt: string;
+        };
+  };
 };
 
 export type DiscoveryOccurrence = {

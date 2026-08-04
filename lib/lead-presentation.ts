@@ -104,7 +104,7 @@ export function scorePresentation(lead: Lead): ScorePresentation {
       value: lead.lead_score == null ? "—" : String(lead.lead_score),
       label: "Legacy v1",
       tone: "neutral",
-      explanation: "Legacy score; not comparable with evidence-rank v2.",
+      explanation: "Legacy score; not comparable with evidence-rank v2 or traffic evidence-rank v3.",
     };
   }
   if (lead.score_semantics === "not_scored_v2") {
@@ -115,20 +115,40 @@ export function scorePresentation(lead: Lead): ScorePresentation {
       explanation: "Rejected and failed v2 outcomes do not receive a score.",
     };
   }
+  if (lead.score_semantics === "insufficient_traffic_v3") {
+    return {
+      value: "—",
+      label: "Insufficient traffic evidence",
+      tone: "empty",
+      explanation: "No validated worldwide DataForSEO measurement was available, so no numeric v3 rank was produced.",
+    };
+  }
+  if (lead.score_semantics === "not_scored_v3") {
+    return {
+      value: "—",
+      label: "Not scored",
+      tone: "empty",
+      explanation: "Rejected and failed v3 outcomes do not receive a score.",
+    };
+  }
   if (lead.lead_score == null) {
     return {
       value: "—",
       label: "Score unavailable",
       tone: "empty",
-      explanation: "The scored-v2 result did not include its evidence rank.",
+      explanation: "The scored result did not include its evidence rank.",
     };
   }
   return {
     value: String(lead.lead_score),
-    label: "Evidence rank v2",
+    label: lead.score_semantics === "traffic_evidence_rank_v3"
+      ? "Traffic evidence rank v3"
+      : "Evidence rank v2",
     tone:
       lead.lead_score >= 75 ? "high" : lead.lead_score >= 45 ? "mid" : "low",
-    explanation: "Deterministic evidence rank, not a probability.",
+    explanation: lead.score_semantics === "traffic_evidence_rank_v3"
+      ? "Deterministic rank with 40% estimated Google search traffic and a 5% Core Web Vitals bonus; not a probability and not comparable with v1/v2."
+      : "Deterministic evidence rank, not a probability and not comparable with v3.",
   };
 }
 
@@ -141,6 +161,8 @@ export function scoreComponents(
     shopifyValidation: "Shopify validation",
     categoryFit: "Category fit",
     contactEvidence: "Contact evidence",
+    traffic: "Estimated Google search traffic",
+    crux: "Core Web Vitals bonus",
   };
   return Object.entries(breakdown.components)
     .filter((entry): entry is [string, number] => typeof entry[1] === "number")

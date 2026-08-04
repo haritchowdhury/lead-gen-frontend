@@ -226,6 +226,29 @@ test("shared lead score-state matrix fails whole result pages closed", () => {
   })])), ApiPayloadError);
 });
 
+test("shared v3 lead score-state matrix fails whole result pages closed", () => {
+  const fixtures = JSON.parse(fs.readFileSync(
+    new URL("../../contracts/lead-score-state-v3.fixtures.json", import.meta.url),
+    "utf8",
+  )) as {
+    valid: Array<{ name: string; lead: Partial<Lead> }>;
+    invalid: Array<{ name: string; lead: Partial<Lead> }>;
+  };
+  for (const fixture of fixtures.valid) {
+    assert.doesNotThrow(
+      () => parseResultPage(resultPage([lead(fixture.lead)])),
+      fixture.name,
+    );
+  }
+  for (const fixture of fixtures.invalid) {
+    assert.throws(
+      () => parseResultPage(resultPage([lead(fixture.lead)])),
+      ApiPayloadError,
+      fixture.name,
+    );
+  }
+});
+
 test("validates every successful response family consumed by the frontend", () => {
   const run = runStatus();
   const parsedRun = parseRunStatus(run);

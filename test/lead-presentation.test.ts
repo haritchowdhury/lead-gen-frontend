@@ -136,6 +136,28 @@ test("scores distinguish qualified v2, structural outcomes, and legacy rows", ()
   })).tone, "neutral");
 });
 
+test("v3 scores and missing traffic are explicit and non-comparable", () => {
+  assert.deepEqual(scorePresentation(lead({
+    scoring_version: 3,
+    lead_score: null,
+    score_breakdown: null,
+    score_semantics: "insufficient_traffic_v3",
+  })), {
+    value: "—",
+    label: "Insufficient traffic evidence",
+    tone: "empty",
+    explanation: "No validated worldwide DataForSEO measurement was available, so no numeric v3 rank was produced.",
+  });
+  const scored = scorePresentation(lead({
+    scoring_version: 3,
+    lead_score: 84,
+    score_semantics: "traffic_evidence_rank_v3",
+  }));
+  assert.equal(scored.label, "Traffic evidence rank v3");
+  assert.match(scored.explanation, /40% estimated Google search traffic/u);
+  assert.match(scored.explanation, /not comparable with v1\/v2/u);
+});
+
 test("score components retain every numeric component and expansion clears on page change", () => {
   assert.deepEqual(scoreComponents({
     version: 2,
@@ -145,6 +167,14 @@ test("score components retain every numeric component and expansion clears on pa
     { label: "Store identity", value: 14 },
     { label: "Shopify validation", value: 25 },
     { label: "Category fit", value: 30 },
+  ]);
+  assert.deepEqual(scoreComponents({
+    version: 3,
+    components: { traffic: 24, crux: 5 },
+    total: 29,
+  }), [
+    { label: "Estimated Google search traffic", value: 24 },
+    { label: "Core Web Vitals bonus", value: 5 },
   ]);
   assert.equal(retainedExpandedLead("lead_fixture", [lead()]), "lead_fixture");
   assert.equal(retainedExpandedLead("lead_fixture", [lead({ id: "other" })]), null);
