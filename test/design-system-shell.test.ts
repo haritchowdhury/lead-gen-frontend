@@ -38,6 +38,19 @@ test("G3 preserves run fetching, paging, state labels, and encoded links", () =>
   assert.match(runsPage, /href="\/"/);
 });
 
+test("My runs presents identifiable run dossiers without rendering run IDs", () => {
+  assert.match(history, /categoryTitle\(run\)/);
+  assert.match(history, /Stores found/);
+  assert.match(history, /Qualified/);
+  assert.match(history, /Rejected/);
+  assert.match(history, /storeProcessingFailures/);
+  assert.match(history, /run-history-progress/);
+  assert.match(history, /activityLabel\(run\)/);
+  assert.doesNotMatch(history, /<code/u);
+  assert.match(css, /\.run-history-outcomes\s*\{/u);
+  assert.match(css, /\.run-history-row\.is-awaiting_query_confirmation/u);
+});
+
 test("G3 preserves continuation outcomes and not-found target", () => {
   assert.match(continuation, /method: "POST"/);
   assert.match(continuation, /RUN_INTENT_NOT_FOUND/);

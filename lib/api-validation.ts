@@ -806,6 +806,12 @@ function runProgress(value: unknown, path: string): RunProgress {
 
 export function parseRunStatus(value: unknown, path = "run"): RunStatus {
   const source = record(value, path);
+  const categories = optional(
+    source,
+    "categories",
+    path,
+    (items, categoriesPath) => array(items, categoriesPath, categoryIntent),
+  ) ?? [];
   const rawError = source.error;
   let error: RunStatus["error"] = null;
   if (rawError !== null) {
@@ -835,6 +841,7 @@ export function parseRunStatus(value: unknown, path = "run"): RunStatus {
   }
   return {
     runId: text(source.runId, `${path}.runId`),
+    categories,
     state: oneOf(source.state, ["queued", "running", "awaiting_query_confirmation", "completed", "failed", "cancelled"], `${path}.state`),
     phase: source.phase === null
       ? null

@@ -14,7 +14,7 @@ export default function RunsPage() {
           <div>
             <span className="eyebrow">Account workspace</span>
             <h1>My runs</h1>
-            <p>Open any active or completed store discovery run.</p>
+            <p>Pick up an active search or revisit the leads discovered in an earlier market.</p>
           </div>
           <Link className="ds-button ds-button--primary" href="/">New discovery</Link>
         </div>

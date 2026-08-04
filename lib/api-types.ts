@@ -172,6 +172,7 @@ export type RunProgress = {
 
 export type RunStatus = {
   runId: string;
+  categories: CategoryIntent[];
   state: RunState;
   phase: RunPhase | null;
   stage: string;

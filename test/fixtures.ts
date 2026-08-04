@@ -335,6 +335,11 @@ export const progress: RunProgress = {
 export function runStatus(overrides: Partial<RunStatus> = {}): RunStatus {
   return {
     runId: "run_abcdefghijklmnop",
+    categories: [{
+      originalShopType: "Independent Eyewear Brand",
+      shopType: "eyewear",
+      businessQualifier: "brand",
+    }],
     state: "completed",
     phase: "finished",
     stage: "completed",

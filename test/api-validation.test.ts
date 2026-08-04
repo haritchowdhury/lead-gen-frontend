@@ -228,7 +228,12 @@ test("shared lead score-state matrix fails whole result pages closed", () => {
 
 test("validates every successful response family consumed by the frontend", () => {
   const run = runStatus();
-  assert.equal(parseRunStatus(run).runId, run.runId);
+  const parsedRun = parseRunStatus(run);
+  assert.equal(parsedRun.runId, run.runId);
+  assert.equal(parsedRun.categories[0].originalShopType, "Independent Eyewear Brand");
+  const legacyRun: Record<string, unknown> = { ...run };
+  delete legacyRun.categories;
+  assert.deepEqual(parseRunStatus(legacyRun).categories, []);
   assert.equal(parseRunListResponse({
     pagination: { page: 1, pageSize: 20, totalItems: 1, totalPages: 1 },
     items: [run],
