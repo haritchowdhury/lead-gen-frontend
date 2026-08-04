@@ -2,20 +2,13 @@
 - Local:         http://127.0.0.1:4341
 - Network:       http://127.0.0.1:4341
 - Environments: .env.local
-✓ Ready in 605ms
+✓ Ready in 600ms
+⨯ Another next dev server is already running.
 
- GET / 200 in 3.8s (next.js: 1403ms, application-code: 2.4s)
- GET / 200 in 803ms (next.js: 6ms, application-code: 797ms)
- GET /api/health 200 in 722ms (next.js: 153ms, application-code: 569ms)
- GET /design-fixture?scenario=query-review 200 in 512ms (next.js: 64ms, application-code: 448ms)
- GET /design-fixture?scenario=query-planning 200 in 191ms (next.js: 5ms, application-code: 186ms)
- GET /design-fixture?scenario=runtime 200 in 204ms (next.js: 3ms, application-code: 202ms)
- GET /design-fixture?scenario=failed 200 in 630ms (next.js: 13ms, application-code: 617ms)
- GET /design-fixture?scenario=completed 200 in 350ms (next.js: 6ms, application-code: 344ms)
- GET /design-fixture?status=qualified 200 in 64ms (next.js: 7ms, application-code: 57ms)
- GET /design-fixture 200 in 37ms (next.js: 11ms, application-code: 26ms)
- GET /design-fixture 200 in 77ms (next.js: 4ms, application-code: 72ms)
- GET /design-fixture?sortBy=store_name&sortDirection=asc 200 in 94ms (next.js: 12ms, application-code: 82ms)
- GET /design-fixture?search=Fixture&sortBy=store_name&sortDirection=asc 200 in 117ms (next.js: 7ms, application-code: 110ms)
- GET /design-fixture?page=2 200 in 85ms (next.js: 5ms, application-code: 80ms)
- GET /design-fixture?scenario=completed 200 in 775ms (next.js: 6ms, application-code: 770ms)
+- Local:        http://localhost:3001
+- PID:          1784439
+- Dir:          <workspace>
+- Log:          .next/dev/logs/next-development.log
+
+Run kill 1784439 to stop it.
+[?25h

@@ -236,7 +236,6 @@ export function TrafficMarketExplorer({
             <span className="traffic-scope-kicker">Traffic scope</span>
             <h5>{activeLabel}</h5>
           </div>
-          {activeCode && <button type="button" className="traffic-overall-button" onClick={showOverall}>View overall</button>}
         </header>
         {activeMetrics ? (
           <SearchMetrics metrics={activeMetrics} />
@@ -263,6 +262,12 @@ export function TrafficMarketExplorer({
             )}
           </div>
           <div className="traffic-country-links" aria-label="Available traffic markets">
+            {!showcase && <button
+              type="button"
+              className={!activeCode ? "is-selected" : undefined}
+              aria-pressed={!activeCode}
+              onClick={showOverall}
+            >Worldwide</button>}
             {markets.map((market) => {
               const meta = COUNTRY_META[market.country_code];
               const selected = activeCode === market.country_code;

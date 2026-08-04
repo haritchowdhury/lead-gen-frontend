@@ -7,7 +7,7 @@ import { parseMasterLeadPage } from "@/lib/api-validation";
 import { apiRequest, errorMessage } from "@/lib/client-api";
 import { downloadLeadsCsv } from "@/lib/csv-export";
 
-export function MasterExportButton({ search }: { search: string }) {
+export function MasterExportButton({ search, discoveryQueries = [] }: { search: string; discoveryQueries?: string[] }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   async function exportAll() {
@@ -18,6 +18,7 @@ export function MasterExportButton({ search }: { search: string }) {
       do {
         const query = new URLSearchParams({ page: String(page), pageSize: "200" });
         if (search) query.set("search", search);
+        for (const value of discoveryQueries) query.append("discoveryQuery", value);
         const result = await apiRequest<MasterLeadPage>(`/api/leads?${query}`, {}, parseMasterLeadPage);
         leads.push(...result.items); totalPages = result.pagination.totalPages; page += 1;
       } while (page <= totalPages);

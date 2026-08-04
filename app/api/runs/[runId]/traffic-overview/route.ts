@@ -8,7 +8,7 @@ import { authenticatedRoute } from "@/lib/auth/route";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const ALLOWED_PARAMETERS = new Set(["search"]);
+const ALLOWED_PARAMETERS = new Set(["search", "discoveryQuery"]);
 
 export async function GET(
   request: Request,
@@ -26,7 +26,7 @@ export async function GET(
     (parameter) => !ALLOWED_PARAMETERS.has(parameter),
   );
   const duplicates = [...ALLOWED_PARAMETERS].filter(
-    (parameter) => source.getAll(parameter).length > 1,
+    (parameter) => parameter !== "discoveryQuery" && source.getAll(parameter).length > 1,
   );
   if (unknown.length || duplicates.length) {
     return jsonError(
@@ -38,8 +38,9 @@ export async function GET(
   }
 
   const forwarded = new URLSearchParams();
-  const search = source.get("search");
-  if (search !== null) forwarded.set("search", search);
+  for (const parameter of ALLOWED_PARAMETERS) {
+    for (const value of source.getAll(parameter)) forwarded.append(parameter, value);
+  }
   const query = forwarded.toString();
   return proxyBackend({
     path: `/api/runs/${encodeURIComponent(runId)}/traffic-overview${query ? `?${query}` : ""}`,

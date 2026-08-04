@@ -15,6 +15,7 @@ const ALLOWED_PARAMETERS = new Set([
   "search",
   "sortBy",
   "sortDirection",
+  "discoveryQuery",
 ]);
 
 export async function GET(
@@ -33,7 +34,7 @@ export async function GET(
     (parameter) => !ALLOWED_PARAMETERS.has(parameter),
   );
   const duplicates = [...ALLOWED_PARAMETERS].filter(
-    (parameter) => source.getAll(parameter).length > 1,
+    (parameter) => parameter !== "discoveryQuery" && source.getAll(parameter).length > 1,
   );
   if (unknown.length || duplicates.length) {
     return jsonError(
@@ -46,8 +47,8 @@ export async function GET(
 
   const forwarded = new URLSearchParams();
   for (const parameter of ALLOWED_PARAMETERS) {
-    const value = source.get(parameter);
-    if (value !== null) forwarded.set(parameter, value);
+    const values = source.getAll(parameter);
+    for (const value of values) forwarded.append(parameter, value);
   }
   const query = forwarded.toString();
   return proxyBackend({

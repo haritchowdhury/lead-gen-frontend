@@ -11,11 +11,13 @@ import { collectAllLeads, downloadLeadsCsv } from "@/lib/csv-export";
 type ExportCsvButtonProps = {
   runId: string;
   disabled?: boolean;
+  discoveryQueries?: string[];
 };
 
 export function ExportCsvButton({
   runId,
   disabled = false,
+  discoveryQueries = [],
 }: ExportCsvButtonProps) {
   const [progress, setProgress] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +32,9 @@ export function ExportCsvButton({
     try {
       const leads = await collectAllLeads(async (pageNumber) => {
         return apiRequest<ResultPage>(
-          `/api/runs/${encodeURIComponent(runId)}/results?page=${pageNumber}&pageSize=200`,
+          `/api/runs/${encodeURIComponent(runId)}/results?${new URLSearchParams([
+            ["page", String(pageNumber)], ["pageSize", "200"], ...discoveryQueries.map((value) => ["discoveryQuery", value]),
+          ]).toString()}`,
           { signal: controller.signal },
           parseResultPage,
         );

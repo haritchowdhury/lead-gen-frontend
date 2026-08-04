@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CumulativeTrafficSection } from "@/components/cumulative-traffic";
 import { ResultsTable } from "@/components/results-table";
@@ -18,18 +18,18 @@ export function LiveLeadsWorkspace() {
   const rawSort = searchParams.get("sortBy");
   const sortBy = rawSort === "first_discovered" || rawSort === "last_discovered" ? rawSort : "lead_quality";
   const sortDirection = searchParams.get("sortDirection") === "asc" ? "asc" : "desc";
+  const discoveryQueries = useMemo(() => searchParams.getAll("discoveryQuery"), [searchParams]);
   const [draft, setDraft] = useState(search);
   const [lastSearch, setLastSearch] = useState(search);
   const [data, setData] = useState<MasterLeadPage | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [trafficSettled, setTrafficSettled] = useState(false);
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const query = useMemo(() => new URLSearchParams({
-    page: String(page), pageSize: "25", sortBy, sortDirection, ...(search ? { search } : {}),
-  }).toString(), [page, search, sortBy, sortDirection]);
+  const handleTrafficSettled = useCallback(() => setTrafficSettled(true), []);
+  const query = useMemo(() => { const next = new URLSearchParams({ page: String(page), pageSize: "25", sortBy, sortDirection, ...(search ? { search } : {}) }); for (const value of discoveryQueries) next.append("discoveryQuery", value); return next.toString(); }, [page, search, sortBy, sortDirection, discoveryQueries]);
   if (search !== lastSearch) { setLastSearch(search); setDraft(search); }
   useEffect(() => {
     const controller = new AbortController();
-    setData(null);
     apiRequest<MasterLeadPage>(`/api/leads?${query}`, { signal: controller.signal }, parseMasterLeadPage)
       .then((next) => { setData(next); setError(null); })
       .catch((reason) => { if (reason?.name !== "AbortError") { setData(null); setError(errorMessage(reason)); } });
@@ -51,11 +51,12 @@ export function LiveLeadsWorkspace() {
   return <>
     <CumulativeTrafficSection runId="master" endpoint="/api/leads/traffic-overview" live
       refreshVersion={0} search={draft} committedSearch={search}
-      onSearchChange={scheduleSearch} />
-    <section className="results-section">
+      onSearchChange={scheduleSearch} onLoadSettled={handleTrafficSettled}
+      discoveryQueries={discoveryQueries} />
+    {trafficSettled && <section className="results-section">
       <header className="results-heading">
         <div><span className="eyebrow">Current master data</span><h2>Unique shops</h2><p>One live record per shop, with every discovering run retained.</p></div>
-        <MasterExportButton search={search} />
+        <MasterExportButton search={search} discoveryQueries={discoveryQueries} />
       </header>
       <div className="results-panel">
         <div className="results-controls">
@@ -66,10 +67,11 @@ export function LiveLeadsWorkspace() {
             <option value="lead_quality:desc">Lead quality · High to low</option><option value="lead_quality:asc">Lead quality · Low to high</option><option value="last_discovered:desc">Recently discovered</option><option value="first_discovered:asc">First discovered</option>
           </select></label>
         </div>
+        {data && discoveryQueries.length > 0 && <p className="query-match-summary">{data.pagination.totalItems.toLocaleString()} unique {data.pagination.totalItems === 1 ? "shop" : "shops"} matching any of {discoveryQueries.length} {discoveryQueries.length === 1 ? "query" : "queries"}.</p>}
         {error && <p className="results-error" role="alert">{error}</p>}
         {!error && <ResultsTable leads={data?.items ?? []} loading={!data} />}
         {data && data.pagination.totalPages > 1 && <div className="pagination"><span>Page {data.pagination.page} of {data.pagination.totalPages}</span><button disabled={page <= 1} onClick={() => navigate({ page: String(page - 1) })}>Previous</button><button disabled={page >= data.pagination.totalPages} onClick={() => navigate({ page: String(page + 1) })}>Next</button></div>}
       </div>
-    </section>
+    </section>}
   </>;
 }

@@ -17,6 +17,9 @@ export function CumulativeTrafficSection({
   search,
   committedSearch,
   onSearchChange,
+  onLoadSettled,
+  histogramLoadingSkeleton = false,
+  discoveryQueries = [],
 }: {
   runId: string;
   endpoint?: string;
@@ -25,22 +28,28 @@ export function CumulativeTrafficSection({
   search: string;
   committedSearch: string;
   onSearchChange: (value: string) => void;
+  onLoadSettled?: () => void;
+  histogramLoadingSkeleton?: boolean;
+  discoveryQueries?: string[];
 }) {
   const [overview, setOverview] = useState<TrafficOverview | null>(null);
   const [queryOverview, setQueryOverview] = useState<TrafficOverview | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<DataForSeoMarketTraffic["country_code"] | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const requestKey = `${runId}:${committedSearch}:${refreshVersion}`;
+  const parameters = new URLSearchParams();
+  if (committedSearch) parameters.set("search", committedSearch);
+  for (const value of discoveryQueries) parameters.append("discoveryQuery", value);
+  const scopedQuery = parameters.toString();
+  const requestKey = `${runId}:${scopedQuery}:${refreshVersion}`;
   const [settledRequestKey, setSettledRequestKey] = useState<string | null>(null);
+  const queryRequestKey = `${runId}:${endpoint ?? "run"}:${refreshVersion}`;
+  const [settledQueryRequestKey, setSettledQueryRequestKey] = useState<string | null>(null);
 
   useEffect(() => {
     let disposed = false;
     const controller = new AbortController();
-    const parameters = new URLSearchParams();
-    if (committedSearch) parameters.set("search", committedSearch);
-    const query = parameters.toString();
     apiRequest<TrafficOverview>(
-      `${endpoint ?? `/api/runs/${encodeURIComponent(runId)}/traffic-overview`}${query ? `?${query}` : ""}`,
+      `${endpoint ?? `/api/runs/${encodeURIComponent(runId)}/traffic-overview`}${scopedQuery ? `?${scopedQuery}` : ""}`,
       { signal: controller.signal },
       parseTrafficOverview,
     )
@@ -50,18 +59,20 @@ export function CumulativeTrafficSection({
         setSelectedCountry((current) => current && nextOverview.markets.some((market) => market.country_code === current) ? current : null);
         setError(null);
         setSettledRequestKey(requestKey);
+        onLoadSettled?.();
       })
       .catch((requestError: unknown) => {
         if (!disposed && (requestError as { name?: string }).name !== "AbortError") {
           setError(errorMessage(requestError));
           setSettledRequestKey(requestKey);
+          onLoadSettled?.();
         }
       });
     return () => {
       disposed = true;
       controller.abort();
     };
-  }, [committedSearch, endpoint, refreshVersion, requestKey, runId]);
+  }, [endpoint, onLoadSettled, requestKey, runId, scopedQuery]);
 
   // Query demand is intentionally run-wide; it must not change with the lead-table search.
   useEffect(() => {
@@ -72,19 +83,29 @@ export function CumulativeTrafficSection({
       { signal: controller.signal },
       parseTrafficOverview,
     ).then((nextOverview) => {
-      if (!disposed) setQueryOverview(nextOverview);
+      if (!disposed) {
+        setQueryOverview(nextOverview);
+        setSettledQueryRequestKey(queryRequestKey);
+      }
     }).catch(() => {
       // The scoped globe still remains useful if the optional query map is unavailable.
+      if (!disposed) setSettledQueryRequestKey(queryRequestKey);
     });
     return () => {
       disposed = true;
       controller.abort();
     };
-  }, [endpoint, refreshVersion, runId]);
+  }, [endpoint, queryRequestKey, runId]);
 
   const loading = settledRequestKey !== requestKey;
   const hasTraffic = Boolean(overview?.worldwide || overview?.markets.length);
-  const scoped = Boolean(overview?.scope.search);
+  const scoped = Boolean(overview?.scope.search || discoveryQueries.length);
+  const scopeDescription = overview?.scope.search
+    ? "this search"
+    : discoveryQueries.length
+      ? "the selected discovery queries"
+      : "the current view";
+  const queryLoading = queryOverview === null && settledQueryRequestKey !== queryRequestKey;
 
   return (
     <section
@@ -97,7 +118,7 @@ export function CumulativeTrafficSection({
           <span className="eyebrow">Global traffic explorer</span>
           <p>
             {scoped
-              ? `Traffic summed across ${live ? "live shops" : "stores"} matching this search. Clear it to return to the complete ${live ? "collection" : "run"}.`
+              ? `Traffic summed across ${live ? "live shops" : "stores"} matching ${scopeDescription}. Clear the filters to return to the complete ${live ? "collection" : "run"}.`
               : `Traffic summed once per shop across the complete ${live ? "live collection" : "run"}. Search here to focus the globe and lead list together.`}
           </p>
         </div>
@@ -124,13 +145,19 @@ export function CumulativeTrafficSection({
 
       {error && <p className="cumulative-traffic-error" role="alert">{error}</p>}
       {overview ? (
-        <>
-          <QueryTrafficHeatmap
-            queries={queryOverview?.queries ?? []}
-            selectedCountry={selectedCountry}
-            onCountryChange={setSelectedCountry}
-            live={live}
-          />
+        <div className="traffic-intelligence-card">
+          {queryLoading ? (
+            <div className="query-traffic-loader" role="status" aria-label="Loading query traffic heatmap">
+              <span />
+              <small>Loading query traffic…</small>
+            </div>
+          ) : (
+            <QueryTrafficHeatmap
+              queries={queryOverview?.queries ?? []}
+              selectedCountry={selectedCountry}
+              live={live}
+            />
+          )}
           {hasTraffic ? (
             <TrafficMarketExplorer worldwide={overview.worldwide} markets={overview.markets}
               selectedCountry={selectedCountry}
@@ -139,19 +166,26 @@ export function CumulativeTrafficSection({
           ) : (
             <p className="empty-evidence">
               {overview.scope.matchedLeads === 0
-                ? "No stores match this search."
+                ? `No stores match ${scopeDescription}.`
                 : "No search traffic estimates are available for these stores."}
             </p>
           )}
-        </>
+        </div>
       ) : !error ? (
         <div
-          className="cumulative-traffic-loading"
+          className={`cumulative-traffic-loading${histogramLoadingSkeleton ? " has-query-histogram" : ""}`}
           aria-label="Loading cumulative traffic"
           role="status"
         >
-          <span />
-          <span />
+          {histogramLoadingSkeleton ? (
+            <>
+              <span className="traffic-loading-query" />
+              <span className="traffic-loading-globe" />
+              <span className="traffic-loading-metrics" />
+            </>
+          ) : (
+            <><span /><span /></>
+          )}
         </div>
       ) : null}
     </section>

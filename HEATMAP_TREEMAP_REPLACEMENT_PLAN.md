@@ -2,7 +2,7 @@
 
 ## Outcome
 
-Replace the current equal-cell CSS grid on both completed run pages and `/leads` with one shared, production-quality query traffic treemap. The visualization will always occupy a square plotting area, and each query tile's area will be proportional to its selected-scope traffic value.
+Replace the current equal-cell CSS grid on both completed run pages and `/leads` with one shared, production-quality query traffic treemap. The visualization will always occupy a square plotting area, and each query tile's area will be proportional to its selected-scope traffic value. Make the visualization actionable: users can open one query or select several queries to filter the lead table below it.
 
 The UI can continue calling the section a “heatmap,” but the correct visualization primitive is a **squarified treemap**: a fixed rectangle partitioned into value-weighted rectangles.
 
@@ -35,7 +35,7 @@ Before installation, pin the exact current Recharts release after checking its p
 
 ## Data and sizing rules
 
-1. Preserve the current source of truth: `TrafficQuerySummary[]` from each page's traffic-overview endpoint. No backend contract change is required.
+1. Preserve `TrafficQuerySummary[]` from each page's traffic-overview endpoint as the visualization source of truth. Add lead-list filtering support separately where the current endpoint cannot filter by discovery query.
 2. Recompute node values whenever the country filter changes, using `estimated_google_search_traffic` for Worldwide or the selected country.
 3. Sort nodes deterministically by traffic descending, then query text, before passing them to the chart. This stabilizes layout and tests.
 4. Use a linear area mapping for normal datasets: `node.value = traffic`. Area, not side length, represents traffic.
@@ -43,10 +43,33 @@ Before installation, pin the exact current Recharts release after checking its p
    - 1 item: one full-square tile.
    - 2–12 items: labels and key metrics inside every tile that has room.
    - 13–30 items: labels inside medium/large tiles; small tiles use tooltip/focus details.
-   - 31+ items: render the largest 30 individually and combine the remainder into an explicit “Other queries” tile. The tooltip for that tile reports its query count and combined metrics.
+   - 31+ items: render the largest 30 individually and combine the remainder into an explicit “Other queries” tile. The tooltip reports the hidden query count and combined metrics; activating it opens the complete searchable query selector.
 6. Zero-traffic queries cannot receive meaningful proportional area. Show them in a compact “No measured traffic” list directly below the square rather than assigning fake weight. This keeps the area encoding truthful.
 7. Use traffic as both area and a restrained sequential green color scale. Area communicates magnitude; color reinforces rank and does not encode a different metric.
 8. Keep shops found and covered leads in tile/tooltip details only; they do not affect tile area.
+
+## Query navigation and lead filtering
+
+The treemap is both a visualization and an entry point into the lead data.
+
+1. **Single-query navigation:** every visible query tile is an actual hyperlink. Activating it updates the current page URL with that discovery query, scrolls/focuses the lead table, and displays only leads discovered through that query.
+2. **Multi-query selection:** provide a searchable selector beside/below the chart with checkboxes for all queries. Users can mix visible top-30 queries with queries contained in “Other queries.”
+3. **Match semantics:** selected queries use OR semantics—a lead is included if it was discovered through any selected query.
+4. **Deduplication:** a shop that matches several selected queries appears once. `/leads` deduplicates by the user-owned master shop identity; a run page deduplicates by its run-scoped lead/shop identity.
+5. **URL state:** encode selections as repeated query parameters (for example `discoveryQuery=...&discoveryQuery=...`) rather than a comma-delimited value. Preserve country, text search, sorting, and other existing parameters when adding or removing query filters.
+6. **Shareable/back-forward behavior:** URL state is the source of truth, so filtered views can be bookmarked/shared and browser back/forward restores the selection.
+7. **Filter actions:** include Search queries, Select all visible, Clear all, and an explicit Apply action. Display selected queries as removable chips above the lead table.
+8. **Result feedback:** show the unique matched-lead count and a concise “matching any of N queries” summary. A zero-result selection shows a real empty-filter state, not a traffic-data error.
+9. **Other queries:** the aggregate tile is not itself treated as one discovery query. Activating it opens the selector pre-scrolled to the queries outside the top 30; the user can choose one or many of them.
+10. **Unattributed discovery:** expose it as a distinct filter value with a stable internal token; never encode the display label as though it were a real query.
+
+### Backend/API implications
+
+- Extend the user master lead endpoint to accept repeated `discoveryQuery` parameters and filter through the user's discovery-history relation before pagination and count calculation.
+- Extend the run lead endpoint similarly if its current response is server-paginated. If the completed run already loads its complete lead set, use the same shared predicate client-side but retain identical URL semantics.
+- Validate query count, individual query length, and total encoded URL size. Ignore no values silently: invalid query filters return a specific validation message.
+- Keep authorization unchanged: filtering must never reveal a shop or run outside the authenticated user's existing scope.
+- Keep exports consistent with the visible filter. Export requests include the active repeated discovery-query parameters and deduplicate with the same identity rules.
 
 ## Fixed-square layout
 
@@ -73,17 +96,29 @@ Before installation, pin the exact current Recharts release after checking its p
    - truncates long query labels safely;
    - exposes the full query and values through an accessible tooltip/focus panel;
    - retains `site:` prefix treatment where space permits.
-4. Retain the existing Worldwide/country filter behavior and live-vs-run copy.
-5. Dynamically import only the interactive treemap client boundary if bundle analysis shows a meaningful route cost; keep the surrounding heading and empty states as ordinary React markup.
+4. Add a shared query-filter controller that reads/writes URL state, renders selected chips and the searchable selector, and supplies page-specific link targets without duplicating behavior.
+5. Connect the filtered query state to the master lead fetch, run lead filtering/fetch, result count, pagination reset, and export.
+6. Retain the existing Worldwide/country filter behavior and live-vs-run copy.
+7. Dynamically import only the interactive treemap client boundary if bundle analysis shows a meaningful route cost; keep the surrounding heading and empty states as ordinary React markup.
 
 ## Visual and interaction specification
 
 - One square plot at every breakpoint.
 - Tile area proportional to estimated Google search traffic for the active scope.
+- Do not ship Recharts' default appearance. Use the application's existing design tokens and the visual language already shared by completed run pages and `/leads`.
+- Keep the existing restrained cream/white surfaces, dark green text, lime selection accent, muted olive secondary text, compact typography, and low-contrast borders/shadows.
+- Use a custom sequential green scale derived from the existing palette. Avoid rainbow scales, saturated dashboard colors, gradients that reduce label contrast, and generic chart-library chrome.
+- Match the surrounding section's spacing and hierarchy: existing eyebrow, heading, explanatory copy, country pills, and vertical rhythm remain intact.
+- Use narrow gutters and subtle corner radii so the treemap feels precise and dense without looking like an unrelated analytics widget.
+- Style the custom tooltip like the existing detail cards/popovers: light surface, dark green text, restrained border/shadow, tabular numeric alignment, and no library branding.
+- Active query tiles and filter chips use the existing lime selected state. Hover is a small luminance/border change; focus uses the application's established visible focus ring.
+- Keep the square centered and visually balanced with the globe and lead table at the same content width. It must not widen the page or introduce a competing card style.
 - Large tiles: query, traffic, shops, and coverage.
 - Medium tiles: query and traffic.
 - Small tiles: no forced text; hover, keyboard focus, or tap reveals full details.
+- Query tiles use real links and expose the destination/active state to assistive technology; selection controls remain separate so link activation and multi-selection are not ambiguous.
 - Tooltip content: full discovery query, traffic, shops found, leads covered, percentage of displayed traffic, and active geographic scope.
+- The “Other queries” tile clearly states that it opens the remaining query choices; it never looks like a real measured query.
 - Selected-country changes animate only if motion is allowed; honor `prefers-reduced-motion`.
 - Use a minimum-contrast palette and do not depend on color alone—the numeric tooltip/focus details remain authoritative.
 - Preserve empty-query and no-traffic states without rendering a misleading chart.
@@ -105,10 +140,17 @@ Before installation, pin the exact current Recharts release after checking its p
 - “Other queries” totals traffic, shops, and coverage correctly.
 - Zero-value queries are excluded from weighted layout and retained in the no-traffic list.
 - Null/unattributed queries retain a readable label.
+- Repeated query parameters parse and serialize without losing existing URL state.
+- OR filtering returns a shop once even when several selected queries discovered it.
+- Filtered totals and exports use the same deduplication rules.
 
 ### Component and accessibility tests
 
 - Worldwide and country buttons update the rendered treemap data.
+- A query tile link updates the URL and filters the lead table on both page types.
+- Selecting multiple queries returns the union of their leads, renders removable chips, and resets pagination.
+- “Other queries” opens the selector at the hidden-query group and permits selecting those queries.
+- Browser back/forward and a directly loaded filtered URL restore the same state.
 - Keyboard focus exposes the same information as pointer hover.
 - The plot has an accessible name/description and every data item remains discoverable without relying on SVG text visibility.
 - Empty and all-zero datasets render truthful states.
@@ -116,6 +158,8 @@ Before installation, pin the exact current Recharts release after checking its p
 ### Visual checks
 
 - Capture `/leads` and at least one completed run at desktop, tablet, and mobile widths.
+- Compare the treemap directly against the surrounding globe, filter pills, section headings, and lead table to confirm consistent colors, type scale, radii, spacing, focus states, and density.
+- Reject the implementation if any unmodified Recharts default color, font, tooltip, outline, or animation is visible.
 - Assert the plot container width and height are equal (allowing at most one device pixel for rounding).
 - Exercise skewed values, equal values, long labels, 1 item, 12 items, 30 items, and 100+ raw queries.
 - Confirm the largest traffic value visibly owns the largest area and that changing country reshapes the treemap.
@@ -125,11 +169,13 @@ Before installation, pin the exact current Recharts release after checking its p
 
 1. Install and compatibility-check the pinned Recharts version.
 2. Build and unit-test the pure query-to-treemap transformation.
-3. Replace the grid renderer with the responsive square treemap and custom nodes/tooltips.
-4. Consolidate the old heatmap CSS.
-5. Add component/accessibility coverage.
-6. Verify both `/leads` and an individual completed run using representative real payloads at all target breakpoints.
-7. Compare the production bundle and remove or dynamically split unnecessary chart code before release.
+3. Add discovery-query filtering to the master/run lead data path, including unique counts, pagination, authorization, and export semantics.
+4. Add shared URL-state and query-selector behavior with single-query hyperlinks and multi-query OR selection.
+5. Replace the grid renderer with the responsive square treemap and custom nodes/tooltips.
+6. Consolidate the old heatmap CSS.
+7. Add unit, component, accessibility, and API coverage.
+8. Verify both `/leads` and an individual completed run using representative real payloads at all target breakpoints.
+9. Compare the production bundle and remove or dynamically split unnecessary chart code before release.
 
 ## Acceptance criteria
 
@@ -137,7 +183,12 @@ Before installation, pin the exact current Recharts release after checking its p
 - The plotting surface is square at every supported viewport.
 - Tile area changes proportionally with the active traffic values.
 - Country filtering reshapes the treemap correctly.
+- Every visible query tile links to the corresponding filtered lead view.
+- Users can combine any top-30 or hidden query selections, with OR matching and no duplicate shops.
+- “Other queries” exposes every query it represents through a searchable selector.
+- Query filters survive refresh, sharing, and browser navigation, and apply consistently to counts, pagination, and export.
 - Large and small datasets remain legible without falsifying zero values.
 - All values are available to keyboard and assistive-technology users.
 - Existing traffic overview, globe, filters, and page styling continue to work.
+- The treemap looks native to the existing interface on both page types; no generic third-party chart styling remains.
 - Lint, tests, production build, and browser verification pass.

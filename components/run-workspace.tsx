@@ -58,7 +58,7 @@ function filtersFromParams(params: URLSearchParams): ResultFilters {
   };
 }
 
-function resultsQuery(filters: ResultFilters): string {
+function resultsQuery(filters: ResultFilters, discoveryQueries: string[]): string {
   const params = new URLSearchParams({
     page: String(filters.page),
     pageSize: String(filters.pageSize),
@@ -67,6 +67,7 @@ function resultsQuery(filters: ResultFilters): string {
   });
   if (filters.status) params.set("status", filters.status);
   if (filters.search) params.set("search", filters.search);
+  for (const value of discoveryQueries) params.append("discoveryQuery", value);
   return params.toString();
 }
 
@@ -100,7 +101,8 @@ export function RunWorkspace({ runId }: { runId: string }) {
     () => filtersFromParams(new URLSearchParams(searchParams.toString())),
     [searchParams],
   );
-  const query = useMemo(() => resultsQuery(filters), [filters]);
+  const discoveryQueries = useMemo(() => searchParams.getAll("discoveryQuery"), [searchParams]);
+  const query = useMemo(() => resultsQuery(filters, discoveryQueries), [filters, discoveryQueries]);
   const [searchDraft, setSearchDraft] = useState(filters.search);
   const [lastFilterSearch, setLastFilterSearch] = useState(filters.search);
 
@@ -194,6 +196,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
       if (next.sortBy !== "lead_score") params.set("sortBy", next.sortBy);
       if (next.sortDirection !== "desc")
         params.set("sortDirection", next.sortDirection);
+      for (const value of discoveryQueries) params.append("discoveryQuery", value);
       const suffix = params.toString();
       window.history.replaceState(
         null,
@@ -201,7 +204,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
         `${pathname}${suffix ? `?${suffix}` : ""}`,
       );
     },
-    [filters, pathname],
+    [discoveryQueries, filters, pathname],
   );
 
   useEffect(() => {
@@ -333,7 +336,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
                 <span className={`ds-badge ${runStateTone(run.state)}`}>
                   {runStateLabel(run.state)}
                 </span>
-                <ExportCsvButton runId={runId} />
+                <ExportCsvButton runId={runId} discoveryQueries={discoveryQueries} />
               </div>
             </div>
 
@@ -368,6 +371,8 @@ export function RunWorkspace({ runId }: { runId: string }) {
                   search={searchDraft}
                   committedSearch={filters.search}
                   onSearchChange={setSearchDraft}
+                  histogramLoadingSkeleton
+                  discoveryQueries={discoveryQueries}
                 />
 
                 {resultsError?.query === query && (
@@ -383,6 +388,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
                 )}
 
                 <div className="results-panel">
+                  {discoveryQueries.length > 0 && <p className="query-match-summary">{results.pagination.totalItems.toLocaleString()} unique {results.pagination.totalItems === 1 ? "lead" : "leads"} matching any of {discoveryQueries.length} {discoveryQueries.length === 1 ? "query" : "queries"}.</p>}
                   <ResultsFilters
                     filters={filters}
                     onChange={changeFilters}
