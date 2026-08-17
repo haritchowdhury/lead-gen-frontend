@@ -27,6 +27,20 @@ test("every stage and terminal state keeps a truthful label and bounded progress
   assert.equal(stageLabel("unknown-stage"), "Processing your run");
 });
 
+test("AWS execution stages render as their existing visible pipeline stages", () => {
+  const aliases = [
+    ["aws_discovery", "discovering_stores"],
+    ["aws_lead", "discovering_leads"],
+    ["aws_traffic_crux", "enriching_traffic"],
+  ] as const;
+  for (const [awsStage, visibleStage] of aliases) {
+    assert.equal(stageLabel(awsStage), stageLabel(visibleStage));
+    assert.equal(stagePercent(awsStage, "running"), stagePercent(visibleStage, "running"));
+  }
+  assert.equal(stageLabel("unknown-aws-stage"), "Processing your run");
+  assert.equal(stagePercent("unknown-aws-stage", "running"), 8);
+});
+
 test("query planning renders distinct zero and nonzero metric states", () => {
   const component = source("components/run-progress.tsx");
   assert.match(component, /progress-card-query/u);
@@ -45,6 +59,7 @@ test("pipeline counters remain independent and traffic maps to each real state",
   const cases = [
     ["discovering_stores", "running", "Waiting", "traffic-waiting"],
     ["enriching_traffic", "running", "Analyzing", "traffic-active"],
+    ["aws_traffic_crux", "running", "Analyzing", "traffic-active"],
     ["writing_results", "running", "Complete", "traffic-complete"],
     ["completed", "completed", "Complete", "traffic-complete"],
     ["failed", "failed", "Stopped", "traffic-stopped"],

@@ -45,15 +45,25 @@ const STAGE_ORDER = [
   "completed",
 ];
 
+const STAGE_ALIASES: Record<string, string> = {
+  aws_discovery: "discovering_stores",
+  aws_lead: "discovering_leads",
+  aws_traffic_crux: "enriching_traffic",
+};
+
+function presentationStage(stage: string): string {
+  return STAGE_ALIASES[stage] ?? stage;
+}
+
 export function stageLabel(stage: string): string {
-  return STAGE_LABELS[stage] ?? "Processing your run";
+  return STAGE_LABELS[presentationStage(stage)] ?? "Processing your run";
 }
 
 export function stagePercent(stage: string, state: string): number {
   if (state === "completed") return 100;
   if (state === "failed" || state === "cancelled") return 100;
   if (stage === "queued") return 3;
-  const index = STAGE_ORDER.indexOf(stage);
+  const index = STAGE_ORDER.indexOf(presentationStage(stage));
   if (index < 0) return 8;
   return Math.min(96, Math.round(((index + 1) / STAGE_ORDER.length) * 100));
 }

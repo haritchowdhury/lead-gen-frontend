@@ -21,7 +21,7 @@ export function trafficProgressState(run: RunStatus): TrafficProgressState {
   if (run.state === "failed" || run.state === "cancelled") {
     return { label: "Stopped", tone: "stopped" };
   }
-  if (run.stage === "enriching_traffic") {
+  if (run.stage === "enriching_traffic" || run.stage === "aws_traffic_crux") {
     return { label: "Analyzing", tone: "active" };
   }
   if (run.stage === "writing_results" || run.state === "completed") {
