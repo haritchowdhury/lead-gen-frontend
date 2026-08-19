@@ -1316,3 +1316,15 @@ export function isApiErrorPayload(value: unknown): value is ApiErrorPayload {
     return false;
   }
 }
+
+// Keyword intelligence parsers (KI-W5; additive only).
+export {
+  CLIENT_REQUEST_ID_PATTERN,
+  KEYWORD_RESEARCH_ID_PATTERN,
+  newClientRequestId,
+  parseResearchEnvelope,
+  parseResearchView,
+  parseRunHandoffEnvelope,
+  validKeywordResearchId,
+  validateSeedsInput,
+} from "./keyword-intelligence-validation.ts";
