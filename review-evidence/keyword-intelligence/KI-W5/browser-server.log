@@ -1,0 +1,121 @@
+▲ Next.js 16.2.12 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 15.4s
+  Running TypeScript ...
+  Finished TypeScript in 18.3s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/7) ...
+[neon-auth] Cookie validation error before getSession upstream call {
+  component: 'server-api',
+  detail: "Dynamic server usage: Route /_not-found couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  err: Error: Dynamic server usage: Route /_not-found couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+      at n (.next/server/chunks/ssr/_0gss0h-._.js:1:10143)
+      at h5 (.next/server/chunks/ssr/_0gss0h-._.js:82:60175)
+      at j.getSession (.next/server/chunks/ssr/_0gss0h-._.js:82:71769)
+      at ir (.next/server/chunks/ssr/_0gss0h-._.js:82:73572)
+      at is (.next/server/chunks/ssr/_0gss0h-._.js:82:73736) {
+    description: "Route /_not-found couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+    digest: 'DYNAMIC_SERVER_USAGE'
+  }
+}
+[neon-auth] Cookie validation error before getSession upstream call {
+  component: 'server-api',
+  detail: "Dynamic server usage: Route /design-fixture couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  err: Error: Dynamic server usage: Route /design-fixture couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+      at n (.next/server/chunks/ssr/_0gss0h-._.js:1:10143)
+      at h5 (.next/server/chunks/ssr/_0gss0h-._.js:82:60175)
+      at j.getSession (.next/server/chunks/ssr/_0gss0h-._.js:82:71769)
+      at ir (.next/server/chunks/ssr/_0gss0h-._.js:82:73572)
+      at is (.next/server/chunks/ssr/_0gss0h-._.js:82:73736) {
+    description: "Route /design-fixture couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+    digest: 'DYNAMIC_SERVER_USAGE'
+  }
+}
+[neon-auth] Cookie validation error before getSession upstream call {
+  component: 'server-api',
+  detail: "Dynamic server usage: Route /sign-in couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  err: Error: Dynamic server usage: Route /sign-in couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+      at n (.next/server/chunks/ssr/_0gss0h-._.js:1:10143)
+      at h5 (.next/server/chunks/ssr/_0gss0h-._.js:82:60175)
+      at j.getSession (.next/server/chunks/ssr/_0gss0h-._.js:82:71769)
+      at ir (.next/server/chunks/ssr/_0gss0h-._.js:82:73572)
+      at is (.next/server/chunks/ssr/_0gss0h-._.js:82:73736) {
+    description: "Route /sign-in couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+    digest: 'DYNAMIC_SERVER_USAGE'
+  }
+}
+[neon-auth] Cookie validation error before getSession upstream call {
+  component: 'server-api',
+  detail: "Dynamic server usage: Route / couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  err: Error: Dynamic server usage: Route / couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+      at n (.next/server/chunks/ssr/_0gss0h-._.js:1:10143)
+      at h5 (.next/server/chunks/ssr/_0gss0h-._.js:82:60175)
+      at j.getSession (.next/server/chunks/ssr/_0gss0h-._.js:82:71769)
+      at ir (.next/server/chunks/ssr/_0gss0h-._.js:82:73572)
+      at is (.next/server/chunks/ssr/_0gss0h-._.js:82:73736) {
+    description: "Route / couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+    digest: 'DYNAMIC_SERVER_USAGE'
+  }
+}
+[neon-auth] Cookie validation error before getSession upstream call {
+  component: 'server-api',
+  detail: "Dynamic server usage: Route /sign-up couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  err: Error: Dynamic server usage: Route /sign-up couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+      at n (.next/server/chunks/ssr/_0gss0h-._.js:1:10143)
+      at h5 (.next/server/chunks/ssr/_0gss0h-._.js:82:60175)
+      at j.getSession (.next/server/chunks/ssr/_0gss0h-._.js:82:71769)
+      at ir (.next/server/chunks/ssr/_0gss0h-._.js:82:73572)
+      at is (.next/server/chunks/ssr/_0gss0h-._.js:82:73736) {
+    description: "Route /sign-up couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+    digest: 'DYNAMIC_SERVER_USAGE'
+  }
+}
+  Generating static pages using 7 workers (1/7) 
+  Generating static pages using 7 workers (3/7) 
+  Generating static pages using 7 workers (5/7) 
+✓ Generating static pages using 7 workers (7/7) in 806ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /api/auth/[...path]
+├ ƒ /api/health
+├ ƒ /api/keyword-research
+├ ƒ /api/keyword-research/[researchId]
+├ ƒ /api/keyword-research/[researchId]/export.csv
+├ ƒ /api/keyword-research/[researchId]/runs
+├ ƒ /api/keyword-research/[researchId]/selection
+├ ƒ /api/leads
+├ ƒ /api/leads/traffic-overview
+├ ƒ /api/run-intents/claim
+├ ƒ /api/runs
+├ ƒ /api/runs/[runId]
+├ ƒ /api/runs/[runId]/diagnostics
+├ ƒ /api/runs/[runId]/queries
+├ ƒ /api/runs/[runId]/query-audits
+├ ƒ /api/runs/[runId]/results
+├ ƒ /api/runs/[runId]/start
+├ ƒ /api/runs/[runId]/traffic-overview
+├ ƒ /design-fixture
+├ ƒ /keywords
+├ ƒ /keywords/[researchId]
+├ ƒ /leads
+├ ƒ /runs
+├ ƒ /runs/[runId]
+├ ƒ /runs/continue
+├ ƒ /sign-in
+└ ƒ /sign-up
+
+
+ƒ Proxy (Middleware)
+
+ƒ  (Dynamic)  server-rendered on demand
+
+
+▲ Next.js 16.2.12
+- Local:         http://127.0.0.1:4347
+- Network:       http://127.0.0.1:4347
+✓ Ready in 295ms

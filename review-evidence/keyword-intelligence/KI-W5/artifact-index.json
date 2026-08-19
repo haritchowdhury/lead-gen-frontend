@@ -1,0 +1,21 @@
+{
+  "command": "node test/browser/keyword-intelligence-dashboard.mjs",
+  "provenance": "Deterministic in-file fixtures served through a same-origin /api/keyword-research* fetch interception on the emitted production Next build (port 4347).",
+  "screenshots": [
+    "W5-B01-error-state.png",
+    "W5-B02-filters.png",
+    "W5-B03-scale.png",
+    "W5-B04-dialogs.png",
+    "W5-B05-export.png",
+    "W5-B06-theme.png",
+    "W5-B07-canvas.png",
+    "W5-B08-scale.png",
+    "W5-R01-poll.png",
+    "W5-R02-durable.png",
+    "W5-R03-conflict-finalize.png",
+    "W5-R04-failed.png",
+    "W5-R05-responsive.png",
+    "W5-R06-teardown.png"
+  ],
+  "machineChecks": "browser-checks.json"
+}

@@ -1,0 +1,146 @@
+{
+  "certificate": {
+    "file": "keyword-intelligence-dashboard.mjs",
+    "required": [
+      "W5-B01",
+      "W5-B02",
+      "W5-B03",
+      "W5-B04",
+      "W5-B05",
+      "W5-B06",
+      "W5-B07",
+      "W5-B08",
+      "W5-R01",
+      "W5-R02",
+      "W5-R03",
+      "W5-R04",
+      "W5-R05",
+      "W5-R06",
+      "W5-R07"
+    ],
+    "registered": [
+      "W5-B01",
+      "W5-B02",
+      "W5-B03",
+      "W5-B04",
+      "W5-B05",
+      "W5-B06",
+      "W5-B07",
+      "W5-B08",
+      "W5-R01",
+      "W5-R02",
+      "W5-R03",
+      "W5-R04",
+      "W5-R05",
+      "W5-R06",
+      "W5-R07"
+    ],
+    "executed": [
+      "W5-B01",
+      "W5-B02",
+      "W5-B03",
+      "W5-B04",
+      "W5-B05",
+      "W5-B06",
+      "W5-B07",
+      "W5-B08",
+      "W5-R01",
+      "W5-R02",
+      "W5-R03",
+      "W5-R04",
+      "W5-R05",
+      "W5-R06",
+      "W5-R07"
+    ],
+    "skipped": [],
+    "oracleFailures": [],
+    "requiredDigest": "0070889385681c847bc41e0c98a190f7e4b2e97c5d4fe57887b114e00da09b74",
+    "registeredDigest": "0070889385681c847bc41e0c98a190f7e4b2e97c5d4fe57887b114e00da09b74",
+    "executedDigest": "0070889385681c847bc41e0c98a190f7e4b2e97c5d4fe57887b114e00da09b74",
+    "scenarios": {
+      "SCN-KI-016": true,
+      "SCN-KI-017": true
+    }
+  },
+  "results": [
+    {
+      "id": "W5-B01",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-B02",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-B03",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-B04",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-B05",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-B06",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-B07",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-B08",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-R01",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-R02",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-R03",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-R04",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-R05",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-R06",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "W5-R07",
+      "ok": true,
+      "error": null
+    }
+  ],
+  "consoleErrors": [],
+  "exceptionThrown": [],
+  "nonAppNetworkUrls": [],
+  "cdnNetworkUrls": []
+}
