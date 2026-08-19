@@ -113,6 +113,7 @@ export function ResearchForm({
   return (
     <form
       id="seed-phrase-form"
+      data-surface="surface:research-form"
       className={styles.seedCard}
       onSubmit={submit}
       aria-busy={isSubmitting}
