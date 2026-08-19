@@ -530,3 +530,31 @@ export type ResultFilters = {
   sortBy: "lead_score" | "store_name" | "shop_type" | "google_rank";
   sortDirection: "asc" | "desc";
 };
+
+// Keyword intelligence re-exports (KI-W5; additive only).
+export type {
+  ClusterLaneCounts,
+  ClusterRow,
+  KeywordCompetitionLevel,
+  KeywordFacets,
+  KeywordLane,
+  KeywordMainIntent,
+  KeywordMarket,
+  KeywordMetricSnapshot,
+  KeywordResearchRunResponse,
+  KeywordRow,
+  MarketMetric,
+  MonthlyHistoryPoint,
+  ResearchProgress,
+  ResearchProgressStage,
+  ResearchResult,
+  ResearchSafeError,
+  ResearchState,
+  ResearchSummary,
+  ResearchView,
+  SelectionConflict,
+  SelectionConflictPair,
+  SelectionItem,
+  StageCounts,
+  VariantGroup,
+} from "./keyword-intelligence-types";
