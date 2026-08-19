@@ -47,20 +47,30 @@ function compiledComponents(): Promise<Components> {
     await writeFile(join(output, "package.json"), '{"type":"commonjs"}\n', "utf8");
     await symlink(join(frontendRoot, "node_modules"), join(output, "node_modules"), "dir");
     const tsc = join(frontendRoot, "node_modules", "typescript", "bin", "tsc");
+    const harnessConfig = join(output, "tsconfig.harness.json");
+    await writeFile(harnessConfig, JSON.stringify({
+      compilerOptions: {
+        outDir: ".",
+        rootDir: frontendRoot,
+        module: "CommonJS",
+        moduleResolution: "Node",
+        target: "ES2022",
+        jsx: "react-jsx",
+        strict: true,
+        skipLibCheck: true,
+        esModuleInterop: true,
+        resolveJsonModule: true,
+        baseUrl: frontendRoot,
+        paths: { "@/*": ["*"] },
+      },
+      files: [
+        join(frontendRoot, "components", "lead-details.tsx"),
+        join(frontendRoot, "components", "results-table.tsx"),
+      ],
+    }), "utf8");
     const result = spawnSync(process.execPath, [
       tsc,
-      "--outDir", output,
-      "--rootDir", frontendRoot,
-      "--module", "CommonJS",
-      "--moduleResolution", "Node",
-      "--target", "ES2022",
-      "--jsx", "react-jsx",
-      "--strict",
-      "--skipLibCheck",
-      "--esModuleInterop",
-      "--resolveJsonModule",
-      "components/lead-details.tsx",
-      "components/results-table.tsx",
+      "-p", harnessConfig,
     ], { cwd: frontendRoot, encoding: "utf8" });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
     const require = createRequire(import.meta.url);
