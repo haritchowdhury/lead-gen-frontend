@@ -9,7 +9,6 @@ import type {
   SelectionConflict,
   SelectionItem,
 } from "@/lib/keyword-intelligence-types";
-import { newClientRequestId } from "@/lib/keyword-intelligence-validation";
 import {
   addManualSelectedItem,
   canFinalizeSelection,
@@ -33,6 +32,7 @@ type SelectionReviewProps = {
   onSave: () => void;
   onFinalize: () => void;
   finalizeState: "idle" | "handing-off";
+  onDraftChange: (draft: SelectionItem[]) => void;
 };
 
 type Reclassified = {
@@ -52,6 +52,31 @@ function parseKeywordLines(value: string): string[] {
     result.push(collapsed);
   }
   return result;
+}
+
+const MANUAL_ID_LANES = [0x811c9dc5, 0x9e3779b9, 0x85ebca6b] as const;
+
+function manualItemDigest(text: string, salt: number): string {
+  const input = `${salt}\n${text}`;
+  let out = "";
+  for (const seed of MANUAL_ID_LANES) {
+    let hash = seed;
+    for (let index = 0; index < input.length; index += 1) {
+      hash = Math.imul(hash ^ input.charCodeAt(index), 0x01000193) >>> 0;
+    }
+    out += hash.toString(16).padStart(8, "0").slice(0, 4);
+  }
+  return out;
+}
+
+function stableManualItemId(text: string, draft: SelectionItem[]): string {
+  let salt = 0;
+  let id = `ksi_${manualItemDigest(text, salt)}`;
+  while (draft.some((item) => item.itemId === id)) {
+    salt += 1;
+    id = `ksi_${manualItemDigest(text, salt)}`;
+  }
+  return id;
 }
 
 function facetChips(facets: KeywordFacets): string[] {
@@ -81,19 +106,13 @@ export function SelectionReview({
   onSave,
   onFinalize,
   finalizeState,
+  onDraftChange,
 }: SelectionReviewProps) {
-  const [workingDraft, setWorkingDraft] = useState<SelectionItem[]>(draft);
-  const [prevDraft, setPrevDraft] = useState<SelectionItem[]>(draft);
   const [manualInput, setManualInput] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  if (draft !== prevDraft) {
-    setPrevDraft(draft);
-    setWorkingDraft(draft);
-  }
 
   useEffect(() => {
     return () => {
@@ -101,13 +120,13 @@ export function SelectionReview({
     };
   }, []);
 
-  const gate = canFinalizeSelection(view, workingDraft);
-  const overLimit = selectionOverLimit(workingDraft);
+  const gate = canFinalizeSelection(view, draft);
+  const overLimit = selectionOverLimit(draft);
 
   const editingItem =
-    editingId !== null ? workingDraft.find((item) => item.itemId === editingId) ?? null : null;
+    editingId !== null ? draft.find((item) => item.itemId === editingId) ?? null : null;
   const reclassified: Reclassified | null = editingItem
-    ? editSelectedItemText(workingDraft, editingItem.itemId, editText).reclassified
+    ? editSelectedItemText(draft, editingItem.itemId, editText).reclassified
     : null;
 
   function showToast(message: string) {
@@ -134,7 +153,7 @@ export function SelectionReview({
       showToast("Each keyword must be 1-160 characters after normalization.");
       return;
     }
-    const duplicate = workingDraft.some(
+    const duplicate = draft.some(
       (item) =>
         item.itemId !== editingItem.itemId &&
         item.keyword.toLocaleLowerCase("en-US") === trimmed.toLocaleLowerCase("en-US"),
@@ -143,8 +162,8 @@ export function SelectionReview({
       showToast("That phrase is already selected");
       return;
     }
-    const result = editSelectedItemText(workingDraft, editingItem.itemId, trimmed);
-    setWorkingDraft(result.draft);
+    const result = editSelectedItemText(draft, editingItem.itemId, trimmed);
+    onDraftChange(result.draft);
     closeDialog();
     showToast("Phrase updated");
   }
@@ -153,7 +172,7 @@ export function SelectionReview({
     const lines = parseKeywordLines(manualInput);
     if (!lines.length) return;
     const firstSeed = view.seeds[0] ?? lines[0];
-    let next = workingDraft;
+    let next = draft;
     let added = 0;
     let duplicate = false;
     for (const line of lines) {
@@ -172,7 +191,7 @@ export function SelectionReview({
         duplicate = true;
         continue;
       }
-      next = addManualSelectedItem(next, line, newClientRequestId(), firstSeed);
+      next = addManualSelectedItem(next, line, stableManualItemId(line, next), firstSeed);
       added += 1;
     }
     if (added === 0 && duplicate) {
@@ -180,17 +199,17 @@ export function SelectionReview({
       return;
     }
     if (added === 0) return;
-    setWorkingDraft(next);
+    onDraftChange(next);
     setManualInput("");
     showToast(added === 1 ? "Manual keyword added" : `${added} keywords added`);
   }
 
   function removeItem(itemId: string) {
-    setWorkingDraft(removeSelectedItem(workingDraft, itemId));
+    onDraftChange(removeSelectedItem(draft, itemId));
   }
 
   function keywordById(itemId: string): string {
-    const item = workingDraft.find((entry) => entry.itemId === itemId);
+    const item = draft.find((entry) => entry.itemId === itemId);
     return item ? item.keyword : itemId;
   }
 
@@ -212,7 +231,7 @@ export function SelectionReview({
         <div>
           <h2>Your selection</h2>
           <div className={styles.tableMeta}>
-            {workingDraft.length} of {SELECTION_ITEM_CAP} selected · edited here, saved to the
+            {draft.length} of {SELECTION_ITEM_CAP} selected · edited here, saved to the
             research, and locked by finalize
           </div>
         </div>
@@ -230,7 +249,7 @@ export function SelectionReview({
       {overLimit && (
         <div className={styles.banner} role="alert">
           <span>
-            You&apos;ve selected {workingDraft.length} keywords (over 100). Finalize is blocked
+            You&apos;ve selected {draft.length} keywords (over 100). Finalize is blocked
             until you trim the set to 100 or fewer.
           </span>
         </div>
@@ -246,13 +265,13 @@ export function SelectionReview({
         style={{ flexDirection: "column", alignItems: "stretch" }}
         aria-live="polite"
       >
-        {workingDraft.length === 0 ? (
+        {draft.length === 0 ? (
           <div className={styles.seedEmpty}>
             No keywords selected yet. Select rows from the keyword table or add a manual keyword
             below.
           </div>
         ) : (
-          workingDraft.map((item, index) => (
+          draft.map((item, index) => (
             <div
               key={item.itemId}
               style={{
