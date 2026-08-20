@@ -339,7 +339,7 @@ function summary(): ResearchSummary {
 
 function result(): ResearchResult {
   return {
-    contractVersion: "ki-research-v1",
+    contractVersion: 1,
     researchId: RESEARCH_ID,
     generation: 1,
     configFingerprint: "cfg_0001",
@@ -357,7 +357,7 @@ function minimalView(): ResearchView {
     statusUrl: `/api/keyword-research/${RESEARCH_ID}`,
     state: "completed",
     generation: 1,
-    contractVersion: "ki-research-v1",
+    contractVersion: 1,
     seeds: ["dresses"],
     markets: [market()],
     progress: progress("completed"),
