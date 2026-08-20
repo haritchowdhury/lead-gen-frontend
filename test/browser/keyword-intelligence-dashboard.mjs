@@ -78,6 +78,20 @@ const REQUIRED_BR_IDS = [
   "W5-R07",
 ];
 
+// KI-R5 browser execution registry (R5-BR; S1 §4.2/§5 S015). These seven IDs
+// are the only R5 cases owned by this harness: the real-route wire witness
+// plus the six actual finalization lifecycle cases. Execution is deferred to
+// gate V4; the certificate is emitted when the harness runs.
+const R5_BROWSER_CASES = [
+  "R5-WIRE-04",
+  "R5-FIN-01",
+  "R5-FIN-02",
+  "R5-FIN-03",
+  "R5-FIN-04",
+  "R5-FIN-05",
+  "R5-FIN-06",
+];
+
 function setDigest(members) {
   const sorted = [...members].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
   const bytes = sorted.map((member) => Buffer.from(`${member}\n`, "utf8"));
@@ -281,12 +295,12 @@ function makeCompletedView(researchId, rows, selectionItems, selectionRevision =
     statusUrl: `/api/keyword-research/${researchId}`,
     state: "completed",
     generation: 1,
-    contractVersion: "ki-research-v1",
+    contractVersion: 1,
     seeds: [...seeds],
     markets: markets(),
     progress: progress("completed"),
     result: {
-      contractVersion: "ki-research-v1",
+      contractVersion: 1,
       researchId,
       generation: 1,
       configFingerprint: "cfg_kiw5_001",
@@ -504,6 +518,21 @@ function serializeKeywordsCsv(records) {
   return lines.join("\n") + "\n";
 }
 
+// Literal expected export CSV for the `seed=dresses` filter (R5-EXP-04 /
+// DEC-KI-036). Frozen at authoring time; it never derives from the frontend
+// `getFiltered` helper at runtime, so any drift in the served filter/export
+// diverges from this literal oracle.
+const LITERAL_EXPORT_CSV_SEED_DRESSES = `keyword,seed,source_seeds,search_volume,cpc,competition,competition_level,keyword_difficulty,main_intent,commercial_intent,trend_slope,cluster,cluster_id,lane,facets,variant_group_id,variant_canonical,flags,opportunity_score,recommended,merged_into,monthly_history,available_markets
+dresses transactional keyword 0,dresses,dresses,1000,0.5,0.0,LOW,0,transactional,0.0,-0.004,Dresses,cl_dresses,local_discovery,"{""audience"":[""women""],""category"":[""dresses""],""channel"":[""online""],""fit"":[],""modifier"":[""affordable""]}",vg_0,dresses transactional keyword 0,declining_traffic,0,True,,"[{""year"":2025,""month"":1,""search_volume"":100},{""year"":2025,""month"":2,""search_volume"":107},{""year"":2025,""month"":3,""search_volume"":114},{""year"":2025,""month"":4,""search_volume"":121},{""year"":2025,""month"":5,""search_volume"":128},{""year"":2025,""month"":6,""search_volume"":135},{""year"":2025,""month"":7,""search_volume"":142},{""year"":2025,""month"":8,""search_volume"":149},{""year"":2025,""month"":9,""search_volume"":156},{""year"":2025,""month"":10,""search_volume"":163},{""year"":2025,""month"":11,""search_volume"":170},{""year"":2025,""month"":12,""search_volume"":177},{""year"":2025,""month"":1,""search_volume"":184},{""year"":2025,""month"":2,""search_volume"":191},{""year"":2025,""month"":3,""search_volume"":198}]",US|GB|CA|AU|NZ|DE|FR|IN|AE
+dresses transactional keyword 4,dresses,dresses,2600,1.5,0.28,MEDIUM,52,transactional,0.12,0.0,Dresses,cl_dresses,local_discovery,"{""audience"":[""women""],""category"":[""dresses""],""channel"":[""online""],""fit"":[],""modifier"":[]}",vg_4,dresses transactional keyword 4,informational_dropped,28,False,,"[{""year"":2025,""month"":1,""search_volume"":100},{""year"":2025,""month"":2,""search_volume"":107},{""year"":2025,""month"":3,""search_volume"":114},{""year"":2025,""month"":4,""search_volume"":121},{""year"":2025,""month"":5,""search_volume"":128},{""year"":2025,""month"":6,""search_volume"":135},{""year"":2025,""month"":7,""search_volume"":142},{""year"":2025,""month"":8,""search_volume"":149},{""year"":2025,""month"":9,""search_volume"":156},{""year"":2025,""month"":10,""search_volume"":163},{""year"":2025,""month"":11,""search_volume"":170},{""year"":2025,""month"":12,""search_volume"":177},{""year"":2025,""month"":1,""search_volume"":184},{""year"":2025,""month"":2,""search_volume"":191},{""year"":2025,""month"":3,""search_volume"":198}]",US|GB|CA|AU|NZ|DE|FR|IN|AE
+dresses transactional keyword 8,dresses,dresses,4200,2.5,0.56,HIGH,4,transactional,0.24,0.004,Dresses,cl_dresses,local_discovery,"{""audience"":[""women""],""category"":[""dresses""],""channel"":[""online""],""fit"":[],""modifier"":[]}",vg_8,dresses transactional keyword 8,rising,56,False,,"[{""year"":2025,""month"":1,""search_volume"":100},{""year"":2025,""month"":2,""search_volume"":107},{""year"":2025,""month"":3,""search_volume"":114},{""year"":2025,""month"":4,""search_volume"":121},{""year"":2025,""month"":5,""search_volume"":128},{""year"":2025,""month"":6,""search_volume"":135},{""year"":2025,""month"":7,""search_volume"":142},{""year"":2025,""month"":8,""search_volume"":149},{""year"":2025,""month"":9,""search_volume"":156},{""year"":2025,""month"":10,""search_volume"":163},{""year"":2025,""month"":11,""search_volume"":170},{""year"":2025,""month"":12,""search_volume"":177},{""year"":2025,""month"":1,""search_volume"":184},{""year"":2025,""month"":2,""search_volume"":191},{""year"":2025,""month"":3,""search_volume"":198}]",US|GB|CA|AU|NZ|DE|FR|IN|AE
+dresses transactional keyword 12,dresses,dresses,5800,1.0,0.84,LOW,56,transactional,0.36,-0.001,Dresses,cl_dresses,local_discovery,"{""audience"":[""women""],""category"":[""dresses""],""channel"":[""online""],""fit"":[],""modifier"":[""affordable""]}",vg_12,dresses transactional keyword 12,too_little_traffic,84,True,,"[{""year"":2025,""month"":1,""search_volume"":100},{""year"":2025,""month"":2,""search_volume"":107},{""year"":2025,""month"":3,""search_volume"":114},{""year"":2025,""month"":4,""search_volume"":121},{""year"":2025,""month"":5,""search_volume"":128},{""year"":2025,""month"":6,""search_volume"":135},{""year"":2025,""month"":7,""search_volume"":142},{""year"":2025,""month"":8,""search_volume"":149},{""year"":2025,""month"":9,""search_volume"":156},{""year"":2025,""month"":10,""search_volume"":163},{""year"":2025,""month"":11,""search_volume"":170},{""year"":2025,""month"":12,""search_volume"":177},{""year"":2025,""month"":1,""search_volume"":184},{""year"":2025,""month"":2,""search_volume"":191},{""year"":2025,""month"":3,""search_volume"":198}]",US|GB|CA|AU|NZ|DE|FR|IN|AE
+dresses transactional keyword 16,dresses,dresses,7400,2.0,0.12,MEDIUM,8,transactional,0.48,0.003,Dresses,cl_dresses,local_discovery,"{""audience"":[""women""],""category"":[""dresses""],""channel"":[""online""],""fit"":[],""modifier"":[]}",vg_16,dresses transactional keyword 16,high_opportunity,11,False,,"[{""year"":2025,""month"":1,""search_volume"":100},{""year"":2025,""month"":2,""search_volume"":107},{""year"":2025,""month"":3,""search_volume"":114},{""year"":2025,""month"":4,""search_volume"":121},{""year"":2025,""month"":5,""search_volume"":128},{""year"":2025,""month"":6,""search_volume"":135},{""year"":2025,""month"":7,""search_volume"":142},{""year"":2025,""month"":8,""search_volume"":149},{""year"":2025,""month"":9,""search_volume"":156},{""year"":2025,""month"":10,""search_volume"":163},{""year"":2025,""month"":11,""search_volume"":170},{""year"":2025,""month"":12,""search_volume"":177},{""year"":2025,""month"":1,""search_volume"":184},{""year"":2025,""month"":2,""search_volume"":191},{""year"":2025,""month"":3,""search_volume"":198}]",US|GB|CA|AU|NZ|DE|FR|IN|AE
+dresses transactional keyword 20,dresses,dresses,9000,0.5,0.4,HIGH,60,transactional,0.6,-0.002,Dresses,cl_dresses,local_discovery,"{""audience"":[""women""],""category"":[""dresses""],""channel"":[""online""],""fit"":[],""modifier"":[]}",vg_20,dresses transactional keyword 20,declining_traffic,39,True,,"[{""year"":2025,""month"":1,""search_volume"":100},{""year"":2025,""month"":2,""search_volume"":107},{""year"":2025,""month"":3,""search_volume"":114},{""year"":2025,""month"":4,""search_volume"":121},{""year"":2025,""month"":5,""search_volume"":128},{""year"":2025,""month"":6,""search_volume"":135},{""year"":2025,""month"":7,""search_volume"":142},{""year"":2025,""month"":8,""search_volume"":149},{""year"":2025,""month"":9,""search_volume"":156},{""year"":2025,""month"":10,""search_volume"":163},{""year"":2025,""month"":11,""search_volume"":170},{""year"":2025,""month"":12,""search_volume"":177},{""year"":2025,""month"":1,""search_volume"":184},{""year"":2025,""month"":2,""search_volume"":191},{""year"":2025,""month"":3,""search_volume"":198}]",US|GB|CA|AU|NZ|DE|FR|IN|AE
+dresses transactional keyword 24,dresses,dresses,10600,1.5,0.68,LOW,12,transactional,0.72,0.002,Dresses,cl_dresses,local_discovery,"{""audience"":[""women""],""category"":[""dresses""],""channel"":[""online""],""fit"":[],""modifier"":[""affordable""]}",vg_24,dresses transactional keyword 24,informational_dropped,67,True,,"[{""year"":2025,""month"":1,""search_volume"":100},{""year"":2025,""month"":2,""search_volume"":107},{""year"":2025,""month"":3,""search_volume"":114},{""year"":2025,""month"":4,""search_volume"":121},{""year"":2025,""month"":5,""search_volume"":128},{""year"":2025,""month"":6,""search_volume"":135},{""year"":2025,""month"":7,""search_volume"":142},{""year"":2025,""month"":8,""search_volume"":149},{""year"":2025,""month"":9,""search_volume"":156},{""year"":2025,""month"":10,""search_volume"":163},{""year"":2025,""month"":11,""search_volume"":170},{""year"":2025,""month"":12,""search_volume"":177},{""year"":2025,""month"":1,""search_volume"":184},{""year"":2025,""month"":2,""search_volume"":191},{""year"":2025,""month"":3,""search_volume"":198}]",US|GB|CA|AU|NZ|DE|FR|IN|AE
+dresses transactional keyword 28,dresses,dresses,12200,2.5,0.96,MEDIUM,64,transactional,0.84,-0.003,Dresses,cl_dresses,local_discovery,"{""audience"":[""women""],""category"":[""dresses""],""channel"":[""online""],""fit"":[],""modifier"":[]}",vg_28,dresses transactional keyword 28,rising,95,False,,"[{""year"":2025,""month"":1,""search_volume"":100},{""year"":2025,""month"":2,""search_volume"":107},{""year"":2025,""month"":3,""search_volume"":114},{""year"":2025,""month"":4,""search_volume"":121},{""year"":2025,""month"":5,""search_volume"":128},{""year"":2025,""month"":6,""search_volume"":135},{""year"":2025,""month"":7,""search_volume"":142},{""year"":2025,""month"":8,""search_volume"":149},{""year"":2025,""month"":9,""search_volume"":156},{""year"":2025,""month"":10,""search_volume"":163},{""year"":2025,""month"":11,""search_volume"":170},{""year"":2025,""month"":12,""search_volume"":177},{""year"":2025,""month"":1,""search_volume"":184},{""year"":2025,""month"":2,""search_volume"":191},{""year"":2025,""month"":3,""search_volume"":198}]",US|GB|CA|AU|NZ|DE|FR|IN|AE
+`;
+
 // ---------------------------------------------------------------------------
 // Fixture set (Phase B) + validation
 // ---------------------------------------------------------------------------
@@ -514,11 +543,21 @@ const FAILED_ID = "kr_failedabcdefghijklmnopq";
 const EMPTY_ID = "kr_emptyabcdefghijklmnopq";
 const SCALE_ID = "kr_scaleabcdefghijklmnopq";
 const MISSING_ID = "kr_missingabcdefghijklmn";
+const REORDER_ID = "kr_reorderabcdefghijklmno";
 
 const completedRows = buildCompletedRows(30);
 const completedView = makeCompletedView(COMPLETED_ID, completedRows, [
   selectionItemFor(completedRows[0]),
   selectionItemFor(completedRows[1]),
+]);
+
+// Dedicated reorder fixture (R5-FIN-03): the persisted saved selection order
+// deliberately differs from the toggle-insertion sorted order, so an actual
+// remove-and-readd of a calculated row moves it back to its sorted position
+// and the resulting draft order diverges from the saved order (unsaved).
+const reorderView = makeCompletedView(REORDER_ID, completedRows, [
+  selectionItemFor(completedRows[1]),
+  selectionItemFor(completedRows[0]),
 ]);
 
 const scaleRows = buildCompletedRows(200);
@@ -535,7 +574,7 @@ const failedView = {
   statusUrl: `/api/keyword-research/${FAILED_ID}`,
   state: "failed",
   generation: 1,
-  contractVersion: "ki-research-v1",
+  contractVersion: 1,
   seeds: ["dresses"],
   markets: markets(),
   progress: progress("failed"),
@@ -556,7 +595,7 @@ function runningView(stage) {
     statusUrl: `/api/keyword-research/${POLL_ID}`,
     state: "running",
     generation: 1,
-    contractVersion: "ki-research-v1",
+    contractVersion: 1,
     seeds: ["dresses", "brands"],
     markets: markets(),
     progress: progress(stage),
@@ -586,8 +625,9 @@ const allEnvelopes = {
   [FAILED_ID]: failedView,
   [EMPTY_ID]: emptyView,
   [SCALE_ID]: scaleView,
+  [REORDER_ID]: reorderView,
 };
-for (const view of [completedView, failedView, emptyView, scaleView, queuedView, ...pollSequence]) {
+for (const view of [completedView, failedView, emptyView, scaleView, reorderView, queuedView, ...pollSequence]) {
   parseResearchEnvelope({ research: view });
 }
 const runHandoff = { run: makeRunStatus(), statusUrl: `/keywords/${COMPLETED_ID}` };
@@ -608,6 +648,9 @@ function fixtureInjection(payload) {
       doublePoll: false,
       csvDiverged: false,
       runsDelayMs: 0,
+      passThroughCreate: false,
+      runsFailOnce: null,
+      runsHandoff: null,
     };
     globalThis.__kiFixture = state;
     const digest = (s) => {
@@ -626,14 +669,21 @@ function fixtureInjection(payload) {
       status,
       headers: { "Content-Type": "text/csv; charset=utf-8", "Cache-Control": "no-store" },
     });
-    const record = (method, url, body) => {
+    const record = (method, url, body, init) => {
       const entry = {
         method,
         url: url.pathname + url.search,
         at: Math.round(performance.now()),
         bodyDigest: body ? digest(body) : null,
+        body: body || null,
         clientRequestId: null,
+        contentType: "",
       };
+      if (init && init.headers) {
+        const raw = init.headers;
+        const ct = typeof raw.get === "function" ? raw.get("content-type") : (raw["Content-Type"] || raw["content-type"]);
+        entry.contentType = typeof ct === "string" ? ct : "";
+      }
       if (body) {
         try {
           const parsed = JSON.parse(body);
@@ -641,6 +691,55 @@ function fixtureInjection(payload) {
         } catch {}
       }
       state.requests.push(entry);
+    };
+    const mutationToItem = (m) => {
+      if (m.sourceKind === "calculated") {
+        const row = (PAY.completed.result.keywords || []).find((k) => k.itemId === m.sourceKeywordId);
+        if (!row) return null;
+        return {
+          itemId: row.itemId,
+          sourceKind: "calculated",
+          sourceKeywordId: row.itemId,
+          originalKeyword: row.keyword,
+          keyword: m.keyword || row.keyword,
+          sourceSeeds: [...row.sourceSeeds],
+          lane: row.lane,
+          facets: JSON.parse(JSON.stringify(row.facets)),
+          metricsSnapshot: {
+            searchVolume: row.searchVolume,
+            cpc: row.cpc,
+            competition: row.competition,
+            competitionLevel: row.competitionLevel,
+            keywordDifficulty: row.keywordDifficulty,
+            mainIntent: row.mainIntent,
+            commercialIntent: row.commercialIntent,
+            monthlyHistory: JSON.parse(JSON.stringify(row.monthlyHistory)),
+            trendSlope: row.trendSlope,
+            cluster: row.cluster,
+            clusterId: row.clusterId,
+            variantGroupId: row.variantGroupId,
+            variantCanonical: row.variantCanonical,
+            flags: [...row.flags],
+            opportunityScore: row.opportunityScore,
+            recommended: row.recommended,
+            mergedInto: row.mergedInto,
+            availableMarkets: [...row.availableMarkets],
+            marketMetrics: JSON.parse(JSON.stringify(row.marketMetrics)),
+          },
+        };
+      }
+      const seed = PAY.completed.seeds[0] || m.keyword;
+      return {
+        itemId: "manual_" + m.keyword.toLocaleLowerCase("en-US").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, ""),
+        sourceKind: "manual",
+        sourceKeywordId: null,
+        originalKeyword: m.keyword,
+        keyword: m.keyword,
+        sourceSeeds: [seed],
+        lane: "store_discovery",
+        facets: { audience: [], category: [seed], channel: [], fit: [], modifier: [] },
+        metricsSnapshot: null,
+      };
     };
     const routeKey = (url) => url.pathname.replace(new RegExp("^/api/keyword-research/"), "");
 
@@ -653,9 +752,10 @@ function fixtureInjection(payload) {
         state.requests.push({ method, url: url.href, at: Math.round(performance.now()), passThrough: true });
         return originalFetch(input, init);
       }
-      record(method, url, body);
+      record(method, url, body, init);
 
       if (method === "POST" && url.pathname === "/api/keyword-research") {
+        if (state.passThroughCreate) return originalFetch(input, init);
         return json({ research: PAY.create });
       }
       if (url.pathname.endsWith("/export.csv")) {
@@ -669,19 +769,28 @@ function fixtureInjection(payload) {
         }
         const parsed = JSON.parse(body || "{}");
         const updated = JSON.parse(JSON.stringify(PAY.completed));
-        updated.selection = parsed.items || [];
+        updated.selection = (parsed.items || []).map(mutationToItem).filter((item) => item !== null);
         updated.selectionRevision = (parsed.expectedRevision || 0) + 1;
         updated.updatedAt = "2026-08-19T10:06:00.000Z";
         return json({ research: updated });
       }
       if (method === "POST" && url.pathname.endsWith("/runs")) {
+        if (state.runsFailOnce) {
+          const mode = state.runsFailOnce;
+          state.runsFailOnce = null;
+          if (mode === "network") return Promise.reject(new TypeError("Failed to fetch"));
+          if (mode === "unreadable") return new Response("<html>unreadable</html>", { status: 200, headers: { "Content-Type": "text/html" } });
+          if (mode === "502") return json({ error: { code: "KI_GATEWAY_FAILURE", message: "Bad gateway" } }, 502);
+          if (mode === "504") return json({ error: { code: "KI_GATEWAY_TIMEOUT", message: "Gateway timeout" } }, 504);
+          if (mode === "conflict") return json({ error: { code: "KEYWORD_SELECTION_REVISION_CONFLICT", message: "The run handoff changed on the server." } }, 409);
+        }
         if (state.conflictMode === "handoff") {
           return json({ error: { code: "KEYWORD_SELECTION_REVISION_CONFLICT", message: "The run handoff changed on the server." } }, 409);
         }
         if (state.runsDelayMs > 0) {
           await new Promise((resolve) => setTimeout(resolve, state.runsDelayMs));
         }
-        return json(PAY.handoff);
+        return json(state.runsHandoff || PAY.handoff);
       }
       if (method === "GET") {
         const key = routeKey(url);
@@ -707,7 +816,7 @@ const payload = {
   handoff: runHandoff,
   exportCsvByQuery: {
     "": serializeKeywordsCsv(completedRows),
-    "seed=dresses": serializeKeywordsCsv(getFiltered(completedRows, { ...emptyKeywordFilterState(), seed: "dresses" })),
+    "seed=dresses": LITERAL_EXPORT_CSV_SEED_DRESSES,
     "market=US": serializeKeywordsCsv(getFiltered(completedRows, { ...emptyKeywordFilterState(), market: "US" })),
   },
   exportDivergedCsv: `wrong_column,${EXPORT_CSV_COLUMNS.slice(1).join(",")}\n`,
@@ -875,6 +984,72 @@ const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
 
+// In-page poll helper. Navigation (e.g. the finalize success router.push)
+// replaces the document and its `__kiFixture` state, so request witnesses must
+// be captured inside a single page-context evaluate rather than across
+// navigate boundaries. Resolves with the first truthy (non-false/null)
+// production value; throws on timeout.
+async function waitForInPage(cdp, expression, label, timeout = 20_000) {
+  const value = await evaluate(cdp, `(async () => {
+    const started = Date.now();
+    while (Date.now() - started < ${timeout}) {
+      const result = (${expression});
+      if (result !== null && result !== undefined && result !== false) return result;
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    return null;
+  })()`);
+  if (value === null) throw new Error(`Timed out waiting in page for ${label}`);
+  return value;
+}
+
+// R5-FIN-02/03/04 shared oracle: an unsaved draft must keep the rendered
+// Finalize control disabled and produce zero `/runs` POST.
+async function assertUnsavedZeroPost(cdp) {
+  const gateState = await evaluate(cdp, `(() => {
+    const review = document.querySelector('[data-surface="surface:selection-review"]');
+    if (!review) return null;
+    const finalize = [...review.querySelectorAll('button')].find((n) => n.textContent.includes('Finalize'));
+    return finalize ? { disabled: finalize.disabled, text: finalize.textContent.trim() } : null;
+  })()`);
+  assert(gateState && gateState.disabled === true, `finalize disabled for unsaved draft (${JSON.stringify(gateState)})`);
+  const runsBefore = await evaluate(cdp, "globalThis.__kiFixture.requests.filter(r => r.url.endsWith('/runs')).length");
+  await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:selection-review\"] button')].find(n => n.textContent.includes('Finalize'))");
+  await wait(400);
+  const runsAfter = await evaluate(cdp, "globalThis.__kiFixture.requests.filter(r => r.url.endsWith('/runs')).length");
+  assert(runsAfter === runsBefore, `zero runs POST for unsaved draft (${runsAfter} vs ${runsBefore})`);
+}
+
+// Click the rendered Finalize control and capture the first `/runs` POST it
+// produces, entirely inside one page context so a success-navigation (which
+// replaces the document and its __kiFixture state) cannot race the witness.
+async function clickFinalizeAndCapture(cdp, timeout = 20_000) {
+  const cap = await evaluate(cdp, `(async () => {
+    const review = document.querySelector('[data-surface="surface:selection-review"]');
+    const btn = review ? [...review.querySelectorAll('button')].find((n) => n.textContent.includes('Finalize')) : null;
+    if (!btn) return null;
+    const before = globalThis.__kiFixture.requests.filter((r) => r.url.endsWith('/runs')).length;
+    btn.click();
+    const started = Date.now();
+    while (Date.now() - started < ${timeout}) {
+      const runs = globalThis.__kiFixture.requests.filter((r) => r.url.endsWith('/runs'));
+      if (runs.length > before) {
+        const last = runs[runs.length - 1];
+        return {
+          count: runs.length - before,
+          body: last.body ? JSON.parse(last.body) : null,
+          clientRequestId: last.clientRequestId,
+          bodyDigest: last.bodyDigest,
+        };
+      }
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    return null;
+  })()`);
+  if (!cap) throw new Error("Timed out capturing the finalize runs POST in page");
+  return cap;
+}
+
 async function runScenario(id, fn) {
   try {
     await fn();
@@ -1030,6 +1205,27 @@ try {
     await wait(250);
     const pageInfo = await evaluate(cdp, "[...document.querySelectorAll('[data-surface=\"surface:keyword-table\"] div')].find(n => /Page \\d+ of \\d+/.test(n.textContent))?.textContent || ''");
     assert(pageInfo.includes("Page 2 of"), `pagination advanced (${pageInfo.trim()})`);
+
+    // Superseded oracle: flags AND parity (R5-EXP-01 / DEC-KI-036 every-flag
+    // predicate). The rendered flag checkboxes select the `every` semantic:
+    // the visible table set must exactly equal getFiltered's ordered set for
+    // the same flags. Each fixture row carries exactly one flag, so two
+    // distinct selected flags must yield zero rows; a `some` predicate would
+    // still render rows and diverge from the production predicate.
+    await click(cdp, "document.querySelector('[data-filter=\"reset\"]')");
+    await wait(250);
+    const flagValues = await evaluate(cdp, "[...document.querySelectorAll('[data-filter=\"flags\"] input[type=checkbox]')].map(n => n.value)");
+    assert(flagValues.length >= 2, `flags dataset exposes at least two flags (${JSON.stringify(flagValues)})`);
+    const flagA = flagValues[0];
+    const flagB = flagValues[1];
+    await click(cdp, `document.querySelector('[data-filter="flags"] input[value=${JSON.stringify(flagA)}]')`);
+    await click(cdp, `document.querySelector('[data-filter="flags"] input[value=${JSON.stringify(flagB)}]')`);
+    await wait(250);
+    const uiFlagRows = await evaluate(cdp, "document.querySelectorAll('[data-surface=\"surface:keyword-table\"] tbody tr').length");
+    const predicateFlagRows = getFiltered(completedRows, { ...emptyKeywordFilterState(), flags: [flagA, flagB] }).length;
+    assert(uiFlagRows === predicateFlagRows, `flags AND parity: UI ${uiFlagRows} == getFiltered ${predicateFlagRows} for [${flagA}, ${flagB}]`);
+    await click(cdp, "document.querySelector('[data-filter=\"reset\"]')");
+    await wait(250);
     await capture(cdp, "W5-B02-filters");
   }));
 
@@ -1048,6 +1244,9 @@ try {
     const putRequests = await evaluate(cdp, "globalThis.__kiFixture.requests.filter(r => r.method === 'PUT')");
     assert(putRequests.length === beforeCount + 1, "exactly one save request per action");
     assert(putRequests.every((r) => r.bodyDigest && /^[0-9a-f]{8}$/.test(r.bodyDigest)), "PUT records body digest");
+    // Superseded oracle: mutation headers (R5-WIRE-05 / DEC-KI-034). Every
+    // save PUT must carry an explicit application/json content type.
+    assert(putRequests.every((r) => r.contentType === "application/json"), `PUT carries application/json content type (${JSON.stringify(putRequests.map((r) => r.contentType))})`);
 
     // Conflict: server returns 409 KEYWORD_SELECTION_REVISION_CONFLICT.
     await evaluate(cdp, "globalThis.__kiFixture.conflictMode = 'selection'");
@@ -1087,6 +1286,13 @@ try {
     assert((await evaluate(cdp, "document.body.innerText.includes('Manual keyword added')")) === true, "manual add toast");
     const manualItem = await evaluate(cdp, "(() => { const review = document.querySelector('[data-surface=\"surface:selection-review\"]'); return [...review.querySelectorAll('div')].some(n => n.textContent.includes('Manual') && n.textContent.includes('handmade boutique near me')); })()");
     assert(manualItem === true, "manual badge on item");
+    // Superseded oracle: numeric wire contract + client-only draft key
+    // (R5-WIRE-01 / R5-SEL-02 / DEC-KI-034). The manual draft row carries no
+    // `ksi_` source id and no browser-side ID authority: the client-only
+    // `draft_` key has no wire/durable/identity authority and is never
+    // projected onto the wire.
+    const ksiInDoc = await evaluate(cdp, "document.body.innerText.includes('ksi_')");
+    assert(ksiInDoc === false, "no ksi_ source-id authority rendered in the review");
     await capture(cdp, "W5-B04-dialogs");
   }));
 
@@ -1103,10 +1309,13 @@ try {
     const expectedQuery = buildExportQuery({ ...emptyKeywordFilterState(), seed: "dresses" }).toString();
     assert(href.endsWith(`?${expectedQuery}`) || href.includes(`?${expectedQuery}`), `export href uses buildExportQuery (${href})`);
 
-    // Fetch through the intercepted wrapper.
+    // Fetch through the intercepted wrapper. The expected CSV is a literal
+    // fixture (R5-EXP-04 / DEC-KI-036), never derived at runtime from the
+    // frontend getFiltered helper, so the served export cannot self-generate
+    // its own oracle.
     const servedCsv = await evaluate(cdp, `fetch(${JSON.stringify(href)}).then(r => r.text())`);
-    const expectedCsv = serializeKeywordsCsv(getFiltered(completedRows, { ...emptyKeywordFilterState(), seed: "dresses" }));
-    assert(servedCsv === expectedCsv, "intercepted export CSV equals EXPORT_CSV_COLUMNS + filtered rows");
+    const expectedCsv = LITERAL_EXPORT_CSV_SEED_DRESSES;
+    assert(servedCsv === expectedCsv, "intercepted export CSV equals literal EXPORT_CSV_COLUMNS + filtered rows");
     assert(servedCsv.startsWith(EXPORT_CSV_COLUMNS.join(",") + "\n"), "CSV header equals EXPORT_CSV_COLUMNS");
 
     // Control W5-NC11: diverged CSV columns make the equality oracle throw.
@@ -1381,6 +1590,21 @@ try {
     assert(runsRequests.length === runsBefore + 1, "duplicate finalize click produced only one runs POST");
     const ids = runsRequests.map((r) => r.clientRequestId).filter(Boolean);
     assert(ids.length === 1 && /^[A-Za-z0-9_-]{16,80}$/.test(ids[0]), "runs POST carries one retained clientRequestId matching CLIENT_REQUEST_ID_PATTERN");
+    // Let the in-flight handoff resolve (runsDelayMs was 800) so the definitive
+    // success state is observed before the retry-presentation check.
+    await wait(900);
+    // Superseded oracle: retry-required presentation (R5-FIN-01 /
+    // DEC-KI-035). A definitive 200 handoff must NOT render the ambiguous
+    // retry notice or its Retry control.
+    const retryPresentation = await evaluate(cdp, `(() => {
+      const review = document.querySelector('[data-surface="surface:selection-review"]');
+      return {
+        notice: document.body.innerText.includes("The run request didn't complete. Retry the same run."),
+        retryButton: review ? [...review.querySelectorAll('button')].some((n) => n.textContent.trim() === 'Retry') : false,
+      };
+    })()`);
+    assert(retryPresentation.notice === false && retryPresentation.retryButton === false,
+      `definitive success renders no retry-required presentation (${JSON.stringify(retryPresentation)})`);
     await evaluate(cdp, "globalThis.__kiFixture.runsDelayMs = 0");
     await capture(cdp, "W5-R03-conflict-finalize");
   }));
@@ -1491,24 +1715,456 @@ try {
     assert(notFound.status === 404, `generic 404 (got ${notFound.status})`);
   }));
 
+  // ---- R5-WIRE-04 real Next pre-auth route witness ----
+  results.push(await runScenario("R5-WIRE-04", async () => {
+    // Real route boundary (Node-side, no interception): a JSON create request
+    // reaches the unauthenticated 401 branch, never the pre-auth 415 branch.
+    const createProbe = await (async () => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 15_000);
+      try {
+        const res = await fetch(`${baseUrl}/api/keyword-research`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({ seeds: ["dresses"] }),
+          signal: controller.signal,
+        });
+        let payload = null;
+        try { payload = await res.json(); } catch {}
+        return { status: res.status, payload };
+      } finally {
+        clearTimeout(timer);
+      }
+    })();
+    assert(createProbe.status === 401, `real JSON create -> 401 (got ${createProbe.status})`);
+    assert(createProbe.payload?.error?.code === "AUTHENTICATION_REQUIRED", "401 create envelope code AUTHENTICATION_REQUIRED");
+    const nonJsonProbe = await fetch(`${baseUrl}/api/keyword-research`, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: "not-json",
+    });
+    assert(nonJsonProbe.status === 415, `non-JSON create -> 415 (got ${nonJsonProbe.status})`);
+
+    // Actual emitted client create request with fixture interception disabled
+    // for this one call. Exactly one real request must leave the page carrying
+    // the JSON content type; the emitted route answers 401 (never 415) and the
+    // form renders its auth-required surface.
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords`);
+    await waitFor(cdp, "document.querySelector('#seed-phrase-form')", "research form");
+    await evaluate(cdp, "globalThis.__kiFixture.passThroughCreate = true");
+    await setInputValue(cdp, 'input[aria-label="Seed phrase"]', "dresses");
+    await click(cdp, "[...document.querySelectorAll('#seed-phrase-form button')].find(n => n.textContent.includes('Add'))");
+    await waitFor(cdp, "document.querySelector('#seed-chip-count')?.textContent.includes('1/5')", "seed chip added");
+    await click(cdp, "document.querySelector('#seed-phrase-form button[type=submit]')");
+    await waitFor(cdp, "document.body.innerText.includes('You need to sign in to start keyword research.')", "auth-required banner");
+    const createRequests = await evaluate(cdp, "globalThis.__kiFixture.requests.filter(r => r.method === 'POST' && r.url === '/api/keyword-research')");
+    assert(createRequests.length === 1, `exactly one real create request (got ${createRequests.length})`);
+    assert(createRequests[0].contentType === "application/json", `real create request carries application/json (got ${createRequests[0].contentType})`);
+    assert(createRequests[0].bodyDigest && /^[0-9a-f]{8}$/.test(createRequests[0].bodyDigest), "real create request records a body digest");
+    await evaluate(cdp, "globalThis.__kiFixture.passThroughCreate = false");
+    await capture(cdp, "R5-WIRE-04-real-route");
+  }));
+
+  // ---- R5-FIN-01 completed saved draft: one finalize POST + navigation ----
+  results.push(await runScenario("R5-FIN-01", async () => {
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('2 of 200 selected')", "saved 2-item draft");
+    // Route the handoff to a distinct statusUrl so the router-push navigation
+    // is observable without depending on the current page's own path.
+    await evaluate(cdp, `(() => {
+      const handoff = JSON.parse(${JSON.stringify(JSON.stringify(runHandoff))});
+      handoff.statusUrl = "/keywords/ki-r5-fin-nav-witness";
+      globalThis.__kiFixture.runsHandoff = handoff;
+    })()`);
+    const fin = await clickFinalizeAndCapture(cdp);
+    assert(fin.count === 1, `exactly one runs POST (${fin.count})`);
+    assert(fin.body && fin.body.expectedSelectionRevision === 1, `runs POST carries the current saved revision 1 (${JSON.stringify(fin.body)})`);
+    assert(fin.clientRequestId && /^[A-Za-z0-9_-]{16,80}$/.test(fin.clientRequestId), `runs POST carries one generated clientRequestId (${fin.clientRequestId})`);
+    await waitFor(cdp, "location.pathname === '/keywords/ki-r5-fin-nav-witness'", "finalize navigation witness");
+    await capture(cdp, "R5-FIN-01-finalize");
+  }));
+
+  // ---- R5-FIN-02 saved draft then add/remove: unsaved, zero POST ----
+  results.push(await runScenario("R5-FIN-02", async () => {
+    // Partition 1: table add without save.
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:keyword-table\"] tbody tr input[type=checkbox]')", "row checkbox");
+    await click(cdp, "document.querySelector('[data-surface=\"surface:keyword-table\"] tbody tr input[type=checkbox]')");
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('3 of 200 selected')", "dirty 3-item draft");
+    await assertUnsavedZeroPost(cdp);
+
+    // Partition 2: review remove without save.
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('2 of 200 selected')", "saved 2-item draft");
+    await click(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"] button[aria-label^=\"Remove \"]')");
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('1 of 200 selected')", "dirty 1-item draft");
+    await assertUnsavedZeroPost(cdp);
+    await capture(cdp, "R5-FIN-02-unsaved");
+  }));
+
+  // ---- R5-FIN-03 saved draft then edit/reorder/manual add: unsaved, zero POST ----
+  results.push(await runScenario("R5-FIN-03", async () => {
+    // Partition 1: rendered edit dialog.
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"] button[aria-label^=\"Update \"]')", "edit control");
+    await click(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"] button[aria-label^=\"Update \"]')");
+    await waitFor(cdp, "document.querySelector('[role=dialog]')", "edit dialog");
+    await setInputValue(cdp, "[aria-label='Edited keyword']", "edited dresses online");
+    await click(cdp, "[...document.querySelectorAll('[role=dialog] button')].find(n => n.textContent.includes('Save keyword'))");
+    await waitFor(cdp, "document.body.innerText.includes('edited dresses online')", "edited item text");
+    await assertUnsavedZeroPost(cdp);
+
+    // Partition 2: actual remove-and-readd of a calculated row (the UI's real
+    // reorder path). The reorder fixture's persisted order is deliberately
+    // unsorted; the re-added row moves back to its toggle-sorted position, so
+    // the draft order diverges from the saved order (unsaved, zero POST).
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${REORDER_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"] button[aria-label^=\"Remove \"]')", "remove control");
+    await click(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"] button[aria-label^=\"Remove \"]')");
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('1 of 200 selected')", "draft after remove");
+    const recheck = await evaluate(cdp, `(() => {
+      const rows = [...document.querySelectorAll('[data-surface="surface:keyword-table"] tbody tr')];
+      const row = rows.find((tr) => /keyword 1\\D/.test(tr.innerText));
+      const box = row && row.querySelector('input[type=checkbox]');
+      if (!box) return false;
+      box.click();
+      return true;
+    })()`);
+    assert(recheck === true, "re-added the removed calculated row");
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('2 of 200 selected')", "reordered draft");
+    await assertUnsavedZeroPost(cdp);
+
+    // Partition 3: manual-input/Add controls.
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('input[aria-label=\"Manual keyword\"]')", "manual input");
+    await setInputValue(cdp, 'input[aria-label="Manual keyword"]', "handmade boutique near me");
+    await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:selection-review\"] button')].find(n => n.textContent.includes('Add'))");
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('3 of 200 selected')", "manual 3-item draft");
+    await assertUnsavedZeroPost(cdp);
+    await capture(cdp, "R5-FIN-03-unsaved");
+  }));
+
+  // ---- R5-FIN-04 dirty draft -> successful save -> one finalize POST at the
+  // incremented revision ----
+  results.push(await runScenario("R5-FIN-04", async () => {
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('input[aria-label=\"Manual keyword\"]')", "manual input");
+    await setInputValue(cdp, 'input[aria-label="Manual keyword"]', "handmade boutique near me");
+    await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:selection-review\"] button')].find(n => n.textContent.includes('Add'))");
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('3 of 200 selected')", "dirty 3-item draft");
+
+    const putWitness = await waitForInPage(cdp, `(() => {
+      const puts = globalThis.__kiFixture.requests.filter((r) => r.method === 'PUT' && r.url.endsWith('/selection'));
+      if (!puts.length) return false;
+      const last = puts[puts.length - 1];
+      return { count: puts.length, body: last.body ? JSON.parse(last.body) : null, contentType: last.contentType };
+    })()`, "save PUT captured");
+    assert(putWitness.count === 1, `exactly one save PUT (${putWitness.count})`);
+    assert(putWitness.body.expectedRevision === 1, `save PUT carries expectedRevision 1 (${putWitness.body.expectedRevision})`);
+    assert(putWitness.body.items.length === 3, `save PUT carries the 3-item mutation projection (${putWitness.body.items.length})`);
+    assert(putWitness.body.items.filter((i) => i.sourceKind === "manual").length === 1, "save PUT includes the manual mutation");
+    assert(putWitness.body.items.every((i) => Object.keys(i).sort().join(",") === (i.sourceKind === "calculated" ? "keyword,sourceKeywordId,sourceKind" : "keyword,sourceKind")), "PUT items are strict minimal union members");
+    assert(putWitness.contentType === "application/json", `save PUT carries application/json (${putWitness.contentType})`);
+
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('3 of 200 selected')", "saved 3-item draft");
+    // The save response replaces view/draft at the incremented revision only
+    // once it has been processed; the finalize gate flips from unsaved-disabled
+    // to saved-enabled at that moment. Wait for that transition before
+    // finalizing so the single runs POST carries revision 2.
+    await waitFor(cdp, "[...document.querySelectorAll('[data-surface=\"surface:selection-review\"] button')].find(n => n.textContent.includes('Finalize'))?.disabled === false", "finalize enabled after save");
+    const fin = await clickFinalizeAndCapture(cdp);
+    assert(fin.count === 1, `exactly one runs POST after save (${fin.count})`);
+    assert(fin.body && fin.body.expectedSelectionRevision === 2, `runs POST carries the incremented revision 2 (${JSON.stringify(fin.body)})`);
+    await capture(cdp, "R5-FIN-04-save-finalize");
+  }));
+
+  // ---- R5-FIN-05 ambiguous outcomes: retry-required, controls locked, byte-
+  // equal retry (network, unreadable, 502, 504) ----
+  results.push(await runScenario("R5-FIN-05", async () => {
+    for (const mode of ["network", "unreadable", "502", "504"]) {
+      await setViewport(cdp, 1440, 900);
+      await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+      await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('2 of 200 selected')", "saved 2-item draft");
+      const witness = await evaluate(cdp, `(async () => {
+        const started = Date.now();
+        const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        const runsPosts = () => globalThis.__kiFixture.requests.filter((r) => r.url.endsWith('/runs'));
+        globalThis.__kiFixture.runsFailOnce = ${JSON.stringify(mode)};
+        const review = document.querySelector('[data-surface="surface:selection-review"]');
+        const finalize = review ? [...review.querySelectorAll('button')].find((n) => n.textContent.includes('Finalize')) : null;
+        if (!finalize) return null;
+        finalize.click();
+        let post1 = null;
+        while (Date.now() - started < 20000) {
+          const posts = runsPosts();
+          if (posts.length >= 1) { post1 = posts[posts.length - 1]; break; }
+          await wait(10);
+        }
+        if (!post1) return null;
+        let retrySeen = false;
+        while (Date.now() - started < 20000) {
+          const reviewNow = document.querySelector('[data-surface="surface:selection-review"]');
+          if (reviewNow && [...reviewNow.querySelectorAll('button')].some((n) => n.textContent.trim() === 'Retry')) { retrySeen = true; break; }
+          await wait(50);
+        }
+        if (!retrySeen) return null;
+        const retryPresentation = (() => {
+          const reviewNow = document.querySelector('[data-surface="surface:selection-review"]');
+          const saveBtn = reviewNow ? [...reviewNow.querySelectorAll('button')].find((n) => n.textContent.includes('Save selection')) : null;
+          const finalizeBtn = reviewNow ? [...reviewNow.querySelectorAll('button')].find((n) => n.textContent.includes('Finalize')) : null;
+          return {
+            notice: document.body.innerText.includes("The run request didn't complete. Retry the same run."),
+            retryButton: reviewNow ? [...reviewNow.querySelectorAll('button')].some((n) => n.textContent.trim() === 'Retry') : false,
+            manualAddDisabled: reviewNow ? (document.querySelector('input[aria-label="Manual keyword"]')?.disabled ?? false) : false,
+            saveDisabled: saveBtn ? saveBtn.disabled : null,
+            finalizeDisabled: finalizeBtn ? finalizeBtn.disabled : null,
+          };
+        })();
+        const retryBtn = [...document.querySelectorAll('[data-surface="surface:selection-review"] button')].find((n) => n.textContent.trim() === 'Retry');
+        if (!retryBtn) return null;
+        retryBtn.click();
+        let post2 = null;
+        while (Date.now() - started < 20000) {
+          const posts = runsPosts();
+          if (posts.length >= 2) { post2 = posts[posts.length - 1]; break; }
+          await wait(10);
+        }
+        if (!post2) return null;
+        return {
+          post1: { body: post1.body ? JSON.parse(post1.body) : null, bodyDigest: post1.bodyDigest, clientRequestId: post1.clientRequestId },
+          post2: { body: post2.body ? JSON.parse(post2.body) : null, bodyDigest: post2.bodyDigest, clientRequestId: post2.clientRequestId },
+          retryPresentation,
+        };
+      })()`);
+      assert(witness !== null, `FIN-05 ${mode}: full retry flow completed in page`);
+      assert(witness.retryPresentation.notice === true, `FIN-05 ${mode}: retry notice rendered`);
+      assert(witness.retryPresentation.retryButton === true, `FIN-05 ${mode}: Retry button rendered`);
+      assert(witness.retryPresentation.manualAddDisabled === true, `FIN-05 ${mode}: manual add input disabled`);
+      assert(witness.retryPresentation.saveDisabled === true, `FIN-05 ${mode}: save control disabled`);
+      assert(witness.retryPresentation.finalizeDisabled === true, `FIN-05 ${mode}: finalize control disabled`);
+      assert(witness.post1.clientRequestId === witness.post2.clientRequestId, `FIN-05 ${mode}: retry reuses the retained clientRequestId`);
+      assert(witness.post1.bodyDigest === witness.post2.bodyDigest, `FIN-05 ${mode}: retry POST body is byte-identical`);
+      assert(witness.post1.body.expectedSelectionRevision === witness.post2.body.expectedSelectionRevision, `FIN-05 ${mode}: retry keeps the same revision`);
+      await capture(cdp, `R5-FIN-05-${mode}`);
+    }
+  }));
+
+  // ---- R5-FIN-06 definitive parsed 409: stale UI, attempt cleared, no
+  // automatic retry/run ----
+  results.push(await runScenario("R5-FIN-06", async () => {
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('2 of 200 selected')", "saved 2-item draft");
+    await evaluate(cdp, "globalThis.__kiFixture.runsFailOnce = 'conflict'");
+    const fin = await clickFinalizeAndCapture(cdp);
+    assert(fin.count === 1, `exactly one runs POST before definitive 409 (${fin.count})`);
+    await waitFor(cdp, "document.body.innerText.includes('changed on the server')", "stale banner");
+    await wait(600);
+    const after = await evaluate(cdp, "globalThis.__kiFixture.requests.filter(r => r.url.endsWith('/runs')).length");
+    assert(after === 1, "no automatic retry/run after definitive 409");
+    const retryState = await evaluate(cdp, `(() => {
+      const review = document.querySelector('[data-surface="surface:selection-review"]');
+      return {
+        notice: document.body.innerText.includes("The run request didn't complete. Retry the same run."),
+        retryButton: review ? [...review.querySelectorAll('button')].some((n) => n.textContent.trim() === 'Retry') : false,
+      };
+    })()`);
+    assert(retryState.notice === false && retryState.retryButton === false, "definitive 409 clears the attempt (no retry-required presentation)");
+    await capture(cdp, "R5-FIN-06-definitive-409");
+  }));
+
+  // ---- R5-NC-05 unsaved-handoff falsification ----
+  results.push(await runScenario("R5-NC-05", async () => {
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:keyword-table\"] tbody tr input[type=checkbox]')", "row checkbox");
+    await click(cdp, "document.querySelector('[data-surface=\"surface:keyword-table\"] tbody tr input[type=checkbox]')");
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('3 of 200 selected')", "dirty draft");
+    // Pass: fresh dirty actual trace has zero runs POST.
+    const dirtyTrace = await evaluate(cdp, "globalThis.__kiFixture.requests.map((r) => ({ method: r.method, url: r.url }))");
+    assert(dirtyTrace.filter((r) => r.url.endsWith('/runs')).length === 0, "NC-05 pass: fresh dirty trace has zero runs POST");
+    // Mutate a copied trace by appending one synthetic handoff POST.
+    const corrupted = dirtyTrace.concat([{ method: "POST", url: "/api/keyword-research/kr_x/runs" }]);
+    let nc05Threw = false;
+    try {
+      if (corrupted.filter((r) => r.url.endsWith('/runs')).length !== 0) throw new Error("R5_UNSAVED_HANDOFF_FORBIDDEN");
+    } catch (err) {
+      if (err.message === "R5_UNSAVED_HANDOFF_FORBIDDEN") nc05Threw = true;
+    }
+    assert(nc05Threw === true, "NC-05: synthetic handoff POST on copied dirty trace throws R5_UNSAVED_HANDOFF_FORBIDDEN");
+    // Restore: fresh dirty actual trace passes again.
+    const freshRuns = await evaluate(cdp, "globalThis.__kiFixture.requests.filter(r => r.url.endsWith('/runs')).length");
+    assert(freshRuns === 0, "NC-05 restore: fresh dirty trace passes");
+  }));
+
+  // ---- R5-NC-06 ambiguous-retry identity falsification ----
+  results.push(await runScenario("R5-NC-06", async () => {
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('2 of 200 selected')", "saved 2-item draft");
+    const trace = await evaluate(cdp, `(async () => {
+      const started = Date.now();
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      const runsPosts = () => globalThis.__kiFixture.requests.filter((r) => r.url.endsWith('/runs'));
+      globalThis.__kiFixture.runsFailOnce = 'network';
+      const review = document.querySelector('[data-surface="surface:selection-review"]');
+      const finalize = review ? [...review.querySelectorAll('button')].find((n) => n.textContent.includes('Finalize')) : null;
+      if (!finalize) return null;
+      finalize.click();
+      let post1 = null;
+      while (Date.now() - started < 20000) {
+        const posts = runsPosts();
+        if (posts.length >= 1) { post1 = posts[posts.length - 1]; break; }
+        await wait(10);
+      }
+      if (!post1) return null;
+      let retrySeen = false;
+      while (Date.now() - started < 20000) {
+        const reviewNow = document.querySelector('[data-surface="surface:selection-review"]');
+        if (reviewNow && [...reviewNow.querySelectorAll('button')].some((n) => n.textContent.trim() === 'Retry')) { retrySeen = true; break; }
+        await wait(50);
+      }
+      if (!retrySeen) return null;
+      const retryBtn = [...document.querySelectorAll('[data-surface="surface:selection-review"] button')].find((n) => n.textContent.trim() === 'Retry');
+      if (!retryBtn) return null;
+      retryBtn.click();
+      let post2 = null;
+      while (Date.now() - started < 20000) {
+        const posts = runsPosts();
+        if (posts.length >= 2) { post2 = posts[posts.length - 1]; break; }
+        await wait(10);
+      }
+      if (!post2) return null;
+      return {
+        post1: { body: post1.body ? JSON.parse(post1.body) : null, bodyDigest: post1.bodyDigest, clientRequestId: post1.clientRequestId },
+        post2: { body: post2.body ? JSON.parse(post2.body) : null, bodyDigest: post2.bodyDigest, clientRequestId: post2.clientRequestId },
+      };
+    })()`);
+    assert(trace !== null, "NC-06: captured a fresh actual ambiguous two-POST retry");
+    assert(trace.post2.bodyDigest === trace.post1.bodyDigest && trace.post2.clientRequestId === trace.post1.clientRequestId, "NC-06 pass: fresh actual retry is byte-equal");
+
+    const assertIdentityOracle = (posts) => {
+      const [first, second] = posts;
+      if (!first || !second) throw new Error("R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED");
+      if (second.bodyDigest !== first.bodyDigest) throw new Error("R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED");
+      if (second.clientRequestId !== first.clientRequestId) throw new Error("R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED");
+    };
+    // Mutation 1: replace only the retry request ID in a copied trace.
+    const idMutated = [
+      { bodyDigest: trace.post1.bodyDigest, clientRequestId: trace.post1.clientRequestId },
+      { bodyDigest: trace.post2.bodyDigest, clientRequestId: "mutated-retry-id-000000000000000" },
+    ];
+    let nc06IdThrew = false;
+    try {
+      assertIdentityOracle(idMutated);
+    } catch (err) {
+      if (err.message === "R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED") nc06IdThrew = true;
+    }
+    assert(nc06IdThrew === true, "NC-06: replaced retry ID throws R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED");
+    // Mutation 2: replace only the retry revision in a copied trace.
+    const revMutated = [
+      trace.post1,
+      { ...trace.post2, bodyDigest: "deadbeef" },
+    ];
+    let nc06RevThrew = false;
+    try {
+      assertIdentityOracle(revMutated);
+    } catch (err) {
+      if (err.message === "R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED") nc06RevThrew = true;
+    }
+    assert(nc06RevThrew === true, "NC-06: replaced retry revision throws R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED");
+    // Restore: the fresh actual pair passes the same oracle.
+    assertIdentityOracle([
+      { bodyDigest: trace.post1.bodyDigest, clientRequestId: trace.post1.clientRequestId },
+      { bodyDigest: trace.post2.bodyDigest, clientRequestId: trace.post2.clientRequestId },
+    ]);
+  }));
+
+  // ---- R5-NC-11 substitute-fidelity falsification ----
+  results.push(await runScenario("R5-NC-11", async () => {
+    // Pass phase: the real-route witness exists (R5-WIRE-04 reached 401).
+    const witnessValid = await (async () => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 15_000);
+      try {
+        const res = await fetch(`${baseUrl}/api/keyword-research`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({ seeds: ["dresses"] }),
+          signal: controller.signal,
+        });
+        return { status: res.status };
+      } finally {
+        clearTimeout(timer);
+      }
+    })();
+    const substituteValidator = (record) => {
+      if (!record || record.realNextRouteWitness !== true) throw new Error("R5_REAL_NEXT_ROUTE_WITNESS_MISSING");
+      if (record.status !== 401 || record.status === 415) throw new Error("R5_REAL_NEXT_ROUTE_WITNESS_MISSING");
+      return true;
+    };
+    assert(substituteValidator({ realNextRouteWitness: true, status: 401 }) === true, "NC-11 pass: emitted real-Next activation record is present");
+    // Mutation: supply only an intercepted fixture-success record without the
+    // emitted real-Next request activation record/status.
+    let nc11Threw = false;
+    try {
+      substituteValidator({ realNextRouteWitness: false, status: 200 });
+    } catch (err) {
+      if (err.message === "R5_REAL_NEXT_ROUTE_WITNESS_MISSING") nc11Threw = true;
+    }
+    assert(nc11Threw === true, "NC-11: fixture-success-only evidence throws R5_REAL_NEXT_ROUTE_WITNESS_MISSING");
+    // Restore: the fresh pass-through reaches 401 and never 415.
+    assert(witnessValid.status === 401, `NC-11 restore: fresh pass-through reaches 401 (${witnessValid.status})`);
+  }));
+
   executed = results.map((r) => r.id);
   const failures = results.filter((r) => !r.ok).map((r) => r.id);
 
   const allB = REQUIRED_BR_IDS.filter((id) => id.startsWith("W5-B")).every((id) => results.find((r) => r.id === id)?.ok);
   const allR = REQUIRED_BR_IDS.filter((id) => id.startsWith("W5-R")).every((id) => results.find((r) => r.id === id)?.ok);
 
+  const w5Executed = results.filter((r) => REQUIRED_BR_IDS.includes(r.id)).map((r) => r.id);
+  const w5Failures = results.filter((r) => REQUIRED_BR_IDS.includes(r.id) && !r.ok).map((r) => r.id);
+
   certificate = {
     file: "keyword-intelligence-dashboard.mjs",
     required: REQUIRED_BR_IDS,
     registered: REQUIRED_BR_IDS,
-    executed,
+    executed: w5Executed,
     skipped: [],
-    oracleFailures: failures,
+    oracleFailures: w5Failures,
     requiredDigest: setDigest(REQUIRED_BR_IDS),
     registeredDigest: setDigest(REQUIRED_BR_IDS),
-    executedDigest: setDigest(executed),
+    executedDigest: setDigest(w5Executed),
     scenarios: { "SCN-KI-016": allB, "SCN-KI-017": allR },
   };
+
+  // KI-R5 browser execution certificate (seven-ID registry "browser";
+  // S1 §5 S015 step 7). Emitted when the harness runs at V4 with all seven
+  // actual activation witnesses and zero skip.
+  const r5Failures = results.filter((r) => R5_BROWSER_CASES.includes(r.id) && !r.ok).map((r) => r.id);
+  const r5Sorted = [...R5_BROWSER_CASES].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+  const r5Executed = R5_BROWSER_CASES.filter((id) => results.find((r) => r.id === id)?.ok).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+  assert(r5Executed.length === R5_BROWSER_CASES.length, `all seven R5 browser cases executed (failures: ${JSON.stringify(r5Failures)})`);
+  const r5Digest = setDigest(r5Sorted);
+  console.log(`KI_R5_EXECUTION_CERTIFICATE=${JSON.stringify({
+    registry: "browser",
+    required: r5Sorted,
+    registered: r5Sorted,
+    executed: r5Executed,
+    skipped: [],
+    activationWitnesses: r5Executed,
+    oracleFailures: r5Failures,
+    digests: { required: r5Digest, registered: r5Digest, executed: setDigest(r5Executed) },
+  })}`);
 
   // Network allowlist assertion (app-origin only, zero CDN).
   const appUrls = networkUrls.filter((url) => !/^(about:|data:|blob:|chrome-extension:)/u.test(url));
