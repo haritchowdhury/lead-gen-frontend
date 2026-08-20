@@ -9,6 +9,7 @@ import type {
   ResearchSummary,
   ResearchView,
   SelectionItem,
+  SelectionMutationItem,
 } from "./keyword-intelligence-types.ts";
 
 export type KeywordFilterState = {
@@ -187,12 +188,10 @@ function haystack(r: KeywordRow): string {
     r.keyword,
     r.seed,
     r.cluster,
-    r.mainIntent,
     (r.sourceSeeds || []).join(" "),
     r.lane,
     Object.keys(r.facets || {}).reduce((acc, k) => acc.concat((r.facets as Record<string, string[]>)[k] || []), [] as string[]).join(" "),
     (r.flags || []).join(" "),
-    r.recommended ? "recommended" : "",
   ].join(" ").toLowerCase();
 }
 
@@ -212,7 +211,7 @@ export function getFiltered(rows: KeywordRow[], filter: KeywordFilterState): Key
     if (filter.minOpportunity > 0 && (r.opportunityScore == null || r.opportunityScore < filter.minOpportunity)) return false;
     if (filter.recommended === "true" && !r.recommended) return false;
     if (filter.recommended === "false" && r.recommended) return false;
-    if (filter.flags.length && !filter.flags.some((fl) => (r.flags || []).indexOf(fl) !== -1)) return false;
+    if (filter.flags.length && !filter.flags.every((fl) => (r.flags || []).indexOf(fl) !== -1)) return false;
     if (q && haystack(r).indexOf(q) === -1) return false;
     return true;
   });
@@ -643,13 +642,35 @@ export function selectionOverLimit(draft: SelectionItem[]): boolean {
   return draft.length > SELECTION_SOFT_LIMIT;
 }
 
+function selectionSaveProjection(items: SelectionItem[]): SelectionMutationItem[] {
+  return items.map((item) => {
+    if (item.sourceKind === "calculated") {
+      if (typeof item.sourceKeywordId !== "string" || item.sourceKeywordId.length === 0)
+        throw new Error("calculated selection item requires a source id");
+      return { sourceKind: "calculated", sourceKeywordId: item.sourceKeywordId, keyword: item.keyword };
+    }
+    return { sourceKind: "manual", keyword: item.keyword };
+  });
+}
+
 export function canFinalizeSelection(
   view: ResearchView,
   draft: SelectionItem[],
-): { ok: boolean; reason: "" | "not_completed" | "empty" | "over_limit" | "conflicts" } {
+): { ok: boolean; reason: "" | "not_completed" | "empty" | "over_limit" | "unsaved" | "conflicts" } {
   if (view.state !== "completed") return { ok: false, reason: "not_completed" };
   if (draft.length === 0) return { ok: false, reason: "empty" };
   if (draft.length > SELECTION_SOFT_LIMIT) return { ok: false, reason: "over_limit" };
+  const saved = selectionSaveProjection(view.selection.items);
+  const proposed = selectionSaveProjection(draft);
+  if (saved.length !== proposed.length) return { ok: false, reason: "unsaved" };
+  for (let i = 0; i < saved.length; i += 1) {
+    const a = saved[i];
+    const b = proposed[i];
+    if (a.sourceKind !== b.sourceKind) return { ok: false, reason: "unsaved" };
+    if (a.sourceKind === "calculated" && b.sourceKind === "calculated" && a.sourceKeywordId !== b.sourceKeywordId)
+      return { ok: false, reason: "unsaved" };
+    if (a.keyword !== b.keyword) return { ok: false, reason: "unsaved" };
+  }
   if (view.selectionConflicts.length > 0) return { ok: false, reason: "conflicts" };
   return { ok: true, reason: "" };
 }
