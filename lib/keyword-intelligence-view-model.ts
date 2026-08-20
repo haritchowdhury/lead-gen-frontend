@@ -660,7 +660,7 @@ export function canFinalizeSelection(
   if (view.state !== "completed") return { ok: false, reason: "not_completed" };
   if (draft.length === 0) return { ok: false, reason: "empty" };
   if (draft.length > SELECTION_SOFT_LIMIT) return { ok: false, reason: "over_limit" };
-  const saved = selectionSaveProjection(view.selection.items);
+  const saved = selectionSaveProjection(view.selection);
   const proposed = selectionSaveProjection(draft);
   if (saved.length !== proposed.length) return { ok: false, reason: "unsaved" };
   for (let i = 0; i < saved.length; i += 1) {
