@@ -137,9 +137,61 @@
       "id": "W5-R07",
       "ok": true,
       "error": null
+    },
+    {
+      "id": "R5-WIRE-04",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R5-FIN-01",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R5-FIN-02",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R5-FIN-03",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R5-FIN-04",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R5-FIN-05",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R5-FIN-06",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R5-NC-05",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R5-NC-06",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R5-NC-11",
+      "ok": true,
+      "error": null
     }
   ],
-  "consoleErrors": [],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+  ],
   "exceptionThrown": [],
   "nonAppNetworkUrls": [],
   "cdnNetworkUrls": []
