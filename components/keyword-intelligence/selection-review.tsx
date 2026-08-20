@@ -31,7 +31,8 @@ type SelectionReviewProps = {
   staleConflict: boolean;
   onSave: () => void;
   onFinalize: () => void;
-  finalizeState: "idle" | "handing-off";
+  finalizeState: "idle" | "handing-off" | "succeeded" | "definitive_failure" | "retry_required";
+  onRetryHandoff: () => void;
   onDraftChange: (draft: SelectionItem[]) => void;
 };
 
@@ -52,31 +53,6 @@ function parseKeywordLines(value: string): string[] {
     result.push(collapsed);
   }
   return result;
-}
-
-const MANUAL_ID_LANES = [0x811c9dc5, 0x9e3779b9, 0x85ebca6b] as const;
-
-function manualItemDigest(text: string, salt: number): string {
-  const input = `${salt}\n${text}`;
-  let out = "";
-  for (const seed of MANUAL_ID_LANES) {
-    let hash = seed;
-    for (let index = 0; index < input.length; index += 1) {
-      hash = Math.imul(hash ^ input.charCodeAt(index), 0x01000193) >>> 0;
-    }
-    out += hash.toString(16).padStart(8, "0").slice(0, 4);
-  }
-  return out;
-}
-
-function stableManualItemId(text: string, draft: SelectionItem[]): string {
-  let salt = 0;
-  let id = `ksi_${manualItemDigest(text, salt)}`;
-  while (draft.some((item) => item.itemId === id)) {
-    salt += 1;
-    id = `ksi_${manualItemDigest(text, salt)}`;
-  }
-  return id;
 }
 
 function facetChips(facets: KeywordFacets): string[] {
@@ -106,6 +82,7 @@ export function SelectionReview({
   onSave,
   onFinalize,
   finalizeState,
+  onRetryHandoff,
   onDraftChange,
 }: SelectionReviewProps) {
   const [manualInput, setManualInput] = useState("");
@@ -113,6 +90,7 @@ export function SelectionReview({
   const [editText, setEditText] = useState("");
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const manualKeyCounter = useRef(0);
 
   useEffect(() => {
     return () => {
@@ -122,6 +100,10 @@ export function SelectionReview({
 
   const gate = canFinalizeSelection(view, draft);
   const overLimit = selectionOverLimit(draft);
+  const controlsInert =
+    finalizeState === "handing-off" ||
+    finalizeState === "retry_required" ||
+    finalizeState === "succeeded";
 
   const editingItem =
     editingId !== null ? draft.find((item) => item.itemId === editingId) ?? null : null;
@@ -191,7 +173,12 @@ export function SelectionReview({
         duplicate = true;
         continue;
       }
-      next = addManualSelectedItem(next, line, stableManualItemId(line, next), firstSeed);
+      let itemId = "";
+      do {
+        manualKeyCounter.current += 1;
+        itemId = `draft_${manualKeyCounter.current}`;
+      } while (next.some((item) => item.itemId === itemId));
+      next = addManualSelectedItem(next, line, itemId, firstSeed);
       added += 1;
     }
     if (added === 0 && duplicate) {
@@ -306,6 +293,7 @@ export function SelectionReview({
                     title={`Update ${item.keyword}`}
                     aria-label={`Update ${item.keyword}`}
                     onClick={() => beginPhraseEdit(item)}
+                    disabled={controlsInert}
                   >
                     ✎
                   </button>
@@ -316,6 +304,7 @@ export function SelectionReview({
                   title={`Remove ${item.keyword}`}
                   aria-label={`Remove ${item.keyword}`}
                   onClick={() => removeItem(item.itemId)}
+                  disabled={controlsInert}
                 >
                   ×
                 </button>
@@ -343,8 +332,9 @@ export function SelectionReview({
           }}
           placeholder="Add a manual keyword…"
           aria-label="Manual keyword"
+          disabled={controlsInert}
         />
-        <button className={styles.btn} type="button" onClick={addManualKeywords}>
+        <button className={styles.btn} type="button" onClick={addManualKeywords} disabled={controlsInert}>
           ＋ Add
         </button>
       </div>
@@ -387,7 +377,7 @@ export function SelectionReview({
           <button
             className={styles.btn}
             type="button"
-            disabled={saving || staleConflict}
+            disabled={saving || staleConflict || controlsInert}
             aria-busy={saving}
             onClick={onSave}
           >
@@ -396,7 +386,7 @@ export function SelectionReview({
           <button
             className={`${styles.btn} ${styles.primary}`}
             type="button"
-            disabled={!gate.ok || saving || staleConflict || finalizeState === "handing-off"}
+            disabled={!gate.ok || saving || staleConflict || controlsInert}
             aria-busy={finalizeState === "handing-off"}
             title={!gate.ok ? gateHint : undefined}
             onClick={onFinalize}
@@ -404,6 +394,14 @@ export function SelectionReview({
             {finalizeState === "handing-off" ? "Handing off…" : "Finalize & start run →"}
           </button>
         </div>
+        {finalizeState === "retry_required" && (
+          <div className={styles.banner} role="alert">
+            <span>The run request didn&apos;t complete. Retry the same run.</span>
+            <button className={styles.btn} type="button" onClick={onRetryHandoff}>
+              Retry
+            </button>
+          </div>
+        )}
         {!gate.ok && gateHint && (
           <div className={styles.tableMeta}>{gateHint}</div>
         )}
