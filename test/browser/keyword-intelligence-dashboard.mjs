@@ -1221,7 +1221,7 @@ try {
     await click(cdp, `document.querySelector('[data-filter="flags"] input[value=${JSON.stringify(flagA)}]')`);
     await click(cdp, `document.querySelector('[data-filter="flags"] input[value=${JSON.stringify(flagB)}]')`);
     await wait(250);
-    const uiFlagRows = await evaluate(cdp, "document.querySelectorAll('[data-surface=\"surface:keyword-table\"] tbody tr').length");
+    const uiFlagRows = await evaluate(cdp, "document.querySelectorAll('[data-surface=\"surface:keyword-table\"] tbody tr input[type=checkbox]').length");
     const predicateFlagRows = getFiltered(completedRows, { ...emptyKeywordFilterState(), flags: [flagA, flagB] }).length;
     assert(uiFlagRows === predicateFlagRows, `flags AND parity: UI ${uiFlagRows} == getFiltered ${predicateFlagRows} for [${flagA}, ${flagB}]`);
     await click(cdp, "document.querySelector('[data-filter=\"reset\"]')");
@@ -1828,6 +1828,8 @@ try {
     await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"] button[aria-label^=\"Remove \"]')", "remove control");
     await click(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"] button[aria-label^=\"Remove \"]')");
     await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('1 of 200 selected')", "draft after remove");
+    await setSelectValue(cdp, '[data-surface="surface:keyword-table"] select', '50');
+    await wait(250);
     const recheck = await evaluate(cdp, `(() => {
       const rows = [...document.querySelectorAll('[data-surface="surface:keyword-table"] tbody tr')];
       const row = rows.find((tr) => /keyword 1\\D/.test(tr.innerText));
