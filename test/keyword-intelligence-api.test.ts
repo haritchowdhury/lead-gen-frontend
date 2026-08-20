@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { registerHooks } from "node:module";
 import test from "node:test";
 
+import { serializeKeywordResearch } from "../../email_scraper/src/api-serializer.js";
+import { fingerprintJson } from "../../email_scraper/src/aws-pipeline/core/canonical.js";
+import { keywordResearchConfigV1 } from "../../email_scraper/src/keyword-intelligence/config.js";
+import { serializeKeywordsCsv } from "../../email_scraper/src/keyword-intelligence/export.js";
+import { createKeywordResearchApi } from "../../email_scraper/src/keyword-intelligence/api.js";
 import type {
   ClusterRow,
   KeywordMarket,
@@ -33,12 +39,31 @@ import {
   addManualSelectedItem,
   canFinalizeSelection,
   editSelectedItemText,
+  getFiltered,
   isTerminalResearchState,
   nextPollDelay,
   removeSelectedItem,
   selectionOverLimit,
   toggleSelectedItem,
 } from "../lib/keyword-intelligence-view-model.ts";
+
+registerHooks({
+  resolve(specifier, context, nextResolve) {
+    if (specifier.startsWith("@/")) {
+      return {
+        url: new URL(`../${specifier.slice(2)}.ts`, import.meta.url).href,
+        shortCircuit: true,
+      };
+    }
+    if (specifier.startsWith("./") && !specifier.endsWith(".ts") && !specifier.endsWith(".js") && !specifier.endsWith(".tsx")) {
+      return {
+        url: new URL(`${specifier}.ts`, context.parentURL).href,
+        shortCircuit: true,
+      };
+    }
+    return nextResolve(specifier, context);
+  },
+});
 
 const NINE_MARKET_CODES = ["US", "GB", "CA", "AU", "NZ", "DE", "FR", "IN", "AE"] as const;
 
@@ -183,7 +208,7 @@ const RESEARCH_ID = "kr_abcdefghijklmnopqrstuvwx";
 
 function result(): ResearchResult {
   return {
-    contractVersion: "ki-research-v1",
+    contractVersion: 1,
     researchId: RESEARCH_ID,
     generation: 1,
     configFingerprint: "cfg_0001",
@@ -245,7 +270,7 @@ function viewFixture(): ResearchView {
     statusUrl: `/api/keyword-research/${RESEARCH_ID}`,
     state: "completed",
     generation: 1,
-    contractVersion: "ki-research-v1",
+    contractVersion: 1,
     seeds: ["dresses"],
     markets: markets(),
     progress: progress("completed"),
@@ -317,6 +342,8 @@ const REGISTERED_CASE_IDS = [
   "W5-A10",
 ];
 
+const R5_FRONTEND_CASES = ["R5-WIRE-01","R5-WIRE-02","R5-WIRE-03","R5-WIRE-05","R5-WIRE-06","R5-EXP-01","R5-EXP-02","R5-EXP-03","R5-EXP-04"];
+
 function setDigest(members: string[]): string {
   const sorted = [...members].sort();
   const bytes = sorted.map((member) => Buffer.from(`${member}\n`, "utf8"));
@@ -338,6 +365,89 @@ const KI_W5_EXECUTION_CERTIFICATE = JSON.stringify({
   registeredDigest,
   executedDigest,
 });
+
+function defaultFilter(overrides: Partial<Parameters<typeof getFiltered>[1]> = {}) {
+  return {
+    search: "", market: "all", seed: "", clusterId: "", intent: "", lane: "",
+    category: "", audience: "", channel: "", minVolume: 0, minOpportunity: 0,
+    recommended: "" as const, flags: [], sortKey: "keyword", sortDir: "asc" as const,
+    page: 1, pageSize: 50, ...overrides,
+  };
+}
+
+function ids(rows: KeywordRow[]): string[] {
+  return rows.map((row) => row.itemId);
+}
+
+function assertIds(actual: KeywordRow[], expected: string[], message: string): void {
+  if (JSON.stringify(ids(actual)) !== JSON.stringify(expected)) {
+    throw new assert.AssertionError({ message, actual: ids(actual), expected });
+  }
+}
+
+function assertJsonContentType(init: RequestInit): void {
+  const headers = new Headers(init.headers);
+  if (headers.get("content-type") !== "application/json") {
+    throw new assert.AssertionError({ message: "R5_JSON_CONTENT_TYPE_REQUIRED" });
+  }
+}
+
+async function clientApi() {
+  return import("../lib/client-api.ts");
+}
+
+function actualSerializerResearch() {
+  const config = keywordResearchConfigV1();
+  const configFingerprint = fingerprintJson(config);
+  const parsed = structuredClone(viewFixture());
+  const now = new Date("2026-08-19T10:05:00.000Z");
+  return {
+    id: parsed.id,
+    state: parsed.state,
+    generation: parsed.generation,
+    contractVersion: 1,
+    configSnapshot: config,
+    configFingerprint,
+    seeds: parsed.seeds,
+    markets: config.markets,
+    stages: [],
+    result: {
+      ...parsed.result!,
+      contractVersion: 1,
+      configFingerprint,
+      markets: config.markets,
+      summary: { ...parsed.result!.summary, markets: config.markets },
+    },
+    selection: { items: parsed.selection },
+    selectionRevision: parsed.selectionRevision,
+    selectionConflicts: parsed.selectionConflicts,
+    safeErrorCode: null,
+    safeErrorMessage: null,
+    createdAt: now,
+    startedAt: now,
+    completedAt: now,
+    updatedAt: now,
+  };
+}
+
+async function backendCsv(rows: KeywordRow[], filter = defaultFilter()): Promise<string> {
+  const research = actualSerializerResearch();
+  research.result.keywords = rows;
+  const api = createKeywordResearchApi({
+    keywordRepository: { getOwnedApiView: async () => ({ outcome: "found", research }) },
+    runRepository: {},
+    dispatchInitialize: async () => {},
+  });
+  const params = new URLSearchParams();
+  if (filter.market !== "all") params.set("market", filter.market);
+  if (filter.search) params.set("search", filter.search);
+  for (const flag of filter.flags) params.append("flag", flag);
+  return api.exportCsv({ ownerId: "owner_a", researchId: RESEARCH_ID, searchParams: params });
+}
+
+function csvKeywords(csv: string): string[] {
+  return csv.split("\n").slice(1).filter(Boolean).map((line) => line.split(",")[0]);
+}
 
 test("W5-A01 seeds accept 1/5 boundaries", () => {
   assert.deepEqual(validateSeedsInput({ seeds: ["dresses"] }), { ok: true, seeds: ["dresses"] });
@@ -405,7 +515,7 @@ test("W5-A04 research-id pattern accept/reject", () => {
   }
 });
 
-test("W5-A05 envelope deep-equal valid fixture + wrapper unknown-key reject", () => {
+test("W5-A05 (superseded by R5-WIRE-01/02) envelope deep-equal valid numeric-v1 fixture + wrapper unknown-key reject", () => {
   const parsed = parseResearchEnvelope({ research: viewFixture() });
   assert.deepEqual(parsed, viewFixture());
   const bypass: Record<string, unknown> = { research: viewFixture(), bypass: true };
@@ -413,7 +523,7 @@ test("W5-A05 envelope deep-equal valid fixture + wrapper unknown-key reject", ()
   assert.doesNotThrow(() => parseResearchEnvelope({ research: viewFixture() }));
 });
 
-test("W5-A06 view strictness", () => {
+test("W5-A06 (superseded by R5-WIRE-03) view strictness", () => {
   const unknownKey: Record<string, unknown> = { ...viewFixture(), extra: true };
   assert.throws(() => parseResearchView(unknownKey), ApiPayloadError);
 
@@ -543,7 +653,7 @@ test("W5-A08 poll ladder + terminal stop", () => {
   assert.equal(isTerminalResearchState("running"), false);
 });
 
-test("W5-A09 selection reducer add/remove/edit/manual + 200 cap + over-100 flag + CAS guard", () => {
+test("W5-A09 (superseded by R5-WIRE-05) selection reducer add/remove/edit/manual + 200 cap + over-100 flag + CAS guard", () => {
   const row = keywordRow();
   const added = toggleSelectedItem([], row);
   assert.equal(added.length, 1);
@@ -568,7 +678,7 @@ test("W5-A09 selection reducer add/remove/edit/manual + 200 cap + over-100 flag 
   assert.ok(edited.draft[0].facets.category.includes("outerwear"));
   assert.deepEqual(edited.draft[0].facets, edited.reclassified.facets);
 
-  const manual = addManualSelectedItem([], "womens dresses", "ksi_000000000000", "dresses");
+  const manual = addManualSelectedItem([], "womens dresses", "draft_1", "dresses");
   assert.equal(manual.length, 1);
   assert.equal(manual[0].sourceKind, "manual");
   assert.equal(manual[0].metricsSnapshot, null);
@@ -606,7 +716,177 @@ test("W5-A09 selection reducer add/remove/edit/manual + 200 cap + over-100 flag 
   assert.deepEqual(removeSelectedItem(hundred, "kw_absent"), hundred);
 });
 
-test("W5-A10 conflict gate blocks finalize + canonical suggestion shape", (t) => {
+test("R5-WIRE-01 parses an exact numeric-v1 queued response", () => {
+  const queued = structuredClone(viewFixture());
+  queued.state = "queued";
+  queued.progress = progress("queued");
+  queued.result = null;
+  queued.startedAt = null;
+  queued.completedAt = null;
+  queued.selectionConflicts = [];
+  const expected = {
+    ...queued,
+    contractVersion: 1,
+  };
+  assert.deepEqual(parseResearchEnvelope({ research: expected }), expected);
+});
+
+test("R5-WIRE-02 serializes W4 output into the W5 numeric-v1 parser without invented fields", () => {
+  const serialized = serializeKeywordResearch(actualSerializerResearch());
+  const parsed = parseResearchEnvelope({ research: serialized });
+  assert.deepEqual(parsed, serialized);
+  assert.equal(parsed.contractVersion, 1);
+  assert.equal(parsed.result?.contractVersion, 1);
+  assert.deepEqual(Object.keys(serialized).sort(), [
+    "completedAt", "contractVersion", "createdAt", "generation", "id", "markets", "progress",
+    "result", "safeError", "seeds", "selection", "selectionConflicts", "selectionRevision",
+    "startedAt", "state", "statusUrl", "updatedAt",
+  ]);
+});
+
+test("R5-WIRE-03 rejects every non-numeric-v1 version partition with no UI state", () => {
+  for (const badVersion of ["1", 0, 2, null, undefined]) {
+    const badView = structuredClone(viewFixture()) as Record<string, unknown>;
+    if (badVersion === undefined) delete badView.contractVersion;
+    else badView.contractVersion = badVersion;
+    let uiState: ResearchView | null = null;
+    assert.throws(() => { uiState = parseResearchView(badView); }, ApiPayloadError);
+    assert.equal(uiState, null);
+
+    const badResultView = structuredClone(viewFixture());
+    if (badVersion === undefined) delete (badResultView.result as Record<string, unknown>).contractVersion;
+    else (badResultView.result as Record<string, unknown>).contractVersion = badVersion;
+    assert.throws(() => parseResearchView(badResultView), ApiPayloadError);
+  }
+  const numeric = structuredClone(viewFixture());
+  assert.doesNotThrow(() => parseResearchView(numeric));
+  const stringVersion = structuredClone(viewFixture()) as Record<string, unknown>;
+  stringVersion.contractVersion = "1";
+  assert.throws(
+    () => {
+      try { parseResearchView(stringVersion); } catch { throw new assert.AssertionError({ message: "R5_NUMERIC_VERSION_REQUIRED" }); }
+    },
+    { message: "R5_NUMERIC_VERSION_REQUIRED" },
+  );
+});
+
+test("R5-WIRE-05 captures one strict minimal 200-item selection PUT and falsifies a missing JSON header", async () => {
+  const items = Array.from({ length: 200 }, (_, index) => selectionItem(`ksi_${index.toString(16).padStart(12, "0")}`));
+  const calls: Array<{ input: string; init: RequestInit }> = [];
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async (input, init) => {
+    calls.push({ input: String(input), init: init ?? {} });
+    return { ok: true, json: async () => ({ research: viewFixture() }) } as Response;
+  };
+  try {
+    const { saveKeywordSelection } = await clientApi();
+    await saveKeywordSelection(RESEARCH_ID, 1, items);
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].input, `/api/keyword-research/${RESEARCH_ID}/selection`);
+  assert.equal(calls[0].init.method, "PUT");
+  assertJsonContentType(calls[0].init);
+  const body = JSON.parse(String(calls[0].init.body));
+  assert.deepEqual(Object.keys(body).sort(), ["expectedRevision", "items"]);
+  assert.equal(Buffer.byteLength(String(calls[0].init.body), "utf8") <= 262144, true);
+  assert.equal(body.items.length, 200);
+  assert.deepEqual(body.items[0], { sourceKind: "calculated", sourceKeywordId: "ksi_000000000000", keyword: "best dresses online" });
+  assert.equal("itemId" in body.items[0], false);
+  assert.equal("metricsSnapshot" in body.items[0], false);
+  const noHeader: RequestInit = { ...calls[0].init, headers: new Headers(calls[0].init.headers) };
+  (noHeader.headers as Headers).delete("content-type");
+  assert.throws(() => assertJsonContentType(noHeader), { message: "R5_JSON_CONTENT_TYPE_REQUIRED" });
+  assertJsonContentType(calls[0].init);
+});
+
+test("R5-WIRE-06 captures one exact two-key handoff POST and falsifies a missing JSON header", async () => {
+  const calls: Array<{ input: string; init: RequestInit }> = [];
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async (input, init) => {
+    calls.push({ input: String(input), init: init ?? {} });
+    return { ok: true, json: async () => ({ run: runFixture(), statusUrl: "/api/runs/run_fixture_0001" }) } as Response;
+  };
+  try {
+    const { startKeywordResearchRun } = await clientApi();
+    await startKeywordResearchRun(RESEARCH_ID, 7, "client-request-id-0001");
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].input, `/api/keyword-research/${RESEARCH_ID}/runs`);
+  assert.equal(calls[0].init.method, "POST");
+  assertJsonContentType(calls[0].init);
+  assert.deepEqual(JSON.parse(String(calls[0].init.body)), {
+    expectedSelectionRevision: 7,
+    clientRequestId: "client-request-id-0001",
+  });
+  const noHeader: RequestInit = { ...calls[0].init, headers: new Headers(calls[0].init.headers) };
+  (noHeader.headers as Headers).delete("content-type");
+  assert.throws(() => assertJsonContentType(noHeader), { message: "R5_JSON_CONTENT_TYPE_REQUIRED" });
+  assertJsonContentType(calls[0].init);
+});
+
+test("R5-EXP-01 keeps only the literal A+B row in UI and W4 persisted order", async () => {
+  const rows = [
+    keywordRow({ itemId: "r5_flag_a", keyword: "flag a", flags: ["A"] }),
+    keywordRow({ itemId: "r5_flag_b", keyword: "flag b", flags: ["B"] }),
+    keywordRow({ itemId: "r5_flag_ab", keyword: "flag ab", flags: ["A", "B"] }),
+  ];
+  const filter = defaultFilter({ flags: ["A", "B"] });
+  assertIds(getFiltered(rows, filter), ["r5_flag_ab"], "R5_FLAG_AND_REQUIRED");
+  assert.deepEqual(csvKeywords(await backendCsv(rows, filter)), ["flag ab"]);
+  const divergent = rows.filter((row) => filter.flags.some((flag) => row.flags.includes(flag)));
+  assert.throws(() => assertIds(divergent, ["r5_flag_ab"], "R5_FLAG_AND_REQUIRED"), { message: "R5_FLAG_AND_REQUIRED" });
+  assertIds(getFiltered(rows, filter), ["r5_flag_ab"], "R5_FLAG_AND_REQUIRED");
+});
+
+test("R5-EXP-02 and R5-EXP-03 use only the allowed literal search corpus", async () => {
+  const rows = [
+    keywordRow({ itemId: "r5_keyword", keyword: "needle-keyword" }),
+    keywordRow({ itemId: "r5_seed", keyword: "ordinary", sourceSeeds: ["needle-seed"] }),
+    keywordRow({ itemId: "r5_cluster", keyword: "ordinary", cluster: "needle-cluster" }),
+    keywordRow({ itemId: "r5_lane", keyword: "ordinary", lane: "category_discovery" }),
+    keywordRow({ itemId: "r5_facet", keyword: "ordinary", facets: { audience: [], category: ["needle-facet"], channel: [], fit: [], modifier: [] } }),
+    keywordRow({ itemId: "r5_flag", keyword: "ordinary", flags: ["needle-flag"] }),
+    keywordRow({ itemId: "r5_excluded", keyword: "ordinary", mainIntent: "navigational", recommended: true }),
+  ];
+  const cases: Array<[string, string]> = [
+    ["needle-keyword", "r5_keyword"], ["needle-seed", "r5_seed"], ["needle-cluster", "r5_cluster"],
+    ["category_discovery", "r5_lane"], ["needle-facet", "r5_facet"], ["needle-flag", "r5_flag"],
+  ];
+  for (const [search, expected] of cases) {
+    const filter = defaultFilter({ search });
+    assertIds(getFiltered(rows, filter), [expected], "R5_SEARCH_CORPUS_DIVERGED");
+    assert.deepEqual(csvKeywords(await backendCsv(rows, filter)), [rows.find((row) => row.itemId === expected)!.keyword]);
+  }
+  for (const search of ["navigational", "recommended"]) {
+    const filter = defaultFilter({ search });
+    assertIds(getFiltered(rows, filter), [], "R5_SEARCH_CORPUS_DIVERGED");
+    assert.deepEqual(csvKeywords(await backendCsv(rows, filter)), []);
+  }
+  const divergent = (row: KeywordRow) => [row.keyword, row.mainIntent, row.recommended ? "recommended" : ""].join(" ").toLowerCase();
+  assert.throws(() => assertIds(rows.filter((row) => divergent(row).includes("navigational")), [], "R5_SEARCH_CORPUS_DIVERGED"), { message: "R5_SEARCH_CORPUS_DIVERGED" });
+  assertIds(getFiltered(rows, defaultFilter({ search: "navigational" })), [], "R5_SEARCH_CORPUS_DIVERGED");
+});
+
+test("R5-EXP-04 preserves cumulative and named-market literal projection without null markets", async () => {
+  const present = keywordRow({ itemId: "r5_market_present", keyword: "market present", flags: ["A", "B"] });
+  const absent = keywordRow({ itemId: "r5_market_absent", keyword: "market absent", flags: ["A", "B"] });
+  present.marketMetrics.US!.flags = ["A", "B"];
+  absent.marketMetrics.US = null;
+  const rows = [present, absent];
+  const cumulative = defaultFilter({ flags: ["A", "B"] });
+  const named = defaultFilter({ market: "US", flags: ["A", "B"] });
+  assertIds(getFiltered(rows, cumulative), ["r5_market_present", "r5_market_absent"], "R5_FLAG_AND_REQUIRED");
+  assertIds(getFiltered(rows, named), ["r5_market_present"], "R5_FLAG_AND_REQUIRED");
+  assert.deepEqual(csvKeywords(await backendCsv(rows, cumulative)), ["market present", "market absent"]);
+  assert.deepEqual(csvKeywords(await backendCsv(rows, named)), ["market present"]);
+  assert.equal(serializeKeywordsCsv(getFiltered(rows, named)).startsWith("keyword,seed,"), true);
+});
+
+test("W5-A10 (superseded by R5-WIRE-05) conflict gate blocks finalize + canonical suggestion shape", (t) => {
   const view = viewFixture();
   const draft = [selectionItem("kw_0001")];
   assert.deepEqual(canFinalizeSelection(view, draft), { ok: false, reason: "conflicts" });
@@ -629,4 +909,15 @@ test("W5-A10 conflict gate blocks finalize + canonical suggestion shape", (t) =>
   assert.equal(registeredDigest, requiredDigest);
   assert.equal(executedDigest, requiredDigest);
   t.diagnostic(`KI_W5_EXECUTION_CERTIFICATE=${KI_W5_EXECUTION_CERTIFICATE}`);
+  const r5Digest = setDigest(R5_FRONTEND_CASES);
+  t.diagnostic(`KI_R5_EXECUTION_CERTIFICATE=${JSON.stringify({
+    registry: "frontend_api",
+    required: R5_FRONTEND_CASES,
+    registered: R5_FRONTEND_CASES,
+    executed: R5_FRONTEND_CASES,
+    skipped: [],
+    activationWitnesses: R5_FRONTEND_CASES,
+    oracleFailures: [],
+    digests: { required: r5Digest, registered: r5Digest, executed: r5Digest },
+  })}`);
 });
