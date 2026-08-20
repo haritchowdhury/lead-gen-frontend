@@ -1,7 +1,7 @@
 import type { ApiErrorPayload } from "@/lib/api-types";
 import { isApiErrorPayload } from "@/lib/api-validation";
 import { parseResearchEnvelope, parseRunHandoffEnvelope } from "./keyword-intelligence-validation";
-import type { KeywordResearchRunResponse, ResearchView, SelectionItem } from "./keyword-intelligence-types";
+import type { KeywordResearchRunResponse, ResearchView, SelectionItem, SelectionMutationItem } from "./keyword-intelligence-types";
 
 export class ApiRequestError extends Error {
   status: number;
@@ -53,10 +53,21 @@ export function errorMessage(error: unknown): string {
   return "Something went wrong. Please try again.";
 }
 
+function toSelectionMutation(items: SelectionItem[]): SelectionMutationItem[] {
+  return items.map((item) => {
+    if (item.sourceKind === "calculated") {
+      if (typeof item.sourceKeywordId !== "string" || item.sourceKeywordId.length === 0)
+        throw new Error("calculated selection item requires a source id");
+      return { sourceKind: "calculated", sourceKeywordId: item.sourceKeywordId, keyword: item.keyword };
+    }
+    return { sourceKind: "manual", keyword: item.keyword };
+  });
+}
+
 export async function createKeywordResearch(seeds: string[]): Promise<ResearchView> {
   return apiRequest<ResearchView>(
     "/api/keyword-research",
-    { method: "POST", body: JSON.stringify({ seeds }) },
+    { method: "POST", body: JSON.stringify({ seeds }), headers: { "Content-Type": "application/json" } },
     parseResearchEnvelope,
   );
 }
@@ -76,7 +87,11 @@ export async function saveKeywordSelection(
 ): Promise<ResearchView> {
   return apiRequest<ResearchView>(
     `/api/keyword-research/${encodeURIComponent(researchId)}/selection`,
-    { method: "PUT", body: JSON.stringify({ expectedRevision, items }) },
+    {
+      method: "PUT",
+      body: JSON.stringify({ expectedRevision, items: toSelectionMutation(items) }),
+      headers: { "Content-Type": "application/json" },
+    },
     parseResearchEnvelope,
   );
 }
@@ -91,6 +106,7 @@ export async function startKeywordResearchRun(
     {
       method: "POST",
       body: JSON.stringify({ expectedSelectionRevision, clientRequestId }),
+      headers: { "Content-Type": "application/json" },
     },
     parseRunHandoffEnvelope,
   );
