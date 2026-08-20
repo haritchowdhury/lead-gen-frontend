@@ -1860,6 +1860,10 @@ try {
     await setInputValue(cdp, 'input[aria-label="Manual keyword"]', "handmade boutique near me");
     await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:selection-review\"] button')].find(n => n.textContent.includes('Add'))");
     await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('3 of 200 selected')", "dirty 3-item draft");
+    // Architect-authorized correction (KI-R5-C003): the dirty draft must be
+    // saved before the save-PUT witness can fire. Save once via the rendered
+    // control, then observe the single PUT at the current revision.
+    await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:selection-review\"] button')].find(n => n.textContent.includes('Save selection'))");
 
     const putWitness = await waitForInPage(cdp, `(() => {
       const puts = globalThis.__kiFixture.requests.filter((r) => r.method === 'PUT' && r.url.endsWith('/selection'));
