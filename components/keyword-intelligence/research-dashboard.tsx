@@ -73,7 +73,9 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
   const [saving, setSaving] = useState(false);
   const [staleConflict, setStaleConflict] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [finalizeState, setFinalizeState] = useState<"idle" | "handing-off">("idle");
+  const [finalizeState, setFinalizeState] = useState<
+    "idle" | "handing-off" | "succeeded" | "definitive_failure" | "retry_required"
+  >("idle");
 
   const clientRequestIdRef = useRef<string | null>(null);
   const lastRevisionRef = useRef<number | null>(null);
@@ -238,7 +240,15 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
   }
 
   async function handleFinalize() {
-    if (!view || view.state !== "completed" || finalizeState === "handing-off") return;
+    if (
+      !view ||
+      view.state !== "completed" ||
+      finalizeState === "handing-off" ||
+      finalizeState === "succeeded" ||
+      finalizeState === "retry_required"
+    ) {
+      return;
+    }
     const gate = canFinalizeSelection(view, draft);
     if (!gate.ok) return;
     if (clientRequestIdRef.current === null) {
@@ -252,14 +262,53 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
         view.selectionRevision,
         clientRequestIdRef.current,
       );
+      setFinalizeState("succeeded");
       router.push(handoff.statusUrl);
     } catch (err) {
-      setFinalizeState("idle");
-      clientRequestIdRef.current = null;
-      if (err instanceof ApiRequestError && err.status === 409) {
-        setStaleConflict(true);
+      if (err instanceof ApiRequestError && err.status < 500) {
+        clientRequestIdRef.current = null;
+        setFinalizeState("definitive_failure");
+        if (err.status === 409) {
+          setStaleConflict(true);
+        } else {
+          setSaveError(errorMessage(err));
+        }
       } else {
-        setSaveError(errorMessage(err));
+        setFinalizeState("retry_required");
+      }
+    }
+  }
+
+  async function handleRetryHandoff() {
+    if (
+      !view ||
+      view.state !== "completed" ||
+      finalizeState !== "retry_required" ||
+      clientRequestIdRef.current === null
+    ) {
+      return;
+    }
+    setFinalizeState("handing-off");
+    setSaveError(null);
+    try {
+      const handoff = await startKeywordResearchRun(
+        researchId,
+        view.selectionRevision,
+        clientRequestIdRef.current,
+      );
+      setFinalizeState("succeeded");
+      router.push(handoff.statusUrl);
+    } catch (err) {
+      if (err instanceof ApiRequestError && err.status < 500) {
+        clientRequestIdRef.current = null;
+        setFinalizeState("definitive_failure");
+        if (err.status === 409) {
+          setStaleConflict(true);
+        } else {
+          setSaveError(errorMessage(err));
+        }
+      } else {
+        setFinalizeState("retry_required");
       }
     }
   }
@@ -461,6 +510,7 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
               onSave={handleSave}
               onFinalize={handleFinalize}
               finalizeState={finalizeState}
+              onRetryHandoff={handleRetryHandoff}
               onDraftChange={handleDraftChange}
             />
           </div>
