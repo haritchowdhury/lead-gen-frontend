@@ -173,7 +173,7 @@ export type ResearchProgressStage =
   | "failed";
 
 export type ResearchResult = {
-  contractVersion: string;
+  contractVersion: 1;
   researchId: string;
   generation: number;
   configFingerprint: string;
@@ -212,7 +212,7 @@ export type ResearchView = {
   statusUrl: string;
   state: ResearchState;
   generation: number;
-  contractVersion: string;
+  contractVersion: 1;
   seeds: string[];
   markets: KeywordMarket[];
   progress: ResearchProgress;
@@ -268,3 +268,7 @@ export type VariantGroup = {
   volume: number;
   sourceSeeds: string[];
 };
+
+export type CalculatedSelectionMutation = { sourceKind: "calculated"; sourceKeywordId: string; keyword: string };
+export type ManualSelectionMutation = { sourceKind: "manual"; keyword: string };
+export type SelectionMutationItem = CalculatedSelectionMutation | ManualSelectionMutation;
