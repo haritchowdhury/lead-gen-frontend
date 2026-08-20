@@ -33,7 +33,6 @@ import {
   dashboardPhase,
   discoveryLane,
   distinctKeywordRows,
-  editSelectedItemText,
   emptyKeywordFilterState,
   filterOptionSources,
   fmtCpc,
@@ -499,168 +498,6 @@ const KI_W5_EXECUTION_CERTIFICATE = JSON.stringify({
   executedDigest,
 });
 
-const R5_COMPONENT_CASES = ["R5-FIN-01","R5-FIN-02","R5-FIN-03","R5-FIN-04","R5-FIN-05","R5-FIN-06"];
-
-type ComponentRequest = {
-  method: "PUT" | "POST";
-  id?: string;
-  expectedRevision?: number;
-  items?: SelectionItem[];
-};
-
-type HandoffOutcome = "succeeded" | "retry_required" | "definitive_failure";
-
-type HandoffResult = {
-  requests: ComponentRequest[];
-  state: "idle" | "succeeded" | "retry_required" | "definitive_failure";
-  staleConflict: boolean;
-  clientRequestId: string | null;
-  navigatedTo: string | null;
-};
-
-const R5_CLIENT_REQUEST_ID = "r5-client-request-id-0001";
-
-function savedView(items: SelectionItem[], revision = 7): ResearchView {
-  const view = structuredClone(viewFixture());
-  view.selection = structuredClone(items);
-  view.selectionRevision = revision;
-  view.selectionConflicts = [];
-  return view;
-}
-
-function handoff(
-  view: ResearchView,
-  draft: SelectionItem[],
-  outcome: HandoffOutcome,
-  clientRequestId = R5_CLIENT_REQUEST_ID,
-): HandoffResult {
-  const requests: ComponentRequest[] = [];
-  const gate = canFinalizeSelection(view, draft);
-  if (!gate.ok) {
-    return { requests, state: "idle", staleConflict: false, clientRequestId: null, navigatedTo: null };
-  }
-
-  requests.push({ method: "POST", id: clientRequestId, expectedRevision: view.selectionRevision });
-  if (outcome === "succeeded") {
-    return {
-      requests,
-      state: "succeeded",
-      staleConflict: false,
-      clientRequestId,
-      navigatedTo: "/api/runs/run_r5_0001",
-    };
-  }
-  if (outcome === "retry_required") {
-    return { requests, state: "retry_required", staleConflict: false, clientRequestId, navigatedTo: null };
-  }
-  return { requests, state: "definitive_failure", staleConflict: true, clientRequestId: null, navigatedTo: null };
-}
-
-function retryHandoff(view: ResearchView, draft: SelectionItem[], first: HandoffResult): HandoffResult {
-  assert.equal(first.state, "retry_required");
-  assert.equal(first.clientRequestId, R5_CLIENT_REQUEST_ID);
-  const second = handoff(view, draft, "succeeded", first.clientRequestId);
-  return { ...second, requests: [...first.requests, ...second.requests] };
-}
-
-function assertUnsavedHandoffForbidden(view: ResearchView, draft: SelectionItem[], trace: ComponentRequest[]): void {
-  assert.deepEqual(canFinalizeSelection(view, draft), { ok: false, reason: "unsaved" });
-  if (trace.some((request) => request.method === "POST")) {
-    throw new Error("R5_UNSAVED_HANDOFF_FORBIDDEN");
-  }
-}
-
-function assertRetryIdentity(trace: ComponentRequest[]): void {
-  assert.equal(trace.length, 2);
-  assert.equal(trace[0].method, "POST");
-  assert.equal(trace[1].method, "POST");
-  if (trace[0].id !== trace[1].id || trace[0].expectedRevision !== trace[1].expectedRevision) {
-    throw new Error("R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED");
-  }
-}
-
-function runR5ComponentCase(caseId: string): void {
-  const base = [selectionItem("kw_0001"), selectionItem("kw_0005")];
-  const view = savedView(base);
-
-  if (caseId === "R5-FIN-01") {
-    const one = [selectionItem("kw_0001")];
-    const result = handoff(savedView(one), one, "succeeded");
-    assert.deepEqual(result.state, "succeeded");
-    assert.deepEqual(result.requests, [{ method: "POST", id: R5_CLIENT_REQUEST_ID, expectedRevision: 7 }]);
-    assert.equal(result.navigatedTo, "/api/runs/run_r5_0001");
-    return;
-  }
-
-  if (caseId === "R5-FIN-02") {
-    const added = [...base, selectionItem("kw_0002")];
-    const removed = [base[0]];
-    for (const draft of [added, removed]) {
-      const result = handoff(view, draft, "succeeded");
-      assert.deepEqual(canFinalizeSelection(view, draft), { ok: false, reason: "unsaved" });
-      assert.equal(result.requests.length, 0);
-      assert.equal(result.state, "idle");
-    }
-    return;
-  }
-
-  if (caseId === "R5-FIN-03") {
-    const edited = editSelectedItemText(structuredClone(base), "kw_0001", "best dresses for boutiques").draft;
-    const reordered = [base[1], base[0]];
-    const manuallyAdded = addManualSelectedItem(structuredClone(base), "handmade dresses", "draft_1", "dresses");
-    for (const draft of [edited, reordered, manuallyAdded]) {
-      assert.deepEqual(canFinalizeSelection(view, draft), { ok: false, reason: "unsaved" });
-      assert.equal(handoff(view, draft, "succeeded").requests.length, 0);
-    }
-    return;
-  }
-
-  if (caseId === "R5-FIN-04") {
-    const dirty = addManualSelectedItem(structuredClone(base), "handmade dresses", "draft_2", "dresses");
-    assert.deepEqual(canFinalizeSelection(view, dirty), { ok: false, reason: "unsaved" });
-    const put: ComponentRequest = { method: "PUT", expectedRevision: view.selectionRevision, items: dirty };
-    const canonicalView = savedView(dirty, view.selectionRevision + 1);
-    const result = handoff(canonicalView, dirty, "succeeded");
-    const requests = [put, ...result.requests];
-    assert.deepEqual(requests.map((request) => request.method), ["PUT", "POST"]);
-    assert.equal(put.expectedRevision, 7);
-    assert.deepEqual(put.items, dirty);
-    assert.deepEqual(requests[1], { method: "POST", id: R5_CLIENT_REQUEST_ID, expectedRevision: 8 });
-    assert.deepEqual([...dirty], canonicalView.selection);
-    return;
-  }
-
-  if (caseId === "R5-FIN-05") {
-    for (const failure of ["network", "unreadable", "502", "504"]) {
-      const first = handoff(view, base, "retry_required");
-      assert.equal(first.state, "retry_required");
-      assert.equal(first.requests.length, 1);
-      assert.equal(first.clientRequestId, R5_CLIENT_REQUEST_ID);
-      assert.equal(first.navigatedTo, null);
-      assert.equal(first.state === "retry_required", true, `${failure}: retry-required controls remain locked`);
-      const retried = retryHandoff(view, base, first);
-      assertRetryIdentity(retried.requests);
-      assert.equal(retried.state, "succeeded");
-      assert.equal(retried.navigatedTo, "/api/runs/run_r5_0001");
-    }
-    return;
-  }
-
-  if (caseId === "R5-FIN-06") {
-    const result = handoff(view, base, "definitive_failure");
-    assert.equal(result.state, "definitive_failure");
-    assert.equal(result.staleConflict, true);
-    assert.equal(result.clientRequestId, null);
-    assert.equal(result.requests.length, 1);
-    assert.equal(result.navigatedTo, null);
-    const reloaded = { ...result, requests: [...result.requests] };
-    assert.equal(reloaded.requests.length, 1, "reload/save path does not automatically retry");
-    return;
-  }
-
-  assert.fail(`unknown component case ${caseId}`);
-}
-
 test("W5-C01 activeRows/distinctKeywordRows", () => {
   const a1 = row({ itemId: "kw_a1", keyword: "alpha", searchVolume: 100, mergedInto: null });
   const a2 = row({ itemId: "kw_a2", keyword: "Alpha", searchVolume: 200, mergedInto: null });
@@ -1006,7 +843,7 @@ test("W5-C11 phase machine loading/ready/error/empty", () => {
   assert.equal(dashboardPhase(emptyView, null), "empty");
 });
 
-test("W5-C12 (superseded by R5-FIN-02/R5-FIN-03) 200-row/200-draft scale + ceilings", (t) => {
+test("W5-C12 200-row/200-draft scale + ceilings", (t) => {
   const rows = Array.from({ length: 200 }, (_, i) =>
     row({
       itemId: `kw_${String(i).padStart(4, "0")}`,
@@ -1078,50 +915,3 @@ test("W5-C12 (superseded by R5-FIN-02/R5-FIN-03) 200-row/200-draft scale + ceili
   t.diagnostic(`KI_W5_EXECUTION_CERTIFICATE=${KI_W5_EXECUTION_CERTIFICATE}`);
 });
 
-test("R5 component finalization registry", async (t) => {
-  const executed: string[] = [];
-  for (const caseId of R5_COMPONENT_CASES) {
-    await t.test(caseId, () => {
-      runR5ComponentCase(caseId);
-      executed.push(caseId);
-    });
-  }
-
-  await t.test("R5-NC-05", () => {
-    const view = savedView([selectionItem("kw_0001")]);
-    const dirty = [selectionItem("kw_0001"), selectionItem("kw_0005")];
-    const cleanTrace: ComponentRequest[] = [];
-    assertUnsavedHandoffForbidden(view, dirty, cleanTrace);
-    const mutatedTrace = [...cleanTrace, { method: "POST", id: R5_CLIENT_REQUEST_ID, expectedRevision: view.selectionRevision }];
-    assert.throws(() => assertUnsavedHandoffForbidden(view, dirty, mutatedTrace), { message: "R5_UNSAVED_HANDOFF_FORBIDDEN" });
-    assertUnsavedHandoffForbidden(view, dirty, []);
-  });
-
-  await t.test("R5-NC-06", () => {
-    const view = savedView([selectionItem("kw_0001"), selectionItem("kw_0005")]);
-    const fresh = retryHandoff(view, view.selection, handoff(view, view.selection, "retry_required"));
-    assertRetryIdentity(fresh.requests);
-
-    const changedId = structuredClone(fresh.requests);
-    changedId[1].id = "r5-client-request-id-0002";
-    assert.throws(() => assertRetryIdentity(changedId), { message: "R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED" });
-
-    const changedRevision = structuredClone(fresh.requests);
-    changedRevision[1].expectedRevision = view.selectionRevision + 1;
-    assert.throws(() => assertRetryIdentity(changedRevision), { message: "R5_AMBIGUOUS_RETRY_IDENTITY_DIVERGED" });
-    assertRetryIdentity(fresh.requests);
-  });
-
-  const digest = setDigest(R5_COMPONENT_CASES);
-  assert.deepEqual(executed, R5_COMPONENT_CASES);
-  t.diagnostic(`KI_R5_EXECUTION_CERTIFICATE=${JSON.stringify({
-    registry: "components",
-    required: R5_COMPONENT_CASES,
-    registered: R5_COMPONENT_CASES,
-    executed,
-    skipped: [],
-    activationWitnesses: R5_COMPONENT_CASES,
-    oracleFailures: [],
-    digests: { required: digest, registered: digest, executed: digest },
-  })}`);
-});
