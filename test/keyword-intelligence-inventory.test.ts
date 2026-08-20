@@ -505,3 +505,131 @@ test("W5-I06 chart dependency versions + no-CDN", async (t) => {
   assert.equal(executedDigest, requiredDigest);
   t.diagnostic(`KI_W5_EXECUTION_CERTIFICATE=${KI_W5_EXECUTION_CERTIFICATE}`);
 });
+
+// ---- KI-R5-S016 additive static registry lint (append-only, no certificate) ----
+// The amended A4-mandated ownership sets (S1 §4.2): R5_FRONTEND_CASES is the
+// frontend_api registry in api.test.ts; R5_BROWSER_CASES is the seven-ID
+// browser registry in the harness. No R5 case ID is registered or executed
+// here and no certificate is emitted.
+
+const R5_FRONTEND_CASES_A4: readonly string[] = [
+  "R5-WIRE-01",
+  "R5-WIRE-02",
+  "R5-WIRE-03",
+  "R5-WIRE-05",
+  "R5-WIRE-06",
+  "R5-EXP-01",
+  "R5-EXP-02",
+  "R5-EXP-03",
+  "R5-EXP-04",
+];
+
+const R5_BROWSER_CASES_A4: readonly string[] = [
+  "R5-WIRE-04",
+  "R5-FIN-01",
+  "R5-FIN-02",
+  "R5-FIN-03",
+  "R5-FIN-04",
+  "R5-FIN-05",
+  "R5-FIN-06",
+];
+
+const R5_MANIFEST_GROUPS_A4: Record<string, readonly string[]> = {
+  wire: [
+    "R5-WIRE-01", "R5-WIRE-02", "R5-WIRE-03", "R5-WIRE-04", "R5-WIRE-05", "R5-WIRE-06",
+  ],
+  selection: [
+    "R5-SEL-01", "R5-SEL-02", "R5-SEL-03", "R5-SEL-04", "R5-SEL-05", "R5-SEL-06", "R5-SEL-07", "R5-SEL-08",
+  ],
+  finalization: [
+    "R5-FIN-01", "R5-FIN-02", "R5-FIN-03", "R5-FIN-04", "R5-FIN-05", "R5-FIN-06", "R5-FIN-07", "R5-FIN-08",
+  ],
+  export: [
+    "R5-EXP-01", "R5-EXP-02", "R5-EXP-03", "R5-EXP-04", "R5-EXP-05", "R5-EXP-06",
+  ],
+  conformance: [
+    "R5-CONF-01", "R5-CONF-02", "R5-CONF-03", "R5-CONF-04", "R5-CONF-05", "R5-CONF-06",
+  ],
+};
+
+const R5_DECLARED_IDS: ReadonlySet<string> = new Set(
+  Object.values(R5_MANIFEST_GROUPS_A4).flat(),
+);
+const R5_FRONTEND_OWNED: ReadonlySet<string> = new Set(R5_FRONTEND_CASES_A4);
+const R5_BROWSER_OWNED: ReadonlySet<string> = new Set(R5_BROWSER_CASES_A4);
+const R5_CASE_ID_RE = /\bR5-(WIRE|SEL|FIN|EXP|CONF)-[0-9]{2}\b/gu;
+
+function extractR5CaseArray(text: string, identifier: string): string[] {
+  const marker = `const ${identifier} = [`;
+  const start = text.indexOf(marker);
+  assert.ok(start !== -1, `${identifier} literal present`);
+  const open = text.indexOf("[", start);
+  const close = text.indexOf("]", open);
+  assert.ok(open !== -1 && close !== -1, `${identifier} array bounded`);
+  const body = text.slice(open, close + 1);
+  return [...body.matchAll(/"([^"]+)"/gu)].map((match) => match[1]);
+}
+
+function r5OwnerOf(id: string): string | null {
+  if (R5_FRONTEND_OWNED.has(id)) return "frontend_api";
+  if (R5_BROWSER_OWNED.has(id)) return "browser";
+  return null;
+}
+
+function isR5CitationLine(line: string): boolean {
+  const trimmed = line.trimStart();
+  if (trimmed.startsWith("//") || trimmed.startsWith("*")) return true;
+  return /superseded by R5-/u.test(line);
+}
+
+test("S016 static registry lint across the three sibling frontend test files", async () => {
+  const apiText = await readFile(join(ROOT, "test", "keyword-intelligence-api.test.ts"), "utf8");
+  const componentsText = await readFile(join(ROOT, "test", "keyword-intelligence-components.test.ts"), "utf8");
+  const browserText = await readFile(join(ROOT, "test", "browser", "keyword-intelligence-dashboard.mjs"), "utf8");
+
+  const files = [
+    { name: "keyword-intelligence-api.test.ts", text: apiText, registry: "frontend_api" },
+    { name: "keyword-intelligence-components.test.ts", text: componentsText, registry: null },
+    { name: "browser/keyword-intelligence-dashboard.mjs", text: browserText, registry: "browser" },
+  ];
+
+  for (const file of files) {
+    assert.equal(
+      file.text.includes("R5_COMPONENT_CASES"),
+      false,
+      `${file.name}: no R5_COMPONENT_CASES literal`,
+    );
+    assert.equal(
+      /registry\s*:\s*["']components["']/u.test(file.text),
+      false,
+      `${file.name}: no registry "components" certificate`,
+    );
+  }
+
+  const frontendCases = extractR5CaseArray(apiText, "R5_FRONTEND_CASES");
+  assert.deepEqual([...frontendCases].sort(), [...R5_FRONTEND_CASES_A4].sort());
+  const browserCases = extractR5CaseArray(browserText, "R5_BROWSER_CASES");
+  assert.deepEqual([...browserCases].sort(), [...R5_BROWSER_CASES_A4].sort());
+
+  for (const file of files) {
+    const lines = file.text.split("\n");
+    for (let index = 0; index < lines.length; index += 1) {
+      const line = lines[index];
+      for (const match of line.matchAll(R5_CASE_ID_RE)) {
+        const id = match[0];
+        assert.equal(
+          R5_DECLARED_IDS.has(id),
+          true,
+          `${file.name}:${index + 1}: undeclared R5 ID ${id}`,
+        );
+        if (!isR5CitationLine(line)) {
+          assert.equal(
+            r5OwnerOf(id),
+            file.registry,
+            `${file.name}:${index + 1}: ${id} must belong to the exact owning registry (${file.registry ?? "none"})`,
+          );
+        }
+      }
+    }
+  }
+});
