@@ -519,7 +519,7 @@ function result(value: unknown, path: string): ResearchResult {
   const seeds = stringArray(source.seeds, `${path}.seeds`);
   if (seeds.length < 1 || seeds.length > 5) throw new ApiPayloadError(`${path}.seeds`);
   return {
-    contractVersion: nonEmptyText(source.contractVersion, `${path}.contractVersion`),
+    contractVersion: source.contractVersion === 1 ? 1 : (() => { throw new ApiPayloadError(`${path}.contractVersion`); })(),
     researchId: text(source.researchId, `${path}.researchId`),
     generation,
     configFingerprint: text(source.configFingerprint, `${path}.configFingerprint`),
@@ -730,7 +730,7 @@ export function parseResearchView(value: unknown): ResearchView {
   exactKeys(source, RESEARCH_VIEW_KEYS, "research");
   const state = oneOf(source.state, RESEARCH_STATES, "research.state");
   const generation = positiveInteger(source.generation, "research.generation");
-  const contractVersion = nonEmptyText(source.contractVersion, "research.contractVersion");
+  const contractVersion = source.contractVersion === 1 ? 1 : (() => { throw new ApiPayloadError("research.contractVersion"); })();
   const seeds = stringArray(source.seeds, "research.seeds");
   if (seeds.length < 1 || seeds.length > 5) throw new ApiPayloadError("research.seeds");
   const selection = array(source.selection, "research.selection", selectionItem);
