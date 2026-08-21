@@ -1771,18 +1771,22 @@ try {
     await setViewport(cdp, 1440, 900);
     await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
     await waitFor(cdp, "document.querySelector('[data-surface=\"surface:selection-review\"]')?.innerText.includes('2 of 200 selected')", "saved 2-item draft");
-    // Route the handoff to a distinct statusUrl so the router-push navigation
-    // is observable without depending on the current page's own path.
+    // Superseded in KI-W6: the browser must open the run workspace derived
+    // from handoff.run.runId; a valid but hostile same-origin API statusUrl
+    // must never choose the browser destination (DEC-KI-038).
+    const hostileStatusPath = "/api/runs/run_kiw5_hostile_status_witness0001";
     await evaluate(cdp, `(() => {
       const handoff = JSON.parse(${JSON.stringify(JSON.stringify(runHandoff))});
-      handoff.statusUrl = "/keywords/ki-r5-fin-nav-witness";
+      handoff.statusUrl = ${JSON.stringify(hostileStatusPath)};
       globalThis.__kiFixture.runsHandoff = handoff;
     })()`);
     const fin = await clickFinalizeAndCapture(cdp);
     assert(fin.count === 1, `exactly one runs POST (${fin.count})`);
     assert(fin.body && fin.body.expectedSelectionRevision === 1, `runs POST carries the current saved revision 1 (${JSON.stringify(fin.body)})`);
     assert(fin.clientRequestId && /^[A-Za-z0-9_-]{16,80}$/.test(fin.clientRequestId), `runs POST carries one generated clientRequestId (${fin.clientRequestId})`);
-    await waitFor(cdp, "location.pathname === '/keywords/ki-r5-fin-nav-witness'", "finalize navigation witness");
+    const workspacePath = `/runs/${encodeURIComponent(runHandoff.run.runId)}`;
+    await waitFor(cdp, `location.pathname === ${JSON.stringify(workspacePath)}`, "finalize workspace navigation witness");
+    assert((await evaluate(cdp, `location.pathname === ${JSON.stringify(hostileStatusPath)}`)) === false, "hostile handoff statusUrl pathname must not be visited");
     await capture(cdp, "R5-FIN-01-finalize");
   }));
 

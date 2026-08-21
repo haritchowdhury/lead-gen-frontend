@@ -263,7 +263,7 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
         clientRequestIdRef.current,
       );
       setFinalizeState("succeeded");
-      router.push(handoff.statusUrl);
+      router.push(`/runs/${encodeURIComponent(handoff.run.runId)}`);
     } catch (err) {
       if (err instanceof ApiRequestError && err.status < 500) {
         clientRequestIdRef.current = null;
@@ -297,7 +297,7 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
         clientRequestIdRef.current,
       );
       setFinalizeState("succeeded");
-      router.push(handoff.statusUrl);
+      router.push(`/runs/${encodeURIComponent(handoff.run.runId)}`);
     } catch (err) {
       if (err instanceof ApiRequestError && err.status < 500) {
         clientRequestIdRef.current = null;
