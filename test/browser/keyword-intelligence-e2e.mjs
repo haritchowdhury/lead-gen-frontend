@@ -681,16 +681,70 @@ const armRunsResponseAbort = async () => {
 const swapOneSelectionItemViaUi = async () => {
   const selected = `[data-surface="surface:keyword-table"] tbody tr input[type=checkbox][aria-label^="Select"]`;
   await waitFor(cdp, `document.querySelectorAll('${selected}').length > 0`, "keyword table row checkboxes");
-  const state = await evaluate(cdp, `(() => {
-    const boxes = [...document.querySelectorAll('${selected}')];
-    return boxes.map((box) => ({ label: box.getAttribute('aria-label'), checked: box.checked }));
-  })()`);
-  const checkedRow = state.find((row) => row.checked);
-  const uncheckedRow = state.find((row) => !row.checked);
-  assert(checkedRow && uncheckedRow, "keyword table must expose a checked and an unchecked row for the minimal mutation");
-  await click(cdp, `document.querySelector('${selected}[aria-label=${JSON.stringify(checkedRow.label)}]')`);
-  await click(cdp, `document.querySelector('${selected}[aria-label=${JSON.stringify(uncheckedRow.label)}]')`);
-  await wait(200);
+  await waitFor(cdp, `document.querySelector('[data-surface="surface:keyword-table"]')?.textContent.includes('Page 1 of')`, "keyword table page 1");
+
+  const pageSignature = async () => evaluate(cdp, `(() => [...document.querySelectorAll('${selected}')].map((box) => box.getAttribute('aria-label') || '').join('\\n'))()`);
+  const pageState = async () => evaluate(cdp, `(() => [...document.querySelectorAll('${selected}')].map((box) => ({ label: box.getAttribute('aria-label'), checked: box.checked })))()`);
+  const checkedCandidate = { label: null, page: null };
+  const uncheckedCandidate = { label: null, page: null };
+  const seenLabels = new Set();
+  let page = 1;
+
+  const inventoryPage = async () => {
+    const state = await pageState();
+    assert(state.length > 0, `keyword table page ${page} must expose matching checkboxes`);
+    for (const row of state) {
+      assert(typeof row.label === "string" && row.label.trim().length > 0, `keyword table page ${page} contains an empty checkbox label`);
+      assert(!seenLabels.has(row.label), `keyword table contains a repeated checkbox label: ${row.label}`);
+      seenLabels.add(row.label);
+    }
+    if (!checkedCandidate.label) {
+      const row = state.find((candidate) => candidate.checked);
+      if (row) {
+        checkedCandidate.label = row.label;
+        checkedCandidate.page = page;
+      }
+    }
+    if (!uncheckedCandidate.label) {
+      const row = state.find((candidate) => !candidate.checked && candidate.label !== checkedCandidate.label);
+      if (row) {
+        uncheckedCandidate.label = row.label;
+        uncheckedCandidate.page = page;
+      }
+    }
+  };
+
+  while ((!checkedCandidate.label || !uncheckedCandidate.label) && page <= 8) {
+    await inventoryPage();
+    if (checkedCandidate.label && uncheckedCandidate.label) break;
+    assert(page < 8, "keyword table must expose both selection candidates by page eight");
+    const before = await pageSignature();
+    await click(cdp, ` [...document.querySelectorAll('[data-surface="surface:keyword-table"] button')].find((node) => node.textContent.trim() === 'Next' && !node.disabled)`);
+    await waitFor(cdp, `(() => { const boxes = [...document.querySelectorAll('${selected}')]; return boxes.map((box) => box.getAttribute('aria-label') || '').join('\\n') !== ${JSON.stringify(before)}; })()`, `keyword table page ${page + 1}`);
+    page += 1;
+  }
+
+  assert(checkedCandidate.label && uncheckedCandidate.label, "keyword table must expose distinct checked and unchecked candidates by page eight");
+  assert(checkedCandidate.label !== uncheckedCandidate.label, "selection candidates must have different labels");
+
+  const moveToPage = async (targetPage) => {
+    const distance = Math.abs(page - targetPage);
+    const direction = targetPage < page ? "Prev" : "Next";
+    for (let index = 0; index < distance; index += 1) {
+      const before = await pageSignature();
+      await click(cdp, ` [...document.querySelectorAll('[data-surface="surface:keyword-table"] button')].find((node) => node.textContent.trim() === '${direction}' && !node.disabled)`);
+      await waitFor(cdp, `(() => { const boxes = [...document.querySelectorAll('${selected}')]; return boxes.map((box) => box.getAttribute('aria-label') || '').join('\\n') !== ${JSON.stringify(before)}; })()`, `keyword table ${direction.toLowerCase()} page transition`);
+      page += targetPage < page ? -1 : 1;
+    }
+  };
+
+  await moveToPage(checkedCandidate.page);
+  await click(cdp, `document.querySelector('${selected}[aria-label=${JSON.stringify(checkedCandidate.label)}]')`);
+  await waitFor(cdp, `document.querySelector('${selected}[aria-label=${JSON.stringify(checkedCandidate.label)}]')?.checked === false`, "selection removal");
+  await moveToPage(uncheckedCandidate.page);
+  await click(cdp, `document.querySelector('${selected}[aria-label=${JSON.stringify(uncheckedCandidate.label)}]')`);
+  await waitFor(cdp, `document.querySelector('${selected}[aria-label=${JSON.stringify(uncheckedCandidate.label)}]')?.checked === true`, "selection addition");
+  await waitFor(cdp, `document.querySelector('[data-surface="surface:selection-review"]')?.textContent.includes('100 of 200 selected')`, "selection count");
 };
 
 const saveSelectionViaUi = async () => {
