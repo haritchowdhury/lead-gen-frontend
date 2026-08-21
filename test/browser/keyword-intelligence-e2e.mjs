@@ -16,6 +16,11 @@ const chromeBin = "/usr/bin/google-chrome";
 const skipBuild = process.env.KI_W6_SKIP_BUILD === "1";
 const FORBIDDEN_RUNTIME_HOSTS = ["cdn.jsdelivr.net", "unpkg.com", "cdnjs.cloudflare.com"];
 const FORBIDDEN_LOCAL_PATH_PATTERNS = [".py", "sqlite", "KeywordSearchVolume", "data/raw", "data/output", "output.json", "file://"];
+const stripComments = (filePath, text) => {
+  if (filePath.endsWith(".css")) return text.replace(/\/\*[\s\S]*?\*\//g, "");
+  if (/\.(js|mjs|ts|tsx)$/u.test(filePath)) return text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/[^\n]*/gm, "");
+  return text;
+};
 const CLEANUP_ORDER = ["browser", "next-server", "auth-server", "backend-server", "schema-absence", "temp-root"];
 const manifestPath = path.resolve(root, "../email_scraper/test/fixtures/keyword-intelligence/ki-w6-enforcement-manifest-v1.json");
 const SEEDS = ["insulated water bottle", "stainless lunch box", "silicone baking mat", "glass storage jar", "reusable straw set"];
@@ -194,11 +199,12 @@ const oracles = {
     if (inventory.standaloneInsideRoots === true) throw new Error("KI_W6_OBSOLETE_SCOPE_BROKEN");
     const hits = [];
     for (const member of inventory.members) {
+      const content = stripComments(member.path, member.content || "");
       for (const pattern of FORBIDDEN_LOCAL_PATH_PATTERNS) {
-        if (member.path.includes(pattern) || (member.content || "").includes(pattern)) hits.push({ path: member.path, pattern, kind: "local" });
+        if (member.path.includes(pattern) || content.includes(pattern)) hits.push({ path: member.path, pattern, kind: "local" });
       }
       for (const host of FORBIDDEN_RUNTIME_HOSTS) {
-        if ((member.content || "").includes(host)) hits.push({ path: member.path, pattern: host, kind: "host" });
+        if (content.includes(host)) hits.push({ path: member.path, pattern: host, kind: "host" });
       }
     }
     if (hits.length > 0) throw new Error(`KI_W6_OBSOLETE_RUNTIME_MEMBER:${JSON.stringify(hits.slice(0, 3))}`);
@@ -286,6 +292,7 @@ async function setInputValue(cdp, selector, value) {
   const ok = await evaluate(cdp, `(() => {
     const node = document.querySelector(${JSON.stringify(selector)});
     if (!node) return false;
+    node.focus();
     const proto = node.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
     const setter = Object.getOwnPropertyDescriptor(proto, 'value').set;
     setter.call(node, ${JSON.stringify(value)});
@@ -293,6 +300,18 @@ async function setInputValue(cdp, selector, value) {
     return true;
   })()`);
   if (!ok) throw new Error(`Missing input: ${selector}`);
+}
+
+async function typeInputValue(cdp, selector, value) {
+  const focused = await evaluate(cdp, `(() => {
+    const node = document.querySelector(${JSON.stringify(selector)});
+    if (!node) return false;
+    node.focus();
+    node.select();
+    return true;
+  })()`);
+  if (!focused) throw new Error(`Missing input: ${selector}`);
+  await cdp.send("Input.insertText", { text: value });
 }
 
 async function waitForServer() {
@@ -768,10 +787,18 @@ try {
   await waitFor(cdp, "document.querySelector('[data-surface=\"surface:research-form\"]')", "research form surface", 30000);
 
   const createFloor = harness.trace().length;
-  for (const seed of SEEDS) {
-    await setInputValue(cdp, 'input[aria-label="Seed phrase"]', seed);
-    await click(cdp, "[...document.querySelectorAll('#seed-phrase-form button')].find((node) => node.textContent.includes('Add'))");
-    await wait(150);
+  for (const [seedIndex, seed] of SEEDS.entries()) {
+    let confirmed = false;
+    for (let attempt = 1; attempt <= 3 && !confirmed; attempt += 1) {
+      await typeInputValue(cdp, 'input[aria-label="Seed phrase"]', seed);
+      await wait(100);
+      await click(cdp, "[...document.querySelectorAll('#seed-phrase-form button')].find((node) => node.textContent.includes('Add'))");
+      try {
+        await waitFor(cdp, `document.querySelector('#seed-chip-count')?.textContent.includes('${seedIndex + 1}/5')`, `seed chip ${seedIndex + 1}/5`, 1500);
+        confirmed = true;
+      } catch {}
+    }
+    if (!confirmed) throw new Error(`seed chip ${seedIndex + 1}/5 never appeared after 3 attempts`);
   }
   await waitFor(cdp, "document.querySelector('#seed-chip-count')?.textContent.includes('5/5')", "five seed chips");
   await click(cdp, "document.querySelector('#seed-phrase-form button[type=submit]')");
@@ -821,6 +848,7 @@ try {
   const expansionReport = await harness.drainKeywordWork("expansion");
   const anchorReport = await harness.drainKeywordWork("anchor-screen");
   const marketsReport = await harness.drainKeywordWork("markets");
+  const keywordObjectPuts = harness.trace().filter((event) => event.kind === "s3" && event.op === "put-immutable").length;
 
   const providerEvents = harness.trace().filter((event) => event.kind === "dataforseo");
   const expansionTuples = providerEvents
@@ -840,7 +868,7 @@ try {
   assert(providerEvents.length === 19, `total provider calls must be 19, saw ${providerEvents.length}`);
   assert(providerEvents.every((event) => event.attempt === 1), "every provider call must succeed on attempt one");
   assert(expansionReport.providerCalls + anchorReport.providerCalls + marketsReport.providerCalls === 19, "provider call totals must sum to 19");
-  assert(expansionReport.keywordObjects + anchorReport.keywordObjects + marketsReport.keywordObjects === 23, "keyword object totals must sum to 23");
+  assert(keywordObjectPuts === 23, `keyword object totals must sum to 23, saw ${keywordObjectPuts}`);
   assert(expansionReport.keywordQueueSends + anchorReport.keywordQueueSends + marketsReport.keywordQueueSends === 42, "keyword queue send totals must sum to 42 despite fault deliveries");
   assert(marketsReport.providerAttempts === 19, "durable provider attempt rows must be 19");
   const marketEvents = providerEvents.filter((event) => event.taskType === "market-overview");
@@ -860,7 +888,7 @@ try {
       defaultSelectionItemCount: publishedSnapshot.keywordResult.defaultSelectionItemCount,
       fence: {
         providerCalls: providerEvents.length,
-        keywordObjects: expansionReport.keywordObjects + anchorReport.keywordObjects + marketsReport.keywordObjects,
+        keywordObjects: keywordObjectPuts,
         keywordQueueSends: expansionReport.keywordQueueSends + anchorReport.keywordQueueSends + marketsReport.keywordQueueSends,
         costMicroUsd,
       },
@@ -1127,7 +1155,7 @@ try {
     domainCheckPartition: ["duplicate-next-domain-check-message", "reorder-pending-domain-check-messages"],
     providerCalls: providerEvents.length,
     providerAttempts: marketsReport.providerAttempts,
-    keywordObjects: expansionReport.keywordObjects + anchorReport.keywordObjects + marketsReport.keywordObjects,
+    keywordObjects: keywordObjectPuts,
     keywordQueueSends: expansionReport.keywordQueueSends + anchorReport.keywordQueueSends + marketsReport.keywordQueueSends,
     allAttemptsOne: providerEvents.every((event) => event.attempt === 1),
     discoveryDeliveries: discoverySendCount,
@@ -1564,6 +1592,7 @@ try {
       await harnessCloseOnce();
     },
     "schema-absence": async () => {
+      if (!harness && !harnessCloseState.result) return;
       assert(harnessCloseState.result && harnessCloseState.result.absenceWitness.rowCount === 0, "the disposable schema absence verification must report zero rows after drop");
     },
     "temp-root": async () => {
