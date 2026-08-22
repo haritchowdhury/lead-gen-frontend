@@ -1126,6 +1126,7 @@ try {
 
   const beforeValues = await queryRowValues();
   const beforeBadges = await queryRowBadges();
+  assert(beforeBadges.length === 100 && beforeBadges.every((badge) => badge === "generated"), "keyword-research handoff rows must begin with generated provenance");
   assert((await queryRowCount()) === 100, "workspace must expose 100 editable queries before edits");
   const editedCount = await evaluate(cdp, `(() => {
     const inputs = [...document.querySelectorAll('input[aria-label^="Query "]')];
@@ -1150,15 +1151,25 @@ try {
   const swapped = [expectedOrder[1], expectedOrder[0], ...expectedOrder.slice(2)];
   assert(arrayEqual(afterValues, swapped), "edited text and reordered positions must persist for all 100 queries");
   assert(afterValues.every((value) => value.endsWith(" emporium")), "every query text must be changed");
-  assert([...beforeBadges].sort().join("|") === [...afterBadges].sort().join("|"), "keyword source lineage must remain unchanged");
+  const expectedEditedBadges = beforeBadges.map((badge) => badge === "generated" ? "user edited" : badge);
+  const swappedExpectedBadges = [expectedEditedBadges[1], expectedEditedBadges[0], ...expectedEditedBadges.slice(2)];
+  assert(arrayEqual(afterBadges, swappedExpectedBadges), "edited query provenance must change from generated to user edited and follow the persisted reorder");
   assert(afterValues.length === 100, "zero add/delete in the run workspace");
-  captured.workspace = { count: 100, orderChanged: true, badgesPreserved: true };
+  captured.workspace = { count: 100, orderChanged: true, provenanceTransitionVerified: true };
   activate("W6-FLOW-09", `workspace:${runId}:100-edited-1-reorder:0-add-delete`);
 
   const confirmFloor = harness.trace().length;
   await click(cdp, "[...document.querySelectorAll('button')].find((node) => node.textContent.includes('Find my stores'))");
   await waitForTrace(confirmFloor, (event) => event.kind === "http" && event.op === "request" && event.method === "POST" && event.path === `/api/runs/${runId}/start`, "run start request", 60000);
   const googlePairsFloor = harness.trace().length;
+  const runStartSchedule = harness.flushRunStartSchedule();
+  assert(
+    runStartSchedule.pendingBefore === 1 &&
+      runStartSchedule.flushedCallbacks === 1 &&
+      runStartSchedule.pendingAfter === 0,
+    "run start must flush exactly one parked queue-drain callback"
+  );
+  captured.confirmationDrain = structuredClone(runStartSchedule);
   const confirmDeadline = Date.now() + 120000;
   for (;;) {
     const googleEvents = traceFrom(googlePairsFloor).filter((event) => event.kind === "google" && event.op === "search-page");
