@@ -1160,21 +1160,38 @@ try {
 
   const confirmFloor = harness.trace().length;
   await click(cdp, "[...document.querySelectorAll('button')].find((node) => node.textContent.includes('Find my stores'))");
-  await waitForTrace(confirmFloor, (event) => event.kind === "http" && event.op === "request" && event.method === "POST" && event.path === `/api/runs/${runId}/start`, "run start request", 60000);
+  const runStartBackendEvent = await waitForTrace(confirmFloor, (event) => event.kind === "http" && event.op === "request" && event.method === "POST" && event.path === `/api/runs/${runId}/start`, "run start request", 60000);
+  assert(runStartBackendEvent.status === 202, `backend run start response must be 202, saw ${runStartBackendEvent.status}`);
+  const runStartBrowserEntry = await waitForNetlog(
+    (entry) => entry.method === "POST" && entry.url.endsWith(`/api/runs/${runId}/start`) && entry.responseStatus !== null,
+    "browser run start response",
+    60000
+  );
+  assert(runStartBrowserEntry.responseStatus === 202, `browser run start response must be 202, saw ${runStartBrowserEntry.responseStatus}`);
+  captured.confirmationStart = { backendStatus: runStartBackendEvent.status, browserStatus: runStartBrowserEntry.responseStatus };
   const googlePairsFloor = harness.trace().length;
   const runStartSchedule = harness.flushRunStartSchedule();
   assert(
-    runStartSchedule.pendingBefore === 1 &&
+    runStartSchedule.pendingBefore === 2 &&
+      runStartSchedule.discardedStaleCallbacks === 1 &&
       runStartSchedule.flushedCallbacks === 1 &&
       runStartSchedule.pendingAfter === 0,
-    "run start must flush exactly one parked queue-drain callback"
+    "run start must discard one stale callback and flush exactly one live callback"
   );
   captured.confirmationDrain = structuredClone(runStartSchedule);
   const confirmDeadline = Date.now() + 120000;
   for (;;) {
-    const googleEvents = traceFrom(googlePairsFloor).filter((event) => event.kind === "google" && event.op === "search-page");
+    const confirmationEvents = traceFrom(googlePairsFloor);
+    const executionFailure = confirmationEvents.find((event) => event.kind === "backend-log");
+    if (executionFailure) {
+      throw new Error(`backend execution failed before validation: ${executionFailure.op}/${executionFailure.errorName}/${executionFailure.errorCode ?? "NO_CODE"}/${executionFailure.errorFrame ?? "NO_FRAME"}`);
+    }
+    const googleEvents = confirmationEvents.filter((event) => event.kind === "google" && event.op === "search-page");
     if (googleEvents.length === 100) break;
-    if (Date.now() > confirmDeadline) throw new Error(`timed out waiting for the 100 production validator calls, saw ${googleEvents.length}`);
+    if (Date.now() > confirmDeadline) {
+      const stalledSnapshot = await harness.readDurableState();
+      throw new Error(`timed out waiting for the 100 production validator calls after start 202/202 and no backend failure; durable run=${stalledSnapshot.run?.state ?? "missing"}/${stalledSnapshot.run?.stage ?? "missing"}/confirmed=${stalledSnapshot.run?.queriesConfirmedAt !== null}, saw ${googleEvents.length}`);
+    }
     await wait(100);
   }
   const googlePairs = traceFrom(googlePairsFloor)
@@ -1186,15 +1203,22 @@ try {
   assert(confirmedSnapshot.run.queriesConfirmedAt !== null && confirmedSnapshot.run.confirmedQueryRevision !== null, "confirmation must be terminal only after all validations succeed");
   activate("W6-FLOW-10", `confirm:${runId}:100-searchpage-calls:1000-occurrences`);
 
-  const discoveryFloor = harness.trace().length;
+  const discoveryFloor = googlePairsFloor;
   const isDiscoverySend = (event) => event.kind === "sqs" && (event.messageTypes || []).some((type) => String(type).startsWith("discovery"));
-  await waitForTrace(discoveryFloor, isDiscoverySend, "downstream discovery dispatch", 60000);
   const dispatchDeadline = Date.now() + 60000;
   let discoverySendCount = 0;
   for (;;) {
-    discoverySendCount = traceFrom(discoveryFloor).filter(isDiscoverySend).reduce((total, event) => total + (event.count || 0), 0);
+    const discoveryEvents = traceFrom(discoveryFloor);
+    const executionFailure = discoveryEvents.find((event) => event.kind === "backend-log");
+    if (executionFailure) {
+      throw new Error(`backend execution failed before discovery dispatch: ${executionFailure.op}/${executionFailure.errorName}/${executionFailure.errorCode ?? "NO_CODE"}/${executionFailure.errorFrame ?? "NO_FRAME"}`);
+    }
+    discoverySendCount = discoveryEvents.filter(isDiscoverySend).reduce((total, event) => total + (event.count || 0), 0);
     if (discoverySendCount >= 100) break;
-    if (Date.now() > dispatchDeadline) throw new Error(`timed out waiting for all 100 discovery deliveries, saw ${discoverySendCount}`);
+    if (Date.now() > dispatchDeadline) {
+      const stalledSnapshot = await harness.readDurableState();
+      throw new Error(`timed out waiting for all 100 discovery deliveries; durable run=${stalledSnapshot.run?.state ?? "missing"}/${stalledSnapshot.run?.stage ?? "missing"}, saw ${discoverySendCount}`);
+    }
     await wait(20);
   }
   assert(discoverySendCount === 100, `confirmation must dispatch exactly 100 discovery deliveries, saw ${discoverySendCount}`);
