@@ -778,6 +778,18 @@ let certificate = null;
 let mainError = null;
 const startedAt = Date.now();
 
+const downstreamOutcome = { started: false, settled: null };
+const safeDownstreamErrorProjection = (error) => {
+  const rawName = error && typeof error.name === "string" ? error.name : "";
+  const rawCode = error && typeof error.code === "string" ? error.code : "";
+  const rawStack = error && typeof error.stack === "string" ? error.stack : "";
+  const name = /^[A-Za-z][A-Za-z0-9_]{0,79}$/u.test(rawName) ? rawName : "Error";
+  const code = /^[A-Z][A-Z0-9_]{0,31}$/u.test(rawCode) ? rawCode : null;
+  const frameMatch = rawStack.match(/(?:^|\n)\s*at [^\n]*?\/((?:src|test)\/[A-Za-z0-9_./-]+:\d+:\d+)/u);
+  const frame = frameMatch ? frameMatch[1] : null;
+  return { name, code, frame };
+};
+
 try {
   const preflightProblems = [];
   if (process.env.ALLOW_DATABASE_TESTS !== "true") {
@@ -1232,15 +1244,46 @@ try {
 
   const downstreamFloor = harness.trace().length;
   const downstreamPromise = harness.drainDownstream();
-  await waitForTrace(downstreamFloor, (event) => {
-    if (event.kind !== "sqs") return false;
-    return (event.messageTypes || []).some((type) => String(type).startsWith("domain"));
-  }, "first domain-check emission", 120000);
+  downstreamOutcome.started = true;
+  downstreamPromise.then(
+    (value) => { downstreamOutcome.settled = { outcome: "fulfilled", value }; },
+    (error) => { downstreamOutcome.settled = { outcome: "rejected", error }; },
+  );
+  const downstreamWaitStartedAt = Date.now();
+  for (;;) {
+    const downstreamDomainEvent = harness.trace().slice(downstreamFloor).find((event) => {
+      if (event.kind !== "sqs") return false;
+      return (event.messageTypes || []).some((type) => String(type).startsWith("domain"));
+    });
+    if (downstreamDomainEvent) break;
+    if (downstreamOutcome.settled?.outcome === "rejected") {
+      throw new Error(`KI downstream drain rejected before first domain-check emission: ${JSON.stringify(safeDownstreamErrorProjection(downstreamOutcome.settled.error))}`);
+    }
+    const downstreamFailureEvent = harness.trace().slice(downstreamFloor).find((event) => event.kind === "downstream-message" && event.op === "message-failed");
+    if (downstreamFailureEvent) {
+      throw new Error(`KI downstream drain message-failed before first domain-check emission: ${JSON.stringify({ name: downstreamFailureEvent.errorName, code: downstreamFailureEvent.errorCode, frame: downstreamFailureEvent.errorFrame })}`);
+    }
+    if (Date.now() - downstreamWaitStartedAt > 120000) {
+      const downstreamDeadlineDiagnostics = await harness.readDownstreamDiagnostics();
+      throw new Error(`KI downstream wait deadline exceeded after 120000 ms: ${JSON.stringify(downstreamDeadlineDiagnostics)}`);
+    }
+    await wait(50);
+  }
   const readinessSample = await harness.readDurableState();
   assert(readinessSample.discovery.taskCount === 100 && readinessSample.discovery.terminalCount >= 1 && readinessSample.discovery.terminalCount < 100, "the domain-check fault point must sit inside a nonempty partially terminal discovery stage");
   await harness.injectCapturedDefect("duplicate-next-domain-check-message");
   await harness.injectCapturedDefect("reorder-pending-domain-check-messages");
-  const downstreamReport = await downstreamPromise;
+  const downstreamSettleDeadline = Date.now() + 120000;
+  while (!downstreamOutcome.settled) {
+    if (Date.now() > downstreamSettleDeadline) {
+      throw new Error("KI downstream drain did not settle before the bounded settle deadline");
+    }
+    await wait(50);
+  }
+  if (downstreamOutcome.settled.outcome !== "fulfilled") {
+    throw new Error(`KI downstream drain rejected: ${JSON.stringify(safeDownstreamErrorProjection(downstreamOutcome.settled.error))}`);
+  }
+  const downstreamReport = downstreamOutcome.settled.value;
   assert(downstreamReport.discoveryTasks === 100, `duplicate/reorder must add no logical discovery work, saw ${downstreamReport.discoveryTasks}`);
   assert(downstreamReport.stableDomains === 1000, `exactly 1000 stable domains must be aggregated, saw ${downstreamReport.stableDomains}`);
   assert(downstreamReport.leadTasks === 1000, `exactly 1000 lead tasks must be registered, saw ${downstreamReport.leadTasks}`);
@@ -1728,6 +1771,7 @@ try {
       tempRoot = null;
     },
   };
+  diagnostics.downstreamOutcome = !downstreamOutcome.started ? "not-started" : (downstreamOutcome.settled ? downstreamOutcome.settled.outcome : "pending");
   for (const step of CLEANUP_ORDER) {
     if (cleanupError) {
       diagnostics.cleanupStepsDone.push(`${step}:skipped`);
@@ -1741,6 +1785,7 @@ try {
       diagnostics.cleanupStepsDone.push(`${step}:failed`);
     }
   }
+  diagnostics.downstreamCleanup = harnessCloseState.result?.downstreamCleanup ?? null;
   if (mainError) diagnostics.mainError = String(mainError?.message || mainError);
   if (cleanupError) diagnostics.cleanupError = String(cleanupError?.message || cleanupError);
   diagnostics.consoleErrors = consoleErrors.length;
