@@ -72,9 +72,9 @@ const SUBSTITUTE_LEDGER = [
   },
   {
     boundary: "authentication",
-    actual: "installed Neon Auth server client against deterministic loopback /get-session",
-    mayProve: "actual auth-client call and owner propagation/denial branches",
-    mustNotClaim: "live Neon Auth availability, cookie cryptography, external session security",
+    actual: "installed Neon Auth server client and /runs middleware against deterministic loopback /get-session, with one CDP-seeded opaque local session token",
+    mayProve: "actual auth-client and middleware calls, protected-workspace routing, cookie transport, and owner propagation/denial branches",
+    mustNotClaim: "live Neon Auth availability, external token issuance or validation, credential verification, cookie-cryptography assurance, or external session security",
   },
   {
     boundary: "backend-database",
@@ -987,7 +987,7 @@ try {
     if (!getResponse.ok) return { status: getResponse.status };
     const envelope = await getResponse.json();
     const research = envelope.research || envelope;
-    const items = (research.selection && research.selection.items) || [];
+    const items = Array.isArray(research.selection) ? research.selection : [];
     const mutation = items.map((item) => item.sourceKind === "calculated"
       ? { sourceKind: "calculated", sourceKeywordId: item.sourceKeywordId, keyword: item.keyword }
       : { sourceKind: "manual", keyword: item.keyword });
@@ -1008,8 +1008,12 @@ try {
   await waitFor(cdp, "document.querySelector('[data-surface=\"surface:keyword-table\"] tbody tr')", "reloaded dashboard after conflict", 30000);
   await swapOneSelectionItemViaUi();
   await saveSelectionViaUi();
-  const savedEntries = (await netlogOf(cdp)).filter((entry) => entry.method === "PUT" && entry.url.endsWith("/selection") && entry.responseStatus === 200);
-  assert(savedEntries.length === 1, `exactly one successful final CAS save is permitted, saw ${savedEntries.length}`);
+  const successfulSelectionEntries = (await netlogOf(cdp)).filter((entry) => entry.method === "PUT" && entry.url.endsWith("/selection") && entry.responseStatus === 200);
+  assert(successfulSelectionEntries.length === 2, `exactly two successful selection saves are permitted (one revision-advance plus one final CAS), saw ${successfulSelectionEntries.length}`);
+  const advanceEntries = successfulSelectionEntries.filter((entry) => entry.requestBody?.expectedRevision === 1);
+  assert(advanceEntries.length === 1, `exactly one expected-revision-1 revision-advance save is permitted, saw ${advanceEntries.length}`);
+  const savedEntries = successfulSelectionEntries.filter((entry) => entry.requestBody?.expectedRevision === 2);
+  assert(savedEntries.length === 1, `exactly one expected-revision-2 final CAS save is permitted, saw ${savedEntries.length}`);
   const savedBody = savedEntries[0].requestBody || {};
   assert(Array.isArray(savedBody.items) && savedBody.items.length === 100, "the saved draft must carry exactly 100 valid items");
   const postSelectionSnapshot = await harness.readDurableState();
@@ -1024,6 +1028,23 @@ try {
   };
   assert(captured.selection.expectedRevisionSent === 2, "the final CAS must target the next revision");
   activate("W6-FLOW-07", `selection-cas:${researchId}:1->3:409x1:100`);
+
+  const sessionAuthFloor = harness.trace().length;
+  const sessionCookieResult = await cdp.send("Network.setCookie", {
+    name: harness.browserSessionCookie.name,
+    value: harness.browserSessionCookie.value,
+    url: baseUrl,
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "Lax"
+  });
+  assert(sessionCookieResult.success === true, "the CDP session-cookie installation must report success");
+  const installedSessionCookies = (await cdp.send("Network.getCookies", { urls: [baseUrl] })).cookies.filter(
+    (cookie) => cookie.name === harness.browserSessionCookie.name
+  );
+  assert(installedSessionCookies.length === 1, "exactly one Neon session cookie must be installed for the protected navigation");
+  assert(installedSessionCookies[0].secure === true && installedSessionCookies[0].httpOnly === true, "the installed session cookie must remain flagged secure and httpOnly");
 
   const abortDone = armRunsResponseAbort();
   await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:selection-review\"] button')].find((node) => node.textContent.includes('Finalize'))");
@@ -1055,6 +1076,10 @@ try {
   const expectedRoute = `/runs/${encodeURIComponent(runId)}`;
   await waitFor(cdp, `location.pathname === ${JSON.stringify(expectedRoute)}`, "run workspace navigation");
   await waitFor(cdp, "document.querySelectorAll('input[aria-label^=\"Query \"]').length === 100", "run workspace query rows", 30000);
+  const protectedWorkspaceAuthEvents = harness.trace().slice(sessionAuthFloor).filter(
+    (event) => event.kind === "auth" && event.op === "get-session" && event.mode === "owner-a" && event.status === 200
+  );
+  assert(protectedWorkspaceAuthEvents.length > 0, "the protected run workspace must be served through an owner-a session lookup after the CDP cookie installation");
   const statusUrlPathname = new URL(handoffEnvelope.statusUrl, baseUrl).pathname;
   assert(statusUrlPathname !== expectedRoute, "the handoff statusUrl must be distinct from the destination route");
   assert(documentUrls.every((url) => new URL(url, baseUrl).pathname !== statusUrlPathname), "Chrome must never navigate to the handoff statusUrl");
@@ -1244,6 +1269,20 @@ try {
   activate("W6-FLOW-13", `snapshot-immutable:${runId}:restart-B:deep-equal`);
 
   const ownerBaseline = await harness.readDurableState();
+  const neonCookiesBeforeSwitch = (await cdp.send("Network.getCookies", { urls: [baseUrl] })).cookies.filter(
+    (cookie) => cookie.name.startsWith("__Secure-neon-auth.")
+  );
+  assert(arrayEqual(
+    neonCookiesBeforeSwitch.map((cookie) => cookie.name).sort(),
+    ["__Secure-neon-auth.local.session_data", "__Secure-neon-auth.session_token"]
+  ), "before the owner switch the browser must hold exactly the Neon session token and local session-data cookies");
+  for (const cookie of neonCookiesBeforeSwitch) {
+    await cdp.send("Network.deleteCookies", { name: cookie.name, url: baseUrl });
+  }
+  const neonCookiesAfterSwitch = (await cdp.send("Network.getCookies", { urls: [baseUrl] })).cookies.filter(
+    (cookie) => cookie.name.startsWith("__Secure-neon-auth.")
+  );
+  assert(neonCookiesAfterSwitch.length === 0, "every Neon cookie must be deleted before the owner-B partition so cached session data cannot mask the denial branches");
   harness.setAuthOwner(harness.otherOwnerId);
   await restartNextServer();
   await navigate(cdp, `${baseUrl}${researchPath}`);
