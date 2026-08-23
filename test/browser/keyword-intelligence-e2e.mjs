@@ -1268,7 +1268,8 @@ try {
       return (event.messageTypes || []).some((type) => String(type).startsWith("domain"));
     });
     if (downstreamOutcome.settled?.outcome === "rejected") {
-      throw new Error(`KI downstream drain rejected before first domain-check emission: ${JSON.stringify(safeDownstreamErrorProjection(downstreamOutcome.settled.error))}`);
+      const downstreamRejectDiagnostics = await harness.readDownstreamDiagnostics();
+      throw new Error(`KI downstream drain rejected before first domain-check emission: ${JSON.stringify({ error: safeDownstreamErrorProjection(downstreamOutcome.settled.error), diagnostics: downstreamRejectDiagnostics })}`);
     }
     const downstreamFailureEvent = downstreamEvents.find((event) => event.kind === "downstream-message" && event.op === "message-failed");
     if (downstreamFailureEvent) {
