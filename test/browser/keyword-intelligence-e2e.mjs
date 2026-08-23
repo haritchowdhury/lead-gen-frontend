@@ -462,7 +462,15 @@ const consoleErrors = [];
 const exceptionThrown = [];
 const peakRssKb = { build: 0, next: 0, chrome: 0 };
 const captured = {};
-const fetchIntervention = { enabled: false, aborted: false, abortError: null, abortErrorStage: null };
+const fetchIntervention = {
+  enabled: false,
+  aborted: false,
+  abortError: null,
+  abortErrorStage: null,
+  responseStatus: null,
+  requestIdentity: null,
+  durableHandoff: null,
+};
 
 const appendLog = (name, chunk) => {
   if (!tempRoot) return;
@@ -638,13 +646,16 @@ const netlogCrossCheck = async () => {
   return entries;
 };
 
-const waitForDurableHandoffCommit = async () => {
+const waitForDurableHandoffCommit = async ({ clientRequestId, expectedSelectionRevision }) => {
   const started = Date.now();
   for (;;) {
-    const committed = harness.trace().some((event) => event.kind === "http" && event.op === "request" && event.method === "POST" && event.path.endsWith("/runs"));
-    if (committed) {
-      const snapshot = await harness.readDurableState();
-      if (snapshot.run && snapshot.run.queryCount === 100) return snapshot;
+    const snapshot = await harness.readDurableState();
+    if (
+      snapshot.handoff?.clientRequestId === clientRequestId &&
+      snapshot.handoff?.selectionRevision === expectedSelectionRevision &&
+      snapshot.run?.queryCount === 100
+    ) {
+      return snapshot;
     }
     if (Date.now() - started > 30000) throw new Error("timed out waiting for the committed backend handoff during the response-stage pause");
     await wait(50);
@@ -661,8 +672,20 @@ const armRunsResponseAbort = async () => {
     const url = params.request?.url || "";
     if (!url.endsWith("/runs") || params.request?.method !== "POST" || params.responseStatusCode === undefined) return;
     fetchIntervention.aborted = true;
+    fetchIntervention.responseStatus = params.responseStatusCode;
     try {
-      await waitForDurableHandoffCommit();
+      const requestBody = JSON.parse(params.request.postData || "");
+      if (
+        typeof requestBody?.clientRequestId !== "string" ||
+        !Number.isSafeInteger(requestBody?.expectedSelectionRevision)
+      ) {
+        throw new Error("the intercepted handoff request identity is invalid");
+      }
+      fetchIntervention.requestIdentity = {
+        clientRequestId: requestBody.clientRequestId,
+        expectedSelectionRevision: requestBody.expectedSelectionRevision,
+      };
+      fetchIntervention.durableHandoff = await waitForDurableHandoffCommit(fetchIntervention.requestIdentity);
     } catch (error) {
       fetchIntervention.abortError = error;
       fetchIntervention.abortErrorStage = "durable-handoff-commit";
@@ -1077,11 +1100,14 @@ try {
   const firstPost = abortedEntry.requestBody || {};
   assert(typeof firstPost.clientRequestId === "string" && firstPost.clientRequestId.length > 0, "the first runs POST must carry a client request id");
   assert(firstPost.expectedSelectionRevision === 3, "the first runs POST must use the saved revision");
+  assert(fetchIntervention.requestIdentity?.clientRequestId === firstPost.clientRequestId, "the intercepted handoff identity must match the browser request");
+  assert(fetchIntervention.requestIdentity?.expectedSelectionRevision === firstPost.expectedSelectionRevision, "the intercepted handoff revision must match the browser request");
   await waitFor(cdp, "document.body.innerText.includes('didn') && document.body.innerText.includes('Retry')", "retry_required banner", 30000);
   const abortedBackendEvents = harness.trace().filter((event) => event.kind === "http" && event.op === "request" && event.method === "POST" && event.path.endsWith("/runs"));
-  assert(abortedBackendEvents.length >= 1, "the aborted request must have a matching committed backend trace");
-  const duringAbortSnapshot = await harness.readDurableState();
-  assert(duringAbortSnapshot.run && duringAbortSnapshot.run.queryCount === 100, "the aborted handoff must already be durably committed with 100 run queries");
+  const duringAbortSnapshot = fetchIntervention.durableHandoff;
+  assert(duringAbortSnapshot?.handoff?.clientRequestId === firstPost.clientRequestId, "the aborted handoff must be proven by the durable client request id");
+  assert(duringAbortSnapshot?.handoff?.selectionRevision === firstPost.expectedSelectionRevision, "the aborted handoff must be proven by the durable selection revision");
+  assert(duringAbortSnapshot?.run?.queryCount === 100, "the aborted handoff must already be durably committed with 100 run queries");
   await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:selection-review\"] button')].find((node) => node.textContent.trim() === 'Retry')");
   const successEntry = await waitForNetlog((entry) => /\/runs$/.test(entry.url) && entry.method === "POST" && entry.responseStatus === 200 && entry.responseBody, "successful retry runs POST");
   const retryPost = successEntry.requestBody || {};
@@ -1122,7 +1148,9 @@ try {
     firstSelectionRevision: firstPost.expectedSelectionRevision,
     retrySelectionRevision: retryPost.expectedSelectionRevision,
     durableRunCount: durableHandoff.run ? 1 : 0,
-    abortedBackendTrace: true,
+    abortedBackendTrace: abortedBackendEvents.length > 0,
+    interceptedResponseStatus: fetchIntervention.responseStatus,
+    durableSignal: true,
   };
   activate("W6-NAV-02", `nav-retry:${firstPost.clientRequestId}:aborted-then-same-run`);
   captured.navStatusUrl = { statusUrl: handoffEnvelope.statusUrl, statusUrlPathname, destination: expectedRoute, documentNavigations: [...documentUrls] };
@@ -1265,7 +1293,7 @@ try {
     const downstreamEvents = harness.trace().slice(downstreamFloor);
     const downstreamDomainEvent = downstreamEvents.find((event) => {
       if (event.kind !== "sqs") return false;
-      return (event.messageTypes || []).some((type) => String(type).startsWith("domain"));
+      return (event.messageTypes || []).includes("aggregation.check");
     });
     if (downstreamOutcome.settled?.outcome === "rejected") {
       const downstreamRejectDiagnostics = await harness.readDownstreamDiagnostics();
