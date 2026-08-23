@@ -462,7 +462,7 @@ const consoleErrors = [];
 const exceptionThrown = [];
 const peakRssKb = { build: 0, next: 0, chrome: 0 };
 const captured = {};
-const fetchIntervention = { enabled: false, aborted: false, abortError: null };
+const fetchIntervention = { enabled: false, aborted: false, abortError: null, abortErrorStage: null };
 
 const appendLog = (name, chunk) => {
   if (!tempRoot) return;
@@ -663,9 +663,15 @@ const armRunsResponseAbort = async () => {
     fetchIntervention.aborted = true;
     try {
       await waitForDurableHandoffCommit();
+    } catch (error) {
+      fetchIntervention.abortError = error;
+      fetchIntervention.abortErrorStage = "durable-handoff-commit";
+    }
+    try {
       await cdp.send("Fetch.failRequest", { requestId: params.requestId, errorReason: "Failed" });
     } catch (error) {
       fetchIntervention.abortError = error;
+      fetchIntervention.abortErrorStage = "fetch-fail-request";
     }
     try {
       await cdp.send("Fetch.disable");
@@ -1066,7 +1072,7 @@ try {
       throw new Error("the W6-NAV-02 response-stage pause never fired for the first runs POST");
     }),
   ]);
-  assert(fetchIntervention.abortError === null, "the response-stage abort must complete cleanly");
+  assert(fetchIntervention.abortError === null, `the response-stage abort must complete cleanly: ${fetchIntervention.abortErrorStage}/${JSON.stringify(safeDownstreamErrorProjection(fetchIntervention.abortError))}`);
   const abortedEntry = await waitForNetlog((entry) => /\/runs$/.test(entry.url) && entry.method === "POST" && entry.responseStatus === -1, "aborted first runs POST");
   const firstPost = abortedEntry.requestBody || {};
   assert(typeof firstPost.clientRequestId === "string" && firstPost.clientRequestId.length > 0, "the first runs POST must carry a client request id");
@@ -1250,22 +1256,47 @@ try {
     (error) => { downstreamOutcome.settled = { outcome: "rejected", error }; },
   );
   const downstreamWaitStartedAt = Date.now();
+  const downstreamNoProgressLimitMs = 120000;
+  const downstreamAbsoluteLimitMs = (100 * 30000) + 600000;
+  let downstreamLastProgressAt = downstreamWaitStartedAt;
+  let downstreamLifecycleCount = 0;
+  let downstreamCompletedCount = 0;
   for (;;) {
-    const downstreamDomainEvent = harness.trace().slice(downstreamFloor).find((event) => {
+    const downstreamEvents = harness.trace().slice(downstreamFloor);
+    const downstreamDomainEvent = downstreamEvents.find((event) => {
       if (event.kind !== "sqs") return false;
       return (event.messageTypes || []).some((type) => String(type).startsWith("domain"));
     });
-    if (downstreamDomainEvent) break;
     if (downstreamOutcome.settled?.outcome === "rejected") {
       throw new Error(`KI downstream drain rejected before first domain-check emission: ${JSON.stringify(safeDownstreamErrorProjection(downstreamOutcome.settled.error))}`);
     }
-    const downstreamFailureEvent = harness.trace().slice(downstreamFloor).find((event) => event.kind === "downstream-message" && event.op === "message-failed");
+    const downstreamFailureEvent = downstreamEvents.find((event) => event.kind === "downstream-message" && event.op === "message-failed");
     if (downstreamFailureEvent) {
       throw new Error(`KI downstream drain message-failed before first domain-check emission: ${JSON.stringify({ name: downstreamFailureEvent.errorName, code: downstreamFailureEvent.errorCode, frame: downstreamFailureEvent.errorFrame })}`);
     }
-    if (Date.now() - downstreamWaitStartedAt > 120000) {
-      const downstreamDeadlineDiagnostics = await harness.readDownstreamDiagnostics();
-      throw new Error(`KI downstream wait deadline exceeded after 120000 ms: ${JSON.stringify(downstreamDeadlineDiagnostics)}`);
+    const lifecycleEvents = downstreamEvents.filter((event) => event.kind === "downstream-message" && (event.op === "message-start" || event.op === "message-complete"));
+    if (lifecycleEvents.length > downstreamLifecycleCount) {
+      downstreamLifecycleCount = lifecycleEvents.length;
+      downstreamCompletedCount = lifecycleEvents.filter((event) => event.op === "message-complete").length;
+      downstreamLastProgressAt = Date.now();
+    }
+    const downstreamElapsedMs = Date.now() - downstreamWaitStartedAt;
+    diagnostics.downstreamProgress = {
+      elapsedMs: downstreamElapsedMs,
+      lifecycleEvents: downstreamLifecycleCount,
+      completedMessages: downstreamCompletedCount,
+      completedMessagesPerSecond: downstreamElapsedMs > 0
+        ? Number((downstreamCompletedCount * 1000 / downstreamElapsedMs).toFixed(4))
+        : 0,
+    };
+    if (downstreamDomainEvent) break;
+    if (Date.now() - downstreamLastProgressAt > downstreamNoProgressLimitMs) {
+      const downstreamStallDiagnostics = await harness.readDownstreamDiagnostics();
+      throw new Error(`KI downstream made no lifecycle progress for ${downstreamNoProgressLimitMs} ms: ${JSON.stringify({ progress: diagnostics.downstreamProgress, diagnostics: downstreamStallDiagnostics })}`);
+    }
+    if (downstreamElapsedMs > downstreamAbsoluteLimitMs) {
+      const downstreamCeilingDiagnostics = await harness.readDownstreamDiagnostics();
+      throw new Error(`KI downstream exceeded the ${downstreamAbsoluteLimitMs} ms absolute safety ceiling while still progressing: ${JSON.stringify({ progress: diagnostics.downstreamProgress, diagnostics: downstreamCeilingDiagnostics })}`);
     }
     await wait(50);
   }
