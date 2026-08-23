@@ -1333,10 +1333,34 @@ try {
   assert(readinessSample.discovery.taskCount === 100 && readinessSample.discovery.terminalCount >= 1 && readinessSample.discovery.terminalCount < 100, "the domain-check fault point must sit inside a nonempty partially terminal discovery stage");
   await harness.injectCapturedDefect("duplicate-next-domain-check-message");
   await harness.injectCapturedDefect("reorder-pending-domain-check-messages");
-  const downstreamSettleDeadline = Date.now() + 120000;
   while (!downstreamOutcome.settled) {
-    if (Date.now() > downstreamSettleDeadline) {
-      throw new Error("KI downstream drain did not settle before the bounded settle deadline");
+    const downstreamEvents = harness.trace().slice(downstreamFloor);
+    const downstreamFailureEvent = downstreamEvents.find((event) => event.kind === "downstream-message" && event.op === "message-failed");
+    if (downstreamFailureEvent) {
+      throw new Error(`KI downstream drain message-failed after first domain-check emission: ${JSON.stringify({ name: downstreamFailureEvent.errorName, code: downstreamFailureEvent.errorCode, frame: downstreamFailureEvent.errorFrame })}`);
+    }
+    const lifecycleEvents = downstreamEvents.filter((event) => event.kind === "downstream-message" && (event.op === "message-start" || event.op === "message-complete"));
+    if (lifecycleEvents.length > downstreamLifecycleCount) {
+      downstreamLifecycleCount = lifecycleEvents.length;
+      downstreamCompletedCount = lifecycleEvents.filter((event) => event.op === "message-complete").length;
+      downstreamLastProgressAt = Date.now();
+    }
+    const downstreamElapsedMs = Date.now() - downstreamWaitStartedAt;
+    diagnostics.downstreamProgress = {
+      elapsedMs: downstreamElapsedMs,
+      lifecycleEvents: downstreamLifecycleCount,
+      completedMessages: downstreamCompletedCount,
+      completedMessagesPerSecond: downstreamElapsedMs > 0
+        ? Number((downstreamCompletedCount * 1000 / downstreamElapsedMs).toFixed(4))
+        : 0,
+    };
+    if (Date.now() - downstreamLastProgressAt > downstreamNoProgressLimitMs) {
+      const downstreamStallDiagnostics = await harness.readDownstreamDiagnostics();
+      throw new Error(`KI downstream made no lifecycle progress for ${downstreamNoProgressLimitMs} ms after first domain-check emission: ${JSON.stringify({ progress: diagnostics.downstreamProgress, diagnostics: downstreamStallDiagnostics })}`);
+    }
+    if (downstreamElapsedMs > downstreamAbsoluteLimitMs) {
+      const downstreamCeilingDiagnostics = await harness.readDownstreamDiagnostics();
+      throw new Error(`KI downstream exceeded the ${downstreamAbsoluteLimitMs} ms absolute safety ceiling after first domain-check emission: ${JSON.stringify({ progress: diagnostics.downstreamProgress, diagnostics: downstreamCeilingDiagnostics })}`);
     }
     await wait(50);
   }
