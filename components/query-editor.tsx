@@ -86,7 +86,7 @@ export function QueryEditor({
       clientKey,
       categoryIndex,
       sequence: current.length,
-      query: "site:myshopify.com/products ",
+      query: "",
       source: "user_added",
       validationState: "pending",
       rejectionReason: null,
@@ -121,10 +121,9 @@ export function QueryEditor({
     let valid = true;
     const checkedRows = rows.map((row) => {
       counts.set(row.categoryIndex, (counts.get(row.categoryIndex) || 0) + 1);
-      const normalized = row.query.trim().replace(/\s+/gu, " ").toLowerCase();
-      const localError = normalized.startsWith("site:myshopify.com/products ")
+      const localError = row.query.trim()
         ? undefined
-        : "Use site:myshopify.com/products followed by a product phrase.";
+        : "Enter a query.";
       if (localError) valid = false;
       return { ...row, localError };
     });
@@ -132,7 +131,7 @@ export function QueryEditor({
     for (const category of querySet?.categories || []) {
       if (!counts.get(category.categoryIndex)) valid = false;
     }
-    if (!valid) setError("Every category needs at least one correctly formatted query.");
+    if (!valid) setError("Every selected keyword needs one non-empty query.");
     return valid;
   }
 
@@ -272,7 +271,7 @@ export function QueryEditor({
               </button>
             </div>
             <p className="field-help">
-              Edit the product phrase while keeping the Shopify search prefix.
+              Enter any Google query. Generated Shopify scope can be edited or removed.
             </p>
           </div>
         ))}

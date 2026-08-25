@@ -472,7 +472,7 @@ function buildScatterConfig(colors: Palette, rows: KeywordRow[]): ChartConfigura
       datasets: [
         {
           data: pts.map((r): ScatterPoint => ({
-            x: r.competition,
+            x: r.competition as number,
             y: r.opportunityScore as number,
             _kw: r.keyword,
             _vol: r.searchVolume,

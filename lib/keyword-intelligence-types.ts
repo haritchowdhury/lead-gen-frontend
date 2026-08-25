@@ -26,7 +26,7 @@ export type ClusterRow = {
   recommendedForStoreDiscovery: boolean;
 };
 
-export type KeywordCompetitionLevel = "LOW" | "MEDIUM" | "HIGH";
+export type KeywordCompetitionLevel = string;
 
 export type KeywordFacets = {
   audience: string[];
@@ -42,11 +42,7 @@ export type KeywordLane =
   | "store_discovery"
   | "category_discovery";
 
-export type KeywordMainIntent =
-  | "transactional"
-  | "commercial"
-  | "informational"
-  | "navigational";
+export type KeywordMainIntent = string;
 
 export type KeywordMarket = {
   code: "US" | "GB" | "CA" | "AU" | "NZ" | "DE" | "FR" | "IN" | "AE";
@@ -59,10 +55,10 @@ export type KeywordMarket = {
 export type KeywordMetricSnapshot = {
   searchVolume: number;
   cpc: number | null;
-  competition: number;
+  competition: number | null;
   competitionLevel: KeywordCompetitionLevel | null;
   keywordDifficulty: number | null;
-  mainIntent: KeywordMainIntent;
+  mainIntent: KeywordMainIntent | null;
   commercialIntent: number;
   monthlyHistory: MonthlyHistoryPoint[];
   trendSlope: number;
@@ -100,10 +96,10 @@ export type KeywordRow = {
   sourceSeeds: string[];
   searchVolume: number;
   cpc: number | null;
-  competition: number;
+  competition: number | null;
   competitionLevel: KeywordCompetitionLevel | null;
   keywordDifficulty: number | null;
-  mainIntent: KeywordMainIntent;
+  mainIntent: KeywordMainIntent | null;
   commercialIntent: number;
   monthlyHistory: MonthlyHistoryPoint[];
   trendSlope: number;
@@ -138,10 +134,10 @@ export type MarketMetric = {
   languageName: string;
   searchVolume: number;
   cpc: number | null;
-  competition: number;
-  competitionLevel: KeywordCompetitionLevel;
+  competition: number | null;
+  competitionLevel: KeywordCompetitionLevel | null;
   keywordDifficulty: number | null;
-  mainIntent: KeywordMainIntent;
+  mainIntent: KeywordMainIntent | null;
   commercialIntent: number;
   monthlyHistory: MonthlyHistoryPoint[];
   trendSlope: number;

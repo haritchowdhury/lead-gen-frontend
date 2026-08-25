@@ -40,8 +40,6 @@ const LANES = [
   "store_discovery",
   "category_discovery",
 ] as const;
-const COMPETITION_LEVELS = ["LOW", "MEDIUM", "HIGH"] as const;
-const MAIN_INTENTS = ["transactional", "commercial", "informational", "navigational"] as const;
 const RESEARCH_STATES = ["queued", "running", "completed", "failed"] as const;
 const STAGES = [
   "queued",
@@ -226,9 +224,7 @@ function monthlyHistoryPoint(value: unknown, path: string): MonthlyHistoryPoint 
 }
 
 function monthlyHistory(value: unknown, path: string): MonthlyHistoryPoint[] {
-  const parsed = array(value, path, monthlyHistoryPoint);
-  if (parsed.length < 15 || parsed.length > 102) throw new ApiPayloadError(path);
-  return parsed;
+  return array(value, path, monthlyHistoryPoint);
 }
 
 const MARKET_METRIC_KEYS = [
@@ -260,14 +256,10 @@ function marketMetric(value: unknown, path: string): MarketMetric {
     languageName: text(source.languageName, `${path}.languageName`),
     searchVolume: nonNegativeInteger(source.searchVolume, `${path}.searchVolume`),
     cpc: nullableNumber(source.cpc, `${path}.cpc`),
-    competition: number(source.competition, `${path}.competition`),
-    competitionLevel: oneOf(
-      source.competitionLevel,
-      COMPETITION_LEVELS,
-      `${path}.competitionLevel`,
-    ),
+    competition: nullableNumber(source.competition, `${path}.competition`),
+    competitionLevel: nullableText(source.competitionLevel, `${path}.competitionLevel`),
     keywordDifficulty: nullableScore(source.keywordDifficulty, `${path}.keywordDifficulty`),
-    mainIntent: oneOf(source.mainIntent, MAIN_INTENTS, `${path}.mainIntent`),
+    mainIntent: nullableText(source.mainIntent, `${path}.mainIntent`),
     commercialIntent: number(source.commercialIntent, `${path}.commercialIntent`),
     monthlyHistory: monthlyHistory(source.monthlyHistory, `${path}.monthlyHistory`),
     trendSlope: number(source.trendSlope, `${path}.trendSlope`),
@@ -350,12 +342,10 @@ function keywordRow(value: unknown, path: string): KeywordRow {
     sourceSeeds: stringArray(source.sourceSeeds, `${path}.sourceSeeds`),
     searchVolume: nonNegativeInteger(source.searchVolume, `${path}.searchVolume`),
     cpc: nullableNumber(source.cpc, `${path}.cpc`),
-    competition: number(source.competition, `${path}.competition`),
-    competitionLevel: source.competitionLevel === null
-      ? null
-      : oneOf(source.competitionLevel, COMPETITION_LEVELS, `${path}.competitionLevel`),
+    competition: nullableNumber(source.competition, `${path}.competition`),
+    competitionLevel: nullableText(source.competitionLevel, `${path}.competitionLevel`),
     keywordDifficulty: nullableScore(source.keywordDifficulty, `${path}.keywordDifficulty`),
-    mainIntent: oneOf(source.mainIntent, MAIN_INTENTS, `${path}.mainIntent`),
+    mainIntent: nullableText(source.mainIntent, `${path}.mainIntent`),
     commercialIntent: number(source.commercialIntent, `${path}.commercialIntent`),
     monthlyHistory: monthlyHistory(source.monthlyHistory, `${path}.monthlyHistory`),
     trendSlope: number(source.trendSlope, `${path}.trendSlope`),
@@ -586,12 +576,10 @@ function keywordMetricSnapshot(value: unknown, path: string): KeywordMetricSnaps
   return {
     searchVolume: nonNegativeInteger(source.searchVolume, `${path}.searchVolume`),
     cpc: nullableNumber(source.cpc, `${path}.cpc`),
-    competition: number(source.competition, `${path}.competition`),
-    competitionLevel: source.competitionLevel === null
-      ? null
-      : oneOf(source.competitionLevel, COMPETITION_LEVELS, `${path}.competitionLevel`),
+    competition: nullableNumber(source.competition, `${path}.competition`),
+    competitionLevel: nullableText(source.competitionLevel, `${path}.competitionLevel`),
     keywordDifficulty: nullableScore(source.keywordDifficulty, `${path}.keywordDifficulty`),
-    mainIntent: oneOf(source.mainIntent, MAIN_INTENTS, `${path}.mainIntent`),
+    mainIntent: nullableText(source.mainIntent, `${path}.mainIntent`),
     commercialIntent: number(source.commercialIntent, `${path}.commercialIntent`),
     monthlyHistory: monthlyHistory(source.monthlyHistory, `${path}.monthlyHistory`),
     trendSlope: number(source.trendSlope, `${path}.trendSlope`),
