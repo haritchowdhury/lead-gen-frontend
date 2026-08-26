@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import type { DataForSeoMarketTraffic } from "@/lib/api-types";
 import {
   ApiRequestError,
   errorMessage,
@@ -14,6 +15,7 @@ import {
 import { newClientRequestId } from "@/lib/keyword-intelligence-validation";
 import type {
   ClusterRow,
+  KeywordMarket,
   KeywordRow,
   ResearchResult,
   ResearchView,
@@ -49,8 +51,81 @@ import { KeywordTable } from "./keyword-table";
 import { ResearchStatus } from "./research-status";
 import { SelectionReview } from "./selection-review";
 import { SummaryCards } from "./summary-cards";
+import { TrafficMarketExplorer } from "../traffic-globe";
 
 import styles from "./keyword-dashboard.module.css";
+
+type CountryCode = KeywordMarket["code"];
+
+function keywordMarketTraffic(
+  code: CountryCode,
+  rows: KeywordRow[],
+): DataForSeoMarketTraffic {
+  const metrics = rows
+    .map((row) => row.marketMetrics[code])
+    .filter((metric) => metric !== null);
+  const activeCount = rows.filter(
+    (row) => row.mergedInto === null && row.marketMetrics[code] !== null,
+  ).length;
+  const volume = metrics.reduce((sum, metric) => sum + metric.searchVolume, 0);
+
+  return {
+    country_code: code,
+    estimated_google_search_traffic: volume,
+    organic_estimated_traffic: volume,
+    organic_keyword_count: activeCount,
+    paid_estimated_traffic: 0,
+    paid_keyword_count: 0,
+    featured_snippet_estimated_traffic: 0,
+    featured_snippet_keyword_count: 0,
+    local_pack_estimated_traffic: 0,
+    local_pack_keyword_count: 0,
+  };
+}
+
+function KeywordMarketGlobe({
+  markets,
+  rows,
+  selectedMarket,
+  onMarketChange,
+}: {
+  markets: KeywordMarket[];
+  rows: KeywordRow[];
+  selectedMarket: string;
+  onMarketChange: (market: "all" | CountryCode) => void;
+}) {
+  const globeMarkets = markets.map((market) => keywordMarketTraffic(market.code, rows));
+  const selectedCountry = selectedMarket === "all" ? null : selectedMarket as CountryCode;
+
+  return (
+    <section className={styles.marketGlobe} aria-label="Keyword demand by market">
+      <div className={styles.marketGlobeHead}>
+        <div>
+          <span className={styles.sectionKicker}>Market lens</span>
+          <h2>Demand around the world</h2>
+          <p>Select a highlighted country to focus every keyword metric and chart.</p>
+        </div>
+        <button
+          type="button"
+          className={`${styles.btn} ${selectedMarket === "all" ? styles.isActive : ""}`}
+          aria-pressed={selectedMarket === "all"}
+          onClick={() => onMarketChange("all")}
+        >
+          All markets
+        </button>
+      </div>
+      <div className={styles.marketGlobeStage}>
+        <TrafficMarketExplorer
+          markets={globeMarkets}
+          showcase
+          showcaseLabel="Available keyword markets"
+          selectedCountry={selectedCountry}
+          onCountryChange={(country) => onMarketChange(country ?? "all")}
+        />
+      </div>
+    </section>
+  );
+}
 
 const EMPTY_FILTER_OPTIONS: ReturnType<typeof filterOptionSources> = {
   seeds: [],
@@ -213,10 +288,6 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
 
   function handleDraftChange(next: SelectionItem[]) {
     setDraft(next);
-  }
-
-  function handleEditItem() {
-    reviewRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   async function handleSave() {
@@ -473,7 +544,7 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
       )}
 
       <section className={styles.researchHero} aria-label="Keyword research workspace">
-        <div className={styles.heroCopy}>
+        <div className={styles.heroCopy} data-surface="surface:summary-cards">
           <span className={styles.servicePill}>Research landscape ready</span>
           <div className={styles.heroEyebrow}>Your keyword opportunity</div>
           <h1>
@@ -562,6 +633,16 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
               >
                 {(charts) => (
                   <div className={styles.dashboardFlow}>
+                    <div className={styles.marketPulseGrid}>
+                      {charts.heatmapPanel}
+                      <KeywordMarketGlobe
+                        markets={result.markets}
+                        rows={result.keywords}
+                        selectedMarket={filter.market}
+                        onMarketChange={(market) => handleFilterChange({ market, page: 1 })}
+                      />
+                    </div>
+
                     {charts.seedPerformance}
 
                     <ClusterLandscape
@@ -585,7 +666,6 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
                         filter={filter}
                         selectionItemIds={selectionItemIds}
                         onToggleRow={handleToggleRow}
-                        onEditItem={handleEditItem}
                       />
                     </div>
                   </div>

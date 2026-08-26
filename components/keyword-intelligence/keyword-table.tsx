@@ -80,7 +80,6 @@ type KeywordTableProps = {
   filter: KeywordFilterState;
   selectionItemIds: ReadonlySet<string>;
   onToggleRow: (row: KeywordRow) => void;
-  onEditItem: (itemId: string) => void;
 };
 
 function isNum(value: unknown): value is number {
@@ -193,7 +192,6 @@ export function KeywordTable({
   filter,
   selectionItemIds,
   onToggleRow,
-  onEditItem,
 }: KeywordTableProps) {
   const [sortKey, setSortKey] = useState(filter.sortKey);
   const [sortDir, setSortDir] = useState(filter.sortDir);
@@ -230,7 +228,7 @@ export function KeywordTable({
             <span>
               {total} row{total === 1 ? "" : "s"}
             </span>
-            {" · Select a row to edit it, or add a new keyword set"}
+            {" · Use the first column to add or remove keywords from the form"}
           </div>
         </div>
       </div>
@@ -261,14 +259,13 @@ export function KeywordTable({
                   </th>
                 );
               })}
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {total === 0 ? (
               <tr>
                 <td
-                  colSpan={TABLE_COLS.length + 2}
+                  colSpan={TABLE_COLS.length + 1}
                   style={{ textAlign: "center", color: "var(--muted)", padding: "24px" }}
                 >
                   No keywords match the current filters.
@@ -305,19 +302,6 @@ export function KeywordTable({
                         {renderCell(row, col)}
                       </td>
                     ))}
-                    <td>
-                      <button
-                        type="button"
-                        className={styles.rowEdit}
-                        aria-label={`${isSelected ? "Update" : "Add"} ${row.keyword}`}
-                        onClick={() => {
-                          if (!isSelected) onToggleRow(row);
-                          onEditItem(row.itemId);
-                        }}
-                      >
-                        {isSelected ? "In form ✓" : "Add to form →"}
-                      </button>
-                    </td>
                   </tr>
                 );
               })

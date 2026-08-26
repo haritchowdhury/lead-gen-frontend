@@ -221,17 +221,19 @@ export function SummaryCards({ result, marketCode, children }: SummaryCardsProps
                   <div className={styles.overlapStatValue}>{fmtNum(overlapVolume)}</div>
                   <div className={styles.overlapStatNote}>Extra volume if every variant is added</div>
                 </div>
-                <div className={styles.overlapStat}>
-                  <div className={styles.overlapStatLabel}>Reported across variants</div>
-                  <div className={styles.overlapStatValue}>{fmtNum(reportedVolume)}</div>
-                  <div className={styles.overlapStatNote}>
-                    {variantCount} variants in {overlapGroups.length} groups
+                <div className={styles.overlapSupporting}>
+                  <div className={styles.overlapStat}>
+                    <div className={styles.overlapStatLabel}>Reported across variants</div>
+                    <div className={styles.overlapStatValue}>{fmtNum(reportedVolume)}</div>
+                    <div className={styles.overlapStatNote}>
+                      {variantCount} variants in {overlapGroups.length} groups
+                    </div>
                   </div>
-                </div>
-                <div className={styles.overlapStat}>
-                  <div className={styles.overlapStatLabel}>Likely shared-bucket volume</div>
-                  <div className={styles.overlapStatValue}>{fmtNum(sharedVolume)}</div>
-                  <div className={styles.overlapStatNote}>Counting each group once</div>
+                  <div className={styles.overlapStat}>
+                    <div className={styles.overlapStatLabel}>Likely shared-bucket volume</div>
+                    <div className={styles.overlapStatValue}>{fmtNum(sharedVolume)}</div>
+                    <div className={styles.overlapStatNote}>Counting each group once</div>
+                  </div>
                 </div>
               </div>
               <div

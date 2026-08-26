@@ -71,6 +71,7 @@ type ChartPanelsProps = {
 
 type ChartPanelSections = {
   seedPerformance: ReactNode;
+  heatmapPanel: ReactNode;
   overviewSignals: ReactNode;
   historyPanel: ReactNode;
   analysisCharts: ReactNode;
@@ -201,11 +202,6 @@ function lerpColor(a: string, b: string, t: number): string {
   return "rgb(" + r + "," + g + "," + bl + ")";
 }
 
-function shade(hex: string, f: number): string {
-  const c = hexToRgb(hex);
-  return "rgb(" + Math.round(c[0] * f) + "," + Math.round(c[1] * f) + "," + Math.round(c[2] * f) + ")";
-}
-
 function cssVar(root: HTMLElement | null, name: string): string {
   if (!root) return "";
   return getComputedStyle(root).getPropertyValue(name).trim();
@@ -264,8 +260,8 @@ function buildTopKeywordsConfig(colors: Palette, top: KeywordRow[]): ChartConfig
           label: "Search volume",
           data: top.map((r) => r.searchVolume || 0),
           backgroundColor: rgba(colors.primary, 0.78),
-          borderColor: colors.primary,
-          borderWidth: 1,
+          borderColor: "transparent",
+          borderWidth: 0,
           borderRadius: 4,
           xAxisID: "x",
           yAxisID: "yVolume",
@@ -556,8 +552,8 @@ function buildDoughnutConfig(
         {
           data: datasets.map((d) => d.value),
           backgroundColor: datasets.map((d) => d.color),
-          borderColor: cssVar(root, "--c-card") || "#ffffff",
-          borderWidth: 2,
+          borderColor: "transparent",
+          borderWidth: 0,
           hoverOffset: 6,
         },
       ],
@@ -712,7 +708,7 @@ function buildTreemapConfig(
     value: e.value,
     label: truncate(e.name, 20),
     count: e.count,
-    color: lerpColor(shade(colors.primary, 0.85), shade(colors.amber, 0.55), Math.max(0.1, Math.min(1, maxV ? e.value / maxV : 0.5))),
+    color: `hsl(83 48% ${88 - Math.max(0.1, Math.min(1, maxV ? e.value / maxV : 0.5)) * 24}%)`,
   }));
   const total = totalVolume(agg);
   const backgroundColor = (ctx: ScriptableContext<"treemap">) => {
@@ -732,15 +728,15 @@ function buildTreemapConfig(
           tree,
           key: "value",
           backgroundColor,
-          borderColor: cssVar(root, "--c-card") || "#ffffff",
-          borderWidth: 2,
-          spacing: 2,
+          borderColor: "transparent",
+          borderWidth: 0,
+          spacing: 4,
           labels: {
             display: true,
             align: "center",
             position: "middle",
-            color: "#ffffff",
-            font: { size: 11, weight: "bold" },
+            color: "#173a24",
+            font: { size: 10, weight: "600" },
             formatter: (ctx: ScriptableContext<"treemap">) => {
               const node = ctx.raw as TreemapNodeData;
               return node._data?.label ?? "";
@@ -1219,9 +1215,23 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
       </section>
   );
 
+  const heatmapPanel = (
+    <section className={styles.keywordHeatmap} aria-label="Keyword cluster heatmap">
+      <div className={styles.keywordHeatmapHead}>
+        <span className={styles.sectionKicker}>Demand map</span>
+        <h2>Keyword heatmap</h2>
+        <p>Cluster size reflects the share of filtered search demand.</p>
+      </div>
+      <div className={styles.keywordHeatmapChart}>
+        <canvas ref={treemapRef} data-surface="chart:treemap" />
+        <div className={emptyCls(hasData.treemap)}>No data</div>
+      </div>
+    </section>
+  );
+
   const analysisCharts = (
       <section className={styles.charts} aria-label="Charts">
-        <div className={`${styles.chartCard} ${styles.wide}`}>
+        <div className={`${styles.chartCard} ${styles.featureChart}`}>
           <h3
             className={`${styles.chartTitle} ${styles.tip}`}
             data-tip="Every active keyword is included. Columns use the left volume axis; the line uses seasonality-adjusted year-over-year momentum."
@@ -1279,18 +1289,6 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
           </div>
         </div>
 
-        <div className={`${styles.chartCard} ${styles.wide}`}>
-          <h3
-            className={`${styles.chartTitle} ${styles.tip}`}
-            data-tip="Relative share of filtered volume per cluster, laid out as a treemap"
-          >
-            Cluster volume treemap
-          </h3>
-          <div className={styles.chartWrap}>
-            <canvas ref={treemapRef} data-surface="chart:treemap" />
-            <div className={emptyCls(hasData.treemap)}>No data</div>
-          </div>
-        </div>
       </section>
   );
 
@@ -1306,7 +1304,7 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
           <span>Some charts could not be rendered. Reload the page to try again.</span>
         </div>
       )}
-      {children({ seedPerformance, overviewSignals, historyPanel, analysisCharts })}
+      {children({ seedPerformance, heatmapPanel, overviewSignals, historyPanel, analysisCharts })}
     </div>
   );
 }

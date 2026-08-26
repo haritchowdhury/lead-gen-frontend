@@ -534,14 +534,17 @@ test("VIS-KD visual-only dashboard composition and shared form contract", async 
     "utf8",
   );
 
-  assert.equal((page.match(/<h1>/gu) ?? []).length, 1, "page owns the sole dashboard h1");
-  assert.equal(dashboard.includes("<h1>"), false, "completed dashboard has no duplicate h1");
+  assert.equal((page.match(/<h1>/gu) ?? []).length, 0, "page delegates the dynamic hero to the dashboard");
+  assert.equal((dashboard.match(/<h1>/gu) ?? []).length, 1, "dashboard owns one dynamic hero h1");
 
   const compositionOrder = [
-    "className={styles.selectionStep}",
     'data-surface="surface:filter-bar"',
-    "{charts.seedPerformance}",
     'data-surface="surface:summary-cards"',
+    "className={styles.selectionStep}",
+    "className={styles.marketPulseGrid}",
+    "{charts.heatmapPanel}",
+    "<KeywordMarketGlobe",
+    "{charts.seedPerformance}",
     "<ClusterLandscape",
     "summary.marketOverview(charts.overviewSignals)",
     "{charts.historyPanel}",
@@ -553,19 +556,17 @@ test("VIS-KD visual-only dashboard composition and shared form contract", async 
 
   assert.equal(selection.includes("styles.kiDashboard"), false);
   assert.equal(table.includes("styles.kiDashboard"), false);
-  assert.match(selection, /run-form-card ds-card/u);
-  assert.match(selection, /className="form-heading-row"/u);
-  assert.equal(
-    selection.includes('className={`form-footer ${styles.selectionFooter}`}'),
-    true,
-  );
-  assert.match(selection, /button button-primary ds-button ds-button--primary/u);
-  assert.match(selection, /button button-secondary ds-button ds-button--secondary/u);
+  assert.match(selection, /styles\.seedCard/u);
+  assert.match(selection, /styles\.seedCardHead/u);
+  assert.match(selection, /styles\.seedFormFooter/u);
+  assert.match(selection, /styles\.primary/u);
+  assert.equal(table.includes("<th>Action</th>"), false);
+  assert.equal(table.includes("styles.rowEdit"), false);
 
-  for (const name of ["cards", "marketOverview", "overlapPanel"]) {
+  for (const name of ["marketOverview", "overlapPanel"]) {
     assert.match(summary, new RegExp(`\\b${name}\\b`, "u"));
   }
-  for (const name of ["seedPerformance", "overviewSignals", "historyPanel", "analysisCharts"]) {
+  for (const name of ["seedPerformance", "heatmapPanel", "overviewSignals", "historyPanel", "analysisCharts"]) {
     assert.match(charts, new RegExp(`\\b${name}\\b`, "u"));
   }
 
@@ -574,6 +575,8 @@ test("VIS-KD visual-only dashboard composition and shared form contract", async 
   }
   assert.match(css, /\.selectionStep\s*\{/u);
   assert.equal(css.includes("selectedKeywordHero"), false);
+  assert.match(css, /\.tableScroll\s*\{[^}]*overflow-x:\s*hidden/su);
+  assert.match(css, /\.chartCard\s*\{[^}]*border:\s*0/su);
 });
 
 // ---- KI-R5-S016 additive static registry lint (append-only, no certificate) ----
