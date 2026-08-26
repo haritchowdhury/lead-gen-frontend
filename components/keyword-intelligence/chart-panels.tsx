@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import {
   ArcElement,
@@ -335,8 +335,15 @@ function buildTopKeywordsConfig(colors: Palette, top: KeywordRow[]): ChartConfig
       scales: {
         x: {
           grid: { display: false },
-          ticks: { color: colors.text, autoSkip: false, maxRotation: 55, minRotation: 55, font: { size: 10 } },
-          title: { display: true, text: "Recommended keywords", color: colors.muted },
+          ticks: {
+            color: colors.text,
+            autoSkip: true,
+            maxTicksLimit: 16,
+            maxRotation: 40,
+            minRotation: 0,
+            font: { size: 9 },
+          },
+          title: { display: true, text: "Active keywords", color: colors.muted },
         },
         yVolume: {
           position: "left",
@@ -909,7 +916,7 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
     const agg = aggregateByCluster(active);
 
     const topRows = active
-      .filter((r) => r.recommended)
+      .slice()
       .sort((a, b) => (b.searchVolume || 0) - (a.searchVolume || 0));
     const clusterEntries = Object.keys(agg)
       .map((k) => ({ name: k, volume: agg[k].volume, count: agg[k].count }))
@@ -1077,11 +1084,11 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
 
   const topKeywordNote =
     datasets.topRows.length === 0
-      ? "No recommended keywords in the filtered set."
+      ? "No active keywords in the filtered set."
       : datasets.topRows.length +
-        " recommended keyword" +
+        " active keyword" +
         (datasets.topRows.length === 1 ? "" : "s") +
-        " left-to-right · columns show volume, line and dots show trend momentum.";
+        " · columns show volume; the line and dots show trend momentum.";
 
   const histogramNote = datasets.nulls
     ? datasets.nulls + " keyword(s) without an opportunity score are excluded"
@@ -1114,12 +1121,6 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
 
   const emptyCls = (present: boolean) =>
     present ? `${styles.chartEmpty} ${styles.hidden}` : styles.chartEmpty;
-
-  const topWrapStyle: CSSProperties = {
-    height: datasets.topRows.length ? "420px" : "380px",
-    width: "100%",
-    minWidth: datasets.topRows.length ? Math.max(100, datasets.topRows.length * 58) + "px" : undefined,
-  };
 
   const seedPerformance = (
       <section className={`${styles.decisionPanel} ${styles.seedAnalysis}`} aria-label="Seed phrase analysis">
@@ -1223,16 +1224,14 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
         <div className={`${styles.chartCard} ${styles.wide}`}>
           <h3
             className={`${styles.chartTitle} ${styles.tip}`}
-            data-tip="Every recommended keyword runs left-to-right along the horizontal axis. Columns use the left volume axis; the line uses seasonality-adjusted year-over-year momentum."
+            data-tip="Every active keyword is included. Columns use the left volume axis; the line uses seasonality-adjusted year-over-year momentum."
           >
-            Recommended Keywords · Search Volume and Trend
+            Active Keywords · Search Volume and Trend
           </h3>
           <div className={styles.chartSub}>{topKeywordNote}</div>
-          <div className={styles.tableScroll}>
-            <div className={`${styles.chartWrap} ${styles.tall}`} style={topWrapStyle}>
-              <canvas ref={topKeywordsRef} data-surface="chart:top-keywords" />
-              <div className={emptyCls(hasData.topKeywords)}>No recommended keywords</div>
-            </div>
+          <div className={`${styles.chartWrap} ${styles.topKeywordsChart}`}>
+            <canvas ref={topKeywordsRef} data-surface="chart:top-keywords" />
+            <div className={emptyCls(hasData.topKeywords)}>No active keywords</div>
           </div>
         </div>
 

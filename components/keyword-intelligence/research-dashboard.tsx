@@ -33,8 +33,11 @@ import {
   distinctKeywordRows,
   emptyKeywordFilterState,
   filterOptionSources,
+  fmtCpc,
+  fmtNum,
   getFiltered,
   nextTheme,
+  projectMarketRow,
   selectionDraftFromView,
   toggleSelectedItem,
 } from "@/lib/keyword-intelligence-view-model";
@@ -420,6 +423,19 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
   }
 
   const phase = dashboardPhase(view, null);
+  const heroRows = result.keywords
+    .map((row) => projectMarketRow(row, filter.market))
+    .filter((row) => !(row as KeywordRow & { _marketMissing?: boolean })._marketMissing);
+  const heroActiveRows = heroRows.filter((row) => row.mergedInto === null);
+  const heroCpcValues = heroActiveRows
+    .map((row) => row.cpc)
+    .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+  const heroAverageCpc = heroCpcValues.length
+    ? heroCpcValues.reduce((sum, value) => sum + value, 0) / heroCpcValues.length
+    : null;
+  const heroMarket = result.markets.find((market) => market.code === filter.market);
+  const heroMarketLabel =
+    filter.market === "all" ? "cumulative" : heroMarket?.name || filter.market;
 
   return (
     <section
@@ -428,50 +444,79 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
       data-surface="surface:research-dashboard"
       aria-label="Keyword research dashboard"
     >
-      <div className={styles.dashboardToolbar}>
-        <div>
-          <span className={styles.servicePill}>Keyword intelligence ready</span>
-          <div className={styles.tableMeta}>
-            {view.seeds.length} seed phrase{view.seeds.length === 1 ? "" : "s"} ·{" "}
-            {activeRowsIn.length} active keyword{activeRowsIn.length === 1 ? "" : "s"}
-          </div>
-        </div>
-        <div className={styles.headerActions}>
-          <button type="button" className={styles.btn} onClick={toggleTheme}>
-            {theme === "dark" ? "Standard contrast" : "Soft contrast"}
-          </button>
-          {activeRowsIn.length > 0 ? (
-            <a className={`${styles.btn} ${styles.primary}`} href={exportHref}>
-              Export CSV
-            </a>
-          ) : (
-            <span className={`${styles.btn} ${styles.primary}`} aria-disabled="true">
-              Export CSV
-            </span>
-          )}
-        </div>
-      </div>
-
       {phase !== "empty" && (
-        <div
-          ref={reviewRef}
-          className={styles.selectionStep}
-          data-surface="surface:selection-review"
-        >
-          <SelectionReview
-            view={view}
-            draft={draft}
-            conflicts={view.selectionConflicts}
-            saving={saving}
-            staleConflict={staleConflict}
-            onSave={handleSave}
-            onFinalize={handleFinalize}
-            finalizeState={finalizeState}
-            onRetryHandoff={handleRetryHandoff}
-            onDraftChange={handleDraftChange}
+        <div className={styles.filterDock} data-surface="surface:filter-bar">
+          <div className={styles.dashboardToolbar}>
+            <span className={styles.servicePill}>Keyword intelligence ready</span>
+            <div className={styles.headerActions}>
+              <button type="button" className={styles.btn} onClick={toggleTheme}>
+                {theme === "dark" ? "Standard contrast" : "Soft contrast"}
+              </button>
+              {activeRowsIn.length > 0 ? (
+                <a className={`${styles.btn} ${styles.primary}`} href={exportHref}>
+                  Export CSV
+                </a>
+              ) : (
+                <span className={`${styles.btn} ${styles.primary}`} aria-disabled="true">
+                  Export CSV
+                </span>
+              )}
+            </div>
+          </div>
+          <FilterBar
+            filter={filter}
+            options={options}
+            onChange={handleFilterChange}
+            onReset={resetFilters}
           />
         </div>
       )}
+
+      <section className={styles.researchHero} aria-label="Keyword research workspace">
+        <div className={styles.heroCopy}>
+          <span className={styles.servicePill}>Research landscape ready</span>
+          <div className={styles.heroEyebrow}>Your keyword opportunity</div>
+          <h1>
+            <span className={styles.heroHighlight}>
+              {fmtNum(result.summary.rawItemsCollected)} keywords
+            </span>{" "}
+            across {fmtNum(result.summary.clusters)} clusters.
+          </h1>
+          <p>
+            {fmtNum(result.summary.activeKeywords)} are active and{" "}
+            {fmtNum(result.summary.recommendedKeywords)} are recommended, representing{" "}
+            {fmtNum(cumulativeVolume(heroRows))} {heroMarketLabel} searches at an average CPC of{" "}
+            {fmtCpc(heroAverageCpc)}.
+          </p>
+          <div className={styles.heroBenefits}>
+            <span>{fmtNum(result.summary.activeKeywords)} active keywords</span>
+            <span>{fmtNum(result.summary.recommendedKeywords)} recommended</span>
+            <span>{fmtNum(result.summary.clusters)} focused clusters</span>
+          </div>
+          <div className={styles.heroOrbit} aria-hidden="true" />
+        </div>
+
+        {phase !== "empty" && (
+          <div
+            ref={reviewRef}
+            className={styles.selectionStep}
+            data-surface="surface:selection-review"
+          >
+            <SelectionReview
+              view={view}
+              draft={draft}
+              conflicts={view.selectionConflicts}
+              saving={saving}
+              staleConflict={staleConflict}
+              onSave={handleSave}
+              onFinalize={handleFinalize}
+              finalizeState={finalizeState}
+              onRetryHandoff={handleRetryHandoff}
+              onDraftChange={handleDraftChange}
+            />
+          </div>
+        )}
+      </section>
 
       {saveError && (
         <div className={styles.banner} role="alert">
@@ -497,15 +542,6 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
         </div>
       ) : (
         <>
-          <div data-surface="surface:filter-bar">
-            <FilterBar
-              filter={filter}
-              options={options}
-              onChange={handleFilterChange}
-              onReset={resetFilters}
-            />
-          </div>
-
           <div className={styles.marketContext} aria-live="polite">
             <span className={styles.marketContextDot} aria-hidden="true" />
             <span>
@@ -527,8 +563,6 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
                 {(charts) => (
                   <div className={styles.dashboardFlow}>
                     {charts.seedPerformance}
-
-                    <div data-surface="surface:summary-cards">{summary.cards}</div>
 
                     <ClusterLandscape
                       clusters={clusterRows}

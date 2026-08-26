@@ -583,7 +583,21 @@ function classifyForSelection(keyword: string, mainIntent: string | null): { lan
 }
 
 export function selectionDraftFromView(view: ResearchView): SelectionItem[] {
-  return view.selection.map(cloneSelectionItem);
+  const selection = view.selection.map(cloneSelectionItem);
+  if (view.selectionRevision !== 1 || view.state !== "completed" || !view.result) {
+    return selection;
+  }
+
+  const recommendedIds = new Set(
+    view.result.keywords
+      .filter((row) => row.mergedInto == null && row.recommended === true)
+      .map((row) => row.itemId),
+  );
+  return selection.filter(
+    (item) =>
+      item.sourceKind === "manual" ||
+      (item.sourceKeywordId !== null && recommendedIds.has(item.sourceKeywordId)),
+  );
 }
 
 export function toggleSelectedItem(draft: SelectionItem[], row: KeywordRow): SelectionItem[] {

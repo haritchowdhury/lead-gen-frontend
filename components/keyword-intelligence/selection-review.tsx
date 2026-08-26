@@ -211,17 +211,15 @@ export function SelectionReview({
 
   return (
     <section
-      className={`run-form-card ds-card ${styles.selectionPanel}`}
+      className={`${styles.seedCard} ${styles.selectionPanel}`}
       aria-label="Selection review"
     >
-      <div className="form-heading-row">
+      <div className={styles.seedCardHead}>
         <div>
-          <h2>Your selection</h2>
-          <div className={styles.tableMeta}>
-            {draft.length} of {SELECTION_ITEM_CAP} selected · edited here, saved to the
-            research, and locked by finalize
-          </div>
+          <div className={styles.dialogEyebrow}>Curate your shortlist</div>
+          <h2>Recommended keywords, ready for your final edit.</h2>
         </div>
+        <span className={styles.seedStep}>02</span>
       </div>
 
       {staleConflict && (
@@ -242,9 +240,9 @@ export function SelectionReview({
         </div>
       )}
 
-      <div className="field-label">
-        <strong>Selected keywords</strong>
-        <span>Rank · source · lane · facets</span>
+      <div className={styles.seedFieldLabel}>
+        <span>Recommended shortlist</span>
+        <small>Add, edit, or remove</small>
       </div>
 
       <div
@@ -257,49 +255,36 @@ export function SelectionReview({
             below.
           </div>
         ) : (
-          draft.map((item, index) => (
-            <div
+          draft.map((item) => (
+            <span
               key={item.itemId}
-              className={styles.selectedKeywordRow}
+              className={`${styles.researchChip} ${item.sourceKind === "manual" ? styles.isManual : ""}`}
+              title={`${item.sourceKind === "manual" ? "Manual" : "Recommended"} · ${laneLabel(item.lane)}${facetChips(item.facets).length ? ` · ${facetChips(item.facets).join(" · ")}` : ""}`}
             >
-              <span className={styles.selectedKeywordIndex}>
-                {index + 1}.
-              </span>
               <strong>{item.keyword}</strong>
-              <span className={`${styles.badge} ${item.sourceKind === "manual" ? styles.no : styles.rec}`}>
-                {item.sourceKind === "manual" ? "Manual" : "Calculated"}
-              </span>
-              <span className={styles.badge}>{laneLabel(item.lane)}</span>
-              {facetChips(item.facets).map((chip) => (
-                <span className={styles.badge} key={chip}>
-                  {chip}
-                </span>
-              ))}
-              <span className={styles.selectedKeywordActions}>
-                {item.sourceKind === "calculated" && (
-                  <button
-                    type="button"
-                    className={styles.chipEdit}
-                    title={`Update ${item.keyword}`}
-                    aria-label={`Update ${item.keyword}`}
-                    onClick={() => beginPhraseEdit(item)}
-                    disabled={controlsInert}
-                  >
-                    ✎
-                  </button>
-                )}
+              {item.sourceKind === "calculated" && (
                 <button
                   type="button"
-                  className={styles.chipDelete}
-                  title={`Remove ${item.keyword}`}
-                  aria-label={`Remove ${item.keyword}`}
-                  onClick={() => removeItem(item.itemId)}
+                  className={styles.chipEdit}
+                  title={`Update ${item.keyword}`}
+                  aria-label={`Update ${item.keyword}`}
+                  onClick={() => beginPhraseEdit(item)}
                   disabled={controlsInert}
                 >
-                  ×
+                  ✎
                 </button>
-              </span>
-            </div>
+              )}
+              <button
+                type="button"
+                className={styles.chipDelete}
+                title={`Remove ${item.keyword}`}
+                aria-label={`Remove ${item.keyword}`}
+                onClick={() => removeItem(item.itemId)}
+                disabled={controlsInert}
+              >
+                ×
+              </button>
+            </span>
           ))
         )}
       </div>
@@ -325,13 +310,18 @@ export function SelectionReview({
           disabled={controlsInert}
         />
         <button
-          className="button button-secondary ds-button ds-button--secondary"
+          className={styles.btn}
           type="button"
           onClick={addManualKeywords}
           disabled={controlsInert}
         >
           ＋ Add
         </button>
+      </div>
+
+      <div className={styles.seedFormMeta}>
+        <span>Saved to this research and locked when finalized.</span>
+        <strong>{draft.length} of {SELECTION_ITEM_CAP} selected</strong>
       </div>
 
       {conflicts.length > 0 && (
@@ -366,11 +356,11 @@ export function SelectionReview({
         </div>
       )}
 
-      <div className={`form-footer ${styles.selectionFooter}`}>
+      <div className={styles.seedFormFooter}>
         <p>Save persists this selection. Finalize locks it in and hands off to a run.</p>
         <div className={styles.keywordTools}>
           <button
-            className="button button-secondary ds-button ds-button--secondary"
+            className={styles.btn}
             type="button"
             disabled={saving || staleConflict || controlsInert}
             aria-busy={saving}
@@ -379,7 +369,7 @@ export function SelectionReview({
             {saving ? "Saving…" : "Save selection"}
           </button>
           <button
-            className="button button-primary ds-button ds-button--primary"
+            className={`${styles.btn} ${styles.primary}`}
             type="button"
             disabled={!gate.ok || saving || staleConflict || controlsInert}
             aria-busy={finalizeState === "handing-off"}

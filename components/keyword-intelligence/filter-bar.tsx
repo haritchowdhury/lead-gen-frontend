@@ -280,7 +280,7 @@ export function FilterBar({ filter, options, onChange, onReset }: FilterBarProps
           </select>
         </label>
 
-        <div className={styles.filter}>
+        <div className={`${styles.filter} ${styles.flagsFilter}`}>
           <span className={styles.tip} data-tip="Show keywords carrying any of the selected flags">
             Flags
           </span>

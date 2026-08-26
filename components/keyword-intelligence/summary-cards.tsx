@@ -1,6 +1,5 @@
 "use client";
 
-import { Fragment } from "react";
 import type { ReactNode } from "react";
 
 import type {
@@ -8,10 +7,7 @@ import type {
   ResearchResult,
 } from "@/lib/keyword-intelligence-types";
 import {
-  cumulativeVolume,
-  currentSummary,
   discoveryLane,
-  fmtCpc,
   fmtNum,
   laneLabel,
   projectMarketRow,
@@ -26,7 +22,6 @@ type SummaryCardsProps = {
 };
 
 type SummaryPanelSections = {
-  cards: ReactNode;
   marketOverview: (signals: ReactNode) => ReactNode;
   overlapPanel: ReactNode;
 };
@@ -153,58 +148,10 @@ function OverlapGroup({
 }
 
 export function SummaryCards({ result, marketCode, children }: SummaryCardsProps) {
-  const summary = currentSummary(result, marketCode);
   const marketRows = result.keywords
     .map((row) => projectMarketRow(row, marketCode))
     .filter((row) => !isMarketMissing(row));
   const active = marketRows.filter((row) => row.mergedInto === null);
-
-  const market = result.markets.find((entry) => entry.code === marketCode) ?? null;
-  const country = marketCode === "all" ? "cumulative" : market ? market.name : marketCode;
-
-  const funnelStages = [
-    {
-      label: "Raw collected",
-      value: summary.rawItemsCollected,
-      note: "API rows",
-    },
-    {
-      label: "With metrics",
-      value: summary.itemsWithMetrics,
-      note: "usable volume data",
-    },
-    {
-      label: "After intent filter",
-      value: summary.itemsWithMetrics - summary.informationalDropped,
-      note: `${summary.informationalDropped} informational removed`,
-    },
-    {
-      label: "Unique phrases",
-      value: summary.uniquePhrases,
-      note: "cross-seed repeats combined",
-    },
-    {
-      label: "Variant groups",
-      value: summary.variantGroups || active.length,
-      note: `${summary.dedupMerged} rows organised into canonicals`,
-    },
-    {
-      label: "Topic clusters",
-      value: summary.clusters,
-      note: "non-transitive market topics",
-    },
-    {
-      label: "Recommended",
-      value: summary.recommendedKeywords,
-      note: "passed score + flags",
-    },
-  ];
-
-  const volume = cumulativeVolume(marketRows);
-  const cpcValues = active.map((row) => row.cpc).filter(isNum);
-  const avgCpc = cpcValues.length
-    ? cpcValues.reduce((sum, value) => sum + value, 0) / cpcValues.length
-    : null;
 
   const segments = buildDiscoverySegments(active);
   const overlapGroups = buildOverlapGroups(marketRows);
@@ -226,65 +173,6 @@ export function SummaryCards({ result, marketCode, children }: SummaryCardsProps
     0,
   );
 
-  const cards = (
-      <section className={styles.cards} aria-label="Summary">
-        <div className={styles.card}>
-          <div
-            className={`${styles.cardLabel} ${styles.tip}`}
-            data-tip="Total keywords in the dataset, including merged duplicates"
-          >
-            Total keywords
-          </div>
-          <div className={styles.cardValue}>{fmtNum(summary.rawItemsCollected)}</div>
-        </div>
-        <div className={styles.card}>
-          <div
-            className={`${styles.cardLabel} ${styles.tip}`}
-            data-tip="Keywords that were not merged into a duplicate — the canonical research set"
-          >
-            Active keywords
-          </div>
-          <div className={styles.cardValue}>{fmtNum(summary.activeKeywords)}</div>
-        </div>
-        <div className={styles.card}>
-          <div
-            className={`${styles.cardLabel} ${styles.tip}`}
-            data-tip="Active keywords flagged as recommended by the scoring pipeline"
-          >
-            Recommended
-          </div>
-          <div className={styles.cardValue}>{fmtNum(summary.recommendedKeywords)}</div>
-        </div>
-        <div className={styles.card}>
-          <div
-            className={`${styles.cardLabel} ${styles.tip}`}
-            data-tip="Number of keyword clusters present in the filtered set"
-          >
-            Clusters
-          </div>
-          <div className={styles.cardValue}>{fmtNum(summary.clusters)}</div>
-        </div>
-        <div className={styles.card}>
-          <div
-            className={`${styles.cardLabel} ${styles.tip}`}
-            data-tip="Cumulative search volume across every distinct keyword phrase; exact cross-seed repeats are counted once"
-          >
-            {marketCode === "all" ? "Cumulative search volume" : `${country} search volume`}
-          </div>
-          <div className={styles.cardValue}>{fmtNum(volume)}</div>
-        </div>
-        <div className={styles.card}>
-          <div
-            className={`${styles.cardLabel} ${styles.tip}`}
-            data-tip="Average CPC across active keywords that have a CPC value"
-          >
-            {`Average CPC · ${country}`}
-          </div>
-          <div className={styles.cardValue}>{fmtCpc(avgCpc)}</div>
-        </div>
-      </section>
-  );
-
   const marketOverview = (signals: ReactNode) => (
       <section className={styles.overviewPackage} aria-label="Market overview">
         <div className={styles.overviewPackageHead}>
@@ -292,24 +180,6 @@ export function SummaryCards({ result, marketCode, children }: SummaryCardsProps
           <p>From collection quality to intent, recommendation, opportunity, and risk signals.</p>
         </div>
         <div className={styles.overviewFlow}>
-          <div className={`${styles.decisionPanel} ${styles.wide}`}>
-            <h2>Collection funnel</h2>
-            <div className={styles.panelNote}>
-              Shows what survived collection, intent filtering, deduplication, and recommendation.
-            </div>
-            <div className={styles.funnel}>
-              {funnelStages.map((stage, index) => (
-                <Fragment key={stage.label}>
-                  {index > 0 && <div className={styles.funnelArrow}>→</div>}
-                  <div className={styles.funnelStep}>
-                    <strong>{fmtNum(stage.value)}</strong>
-                    <div>{stage.label}</div>
-                    <span>{stage.note}</span>
-                  </div>
-                </Fragment>
-              ))}
-            </div>
-          </div>
           <div className={`${styles.decisionPanel} ${styles.discoveryPanel} ${styles.wide}`}>
             <div className={styles.compactPanelHead}>
               <h2>Store-discovery mix</h2>
@@ -402,5 +272,5 @@ export function SummaryCards({ result, marketCode, children }: SummaryCardsProps
         </div>
   );
 
-  return children({ cards, marketOverview, overlapPanel });
+  return children({ marketOverview, overlapPanel });
 }
