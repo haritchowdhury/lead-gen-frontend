@@ -428,10 +428,9 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
       data-surface="surface:research-dashboard"
       aria-label="Keyword research dashboard"
     >
-      <div className={styles.sectionHead}>
+      <div className={styles.dashboardToolbar}>
         <div>
-          <div className={styles.heroEyebrow}>Keyword research</div>
-          <h1>Keyword intelligence dashboard</h1>
+          <span className={styles.servicePill}>Keyword intelligence ready</span>
           <div className={styles.tableMeta}>
             {view.seeds.length} seed phrase{view.seeds.length === 1 ? "" : "s"} ·{" "}
             {activeRowsIn.length} active keyword{activeRowsIn.length === 1 ? "" : "s"}
@@ -439,7 +438,7 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
         </div>
         <div className={styles.headerActions}>
           <button type="button" className={styles.btn} onClick={toggleTheme}>
-            {theme === "dark" ? "Light mode" : "Dark mode"}
+            {theme === "dark" ? "Standard contrast" : "Soft contrast"}
           </button>
           {activeRowsIn.length > 0 ? (
             <a className={`${styles.btn} ${styles.primary}`} href={exportHref}>
@@ -452,6 +451,27 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
           )}
         </div>
       </div>
+
+      {phase !== "empty" && (
+        <div
+          ref={reviewRef}
+          className={styles.selectionStep}
+          data-surface="surface:selection-review"
+        >
+          <SelectionReview
+            view={view}
+            draft={draft}
+            conflicts={view.selectionConflicts}
+            saving={saving}
+            staleConflict={staleConflict}
+            onSave={handleSave}
+            onFinalize={handleFinalize}
+            finalizeState={finalizeState}
+            onRetryHandoff={handleRetryHandoff}
+            onDraftChange={handleDraftChange}
+          />
+        </div>
+      )}
 
       {saveError && (
         <div className={styles.banner} role="alert">
@@ -486,42 +506,59 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
             />
           </div>
 
-          <div data-surface="surface:summary-cards">
-            <SummaryCards result={result} marketCode={filter.market} />
+          <div className={styles.marketContext} aria-live="polite">
+            <span className={styles.marketContextDot} aria-hidden="true" />
+            <span>
+              Viewing{" "}
+              <strong>
+                {filter.market === "all" ? "all markets — cumulative" : filter.market}
+              </strong>
+            </span>
           </div>
 
-          <div data-surface="surface:keyword-table">
-            <KeywordTable
-              rows={activeRowsIn}
-              filter={filter}
-              selectionItemIds={selectionItemIds}
-              onToggleRow={handleToggleRow}
-              onEditItem={handleEditItem}
-            />
-          </div>
+          <SummaryCards result={result} marketCode={filter.market}>
+            {(summary) => (
+              <ChartPanels
+                result={result}
+                marketCode={filter.market}
+                filter={filter}
+                rows={filteredRows}
+              >
+                {(charts) => (
+                  <div className={styles.dashboardFlow}>
+                    {charts.seedPerformance}
 
-          <div ref={reviewRef} data-surface="surface:selection-review">
-            <SelectionReview
-              view={view}
-              draft={draft}
-              conflicts={view.selectionConflicts}
-              saving={saving}
-              staleConflict={staleConflict}
-              onSave={handleSave}
-              onFinalize={handleFinalize}
-              finalizeState={finalizeState}
-              onRetryHandoff={handleRetryHandoff}
-              onDraftChange={handleDraftChange}
-            />
-          </div>
+                    <div data-surface="surface:summary-cards">{summary.cards}</div>
 
-          <ChartPanels result={result} marketCode={filter.market} filter={filter} rows={filteredRows} />
+                    <ClusterLandscape
+                      clusters={clusterRows}
+                      selectedClusterId={selectedClusterId}
+                      onSelect={setSelectedClusterId}
+                    />
 
-          <ClusterLandscape
-            clusters={clusterRows}
-            selectedClusterId={selectedClusterId}
-            onSelect={setSelectedClusterId}
-          />
+                    {summary.marketOverview(charts.overviewSignals)}
+
+                    <section className={styles.decisionGrid} aria-label="Decision summary">
+                      {summary.overlapPanel}
+                      {charts.historyPanel}
+                    </section>
+
+                    {charts.analysisCharts}
+
+                    <div data-surface="surface:keyword-table">
+                      <KeywordTable
+                        rows={activeRowsIn}
+                        filter={filter}
+                        selectionItemIds={selectionItemIds}
+                        onToggleRow={handleToggleRow}
+                        onEditItem={handleEditItem}
+                      />
+                    </div>
+                  </div>
+                )}
+              </ChartPanels>
+            )}
+          </SummaryCards>
         </>
       )}
     </section>

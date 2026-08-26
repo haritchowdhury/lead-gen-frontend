@@ -13,23 +13,23 @@
    select-all-keywords, keyword-input). No rule escapes module scope. */
 
 .kiDashboard {
-  --bg: #f4f5ea;
-  --card: #fbfcf7;
-  --text: #082d2e;
-  --muted: #687b77;
-  --border: #dfe5d8;
-  --grid: #dfe5d8;
-  --primary: #b6ef32;
-  --primary-soft: #effbd3;
-  --green: #25714c;
-  --green-soft: #e1f3df;
-  --red: #dc2626;
-  --red-soft: #fee2e2;
-  --amber: #d97706;
-  --amber-soft: #fef3c7;
-  --gray-soft: #f1f5f9;
-  --shadow: 0 8px 30px rgba(20, 42, 35, .055);
-  --radius: 12px;
+  --bg: var(--color-canvas);
+  --card: var(--color-surface);
+  --text: var(--color-ink);
+  --muted: var(--color-ink-muted);
+  --border: var(--color-line);
+  --grid: var(--color-line);
+  --primary: var(--color-signal);
+  --primary-soft: color-mix(in srgb, var(--color-signal) 18%, var(--color-surface));
+  --green: var(--color-positive);
+  --green-soft: var(--color-positive-surface);
+  --red: var(--color-danger);
+  --red-soft: var(--color-danger-surface);
+  --amber: var(--color-warning);
+  --amber-soft: var(--color-warning-surface);
+  --gray-soft: var(--color-surface-inset);
+  --shadow: var(--elevation-card);
+  --radius: var(--radius-card);
   --c-bg: var(--bg);
   --c-card: var(--card);
   --c-text: var(--text);
@@ -39,25 +39,29 @@
   --c-green: var(--green);
   --c-red: var(--red);
   --c-amber: var(--amber);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .kiDashboard[data-ki-theme="dark"] {
-  --bg: #0b1220;
-  --card: #131c30;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --border: #26334d;
-  --grid: #26334d;
-  --primary: #818cf8;
-  --primary-soft: #1e2440;
-  --green: #4ade80;
-  --green-soft: #123526;
-  --red: #f87171;
-  --red-soft: #3d1a1a;
-  --amber: #fbbf24;
-  --amber-soft: #3d2f10;
-  --gray-soft: #1a2338;
-  --shadow: 0 1px 3px rgba(0, 0, 0, .4);
+  --bg: color-mix(in srgb, var(--color-canvas) 82%, var(--color-surface));
+  --card: var(--color-surface);
+  --text: var(--color-ink);
+  --muted: var(--color-ink-muted);
+  --border: var(--color-line-strong);
+  --grid: var(--color-line);
+  --primary: var(--color-signal);
+  --primary-soft: color-mix(in srgb, var(--color-signal) 14%, var(--color-surface));
+  --green: var(--color-positive);
+  --green-soft: var(--color-positive-surface);
+  --red: var(--color-danger);
+  --red-soft: var(--color-danger-surface);
+  --amber: var(--color-warning);
+  --amber-soft: var(--color-warning-surface);
+  --gray-soft: color-mix(in srgb, var(--color-surface-inset) 82%, var(--color-surface));
+  --shadow: var(--elevation-card);
   --c-bg: var(--bg);
   --c-card: var(--card);
   --c-text: var(--text);
@@ -67,6 +71,31 @@
   --c-green: var(--green);
   --c-red: var(--red);
   --c-amber: var(--amber);
+  color: var(--text);
+}
+
+.dashboardPage {
+  position: relative;
+  min-height: calc(100vh - 64px);
+  padding: clamp(32px, 5vw, 56px) 0 80px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 13% 10%, rgba(200, 240, 75, 0.12), transparent 25rem),
+    radial-gradient(circle at 88% 24%, rgba(200, 240, 75, 0.08), transparent 22rem),
+    var(--color-canvas);
+}
+
+.dashboardPageHeader {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 24px;
+}
+
+.dashboardPageHeader p {
+  margin: 0;
+  color: var(--color-ink-muted);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
 }
 
 .kiDashboard header {
@@ -80,6 +109,17 @@
 .kiDashboard header .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
 
 .headerActions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.dashboardToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  padding: 0 2px;
+}
+
+.dashboardToolbar .servicePill { margin-bottom: 7px; }
 
 .lastUpdated { color: var(--muted); font-size: 12px; }
 
@@ -671,6 +711,104 @@ section.filters {
   border-radius: 999px; padding: 2px 8px; color: var(--muted);
 }
 
+.selectionStep {
+  position: relative;
+  margin-bottom: 24px;
+  padding: 0 10px 10px 0;
+}
+
+.selectionPanel {
+  width: 100%;
+  min-height: 0;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(250, 252, 245, 0.98)),
+    var(--card);
+  color: var(--text);
+}
+
+.selectionPanel .seedChipField,
+.selectionPanel .manualKeywordInput {
+  border-color: var(--line-dark);
+  border-radius: 14px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.56), rgba(248, 251, 242, 0.7)),
+    #fbfcf8;
+}
+
+.selectionPanel .manualKeywordInput:focus {
+  border-color: #839d32;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(200, 240, 75, 0.22);
+}
+
+.selectedKeywordList {
+  min-height: 170px;
+  max-height: 300px;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.selectedKeywordRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
+}
+
+.selectedKeywordIndex {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.selectedKeywordActions {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.selectionFooter > .banner,
+.selectionFooter > .tableMeta {
+  grid-column: 1 / -1;
+}
+
+.dashboardFlow,
+.chartPanelsRoot {
+  display: contents;
+}
+
+.historyPanel { min-width: 0; }
+
+section.filters,
+.card,
+.decisionPanel,
+.overviewPackage,
+.chartCard,
+.tableSection,
+.clusterSection {
+  border-color: transparent;
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38), rgba(248, 251, 241, 0.2)),
+    radial-gradient(circle at 88% 12%, rgba(200, 240, 75, 0.045), transparent 17rem),
+    var(--card);
+  box-shadow:
+    0 10px 28px rgba(18, 35, 30, 0.032),
+    inset 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+
+.clusterSection.clusterHero {
+  border-color: transparent;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(200, 240, 75, 0.08)),
+    var(--card);
+}
+
+.overviewPackage .overviewSignals { margin-bottom: 0; }
+
 .kiDashboard footer { text-align: center; color: var(--muted); font-size: 12px; padding: 10px 0 30px; }
 
 .tip { position: relative; cursor: help; border-bottom: 1px dotted var(--muted); }
@@ -709,8 +847,18 @@ section.filters {
 }
 
 @media (max-width: 980px) {
+  .dashboardToolbar { align-items: flex-start; flex-direction: column; }
+  .selectionPanel { padding: 28px; }
   .researchHero { grid-template-columns: 1fr; min-height: 0; padding: 24px 4px 38px; gap: 34px; }
   .researchHero h1 { font-size: clamp(42px, 11vw, 64px); }
   .seedCard { min-height: 0; }
   .heroOrbit { display: none; }
+}
+
+@media (max-width: 640px) {
+  .dashboardPage { padding: 28px 0 56px; }
+  .dashboardPageHeader { margin-bottom: 18px; }
+  .selectionStep { padding-right: 7px; }
+  .selectionPanel { padding: 22px 18px; }
+  .selectedKeywordList { max-height: 260px; }
 }

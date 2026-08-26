@@ -48,6 +48,10 @@ import {
 
 const root = process.cwd();
 const outputDir = path.join(root, "review-evidence/keyword-intelligence/KI-W5");
+const visualOutputDir = path.join(
+  root,
+  "review-evidence/keyword-intelligence/visual-alignment",
+);
 const port = 4347;
 const baseUrl = `http://127.0.0.1:${port}`;
 const nextBin = path.join(root, "node_modules/next/dist/bin/next");
@@ -539,11 +543,11 @@ dresses transactional keyword 28,dresses,dresses,12200,2.5,0.96,MEDIUM,64,transa
 
 const COMPLETED_ID = "kr_abcdefghijklmnopqrstuvwx";
 const POLL_ID = "kr_pollabcdefghijklmnopqrst";
-const FAILED_ID = "kr_failedabcdefghijklmnopq";
-const EMPTY_ID = "kr_emptyabcdefghijklmnopq";
-const SCALE_ID = "kr_scaleabcdefghijklmnopq";
-const MISSING_ID = "kr_missingabcdefghijklmn";
-const REORDER_ID = "kr_reorderabcdefghijklmno";
+const FAILED_ID = "kr_failedabcdefghijklmnopqx";
+const EMPTY_ID = "kr_emptyabcdefghijklmnopqxy";
+const SCALE_ID = "kr_scaleabcdefghijklmnopqxy";
+const MISSING_ID = "kr_missingabcdefghijklmnxyz";
+const REORDER_ID = "kr_reorderabcdefghijklmnoxy";
 
 const completedRows = buildCompletedRows(30);
 const completedView = makeCompletedView(COMPLETED_ID, completedRows, [
@@ -903,6 +907,17 @@ async function capture(cdp, name) {
   await fs.writeFile(path.join(outputDir, `${name}.png`), Buffer.from(screenshot.data, "base64"));
 }
 
+async function captureVisual(cdp, name) {
+  const screenshot = await cdp.send("Page.captureScreenshot", {
+    format: "png",
+    captureBeyondViewport: false,
+  });
+  await fs.writeFile(
+    path.join(visualOutputDir, `${name}.png`),
+    Buffer.from(screenshot.data, "base64"),
+  );
+}
+
 async function click(cdp, expression) {
   const clicked = await evaluate(cdp, `(() => { const node = ${expression}; if (!node) return false; node.click(); return true; })()`);
   if (!clicked) throw new Error(`Missing click target: ${expression}`);
@@ -1055,6 +1070,10 @@ async function runScenario(id, fn) {
     await fn();
     return { id, ok: true, error: null };
   } catch (err) {
+    console.error(`${id}: ${err instanceof Error ? err.message : String(err)}`);
+    try {
+      await evaluate(cdp, "if (globalThis.__kiFixture) globalThis.__kiFixture.passThroughCreate = false");
+    } catch {}
     return { id, ok: false, error: err.message };
   }
 }
@@ -1066,6 +1085,7 @@ async function runScenario(id, fn) {
 let certificate;
 try {
   await fs.mkdir(outputDir, { recursive: true });
+  await fs.mkdir(visualOutputDir, { recursive: true });
 
   // Phase A
   if (!skipBuild) {
@@ -1345,7 +1365,7 @@ try {
     await evaluate(cdp, "localStorage.clear()");
 
     const themeButtons = await evaluate(cdp, "[...document.querySelectorAll('[data-surface=\"surface:research-dashboard\"] button, main button')].map((b) => b.textContent.trim())");
-    assert(themeButtons.some((t) => t.includes("Dark mode") || t.includes("Light mode")), `theme toggle present in ready header: ${JSON.stringify(themeButtons)}`);
+    assert(themeButtons.some((t) => t.includes("Soft contrast") || t.includes("Standard contrast")), `appearance toggle present in ready toolbar: ${JSON.stringify(themeButtons)}`);
     // The dashboard initializes its theme from the stored value or, when
     // absent, from prefers-color-scheme (headless Chrome prefers dark), so
     // the initial theme is environment-dependent. Drive the round-trip from
@@ -1353,7 +1373,7 @@ try {
     const initial = await evaluate(cdp, "document.querySelector('[data-surface=\"surface:research-dashboard\"]')?.getAttribute('data-ki-theme')");
     assert(initial === "dark" || initial === "light", `initial theme observable (${initial})`);
     const flipped = initial === "dark" ? "light" : "dark";
-    await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:research-dashboard\"] button')].find(n => n.textContent.includes('Dark mode') || n.textContent.includes('Light mode'))");
+    await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:research-dashboard\"] button')].find(n => n.textContent.includes('Soft contrast') || n.textContent.includes('Standard contrast'))");
     await wait(200);
     assert((await evaluate(cdp, "document.querySelector('[data-surface=\"surface:research-dashboard\"]')?.getAttribute('data-ki-theme')")) === flipped, `theme attribute flipped to ${flipped}`);
     const storage = await evaluate(cdp, "({ keys: Object.keys(localStorage), value: localStorage.getItem('ki-dashboard-theme') })");
@@ -1365,7 +1385,7 @@ try {
     await waitFor(cdp, "document.querySelector('[data-surface=\"surface:keyword-table\"]')", "dashboard ready after reload");
     assert((await evaluate(cdp, "document.querySelector('[data-surface=\"surface:research-dashboard\"]')?.getAttribute('data-ki-theme')")) === flipped, "theme persists across reload");
 
-    await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:research-dashboard\"] button')].find(n => n.textContent.includes('Dark mode') || n.textContent.includes('Light mode'))");
+    await click(cdp, "[...document.querySelectorAll('[data-surface=\"surface:research-dashboard\"] button')].find(n => n.textContent.includes('Soft contrast') || n.textContent.includes('Standard contrast'))");
     await wait(200);
     assert((await evaluate(cdp, "document.querySelector('[data-surface=\"surface:research-dashboard\"]')?.getAttribute('data-ki-theme')")) === initial, "theme round-trips back to the initial value");
     assert((await evaluate(cdp, "localStorage.getItem('ki-dashboard-theme')")) === initial, "theme storage updated on the return toggle");
@@ -1545,7 +1565,7 @@ try {
     await navigate(cdp, "about:blank");
     await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
     await waitFor(cdp, "document.querySelector('[data-surface=\"surface:keyword-table\"]')", "dashboard after remount");
-    assert((await evaluate(cdp, "document.body.innerText.includes('Keyword intelligence dashboard')")) === true, "durable reload restored the dashboard");
+    assert((await evaluate(cdp, "document.body.innerText.includes('Keyword research dashboard')")) === true, "durable reload restored the dashboard");
     const mutationsAfter = await evaluate(cdp, "globalThis.__kiFixture.requests.filter(r => r.method === 'POST' || r.method === 'PUT').length");
     assert(mutationsAfter === 0, "reload performed GET-only (no POST/PUT mutation)");
     await capture(cdp, "W5-R02-durable");
@@ -1629,12 +1649,77 @@ try {
 
   // ---- W5-R05 1440x900/390x844 no overflow + DPR canvas ----
   results.push(await runScenario("W5-R05", async () => {
+    await setViewport(cdp, 1440, 900);
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await evaluate(cdp, "localStorage.setItem('ki-dashboard-theme', 'light')");
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:keyword-table\"]')", "standard visual dashboard");
+
+    const visualGeometry = await evaluate(cdp, `(() => {
+      const shell = document.querySelector('main > .shell');
+      const dashboard = document.querySelector('[data-surface="surface:research-dashboard"]');
+      const selection = document.querySelector('[data-surface="surface:selection-review"]');
+      const form = selection?.querySelector('[aria-label="Selection review"]');
+      const filter = document.querySelector('[data-surface="surface:filter-bar"]');
+      const seed = document.querySelector('[data-surface="chart:seeds"]')?.closest('section');
+      const summary = document.querySelector('[data-surface="surface:summary-cards"]');
+      const landscape = document.querySelector('[data-surface="surface:cluster-landscape"]');
+      const overview = document.querySelector('[aria-label="Market overview"]');
+      const history = document.querySelector('[aria-label="Keyword for monthly history"]')?.closest('section');
+      const charts = document.querySelector('[aria-label="Charts"]');
+      const table = document.querySelector('[data-surface="surface:keyword-table"]');
+      const ordered = [selection, filter, seed, summary, landscape, overview, history, charts, table];
+      const tops = ordered.map((node) => node.getBoundingClientRect().top + scrollY);
+      const formStyle = getComputedStyle(form);
+      return {
+        shellWidth: shell.getBoundingClientRect().width,
+        dashboardWidth: dashboard.getBoundingClientRect().width,
+        selectionWidth: selection.getBoundingClientRect().width,
+        tops,
+        formClasses: [...form.classList],
+        formBorderLeft: formStyle.borderLeftWidth,
+        formBorderRight: formStyle.borderRightWidth,
+        formRadius: formStyle.borderRadius,
+        overflow: document.documentElement.scrollWidth > window.innerWidth + 1,
+      };
+    })()`);
+    assert(Math.abs(visualGeometry.shellWidth - 1180) <= 1, `1180px StoreSignal shell (${visualGeometry.shellWidth})`);
+    assert(Math.abs(visualGeometry.dashboardWidth - visualGeometry.selectionWidth) <= 1, "selection wrapper uses dashboard width");
+    assert(visualGeometry.formClasses.includes("run-form-card") && visualGeometry.formClasses.includes("ds-card"), "selection reuses shared workflow-form classes");
+    assert(visualGeometry.formBorderLeft === visualGeometry.formBorderRight, "selection has no unique left accent");
+    assert(visualGeometry.formRadius !== "0px", "selection retains shared form radius");
+    assert(visualGeometry.tops.every((top, index, values) => index === 0 || top > values[index - 1]), `visual sections follow locked order: ${JSON.stringify(visualGeometry.tops)}`);
+    assert(visualGeometry.overflow === false, "standard desktop has no horizontal overflow");
+    await captureVisual(cdp, "desktop-standard");
+
+    await evaluate(cdp, "localStorage.setItem('ki-dashboard-theme', 'dark')");
+    await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
+    await waitFor(cdp, "document.querySelector('[data-surface=\"surface:research-dashboard\"]')?.getAttribute('data-ki-theme') === 'dark'", "soft-contrast visual dashboard");
+    const softSurfaceColors = await evaluate(cdp, `(() => {
+      const selectors = [
+        '[data-surface="surface:research-dashboard"]',
+        '[data-surface="surface:selection-review"] [aria-label="Selection review"]',
+        '[data-surface="surface:filter-bar"] section',
+        '[data-surface="surface:summary-cards"] > section > div',
+        '[data-surface="surface:keyword-table"] > section'
+      ];
+      return selectors.map((selector) => getComputedStyle(document.querySelector(selector)).backgroundColor);
+    })()`);
+    for (const color of softSurfaceColors) {
+      const channels = color.match(/[0-9.]+/gu).map(Number);
+      const transparent = channels.length === 4 && channels[3] === 0;
+      assert(transparent || (channels[0] + channels[1] + channels[2]) / 3 > 150, `soft-contrast surface remains light (${color})`);
+    }
+    await captureVisual(cdp, "desktop-soft-contrast");
+
     for (const [w, h] of [[1440, 900], [390, 844]]) {
       await setViewport(cdp, w, h, 1);
+      await evaluate(cdp, "localStorage.setItem('ki-dashboard-theme', 'light')");
       await navigate(cdp, `${baseUrl}/keywords/${COMPLETED_ID}`);
       await waitFor(cdp, "document.querySelector('[data-surface=\"surface:keyword-table\"]')", `dashboard at ${w}x${h}`);
       const overflow = await evaluate(cdp, "document.documentElement.scrollWidth > window.innerWidth + 1");
       assert(overflow === false, `no horizontal overflow at ${w}x${h}`);
+      if (w === 390) await captureVisual(cdp, "mobile-standard");
     }
     // DPR-aware canvas (deviceScaleFactor 2 asserted in W5-B07); here re-assert at 390x844.
     await setViewport(cdp, 390, 844, 2);
@@ -1646,6 +1731,12 @@ try {
       return { w: canvas.width, expected: Math.max(520, Math.round(rect.width)) * 2 };
     })()`);
     assert(Math.abs(dprCanvas.w - dprCanvas.expected) <= 4, `landscape canvas DPR-aware at 390x844 (${dprCanvas.w} ~= ${dprCanvas.expected})`);
+    await evaluate(cdp, `(() => {
+      const review = document.querySelector('[data-surface="surface:selection-review"]');
+      if (review) scrollTo({ top: Math.max(0, review.getBoundingClientRect().top + scrollY - 76) });
+    })()`);
+    await wait(150);
+    await captureVisual(cdp, "mobile-selection-scroll");
     await capture(cdp, "W5-R05-responsive");
   }));
 

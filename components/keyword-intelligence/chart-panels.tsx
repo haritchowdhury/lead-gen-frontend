@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import {
   ArcElement,
@@ -66,6 +66,14 @@ type ChartPanelsProps = {
   marketCode: string;
   filter: KeywordFilterState;
   rows: KeywordRow[];
+  children: (sections: ChartPanelSections) => ReactNode;
+};
+
+type ChartPanelSections = {
+  seedPerformance: ReactNode;
+  overviewSignals: ReactNode;
+  historyPanel: ReactNode;
+  analysisCharts: ReactNode;
 };
 
 type Palette = {
@@ -865,7 +873,7 @@ function buildHistoryConfig(
   };
 }
 
-export function ChartPanels({ result, marketCode, filter, rows }: ChartPanelsProps) {
+export function ChartPanels({ result, marketCode, filter, rows, children }: ChartPanelsProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const topKeywordsRef = useRef<HTMLCanvasElement | null>(null);
   const clusterVolumeRef = useRef<HTMLCanvasElement | null>(null);
@@ -1113,18 +1121,7 @@ export function ChartPanels({ result, marketCode, filter, rows }: ChartPanelsPro
     minWidth: datasets.topRows.length ? Math.max(100, datasets.topRows.length * 58) + "px" : undefined,
   };
 
-  return (
-    <div
-      ref={rootRef}
-      data-surface="surface:chart-panels"
-      aria-label={`Keyword charts${marketCode === "all" ? "" : " · " + marketCode}`}
-    >
-      {chartError && (
-        <div className={styles.banner} role="alert">
-          <span>Some charts could not be rendered. Reload the page to try again.</span>
-        </div>
-      )}
-
+  const seedPerformance = (
       <section className={`${styles.decisionPanel} ${styles.seedAnalysis}`} aria-label="Seed phrase analysis">
         <h2>Seed performance</h2>
         <div className={styles.panelNote}>
@@ -1136,7 +1133,9 @@ export function ChartPanels({ result, marketCode, filter, rows }: ChartPanelsPro
           <div className={emptyCls(hasData.seeds)}>No data</div>
         </div>
       </section>
+  );
 
+  const overviewSignals = (
       <div className={styles.overviewSignals}>
         <div className={styles.chartCard}>
           <h3
@@ -1188,8 +1187,10 @@ export function ChartPanels({ result, marketCode, filter, rows }: ChartPanelsPro
           </div>
         </div>
       </div>
+  );
 
-      <section className={`${styles.decisionPanel} ${styles.wide}`}>
+  const historyPanel = (
+      <section className={`${styles.decisionPanel} ${styles.wide} ${styles.historyPanel}`}>
         <h2>Actual monthly search history</h2>
         <div className={styles.panelNote}>{historyNote}</div>
         <div className={styles.historyToolbar}>
@@ -1215,7 +1216,9 @@ export function ChartPanels({ result, marketCode, filter, rows }: ChartPanelsPro
           </div>
         </div>
       </section>
+  );
 
+  const analysisCharts = (
       <section className={styles.charts} aria-label="Charts">
         <div className={`${styles.chartCard} ${styles.wide}`}>
           <h3
@@ -1290,6 +1293,21 @@ export function ChartPanels({ result, marketCode, filter, rows }: ChartPanelsPro
           </div>
         </div>
       </section>
+  );
+
+  return (
+    <div
+      ref={rootRef}
+      className={styles.chartPanelsRoot}
+      data-surface="surface:chart-panels"
+      aria-label={`Keyword charts${marketCode === "all" ? "" : " · " + marketCode}`}
+    >
+      {chartError && (
+        <div className={styles.banner} role="alert">
+          <span>Some charts could not be rendered. Reload the page to try again.</span>
+        </div>
+      )}
+      {children({ seedPerformance, overviewSignals, historyPanel, analysisCharts })}
     </div>
   );
 }

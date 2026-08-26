@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
+import type { ReactNode } from "react";
 
 import type {
   KeywordRow,
@@ -21,6 +22,13 @@ import styles from "./keyword-dashboard.module.css";
 type SummaryCardsProps = {
   result: ResearchResult;
   marketCode: string;
+  children: (sections: SummaryPanelSections) => ReactNode;
+};
+
+type SummaryPanelSections = {
+  cards: ReactNode;
+  marketOverview: (signals: ReactNode) => ReactNode;
+  overlapPanel: ReactNode;
 };
 
 type DiscoverySegment = {
@@ -144,7 +152,7 @@ function OverlapGroup({
   );
 }
 
-export function SummaryCards({ result, marketCode }: SummaryCardsProps) {
+export function SummaryCards({ result, marketCode, children }: SummaryCardsProps) {
   const summary = currentSummary(result, marketCode);
   const marketRows = result.keywords
     .map((row) => projectMarketRow(row, marketCode))
@@ -218,8 +226,7 @@ export function SummaryCards({ result, marketCode }: SummaryCardsProps) {
     0,
   );
 
-  return (
-    <>
+  const cards = (
       <section className={styles.cards} aria-label="Summary">
         <div className={styles.card}>
           <div
@@ -276,7 +283,9 @@ export function SummaryCards({ result, marketCode }: SummaryCardsProps) {
           <div className={styles.cardValue}>{fmtCpc(avgCpc)}</div>
         </div>
       </section>
+  );
 
+  const marketOverview = (signals: ReactNode) => (
       <section className={styles.overviewPackage} aria-label="Market overview">
         <div className={styles.overviewPackageHead}>
           <h2>Market overview</h2>
@@ -319,9 +328,11 @@ export function SummaryCards({ result, marketCode }: SummaryCardsProps) {
             </div>
           </div>
         </div>
+        {signals}
       </section>
+  );
 
-      <section className={styles.decisionGrid} aria-label="Decision summary">
+  const overlapPanel = (
         <div className={`${styles.decisionPanel} ${styles.wide}`}>
           <h2>Possible volume overlap</h2>
           <div className={styles.panelNote}>
@@ -389,7 +400,7 @@ export function SummaryCards({ result, marketCode }: SummaryCardsProps) {
             </>
           )}
         </div>
-      </section>
-    </>
   );
+
+  return children({ cards, marketOverview, overlapPanel });
 }

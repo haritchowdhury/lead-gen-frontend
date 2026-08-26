@@ -507,6 +507,75 @@ test("W5-I06 chart dependency versions + no-CDN", async (t) => {
   t.diagnostic(`KI_W5_EXECUTION_CERTIFICATE=${KI_W5_EXECUTION_CERTIFICATE}`);
 });
 
+test("VIS-KD visual-only dashboard composition and shared form contract", async () => {
+  const page = await readFile(join(ROOT, "app/keywords/[researchId]/page.tsx"), "utf8");
+  const dashboard = await readFile(
+    join(ROOT, "components/keyword-intelligence/research-dashboard.tsx"),
+    "utf8",
+  );
+  const summary = await readFile(
+    join(ROOT, "components/keyword-intelligence/summary-cards.tsx"),
+    "utf8",
+  );
+  const charts = await readFile(
+    join(ROOT, "components/keyword-intelligence/chart-panels.tsx"),
+    "utf8",
+  );
+  const selection = await readFile(
+    join(ROOT, "components/keyword-intelligence/selection-review.tsx"),
+    "utf8",
+  );
+  const table = await readFile(
+    join(ROOT, "components/keyword-intelligence/keyword-table.tsx"),
+    "utf8",
+  );
+  const css = await readFile(
+    join(ROOT, "components/keyword-intelligence/keyword-dashboard.module.css"),
+    "utf8",
+  );
+
+  assert.equal((page.match(/<h1>/gu) ?? []).length, 1, "page owns the sole dashboard h1");
+  assert.equal(dashboard.includes("<h1>"), false, "completed dashboard has no duplicate h1");
+
+  const compositionOrder = [
+    "className={styles.selectionStep}",
+    'data-surface="surface:filter-bar"',
+    "{charts.seedPerformance}",
+    'data-surface="surface:summary-cards"',
+    "<ClusterLandscape",
+    "summary.marketOverview(charts.overviewSignals)",
+    "{charts.historyPanel}",
+    "{charts.analysisCharts}",
+    'data-surface="surface:keyword-table"',
+  ].map((needle) => dashboard.indexOf(needle));
+  assert.equal(compositionOrder.every((index) => index >= 0), true, "every visual section is present");
+  assert.deepEqual(compositionOrder, [...compositionOrder].sort((a, b) => a - b));
+
+  assert.equal(selection.includes("styles.kiDashboard"), false);
+  assert.equal(table.includes("styles.kiDashboard"), false);
+  assert.match(selection, /run-form-card ds-card/u);
+  assert.match(selection, /className="form-heading-row"/u);
+  assert.equal(
+    selection.includes('className={`form-footer ${styles.selectionFooter}`}'),
+    true,
+  );
+  assert.match(selection, /button button-primary ds-button ds-button--primary/u);
+  assert.match(selection, /button button-secondary ds-button ds-button--secondary/u);
+
+  for (const name of ["cards", "marketOverview", "overlapPanel"]) {
+    assert.match(summary, new RegExp(`\\b${name}\\b`, "u"));
+  }
+  for (const name of ["seedPerformance", "overviewSignals", "historyPanel", "analysisCharts"]) {
+    assert.match(charts, new RegExp(`\\b${name}\\b`, "u"));
+  }
+
+  for (const navy of ["#0b1220", "#131c30", "#1a2338", "#26334d", "#1e2440"]) {
+    assert.equal(css.includes(navy), false, `dashboard CSS excludes ${navy}`);
+  }
+  assert.match(css, /\.selectionStep\s*\{/u);
+  assert.equal(css.includes("selectedKeywordHero"), false);
+});
+
 // ---- KI-R5-S016 additive static registry lint (append-only, no certificate) ----
 // The amended A4-mandated ownership sets (S1 §4.2): R5_FRONTEND_CASES is the
 // frontend_api registry in api.test.ts; R5_BROWSER_CASES is the seven-ID

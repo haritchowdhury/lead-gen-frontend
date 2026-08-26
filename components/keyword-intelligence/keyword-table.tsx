@@ -217,7 +217,7 @@ export function KeywordTable({
   }
 
   return (
-    <section className={`${styles.kiDashboard} ${styles.tableSection}`} aria-label="Keyword table">
+    <section className={styles.tableSection} aria-label="Keyword table">
       <div className={styles.sectionHead}>
         <div>
           <h2

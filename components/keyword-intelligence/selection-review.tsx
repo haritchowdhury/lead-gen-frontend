@@ -211,10 +211,10 @@ export function SelectionReview({
 
   return (
     <section
-      className={`${styles.kiDashboard} ${styles.decisionPanel} ${styles.wide}`}
+      className={`run-form-card ds-card ${styles.selectionPanel}`}
       aria-label="Selection review"
     >
-      <div className={styles.sectionHead}>
+      <div className="form-heading-row">
         <div>
           <h2>Your selection</h2>
           <div className={styles.tableMeta}>
@@ -242,14 +242,13 @@ export function SelectionReview({
         </div>
       )}
 
-      <div className={styles.seedFieldLabel}>
-        <span>Selected keywords</span>
-        <small>Rank · source · lane · facets</small>
+      <div className="field-label">
+        <strong>Selected keywords</strong>
+        <span>Rank · source · lane · facets</span>
       </div>
 
       <div
-        className={styles.seedChipField}
-        style={{ flexDirection: "column", alignItems: "stretch" }}
+        className={`${styles.seedChipField} ${styles.selectedKeywordList}`}
         aria-live="polite"
       >
         {draft.length === 0 ? (
@@ -261,18 +260,9 @@ export function SelectionReview({
           draft.map((item, index) => (
             <div
               key={item.itemId}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                flexWrap: "wrap",
-                padding: "7px 9px",
-                border: "1px solid var(--border)",
-                borderRadius: "9px",
-                background: "var(--card)",
-              }}
+              className={styles.selectedKeywordRow}
             >
-              <span style={{ color: "var(--muted)", fontVariantNumeric: "tabular-nums" }}>
+              <span className={styles.selectedKeywordIndex}>
                 {index + 1}.
               </span>
               <strong>{item.keyword}</strong>
@@ -285,7 +275,7 @@ export function SelectionReview({
                   {chip}
                 </span>
               ))}
-              <span style={{ marginLeft: "auto", display: "inline-flex", gap: "4px" }}>
+              <span className={styles.selectedKeywordActions}>
                 {item.sourceKind === "calculated" && (
                   <button
                     type="button"
@@ -334,7 +324,12 @@ export function SelectionReview({
           aria-label="Manual keyword"
           disabled={controlsInert}
         />
-        <button className={styles.btn} type="button" onClick={addManualKeywords} disabled={controlsInert}>
+        <button
+          className="button button-secondary ds-button ds-button--secondary"
+          type="button"
+          onClick={addManualKeywords}
+          disabled={controlsInert}
+        >
           ＋ Add
         </button>
       </div>
@@ -371,11 +366,11 @@ export function SelectionReview({
         </div>
       )}
 
-      <div className={styles.seedFormFooter}>
+      <div className={`form-footer ${styles.selectionFooter}`}>
         <p>Save persists this selection. Finalize locks it in and hands off to a run.</p>
         <div className={styles.keywordTools}>
           <button
-            className={styles.btn}
+            className="button button-secondary ds-button ds-button--secondary"
             type="button"
             disabled={saving || staleConflict || controlsInert}
             aria-busy={saving}
@@ -384,7 +379,7 @@ export function SelectionReview({
             {saving ? "Saving…" : "Save selection"}
           </button>
           <button
-            className={`${styles.btn} ${styles.primary}`}
+            className="button button-primary ds-button ds-button--primary"
             type="button"
             disabled={!gate.ok || saving || staleConflict || controlsInert}
             aria-busy={finalizeState === "handing-off"}
@@ -397,7 +392,11 @@ export function SelectionReview({
         {finalizeState === "retry_required" && (
           <div className={styles.banner} role="alert">
             <span>The run request didn&apos;t complete. Retry the same run.</span>
-            <button className={styles.btn} type="button" onClick={onRetryHandoff}>
+            <button
+              className="button button-secondary ds-button ds-button--secondary"
+              type="button"
+              onClick={onRetryHandoff}
+            >
               Retry
             </button>
           </div>
@@ -455,11 +454,15 @@ export function SelectionReview({
             <div className={styles.dialogFooter}>
               <p>Your edit reclassifies lane and facets. The original keyword is preserved.</p>
               <span className={styles.keywordTools}>
-                <button className={styles.btn} type="button" onClick={closeDialog}>
+                <button
+                  className="button button-secondary ds-button ds-button--secondary"
+                  type="button"
+                  onClick={closeDialog}
+                >
                   Cancel
                 </button>
                 <button
-                  className={`${styles.btn} ${styles.primary}`}
+                  className="button button-primary ds-button ds-button--primary"
                   type="button"
                   onClick={commitEdit}
                 >
