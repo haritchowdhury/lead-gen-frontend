@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { RunHistory } from "@/components/run-history";
 
-export const metadata: Metadata = { title: "My runs" };
+export const metadata: Metadata = { title: "My searches" };
 export const dynamic = "force-dynamic";
 
 export default function RunsPage() {
@@ -13,8 +13,8 @@ export default function RunsPage() {
         <div className="run-title-row app-page-header">
           <div>
             <span className="eyebrow">Account workspace</span>
-            <h1>My runs</h1>
-            <p>Pick up an active search or revisit the leads discovered in an earlier market.</p>
+            <h1>My searches</h1>
+            <p>Continue keyword research or revisit the leads discovered in an earlier market.</p>
           </div>
           <Link className="ds-button ds-button--primary" href="/">New discovery</Link>
         </div>

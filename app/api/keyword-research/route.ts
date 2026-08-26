@@ -18,6 +18,45 @@ export const dynamic = "force-dynamic";
 
 const MAX_BODY_BYTES = 32 * 1024;
 
+export async function GET(request: Request): Promise<Response> {
+  let userId: string | null;
+  try {
+    userId = await sessionUserId();
+  } catch {
+    return jsonError(
+      503,
+      "AUTH_UNAVAILABLE",
+      "Authentication is temporarily unavailable. Please try again.",
+    );
+  }
+  if (!userId) {
+    return jsonError(401, "AUTHENTICATION_REQUIRED", "Sign in to view your keyword research.");
+  }
+
+  const source = new URL(request.url).searchParams;
+  const allowed = new Set(["page", "pageSize"]);
+  const unknown = [...source.keys()].filter((key) => !allowed.has(key));
+  const duplicates = [...allowed].filter((key) => source.getAll(key).length > 1);
+  if (unknown.length || duplicates.length) {
+    return jsonError(
+      400,
+      "INVALID_QUERY_PARAMETERS",
+      "One or more keyword-research list query parameters are invalid.",
+    );
+  }
+  const forwarded = new URLSearchParams();
+  for (const key of allowed) {
+    const value = source.get(key);
+    if (value !== null) forwarded.set(key, value);
+  }
+  const query = forwarded.toString();
+  return proxyBackend({
+    path: `/api/keyword-research${query ? `?${query}` : ""}`,
+    timeoutMs: 10_000,
+    userId,
+  });
+}
+
 export async function POST(request: Request): Promise<Response> {
   if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
     return jsonError(

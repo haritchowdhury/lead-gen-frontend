@@ -595,7 +595,7 @@ test("W5-A06 (superseded by R5-WIRE-03) view strictness", () => {
   const shortHistory = structuredClone(completedView());
   shortHistory.result.keywords[0].monthlyHistory =
     shortHistory.result.keywords[0].monthlyHistory.slice(0, 14);
-  assert.throws(() => parseResearchView(shortHistory), ApiPayloadError);
+  assert.doesNotThrow(() => parseResearchView(shortHistory));
 
   const longHistory = structuredClone(completedView());
   longHistory.result.keywords[0].monthlyHistory = Array.from({ length: 103 }, (_, index) => ({
@@ -603,7 +603,7 @@ test("W5-A06 (superseded by R5-WIRE-03) view strictness", () => {
     month: (index % 12) + 1,
     searchVolume: index,
   }));
-  assert.throws(() => parseResearchView(longHistory), ApiPayloadError);
+  assert.doesNotThrow(() => parseResearchView(longHistory));
 
   const badMonth = structuredClone(completedView());
   badMonth.result.keywords[0].monthlyHistory[0].month = 13;

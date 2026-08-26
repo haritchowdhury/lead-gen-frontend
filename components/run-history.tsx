@@ -7,6 +7,11 @@ import { ChevronIcon } from "@/components/icons";
 import type { RunListResponse, RunStatus } from "@/lib/api-types";
 import { parseRunListResponse } from "@/lib/api-validation";
 import { apiRequest, errorMessage } from "@/lib/client-api";
+import {
+  parseKeywordResearchHistoryResponse,
+  type KeywordResearchHistoryItem,
+  type KeywordResearchHistoryResponse,
+} from "@/lib/keyword-research-history";
 import { trafficProgressState } from "@/lib/run-presentation";
 import { stageLabel, stagePercent } from "@/lib/stages";
 
@@ -89,98 +94,236 @@ function Outcome({ label, value }: { label: string; value: number }) {
   return <span className="run-outcome"><strong>{value}</strong><small>{label}</small></span>;
 }
 
+function researchTitle(research: KeywordResearchHistoryItem): string {
+  const visible = research.seeds.slice(0, 2).join(" · ");
+  return research.seeds.length > 2 ? `${visible} +${research.seeds.length - 2} more` : visible;
+}
+
+function researchStateLabel(research: KeywordResearchHistoryItem): string {
+  if (research.state === "queued") return "Queued";
+  if (research.state === "running") return "Running";
+  if (research.state === "failed") return "Failed";
+  return research.selectionRevision > 0 ? "Selection saved" : "Ready to review";
+}
+
+function researchStateTone(research: KeywordResearchHistoryItem): string {
+  if (research.state === "running") return "ds-badge--signal";
+  if (research.state === "failed") return "ds-badge--danger";
+  if (research.state === "completed") return "ds-badge--positive";
+  return "";
+}
+
+function researchStageLabel(research: KeywordResearchHistoryItem): string {
+  if (research.state === "queued") return "Waiting to start keyword research";
+  if (research.state === "failed") return "Keyword research stopped before completion";
+  if (research.state === "completed") {
+    return research.selectionRevision > 0
+      ? "Your saved shortlist is ready to continue"
+      : "Keyword results are ready to review";
+  }
+  if (research.stage === "expansion") return "Expanding seed keywords";
+  if (research.stage === "anchor_screen") return "Screening keyword opportunities";
+  if (research.stage === "market_overview") return "Comparing market demand";
+  return "Finalizing keyword results";
+}
+
+function Loading({ label }: { label: string }) {
+  return (
+    <div className="history-loading ds-card" role="status" aria-live="polite">
+      <span>{label}</span>
+      <div className="history-loading-row" aria-hidden="true"><i /><i /><i /></div>
+      <div className="history-loading-row" aria-hidden="true"><i /><i /><i /></div>
+    </div>
+  );
+}
+
+function Pagination({
+  page,
+  totalItems,
+  totalPages,
+  noun,
+  onChange,
+}: {
+  page: number;
+  totalItems: number;
+  totalPages: number;
+  noun: string;
+  onChange: (page: number) => void;
+}) {
+  return (
+    <div className="history-pagination">
+      <span>{totalItems} total {noun}</span>
+      <div>
+        <button className="ds-button ds-button--secondary" disabled={page <= 1} onClick={() => onChange(page - 1)}>Previous</button>
+        <span>Page {page} of {Math.max(1, totalPages)}</span>
+        <button className="ds-button ds-button--secondary" disabled={page >= totalPages} onClick={() => onChange(page + 1)}>Next</button>
+      </div>
+    </div>
+  );
+}
+
 export function RunHistory() {
-  const [page, setPage] = useState(1);
-  const [data, setData] = useState<RunListResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [researchPage, setResearchPage] = useState(1);
+  const [researchData, setResearchData] = useState<KeywordResearchHistoryResponse | null>(null);
+  const [researchError, setResearchError] = useState<string | null>(null);
+  const [runPage, setRunPage] = useState(1);
+  const [runData, setRunData] = useState<RunListResponse | null>(null);
+  const [runError, setRunError] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    apiRequest<RunListResponse>(`/api/runs?page=${page}&pageSize=${PAGE_SIZE}`, {
-      signal: controller.signal,
-    }, parseRunListResponse)
-      .then(setData)
+    apiRequest<KeywordResearchHistoryResponse>(
+      `/api/keyword-research?page=${researchPage}&pageSize=${PAGE_SIZE}`,
+      { signal: controller.signal },
+      parseKeywordResearchHistoryResponse,
+    )
+      .then(setResearchData)
       .catch((requestError: unknown) => {
         if ((requestError as { name?: string }).name !== "AbortError") {
-          setError(errorMessage(requestError));
+          setResearchError(errorMessage(requestError));
         }
       });
     return () => controller.abort();
-  }, [page]);
+  }, [researchPage]);
 
-  function changePage(nextPage: number) {
-    setError(null);
-    setData(null);
-    setPage(nextPage);
+  useEffect(() => {
+    const controller = new AbortController();
+    apiRequest<RunListResponse>(`/api/runs?page=${runPage}&pageSize=${PAGE_SIZE}`, {
+      signal: controller.signal,
+    }, parseRunListResponse)
+      .then(setRunData)
+      .catch((requestError: unknown) => {
+        if ((requestError as { name?: string }).name !== "AbortError") {
+          setRunError(errorMessage(requestError));
+        }
+      });
+    return () => controller.abort();
+  }, [runPage]);
+
+  function changeResearchPage(nextPage: number) {
+    setResearchError(null);
+    setResearchData(null);
+    setResearchPage(nextPage);
   }
 
-  if (error) {
-    return <div className="inline-error ds-notice ds-notice--danger" role="alert">{error}</div>;
+  function changeRunPage(nextPage: number) {
+    setRunError(null);
+    setRunData(null);
+    setRunPage(nextPage);
   }
-  if (!data) {
-    return (
-      <div className="history-loading ds-card" role="status" aria-live="polite">
-        <span>Loading your runs…</span>
-        <div className="history-loading-row" aria-hidden="true"><i /><i /><i /></div>
-        <div className="history-loading-row" aria-hidden="true"><i /><i /><i /></div>
-        <div className="history-loading-row" aria-hidden="true"><i /><i /><i /></div>
-      </div>
-    );
-  }
-  if (!data.items.length && page === 1) {
+
+  if (researchData && runData && researchPage === 1 && runPage === 1 &&
+      researchData.pagination.totalItems === 0 && runData.pagination.totalItems === 0) {
     return (
       <div className="empty-runs ds-card ds-empty">
-        <h2>No runs yet</h2>
-        <p>Your completed and active discovery runs will appear here.</p>
+        <h2>No searches yet</h2>
+        <p>Your keyword research and discovery runs will appear here.</p>
         <Link className="ds-button ds-button--primary" href="/">Start a search</Link>
       </div>
     );
   }
 
   return (
-    <>
-      <div className="run-history-list ds-card" aria-label="Discovery runs">
-        {data.items.map((run) => (
-          <Link
-            className={`run-history-row is-${run.state}`}
-            href={`/runs/${encodeURIComponent(run.runId)}`}
-            key={run.runId}
-            aria-label={`Open ${categoryTitle(run)}, ${stateLabel(run)}, from ${formatDate(run.createdAt)}`}
-          >
-            <div className="run-history-primary">
-              <strong className="run-history-title">{categoryTitle(run)}</strong>
-              <span className="run-history-activity">{activityLabel(run)}</span>
-              <span className="run-history-time">{timingLabel(run)}</span>
-            </div>
-            <div className="run-history-outcomes" aria-label="Run outcome totals">
-              <Outcome label="Stores found" value={run.progress.storesDiscovered} />
-              <Outcome label="Qualified" value={run.progress.storesQualified} />
-              <Outcome label="Rejected" value={run.progress.storesRejected} />
-              <Outcome label="Failed" value={run.progress.storeProcessingFailures} />
-            </div>
-            <div className="run-history-status">
-              <span className={`run-state ds-badge ${stateTone(run)}`}>{stateLabel(run)}</span>
-              <span className={`run-traffic-state is-${trafficProgressState(run).tone}`}>
-                <i /> Traffic {trafficProgressState(run).label.toLowerCase()}
-              </span>
-              {(run.state === "queued" || run.state === "running") && (
-                <span className="run-history-progress" aria-label={`${stagePercent(run.stage, run.state)} percent complete`}>
-                  <i style={{ width: `${stagePercent(run.stage, run.state)}%` }} />
-                </span>
-              )}
-              <span className="run-history-open">Open run <ChevronIcon /></span>
-            </div>
-          </Link>
-        ))}
-      </div>
-      <div className="history-pagination">
-        <span>{data.pagination.totalItems} total runs</span>
-        <div>
-          <button className="ds-button ds-button--secondary" disabled={page <= 1} onClick={() => changePage(page - 1)}>Previous</button>
-          <span>Page {data.pagination.page} of {Math.max(1, data.pagination.totalPages)}</span>
-          <button className="ds-button ds-button--secondary" disabled={page >= data.pagination.totalPages} onClick={() => changePage(page + 1)}>Next</button>
+    <div className="search-history-sections">
+      <section className="search-history-section" aria-labelledby="keyword-research-history-heading">
+        <div className="search-history-heading">
+          <div><span className="eyebrow">Research workspace</span><h2 id="keyword-research-history-heading">Keyword research</h2></div>
         </div>
-      </div>
-    </>
+        {researchError ? (
+          <div className="inline-error ds-notice ds-notice--danger" role="alert">{researchError}</div>
+        ) : !researchData ? (
+          <Loading label="Loading your keyword research…" />
+        ) : researchData.items.length === 0 && researchPage === 1 ? (
+          <div className="research-history-empty ds-card">No keyword research is waiting for review.</div>
+        ) : (
+          <>
+            <div className="research-history-list ds-card" aria-label="Keyword research">
+              {researchData.items.map((research) => (
+                <Link
+                  className={`research-history-row is-${research.state}`}
+                  href={`/keywords/${encodeURIComponent(research.researchId)}`}
+                  key={research.researchId}
+                  aria-label={`Open ${researchTitle(research)}, ${researchStateLabel(research)}, from ${formatDate(research.createdAt)}`}
+                >
+                  <div className="run-history-primary">
+                    <strong className="run-history-title">{researchTitle(research)}</strong>
+                    <span className="run-history-activity">{researchStageLabel(research)}</span>
+                    <span className="run-history-time">Created {formatDate(research.createdAt)}</span>
+                  </div>
+                  <div className="run-history-status research-history-status">
+                    <span className={`run-state ds-badge ${researchStateTone(research)}`}>{researchStateLabel(research)}</span>
+                    <span className="run-history-open">Continue research <ChevronIcon /></span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <Pagination
+              page={researchData.pagination.page}
+              totalItems={researchData.pagination.totalItems}
+              totalPages={researchData.pagination.totalPages}
+              noun="research projects"
+              onChange={changeResearchPage}
+            />
+          </>
+        )}
+      </section>
+
+      <section className="search-history-section" aria-labelledby="discovery-runs-history-heading">
+        <div className="search-history-heading">
+          <div><span className="eyebrow">Lead discovery</span><h2 id="discovery-runs-history-heading">Discovery runs</h2></div>
+        </div>
+        {runError ? (
+          <div className="inline-error ds-notice ds-notice--danger" role="alert">{runError}</div>
+        ) : !runData ? (
+          <Loading label="Loading your discovery runs…" />
+        ) : runData.items.length === 0 && runPage === 1 ? (
+          <div className="research-history-empty ds-card">No discovery runs yet.</div>
+        ) : (
+          <>
+            <div className="run-history-list ds-card" aria-label="Discovery runs">
+              {runData.items.map((run) => (
+                <Link
+                  className={`run-history-row is-${run.state}`}
+                  href={`/runs/${encodeURIComponent(run.runId)}`}
+                  key={run.runId}
+                  aria-label={`Open ${categoryTitle(run)}, ${stateLabel(run)}, from ${formatDate(run.createdAt)}`}
+                >
+                  <div className="run-history-primary">
+                    <strong className="run-history-title">{categoryTitle(run)}</strong>
+                    <span className="run-history-activity">{activityLabel(run)}</span>
+                    <span className="run-history-time">{timingLabel(run)}</span>
+                  </div>
+                  <div className="run-history-outcomes" aria-label="Run outcome totals">
+                    <Outcome label="Stores found" value={run.progress.storesDiscovered} />
+                    <Outcome label="Qualified" value={run.progress.storesQualified} />
+                    <Outcome label="Rejected" value={run.progress.storesRejected} />
+                    <Outcome label="Failed" value={run.progress.storeProcessingFailures} />
+                  </div>
+                  <div className="run-history-status">
+                    <span className={`run-state ds-badge ${stateTone(run)}`}>{stateLabel(run)}</span>
+                    <span className={`run-traffic-state is-${trafficProgressState(run).tone}`}>
+                      <i /> Traffic {trafficProgressState(run).label.toLowerCase()}
+                    </span>
+                    {(run.state === "queued" || run.state === "running") && (
+                      <span className="run-history-progress" aria-label={`${stagePercent(run.stage, run.state)} percent complete`}>
+                        <i style={{ width: `${stagePercent(run.stage, run.state)}%` }} />
+                      </span>
+                    )}
+                    <span className="run-history-open">Open run <ChevronIcon /></span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <Pagination
+              page={runData.pagination.page}
+              totalItems={runData.pagination.totalItems}
+              totalPages={runData.pagination.totalPages}
+              noun="runs"
+              onChange={changeRunPage}
+            />
+          </>
+        )}
+      </section>
+    </div>
   );
 }

@@ -28,17 +28,21 @@ test("G3 preserves authentication validation, redirects, and account targets", (
 
 test("G3 preserves run fetching, paging, state labels, and encoded links", () => {
   assert.match(history, /const PAGE_SIZE = 20/);
-  assert.match(history, /`\/api\/runs\?page=\$\{page\}&pageSize=\$\{PAGE_SIZE\}`/);
+  assert.match(history, /`\/api\/runs\?page=\$\{runPage\}&pageSize=\$\{PAGE_SIZE\}`/);
   assert.match(history, /encodeURIComponent\(run\.runId\)/);
   assert.match(history, /page <= 1/);
-  assert.match(history, /page >= data\.pagination\.totalPages/);
+  assert.match(history, /page >= totalPages/);
   for (const label of ["Queued", "Review queries", "completed", "failed", "cancelled"]) {
     assert.match(history.toLowerCase(), new RegExp(label.toLowerCase()));
   }
   assert.match(runsPage, /href="\/"/);
 });
 
-test("My runs presents identifiable run dossiers without rendering run IDs", () => {
+test("My searches presents keyword research and identifiable run dossiers without rendering IDs", () => {
+  assert.match(runsPage, /<h1>My searches<\/h1>/);
+  assert.match(history, />Keyword research<\/h2>/);
+  assert.match(history, />Discovery runs<\/h2>/);
+  assert.match(history, /\/keywords\/\$\{encodeURIComponent\(research\.researchId\)\}/);
   assert.match(history, /categoryTitle\(run\)/);
   assert.match(history, /Stores found/);
   assert.match(history, /Qualified/);
