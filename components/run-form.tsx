@@ -4,10 +4,15 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ArrowRightIcon, PlusIcon } from "@/components/icons";
-import type { StartRunResponse } from "@/lib/api-types";
-import { parseStartRunResponse } from "@/lib/api-validation";
-import { ApiRequestError, apiRequest, errorMessage } from "@/lib/client-api";
-import { parseCategories } from "@/lib/category-validation";
+import {
+  ApiRequestError,
+  createKeywordResearch,
+  errorMessage,
+} from "@/lib/client-api";
+import {
+  parseKeywordSeedText,
+  validateSeedsInput,
+} from "@/lib/keyword-intelligence-validation";
 
 const SUGGESTIONS = [
   "Clothing",
@@ -26,34 +31,42 @@ export function RunForm() {
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const parsed = useMemo(() => parseCategories(input), [input]);
+  const seeds = useMemo(() => parseKeywordSeedText(input), [input]);
+  const validation = useMemo(() => validateSeedsInput({ seeds }), [seeds]);
 
   function addSuggestion(suggestion: string) {
-    const existing = input.trim();
-    setInput(existing ? `${existing}\n${suggestion}` : suggestion);
+    const [normalizedSuggestion] = parseKeywordSeedText(suggestion);
+    if (!normalizedSuggestion) return;
+    if (
+      seeds.some(
+        (seed) =>
+          seed.toLocaleLowerCase("en-US") ===
+          normalizedSuggestion.toLocaleLowerCase("en-US"),
+      )
+    ) {
+      setError(null);
+      return;
+    }
+    if (seeds.length >= 5) {
+      setError("You can add up to five seed phrases.");
+      return;
+    }
+    setInput([...seeds, normalizedSuggestion].join("\n"));
     setError(null);
   }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
-    if (!parsed.categories.length) {
-      setError("Add at least one store category to start.");
-      return;
-    }
-    if (parsed.errors.length) {
-      setError(parsed.errors[0]);
+    if (!validation.ok) {
+      setError(validation.error);
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const run = await apiRequest<StartRunResponse>("/api/runs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ shopTypes: parsed.categories }),
-      }, parseStartRunResponse);
-      router.push(`/runs/${encodeURIComponent(run.runId)}`);
+      const view = await createKeywordResearch(validation.seeds);
+      router.push(`/keywords/${encodeURIComponent(view.id)}`);
     } catch (requestError) {
       if (
         requestError instanceof ApiRequestError &&
@@ -71,7 +84,7 @@ export function RunForm() {
         requestError.code === "BACKEND_TIMEOUT"
       ) {
         setError(
-          "The start request timed out, so its outcome is unknown. Wait a moment before trying again.",
+          "The research request timed out, so its outcome is unknown. Wait a moment before trying again.",
         );
       } else {
         setError(errorMessage(requestError));
@@ -93,7 +106,7 @@ export function RunForm() {
 
       <label className="field-label" htmlFor="shop-types">
         Describe your ideal stores
-        <span>One category per line</span>
+        <span>One seed phrase per line</span>
       </label>
       <div className="textarea-wrap ds-field">
         <textarea
@@ -105,12 +118,11 @@ export function RunForm() {
           }}
           placeholder={"e.g. Sustainable clothing\nIndependent eyewear\nOrganic baby food"}
           rows={6}
-          maxLength={8_200}
+          maxLength={2004}
           aria-describedby="category-help category-error"
         />
         <span className="category-count">
-          {parsed.categories.length}{" "}
-          {parsed.categories.length === 1 ? "category" : "categories"}
+          {seeds.length} seed {seeds.length === 1 ? "phrase" : "phrases"}
         </span>
       </div>
       <p className="field-help" id="category-help">
@@ -132,22 +144,22 @@ export function RunForm() {
         ))}
       </div>
 
-      {(error || parsed.errors[0]) && (
+      {error && (
         <p className="form-error" id="category-error" role="alert">
-          {error ?? parsed.errors[0]}
+          {error}
         </p>
       )}
 
       <div className="form-footer">
         <p>
-          Review and approve your search before discovery begins.
+          Review keyword opportunities before store discovery begins.
         </p>
         <button
           className="button button-primary ds-button ds-button--primary"
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Building your search…" : "Build my search"}
+          {isSubmitting ? "Building your research…" : "Explore my keywords"}
           {!isSubmitting && <ArrowRightIcon />}
         </button>
       </div>

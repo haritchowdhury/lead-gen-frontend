@@ -9,27 +9,16 @@ import {
   createKeywordResearch,
   errorMessage,
 } from "@/lib/client-api";
-import { validateSeedsInput } from "@/lib/keyword-intelligence-validation";
+import {
+  parseKeywordSeedText,
+  validateSeedsInput,
+} from "@/lib/keyword-intelligence-validation";
 import type { ResearchView } from "@/lib/keyword-intelligence-types";
 
 import styles from "./keyword-dashboard.module.css";
 
 const MAX_SEEDS = 5;
 const MAX_SEED_LENGTH = 100;
-
-function parseKeywordLines(value: string): string[] {
-  const seen = new Set<string>();
-  const result: string[] = [];
-  for (const raw of String(value ?? "").split(/[\n,]+/u)) {
-    const collapsed = raw.normalize("NFKC").replace(/\s+/gu, " ").trim();
-    if (!collapsed) continue;
-    const key = collapsed.toLocaleLowerCase("en-US");
-    if (seen.has(key)) continue;
-    seen.add(key);
-    result.push(collapsed);
-  }
-  return result;
-}
 
 export function ResearchForm({
   onCreated,
@@ -47,7 +36,7 @@ export function ResearchForm({
   const canSubmit = validation.ok;
 
   function addManualSeeds() {
-    const lines = parseKeywordLines(manualInput);
+    const lines = parseKeywordSeedText(manualInput);
     if (!lines.length) return;
     for (const line of lines) {
       if ([...line].length > MAX_SEED_LENGTH) {

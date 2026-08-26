@@ -1,6 +1,6 @@
 # StoreSignal frontend — development record
 
-Last reconciled with the source: **11 August 2026**
+Last reconciled with the source: **26 August 2026**
 
 This is the maintained frontend development record and current-state guide. The
 older plans and handoffs are retained under `docs/` and `review-evidence/`, but
@@ -22,7 +22,8 @@ private lead service.
 | Styling | Tailwind 4 build pipeline plus a large custom semantic/global CSS system |
 | Authentication | Neon Auth 0.4.2-beta email/password, server sessions, auth proxy for `/runs`, and per-route session validation |
 | Backend boundary | Same-origin Route Handlers add the private bearer token and trusted session user ID |
-| Run flow | Category submission, auth continuation, query review/edit/start, progress polling, results, diagnostics, and history |
+| Search entry | Landing keyword seeds, post-auth keyword-research continuation, and legacy run-intent compatibility |
+| Run flow | Keyword selection handoff, query review/edit/start, progress polling, results, diagnostics, and history |
 | Lead views | Immutable completed-run results plus current deduplicated `/leads` master workspace |
 | Traffic | Cumulative and per-lead market globes, source detail, country selection, and query treemap |
 | Filtering/export | Search, status, sort, pagination, repeated discovery-query filters, and all-page CSV export |
@@ -107,10 +108,12 @@ frontend/
 
 | Route | Purpose |
 |---|---|
-| `/` | Public landing page and category submission |
+| `/` | Public landing page and one-to-five keyword seed submission |
 | `/sign-up` | Neon Auth registration |
 | `/sign-in` | Neon Auth login |
-| `/runs/continue` | Claim an anonymous pending intent after authentication |
+| `/runs/continue` | Claim a pending keyword or legacy run intent after authentication |
+| `/keywords` | Authenticated keyword-research creation |
+| `/keywords/{researchId}` | Owner-scoped keyword research, selection, and store-discovery handoff |
 | `/runs` | Authenticated paginated run history |
 | `/runs/{runId}` | Query review, live progress, completed results, evidence, and traffic |
 | `/leads` | Current deduplicated user master lead workspace |
@@ -138,6 +141,10 @@ The active BFF routes mirror the backend:
 ```text
 /api/health
 /api/auth/[...path]
+/api/keyword-research
+/api/keyword-research/{researchId}
+/api/keyword-research/{researchId}/selection
+/api/keyword-research/{researchId}/runs
 /api/run-intents/claim
 /api/runs
 /api/runs/{runId}
@@ -154,19 +161,40 @@ The active BFF routes mirror the backend:
 `BACKEND_API_BASE_URL`, `BACKEND_API_TOKEN`, and `NEON_AUTH_COOKIE_SECRET` are
 server-only. There are no `NEXT_PUBLIC_` copies of those values.
 
-## Authentication and run continuation
+## Landing keyword research and authentication continuation
 
-Three implemented paths converge on one owned run:
+The landing page keeps its existing hero, globe, form card, responsive classes,
+CTA anchor, and suggestion chips. Its form now validates one through five
+normalized keyword seed phrases and enters keyword research:
 
 ```text
-signed in -> submit categories -> owned run -> /runs/{runId}
-signed out, new -> pending intent -> sign up -> claim -> /runs/{runId}
-signed out, returning -> pending intent -> sign in -> claim -> /runs/{runId}
+signed in -> POST /api/keyword-research -> owned research -> /keywords/{researchId}
+signed out -> server-side keyword intent + opaque HTTP-only cookie -> /sign-up
+successful sign-up/sign-in -> /runs/continue -> atomic intent claim + owned research
+                             -> post-commit keyword.initialize.v1
+                             -> /keywords/{researchId}
 ```
 
-The pending intent identifier is held in an HTTP-only same-origin cookie. Claim is
-idempotent in the backend, the cookie is cleared after success, and no scraper or
-paid provider work begins while the intent is unowned.
+Anonymous submission creates no `KeywordResearch`, queue message, worker call, or
+provider call. Seeds stay only in the server-side one-hour intent; the browser
+holds only its opaque identifier in
+`storesignal_pending_keyword_research_intent`. The authenticated claim creates
+the research and durable owner mapping in one database transaction. Only the
+created post-commit outcome dispatches `keyword.initialize.v1`; a same-owner
+retry returns the identical research without an immediate second dispatch.
+
+The continuation BFF returns a strict local discriminator, never a backend
+destination URL:
+
+```text
+keyword_research -> /keywords/{validated research id}
+legacy_run       -> /runs/{validated run id}
+```
+
+Already-issued `storesignal_pending_run_intent` cookies remain claimable. A new
+keyword intent deletes the legacy cookie, a new legacy intent deletes the
+keyword cookie, and successful continuation deletes both. Missing, expired,
+foreign-owner, and malformed pending intents fail closed without creating work.
 
 Route middleware redirects `/runs/*` navigation when no auth session is available.
 Authorization does not rely on middleware: every protected BFF handler checks the

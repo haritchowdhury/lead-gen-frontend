@@ -4,14 +4,18 @@ import { sessionUserId } from "@/lib/auth/server";
 import { jsonError, proxyBackend } from "@/lib/backend-proxy";
 import type { RunIntentResponse } from "@/lib/api-types";
 import { parseRunIntentResponse } from "@/lib/api-validation";
+import {
+  PENDING_INTENT_ID_PATTERN,
+  PENDING_KEYWORD_RESEARCH_INTENT_COOKIE,
+  PENDING_RUN_INTENT_COOKIE,
+  pendingIntentCookieOptions,
+  pendingIntentMaxAge,
+} from "@/lib/pending-search-intent";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const MAX_BODY_BYTES = 32 * 1024;
-const PENDING_INTENT_COOKIE = "storesignal_pending_run_intent";
-const INTENT_ID_PATTERN = /^intent_[A-Za-z0-9_-]{32}$/u;
-
 export async function GET(request: Request): Promise<Response> {
   let userId: string | null;
   try {
@@ -98,10 +102,26 @@ export async function POST(request: Request): Promise<Response> {
     timeoutMs: 15_000,
   });
   if (!intentResponse.ok) return intentResponse;
+  if (intentResponse.status !== 201) {
+    return jsonError(
+      502,
+      "BACKEND_INVALID_RESPONSE",
+      "The backend returned an unreadable response. Please try again.",
+    );
+  }
 
   let intent: RunIntentResponse;
   try {
-    intent = parseRunIntentResponse(await intentResponse.clone().json());
+    const payload: unknown = await intentResponse.clone().json();
+    if (
+      !payload ||
+      typeof payload !== "object" ||
+      Array.isArray(payload) ||
+      Object.keys(payload).sort().join("\0") !== "expiresAt\0intentId"
+    ) {
+      throw new Error("unexpected intent envelope");
+    }
+    intent = parseRunIntentResponse(payload);
   } catch {
     return jsonError(
       502,
@@ -109,12 +129,8 @@ export async function POST(request: Request): Promise<Response> {
       "The backend returned an unreadable response. Please try again.",
     );
   }
-  const expiresAt = Date.parse(intent.expiresAt);
-  if (
-    !INTENT_ID_PATTERN.test(intent.intentId) ||
-    !Number.isFinite(expiresAt) ||
-    expiresAt <= Date.now()
-  ) {
+  const maxAge = pendingIntentMaxAge(intent.expiresAt);
+  if (!PENDING_INTENT_ID_PATTERN.test(intent.intentId) || maxAge === null) {
     return jsonError(
       502,
       "BACKEND_INVALID_RESPONSE",
@@ -122,17 +138,13 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  const maxAge = Math.max(
-    1,
-    Math.min(3600, Math.floor((expiresAt - Date.now()) / 1000)),
+  const cookieStore = await cookies();
+  cookieStore.delete(PENDING_KEYWORD_RESEARCH_INTENT_COOKIE);
+  cookieStore.set(
+    PENDING_RUN_INTENT_COOKIE,
+    intent.intentId,
+    pendingIntentCookieOptions(maxAge),
   );
-  (await cookies()).set(PENDING_INTENT_COOKIE, intent.intentId, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge,
-  });
   return jsonError(
     401,
     "AUTHENTICATION_REQUIRED",

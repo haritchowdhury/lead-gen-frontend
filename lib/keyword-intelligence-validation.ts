@@ -29,6 +29,20 @@ export function validKeywordResearchId(id: string): boolean {
 
 export const CLIENT_REQUEST_ID_PATTERN = /^[A-Za-z0-9_-]{16,80}$/u;
 
+export function parseKeywordSeedText(value: string): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const raw of String(value ?? "").split(/[\n,]+/u)) {
+    const collapsed = raw.normalize("NFKC").replace(/\s+/gu, " ").trim();
+    if (!collapsed) continue;
+    const key = collapsed.toLocaleLowerCase("en-US");
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(collapsed);
+  }
+  return result;
+}
+
 export function newClientRequestId(): string {
   return crypto.randomUUID().replace(/-/g, "");
 }
@@ -716,6 +730,8 @@ const RESEARCH_VIEW_KEYS = [
 export function parseResearchView(value: unknown): ResearchView {
   const source = record(value, "research");
   exactKeys(source, RESEARCH_VIEW_KEYS, "research");
+  const id = text(source.id, "research.id");
+  if (!validKeywordResearchId(id)) throw new ApiPayloadError("research.id");
   const state = oneOf(source.state, RESEARCH_STATES, "research.state");
   const generation = positiveInteger(source.generation, "research.generation");
   const contractVersion = source.contractVersion === 1 ? 1 : (() => { throw new ApiPayloadError("research.contractVersion"); })();
@@ -734,7 +750,7 @@ export function parseResearchView(value: unknown): ResearchView {
     throw new ApiPayloadError("research.result");
   }
   return {
-    id: text(source.id, "research.id"),
+    id,
     statusUrl: text(source.statusUrl, "research.statusUrl"),
     state,
     generation,

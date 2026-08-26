@@ -57,7 +57,8 @@ test("G3 preserves continuation outcomes and not-found target", () => {
   assert.match(continuation, /method: "POST"/);
   assert.match(continuation, /RUN_INTENT_NOT_FOUND/);
   assert.match(continuation, /router\.replace\("\/"\)/);
-  assert.match(continuation, /encodeURIComponent\(run\.runId\)/);
+  assert.match(continuation, /encodeURIComponent\(continuation\.run\.runId\)/);
+  assert.match(continuation, /encodeURIComponent\(continuation\.research\.id\)/);
   assert.match(notFound, /href="\/"/);
 });
 

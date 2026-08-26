@@ -28,6 +28,7 @@ import type {
   RunProgress,
   RunStatus,
   ScoreBreakdown,
+  SearchContinuationResponse,
   StartRunResponse,
   StartScrapeResponse,
   StoreFitEvidence,
@@ -37,6 +38,12 @@ import type {
   TrafficOverview,
   TrafficSourceState,
 } from "@/lib/api-types";
+import {
+  parseResearchView,
+  validKeywordResearchId,
+} from "./keyword-intelligence-validation.ts";
+
+const CONTINUATION_RUN_ID_PATTERN = /^run_[A-Za-z0-9_-]{16,80}$/u;
 
 export class ApiPayloadError extends Error {
   constructor(path: string) {
@@ -1059,8 +1066,12 @@ export function parseRunStatus(value: unknown, path = "run"): RunStatus {
 
 export function parseStartRunResponse(value: unknown): StartRunResponse {
   const source = record(value, "startRun");
+  const runId = text(source.runId, "startRun.runId");
+  if (!CONTINUATION_RUN_ID_PATTERN.test(runId)) {
+    throw new ApiPayloadError("startRun.runId");
+  }
   return {
-    runId: text(source.runId, "startRun.runId"),
+    runId,
     state: oneOf(source.state, ["queued"], "startRun.state"),
     phase: oneOf(source.phase, ["query_planning"], "startRun.phase"),
     stage: oneOf(source.stage, ["queued_query_planning"], "startRun.stage"),
@@ -1069,6 +1080,48 @@ export function parseStartRunResponse(value: unknown): StartRunResponse {
     resultsUrl: text(source.resultsUrl, "startRun.resultsUrl"),
     createdAt: text(source.createdAt, "startRun.createdAt"),
   };
+}
+
+export function parseSearchContinuationResponse(
+  value: unknown,
+): SearchContinuationResponse {
+  const source = record(value, "searchContinuation");
+  const kind = oneOf(
+    source.kind,
+    ["legacy_run", "keyword_research"] as const,
+    "searchContinuation.kind",
+  );
+
+  if (kind === "legacy_run") {
+    exactKeys(source, ["kind", "run"], "searchContinuation");
+    const run = record(source.run, "searchContinuation.run");
+    exactKeys(
+      run,
+      [
+        "runId",
+        "state",
+        "phase",
+        "stage",
+        "statusUrl",
+        "queriesUrl",
+        "resultsUrl",
+        "createdAt",
+      ],
+      "searchContinuation.run",
+    );
+    const parsedRun = parseStartRunResponse(source.run);
+    if (!CONTINUATION_RUN_ID_PATTERN.test(parsedRun.runId)) {
+      throw new ApiPayloadError("searchContinuation.run.runId");
+    }
+    return { kind, run: parsedRun };
+  }
+
+  exactKeys(source, ["kind", "research"], "searchContinuation");
+  const research = parseResearchView(source.research);
+  if (!validKeywordResearchId(research.id)) {
+    throw new ApiPayloadError("searchContinuation.research.id");
+  }
+  return { kind, research };
 }
 
 export function parseQuerySet(value: unknown): QuerySet {

@@ -4,7 +4,7 @@ import test from "node:test";
 
 const source = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("landing categories retain validation, suggestions, payload, and redirects", () => {
+test("landing keyword seeds retain validation, suggestions, payload, and redirects", () => {
   const form = source("components/run-form.tsx");
 
   for (const suggestion of [
@@ -12,12 +12,20 @@ test("landing categories retain validation, suggestions, payload, and redirects"
     "Jewelry", "Fitness", "Baby products", "Kitchenware",
   ]) assert.match(form, new RegExp(`"${suggestion}"`, "u"));
 
-  assert.match(form, /parseCategories\(input\)/u);
-  assert.match(form, /body: JSON\.stringify\(\{ shopTypes: parsed\.categories \}\)/u);
-  assert.match(form, /router\.push\(`\/runs\/\$\{encodeURIComponent\(run\.runId\)\}`\)/u);
+  assert.match(form, /parseKeywordSeedText\(input\)/u);
+  assert.match(form, /validateSeedsInput\(\{ seeds \}\)/u);
+  assert.match(form, /createKeywordResearch\(validation\.seeds\)/u);
+  assert.match(form, /router\.push\(`\/keywords\/\$\{encodeURIComponent\(view\.id\)\}`\)/u);
+  assert.doesNotMatch(form, /apiRequest[^\n]*<StartRunResponse>|POST \/api\/runs|JSON\.stringify\(\{ shopTypes:/u);
   assert.match(form, /requestError\.code === "AUTHENTICATION_REQUIRED"/u);
   assert.match(form, /router\.push\("\/sign-up"\)/u);
   assert.match(form, /requestError\.code === "BACKEND_TIMEOUT"/u);
+  assert.match(form, /id="start-discovery" className="run-form-card run-start-form ds-card"/u);
+  assert.match(form, /One seed phrase per line/u);
+  assert.match(form, /maxLength=\{2004\}/u);
+  assert.match(form, /Review keyword opportunities before store discovery begins\./u);
+  assert.match(form, /Building your research…/u);
+  assert.match(form, /Explore my keywords/u);
 });
 
 test("query review retains load, edit, add, remove, reorder, save, and start behavior", () => {

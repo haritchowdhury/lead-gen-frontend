@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { StartRunResponse } from "@/lib/api-types";
-import { parseStartRunResponse } from "@/lib/api-validation";
+import type { SearchContinuationResponse } from "@/lib/api-types";
+import { parseSearchContinuationResponse } from "@/lib/api-validation";
 import { ApiRequestError, apiRequest, errorMessage } from "@/lib/client-api";
 
 export function RunContinuation() {
@@ -17,14 +17,20 @@ export function RunContinuation() {
   const claim = useCallback(async () => {
     setError(null);
     try {
-      const run = await apiRequest<StartRunResponse>("/api/run-intents/claim", {
+      const continuation = await apiRequest<SearchContinuationResponse>("/api/run-intents/claim", {
         method: "POST",
-      }, parseStartRunResponse);
-      router.replace(`/runs/${encodeURIComponent(run.runId)}`);
+      }, parseSearchContinuationResponse);
+      if (continuation.kind === "keyword_research") {
+        router.replace(`/keywords/${encodeURIComponent(continuation.research.id)}`);
+      } else {
+        router.replace(`/runs/${encodeURIComponent(continuation.run.runId)}`);
+      }
     } catch (claimError) {
       if (
         claimError instanceof ApiRequestError &&
-        claimError.code === "RUN_INTENT_NOT_FOUND"
+        ["RUN_INTENT_NOT_FOUND", "KEYWORD_RESEARCH_INTENT_NOT_FOUND"].includes(
+          claimError.code,
+        )
       ) {
         router.replace("/");
         return;
@@ -48,10 +54,10 @@ export function RunContinuation() {
     <main className="app-canvas auth-page">
       <section className="auth-card continuation-card ds-card" aria-live="polite">
         <span className="continuation-spinner" aria-hidden="true" />
-        <span className="eyebrow">Preparing your run</span>
+        <span className="eyebrow">Preparing your search</span>
         <h1>{error ? "We could not continue yet" : "Starting your saved search…"}</h1>
         <p>
-          {error ?? "Your account is ready. We are attaching the pending search and creating its run page."}
+          {error ?? "Your account is ready. We are attaching the pending search and opening its workspace."}
         </p>
         {error && (
           <div className="continuation-actions">

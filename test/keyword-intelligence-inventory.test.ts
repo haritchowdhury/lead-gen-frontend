@@ -80,6 +80,7 @@ const VALIDATION_SURFACE: readonly string[] = [
   "CLIENT_REQUEST_ID_PATTERN",
   "KEYWORD_RESEARCH_ID_PATTERN",
   "newClientRequestId",
+  "parseKeywordSeedText",
   "parseResearchEnvelope",
   "parseResearchView",
   "parseRunHandoffEnvelope",

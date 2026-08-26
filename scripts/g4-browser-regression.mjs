@@ -132,13 +132,13 @@ try {
   await wait(100);
   await capture(cdp, "landing-empty-error", 390, 844);
   await navigate(cdp, "/");
-  await evaluate(cdp, `(() => { const area = document.querySelector('#shop-types'); const value = Array.from({ length: 101 }, (_, index) => 'Category ' + index).join('\\n'); Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(area, value); area.dispatchEvent(new Event('input', { bubbles: true })); })()`);
+  await evaluate(cdp, `(() => { const area = document.querySelector('#shop-types'); const value = ['clothing', 'eyewear', 'home decor', 'pet supplies', 'skincare', 'jewelry'].join('\\n'); Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(area, value); area.dispatchEvent(new Event('input', { bubbles: true })); })()`);
   await wait(100);
   await evaluate(cdp, "document.querySelector('#start-discovery').requestSubmit()");
   await wait(100);
   await capture(cdp, "landing-maximum-error", 390, 844);
   await navigate(cdp, "/");
-  await capture(cdp, "landing-pending", 390, 844, `(() => { const area = document.querySelector('#shop-types'); Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(area, 'Independent sustainable home and lifestyle stores'); area.dispatchEvent(new Event('input', { bubbles: true })); const form = document.querySelector('#start-discovery'); const button = form.querySelector('.button-primary'); form.setAttribute('aria-busy', 'true'); button.disabled = true; button.textContent = 'Building your search…'; })()`);
+  await capture(cdp, "landing-pending", 390, 844, `(() => { const area = document.querySelector('#shop-types'); Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(area, 'Independent sustainable home and lifestyle stores'); area.dispatchEvent(new Event('input', { bubbles: true })); const form = document.querySelector('#start-discovery'); const button = form.querySelector('.button-primary'); form.setAttribute('aria-busy', 'true'); button.disabled = true; button.textContent = 'Building your research…'; })()`);
   await navigate(cdp, "/");
   const countryBefore = await evaluate(cdp, "document.querySelector('.traffic-country-links button')?.getAttribute('aria-pressed')");
   await evaluate(cdp, "document.querySelector('.traffic-country-links button')?.click()");

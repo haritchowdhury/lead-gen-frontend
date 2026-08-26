@@ -1,6 +1,17 @@
-import { authenticatedRoute } from "@/lib/auth/route";
+import { cookies } from "next/headers";
+
+import type { RunIntentResponse } from "@/lib/api-types";
+import { parseRunIntentResponse } from "@/lib/api-validation";
+import { sessionUserId } from "@/lib/auth/server";
 import { jsonError, proxyBackend } from "@/lib/backend-proxy";
 import { validateSeedsInput } from "@/lib/keyword-intelligence-validation";
+import {
+  PENDING_KEYWORD_RESEARCH_INTENT_COOKIE,
+  PENDING_RUN_INTENT_COOKIE,
+  PENDING_INTENT_ID_PATTERN,
+  pendingIntentCookieOptions,
+  pendingIntentMaxAge,
+} from "@/lib/pending-search-intent";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -36,14 +47,83 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  const auth = await authenticatedRoute();
-  if (auth.response) return auth.response;
+  let userId: string | null;
+  try {
+    userId = await sessionUserId();
+  } catch {
+    return jsonError(
+      503,
+      "AUTH_UNAVAILABLE",
+      "Authentication is temporarily unavailable. Please try again.",
+    );
+  }
 
-  return proxyBackend({
-    path: "/api/keyword-research",
+  const normalizedBody = JSON.stringify({ seeds: validated.seeds });
+  if (userId) {
+    return proxyBackend({
+      path: "/api/keyword-research",
+      method: "POST",
+      body: normalizedBody,
+      timeoutMs: 15_000,
+      userId,
+    });
+  }
+
+  const intentResponse = await proxyBackend({
+    path: "/api/keyword-research-intents",
     method: "POST",
-    body: JSON.stringify({ seeds: validated.seeds }),
+    body: normalizedBody,
     timeoutMs: 15_000,
-    userId: auth.userId,
   });
+  if (!intentResponse.ok) return intentResponse;
+  if (intentResponse.status !== 201) {
+    return jsonError(
+      502,
+      "BACKEND_INVALID_RESPONSE",
+      "The backend returned an unreadable response. Please try again.",
+    );
+  }
+
+  let intent: RunIntentResponse;
+  try {
+    const payload: unknown = await intentResponse.clone().json();
+    if (
+      !payload ||
+      typeof payload !== "object" ||
+      Array.isArray(payload) ||
+      Object.keys(payload).sort().join("\0") !== "expiresAt\0intentId"
+    ) {
+      throw new Error("unexpected intent envelope");
+    }
+    intent = parseRunIntentResponse(payload);
+  } catch {
+    return jsonError(
+      502,
+      "BACKEND_INVALID_RESPONSE",
+      "The backend returned an unreadable response. Please try again.",
+    );
+  }
+  const maxAge = pendingIntentMaxAge(intent.expiresAt);
+  if (!PENDING_INTENT_ID_PATTERN.test(intent.intentId) || maxAge === null) {
+    return jsonError(
+      502,
+      "BACKEND_INVALID_RESPONSE",
+      "The backend returned an invalid pending search. Please try again.",
+    );
+  }
+
+  const cookieStore = await cookies();
+  cookieStore.delete(PENDING_RUN_INTENT_COOKIE);
+  cookieStore.set(
+    PENDING_KEYWORD_RESEARCH_INTENT_COOKIE,
+    intent.intentId,
+    pendingIntentCookieOptions(maxAge),
+  );
+
+  return jsonError(
+    401,
+    "AUTHENTICATION_REQUIRED",
+    "Create an account or sign in to continue this keyword research.",
+    { continueUrl: "/sign-up" },
+  );
 }

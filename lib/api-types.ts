@@ -1,3 +1,5 @@
+import type { ResearchView } from "./keyword-intelligence-types";
+
 export type RunState =
   | "queued"
   | "running"
@@ -230,6 +232,10 @@ export type StartRunResponse = {
   resultsUrl: string;
   createdAt: string;
 };
+
+export type SearchContinuationResponse =
+  | { kind: "legacy_run"; run: StartRunResponse }
+  | { kind: "keyword_research"; research: ResearchView };
 
 export type QueryCategory = {
   categoryIndex: number;
