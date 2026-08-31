@@ -462,10 +462,6 @@ const TOKEN_ALIASES: Record<string, string> = {
   clothes: "clothing", apparel: "clothing", attire: "clothing",
   shops: "store", shop: "store", stores: "store",
   retailer: "store", retailers: "store",
-  outfits: "outfit", hoodies: "hoodie", shirts: "shirt",
-  jackets: "jacket", coats: "coat", dresses: "dress",
-  skirts: "skirt", pants: "pant", jeans: "jean",
-  shoes: "shoe", paddles: "paddle",
 };
 
 function singularPluralAlias(t: string): string {
@@ -487,93 +483,45 @@ function classifyTokens(keyword: string): Set<string> {
   return norm;
 }
 
-const AUDIENCE = new Set(["women", "men", "kid", "kids", "baby", "unisex", "family"]);
-const CHANNEL = new Set(["online", "store", "boutique", "outlet", "retail", "shopping", "shipping"]);
-const GENERIC = new Set([
-  "clothing", "fashion", "wear", "brand", "brands", "best", "cheap", "sale",
-  "discount", "deal", "price", "premium", "luxury", "top", "trending", "near",
-  "me", "close", "owned", "black", "new", "older", "young",
+const LOCAL_PHRASES = [
+  "near me", "close to me", "closest to me", "closest", "nearest", "nearby",
+] as const;
+const STORE_TOKENS = new Set([
+  "shop", "shops", "store", "stores", "boutique", "boutiques",
+  "outlet", "outlets", "retailer", "retailers",
 ]);
-const CATEGORY_TERMS: Record<string, Set<string>> = {
-  activewear: new Set(["activewear", "yoga"]),
-  streetwear: new Set(["streetwear"]),
-  swimwear: new Set(["swimwear", "bathing", "swimsuit"]),
-  outerwear: new Set(["jacket", "coat", "outerwear"]),
-  tops: new Set(["top", "shirt", "hoodie", "sweatshirt", "sweater", "tee"]),
-  bottoms: new Set(["pant", "jean", "trouser", "skirt", "shorts"]),
-  dresses: new Set(["dress", "gown"]),
-  underwear: new Set(["underwear", "lingerie", "bra", "brief"]),
-  sleepwear: new Set(["sleepwear", "pajama", "loungewear"]),
-  footwear: new Set(["shoe", "sneaker", "boot", "sandal"]),
-  accessories: new Set(["belt", "bag", "hat", "accessory", "jewelry"]),
-};
-const FIT_TERMS: Record<string, Set<string>> = {
-  "plus size": new Set(["plus", "size"]),
-  "big and tall": new Set(["big", "tall"]),
-  petite: new Set(["petite"]),
-  maternity: new Set(["maternity"]),
-  oversized: new Set(["oversized"]),
-};
-const MODIFIER_TERMS: Record<string, Set<string>> = {
-  affordable: new Set(["cheap", "affordable", "discount", "sale"]),
-  luxury: new Set(["luxury", "premium"]),
-  sustainable: new Set(["sustainable", "ethical"]),
-  vintage: new Set(["vintage"]),
-  consignment: new Set(["consignment"]),
-};
-const KNOWN_RETAIL = new Set<string | Set<string>>([
-  ...AUDIENCE,
-  ...CHANNEL,
-  ...GENERIC,
-  ...[...Object.values(CATEGORY_TERMS)].flat(),
-  ...[...Object.values(FIT_TERMS)].flat(),
-  ...[...Object.values(MODIFIER_TERMS)].flat(),
+const RETAILER_TOKENS = new Set([
+  "amazon", "walmart", "target", "ebay", "etsy", "aliexpress", "alibaba",
+  "shein", "temu", "costco", "ikea", "bestbuy", "macys", "kohls",
+  "nordstrom", "wayfair", "wish", "overstock", "rakuten", "flipkart",
+  "homedepot", "lowes",
 ]);
 
+function hasLocalPhrase(keyword: string): boolean {
+  const low = keyword.toLowerCase();
+  return LOCAL_PHRASES.some((phrase) => new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "u").test(low));
+}
+
 function facetsForSelection(tokens: Set<string>, keyword: string): KeywordFacets {
-  const audience = [...tokens].filter((t) => AUDIENCE.has(t)).sort();
-  const categories = Object.keys(CATEGORY_TERMS).filter((name) => {
-    const terms = CATEGORY_TERMS[name];
-    for (const t of tokens) if (terms.has(t)) return true;
-    return false;
-  }).sort();
-  const fits = Object.keys(FIT_TERMS).filter((name) => {
-    const terms = FIT_TERMS[name];
-    if (terms.size === 1) {
-      for (const t of tokens) if (terms.has(t)) return true;
-      return false;
-    }
-    for (const t of terms) if (!tokens.has(t)) return false;
-    return true;
-  }).sort();
-  const modifiers = Object.keys(MODIFIER_TERMS).filter((name) => {
-    const terms = MODIFIER_TERMS[name];
-    for (const t of tokens) if (terms.has(t)) return true;
-    return false;
-  }).sort();
   const channels: string[] = [];
   if (tokens.has("online")) channels.push("online");
-  if ([...tokens].some((t) => CHANNEL.has(t) && t !== "online")) channels.push("store");
-  if (/\b(near me|close to me|closest|nearest)\b/i.test(keyword)) channels.push("local");
+  if ([...tokens].some((t) => STORE_TOKENS.has(t) || t === "store")) channels.push("store");
+  if (hasLocalPhrase(keyword)) channels.push("local");
   return {
-    audience,
-    category: categories,
+    audience: [],
+    category: [],
     channel: [...new Set(channels)].sort(),
-    fit: fits,
-    modifier: modifiers,
+    fit: [],
+    modifier: [],
   };
 }
 
 function laneForSelection(keyword: string, mainIntent: string | null, tokens: Set<string>): KeywordLane {
-  const low = keyword.toLowerCase();
-  if (/\b(near me|close to me|closest|nearest|nyc|new york|in [a-z]+)\b/i.test(low)) {
-    return "local_discovery";
-  }
-  if (tokens.has("brand") || tokens.has("brands")) return "brand_competitor";
-  const unknown = new Set([...tokens].filter((t) => !KNOWN_RETAIL.has(t)));
-  if ((mainIntent || "").toLowerCase() === "navigational" && unknown.size) return "brand_competitor";
-  if (unknown.size && [...tokens].some((t) => CHANNEL.has(t))) return "brand_competitor";
-  if ([...tokens].some((t) => CHANNEL.has(t))) return "store_discovery";
+  if (hasLocalPhrase(keyword)) return "local_discovery";
+  if ([...tokens].some((t) => RETAILER_TOKENS.has(t))) return "brand_competitor";
+  const hasStore = [...tokens].some((t) => STORE_TOKENS.has(t) || t === "store");
+  if ((mainIntent || "").toLowerCase() === "navigational" && !hasStore) return "brand_competitor";
+  if (hasStore) return "store_discovery";
   return "category_discovery";
 }
 

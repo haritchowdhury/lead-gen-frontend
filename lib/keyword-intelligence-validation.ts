@@ -523,7 +523,9 @@ function result(value: unknown, path: string): ResearchResult {
   const seeds = stringArray(source.seeds, `${path}.seeds`);
   if (seeds.length < 1 || seeds.length > 5) throw new ApiPayloadError(`${path}.seeds`);
   return {
-    contractVersion: source.contractVersion === 1 ? 1 : (() => { throw new ApiPayloadError(`${path}.contractVersion`); })(),
+    contractVersion: source.contractVersion === 1 || source.contractVersion === 2
+      ? source.contractVersion
+      : (() => { throw new ApiPayloadError(`${path}.contractVersion`); })(),
     researchId: text(source.researchId, `${path}.researchId`),
     generation,
     configFingerprint: text(source.configFingerprint, `${path}.configFingerprint`),

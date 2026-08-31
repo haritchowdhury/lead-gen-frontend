@@ -169,7 +169,7 @@ export type ResearchProgressStage =
   | "failed";
 
 export type ResearchResult = {
-  contractVersion: 1;
+  contractVersion: 1 | 2;
   researchId: string;
   generation: number;
   configFingerprint: string;

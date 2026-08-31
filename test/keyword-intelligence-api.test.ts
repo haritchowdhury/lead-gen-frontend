@@ -675,7 +675,8 @@ test("W5-A09 (superseded by R5-WIRE-05) selection reducer add/remove/edit/manual
   const edited = editSelectedItemText(added, "kw_0001", "mens jackets");
   assert.equal(edited.draft[0].keyword, "mens jackets");
   assert.equal(edited.draft[0].lane, edited.reclassified.lane);
-  assert.ok(edited.draft[0].facets.category.includes("outerwear"));
+  assert.equal(edited.draft[0].lane, "category_discovery");
+  assert.deepEqual(edited.draft[0].facets.category, []);
   assert.deepEqual(edited.draft[0].facets, edited.reclassified.facets);
 
   const manual = addManualSelectedItem([], "womens dresses", "draft_1", "dresses");
@@ -752,7 +753,8 @@ test("R5-WIRE-03 rejects every non-numeric-v1 version partition with no UI state
     let uiState: ResearchView | null = null;
     assert.throws(() => { uiState = parseResearchView(badView); }, ApiPayloadError);
     assert.equal(uiState, null);
-
+  }
+  for (const badVersion of ["1", 0, 3, null, undefined]) {
     const badResultView = structuredClone(viewFixture());
     if (badVersion === undefined) delete (badResultView.result as Record<string, unknown>).contractVersion;
     else (badResultView.result as Record<string, unknown>).contractVersion = badVersion;
@@ -760,6 +762,9 @@ test("R5-WIRE-03 rejects every non-numeric-v1 version partition with no UI state
   }
   const numeric = structuredClone(viewFixture());
   assert.doesNotThrow(() => parseResearchView(numeric));
+  const resultV2 = structuredClone(viewFixture());
+  (resultV2.result as Record<string, unknown>).contractVersion = 2;
+  assert.equal(parseResearchView(resultV2).result?.contractVersion, 2);
   const stringVersion = structuredClone(viewFixture()) as Record<string, unknown>;
   stringVersion.contractVersion = "1";
   assert.throws(
