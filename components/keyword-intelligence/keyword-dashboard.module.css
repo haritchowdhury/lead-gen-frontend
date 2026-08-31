@@ -174,26 +174,31 @@
 .kiDashboard main { padding: 20px 24px 48px; max-width: 1500px; margin: 0 auto; }
 
 .researchHero {
-  position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(440px, .9fr);
-  gap: clamp(38px, 7vw, 100px); align-items: center; min-height: 560px; padding: 22px 32px 40px;
+  position: relative; display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(440px, .9fr);
+  grid-template-rows: auto auto auto;
+  column-gap: clamp(38px, 7vw, 100px);
+  row-gap: clamp(20px, 3vw, 32px);
+  align-items: start;
+  padding: 22px 32px 40px;
   margin-bottom: 34px; overflow: hidden;
 }
 
-.heroCopy { position: relative; z-index: 1; max-width: 650px; }
+.heroCopy { position: relative; z-index: 1; max-width: 650px; grid-column: 1; grid-row: 1; }
 
 .servicePill { display: inline-flex; align-items: center; gap: 8px; border: 0; padding: 0; font-size: 10px; font-weight: 750; }
 
 .servicePill::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #91a09b; }
 
-.heroEyebrow { margin-top: 22px; color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.heroEyebrow { margin-top: 14px; color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 
-.researchHero h1 { max-width: 650px; margin: 13px 0 18px; font-size: clamp(44px, 5vw, 68px); line-height: .96; letter-spacing: -.06em; font-weight: 520; }
+.researchHero h1 { max-width: 650px; margin: 8px 0 12px; font-size: clamp(20px, 2.2vw, 30px); line-height: 1.1; letter-spacing: -.03em; font-weight: 600; }
 
-.heroHighlight { text-decoration: underline; text-decoration-color: var(--primary); text-decoration-thickness: .18em; text-underline-offset: -.06em; text-decoration-skip-ink: none; }
+.heroHighlight { text-decoration: underline; text-decoration-color: var(--primary); text-decoration-thickness: .14em; text-underline-offset: -.04em; text-decoration-skip-ink: none; }
 
-.heroCopy > p { max-width: 590px; color: #36514e; font-size: 16px; line-height: 1.65; }
+.heroCopy > p { max-width: 590px; color: #36514e; font-size: 14px; line-height: 1.55; }
 
-.heroBenefits { display: flex; flex-wrap: wrap; gap: 12px 22px; margin-top: 20px; color: #294846; font-size: 11px; font-weight: 700; }
+.heroBenefits { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 14px; color: #294846; font-size: 11px; font-weight: 700; }
 
 .heroBenefits span::before { content: '✓'; display: inline-grid; place-items: center; width: 16px; height: 16px; margin-right: 7px; border-radius: 50%; background: #082d2e; color: var(--primary); font-size: 10px; }
 
@@ -818,12 +823,46 @@ section.filters {
 }
 
 .selectionStep {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  align-self: stretch;
   position: relative;
   display: flex;
   justify-content: flex-end;
   margin: 0;
   padding: 0;
   scroll-margin-top: 205px;
+}
+
+.selectionStep .seedCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.selectionStep .seedChipField {
+  flex: 1 1 auto;
+  min-height: 210px;
+  max-height: none;
+  gap: 10px;
+  padding: 17px;
+}
+
+.selectionStep .researchChip {
+  height: 40px;
+  padding: 0 9px 0 14px;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.selectionStep .researchChip.isManual {
+  border-width: 2px;
+}
+
+.selectionStep .chipEdit,
+.selectionStep .chipDelete {
+  padding: 3px;
+  font-size: 14px;
 }
 
 .selectionPanel {
@@ -874,22 +913,26 @@ section.filters {
   text-transform: uppercase;
 }
 
-.marketPulseGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
-  align-items: stretch;
-  margin-bottom: 38px;
-}
-
-.keywordHeatmap,
-.marketGlobe {
+.keywordHeatmap {
+  grid-column: 1;
+  grid-row: 2;
   min-width: 0;
-  min-height: 420px;
+  min-height: 360px;
   display: flex;
   flex-direction: column;
   border: 0;
-  padding-top: 14px;
+  padding-top: 6px;
+}
+
+.marketGlobe {
+  grid-column: 1;
+  grid-row: 3;
+  min-width: 0;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  padding-top: 6px;
 }
 
 .keywordHeatmapHead h2,
@@ -1022,11 +1065,20 @@ section.filters,
   .dashboardToolbar { align-items: flex-start; flex-direction: column; }
   .filterDock { position: relative; top: auto; padding-top: 0; backdrop-filter: none; }
   .filterRow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .marketPulseGrid { grid-template-columns: 1fr; }
   .overviewSignals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .selectionStep { justify-content: center; }
-  .researchHero { grid-template-columns: 1fr; min-height: 0; padding: 24px 4px 38px; gap: 34px; }
-  .researchHero h1 { font-size: clamp(42px, 11vw, 64px); }
+  .selectionStep { justify-content: center; grid-column: 1; grid-row: auto; }
+  .researchHero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    min-height: 0;
+    padding: 24px 4px 38px;
+    gap: 26px;
+  }
+  .heroCopy, .keywordHeatmap, .marketGlobe {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .researchHero h1 { font-size: clamp(18px, 5vw, 26px); }
   .seedCard { min-height: 0; }
   .heroOrbit { display: none; }
 }

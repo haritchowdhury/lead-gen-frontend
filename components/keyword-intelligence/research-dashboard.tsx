@@ -102,7 +102,6 @@ function KeywordMarketGlobe({
       <div className={styles.marketGlobeHead}>
         <div>
           <span className={styles.sectionKicker}>Market lens</span>
-          <h2>Demand around the world</h2>
           <p>Select a highlighted country to focus every keyword metric and chart.</p>
         </div>
         <button
@@ -543,52 +542,6 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
         </div>
       )}
 
-      <section className={styles.researchHero} aria-label="Keyword research workspace">
-        <div className={styles.heroCopy} data-surface="surface:summary-cards">
-          <span className={styles.servicePill}>Research landscape ready</span>
-          <div className={styles.heroEyebrow}>Your keyword opportunity</div>
-          <h1>
-            <span className={styles.heroHighlight}>
-              {fmtNum(result.summary.rawItemsCollected)} keywords
-            </span>{" "}
-            across {fmtNum(result.summary.clusters)} clusters.
-          </h1>
-          <p>
-            {fmtNum(result.summary.activeKeywords)} are active and{" "}
-            {fmtNum(result.summary.recommendedKeywords)} are recommended, representing{" "}
-            {fmtNum(cumulativeVolume(heroRows))} {heroMarketLabel} searches at an average CPC of{" "}
-            {fmtCpc(heroAverageCpc)}.
-          </p>
-          <div className={styles.heroBenefits}>
-            <span>{fmtNum(result.summary.activeKeywords)} active keywords</span>
-            <span>{fmtNum(result.summary.recommendedKeywords)} recommended</span>
-            <span>{fmtNum(result.summary.clusters)} focused clusters</span>
-          </div>
-          <div className={styles.heroOrbit} aria-hidden="true" />
-        </div>
-
-        {phase !== "empty" && (
-          <div
-            ref={reviewRef}
-            className={styles.selectionStep}
-            data-surface="surface:selection-review"
-          >
-            <SelectionReview
-              view={view}
-              draft={draft}
-              conflicts={view.selectionConflicts}
-              saving={saving}
-              staleConflict={staleConflict}
-              onSave={handleSave}
-              onFinalize={handleFinalize}
-              finalizeState={finalizeState}
-              onRetryHandoff={handleRetryHandoff}
-              onDraftChange={handleDraftChange}
-            />
-          </div>
-        )}
-      </section>
-
       {saveError && (
         <div className={styles.banner} role="alert">
           <span>{saveError}</span>
@@ -632,43 +585,88 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
                 rows={filteredRows}
               >
                 {(charts) => (
-                  <div className={styles.dashboardFlow}>
-                    <div className={styles.marketPulseGrid}>
+                  <>
+                    <section className={styles.researchHero} aria-label="Keyword research workspace">
+                      <div className={styles.heroCopy} data-surface="surface:summary-cards">
+                        <span className={styles.servicePill}>Research landscape ready</span>
+                        <div className={styles.heroEyebrow}>Your keyword opportunity</div>
+                        <h1>
+                          <span className={styles.heroHighlight}>
+                            {fmtNum(result.summary.rawItemsCollected)} keywords
+                          </span>{" "}
+                          across {fmtNum(result.summary.clusters)} clusters.
+                        </h1>
+                        <p>
+                          {fmtNum(result.summary.activeKeywords)} are active and{" "}
+                          {fmtNum(result.summary.recommendedKeywords)} are recommended, representing{" "}
+                          {fmtNum(cumulativeVolume(heroRows))} {heroMarketLabel} searches at an average CPC of{" "}
+                          {fmtCpc(heroAverageCpc)}.
+                        </p>
+                        <div className={styles.heroBenefits}>
+                          <span>{fmtNum(result.summary.activeKeywords)} active keywords</span>
+                          <span>{fmtNum(result.summary.recommendedKeywords)} recommended</span>
+                          <span>{fmtNum(result.summary.clusters)} focused clusters</span>
+                        </div>
+                        <div className={styles.heroOrbit} aria-hidden="true" />
+                      </div>
+
+                      <div
+                        ref={reviewRef}
+                        className={styles.selectionStep}
+                        data-surface="surface:selection-review"
+                      >
+                        <SelectionReview
+                          view={view}
+                          draft={draft}
+                          conflicts={view.selectionConflicts}
+                          saving={saving}
+                          staleConflict={staleConflict}
+                          onSave={handleSave}
+                          onFinalize={handleFinalize}
+                          finalizeState={finalizeState}
+                          onRetryHandoff={handleRetryHandoff}
+                          onDraftChange={handleDraftChange}
+                        />
+                      </div>
+
                       {charts.heatmapPanel}
+
                       <KeywordMarketGlobe
                         markets={result.markets}
                         rows={result.keywords}
                         selectedMarket={filter.market}
                         onMarketChange={(market) => handleFilterChange({ market, page: 1 })}
                       />
-                    </div>
-
-                    {charts.seedPerformance}
-
-                    <ClusterLandscape
-                      clusters={clusterRows}
-                      selectedClusterId={selectedClusterId}
-                      onSelect={setSelectedClusterId}
-                    />
-
-                    {summary.marketOverview(charts.overviewSignals)}
-
-                    <section className={styles.decisionGrid} aria-label="Decision summary">
-                      {summary.overlapPanel}
-                      {charts.historyPanel}
                     </section>
 
-                    {charts.analysisCharts}
+                    <div className={styles.dashboardFlow}>
+                      {charts.seedPerformance}
 
-                    <div data-surface="surface:keyword-table">
-                      <KeywordTable
-                        rows={activeRowsIn}
-                        filter={filter}
-                        selectionItemIds={selectionItemIds}
-                        onToggleRow={handleToggleRow}
+                      <ClusterLandscape
+                        clusters={clusterRows}
+                        selectedClusterId={selectedClusterId}
+                        onSelect={setSelectedClusterId}
                       />
+
+                      {summary.marketOverview(charts.overviewSignals)}
+
+                      <section className={styles.decisionGrid} aria-label="Decision summary">
+                        {summary.overlapPanel}
+                        {charts.historyPanel}
+                      </section>
+
+                      {charts.analysisCharts}
+
+                      <div data-surface="surface:keyword-table">
+                        <KeywordTable
+                          rows={activeRowsIn}
+                          filter={filter}
+                          selectionItemIds={selectionItemIds}
+                          onToggleRow={handleToggleRow}
+                        />
+                      </div>
                     </div>
-                  </div>
+                  </>
                 )}
               </ChartPanels>
             )}

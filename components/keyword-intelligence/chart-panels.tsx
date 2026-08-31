@@ -1219,7 +1219,6 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
     <section className={styles.keywordHeatmap} aria-label="Keyword cluster heatmap">
       <div className={styles.keywordHeatmapHead}>
         <span className={styles.sectionKicker}>Demand map</span>
-        <h2>Keyword heatmap</h2>
         <p>Cluster size reflects the share of filtered search demand.</p>
       </div>
       <div className={styles.keywordHeatmapChart}>

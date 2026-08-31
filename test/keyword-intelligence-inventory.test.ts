@@ -541,7 +541,6 @@ test("VIS-KD visual-only dashboard composition and shared form contract", async 
     'data-surface="surface:filter-bar"',
     'data-surface="surface:summary-cards"',
     "className={styles.selectionStep}",
-    "className={styles.marketPulseGrid}",
     "{charts.heatmapPanel}",
     "<KeywordMarketGlobe",
     "{charts.seedPerformance}",
