@@ -4,6 +4,8 @@ import { AppHeader } from "@/components/app-header";
 
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: {
     default: "StoreSignal — Shopify lead intelligence",

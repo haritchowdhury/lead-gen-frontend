@@ -4,11 +4,21 @@ import { StoreIcon } from "@/components/icons";
 import { HeaderAuth } from "@/components/header-auth";
 import { sessionUserId } from "@/lib/auth/server";
 
+function isNextDynamicBailout(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    error.digest === "DYNAMIC_SERVER_USAGE"
+  );
+}
+
 export async function AppHeader() {
   let signedIn = false;
   try {
     signedIn = Boolean(await sessionUserId());
-  } catch {
+  } catch (error) {
+    if (isNextDynamicBailout(error)) throw error;
     signedIn = false;
   }
   return (

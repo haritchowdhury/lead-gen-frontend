@@ -4,6 +4,16 @@ import test from "node:test";
 
 const source = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
+test("root header cannot freeze signed-out by swallowing Next dynamic rendering", () => {
+  const layout = source("app/layout.tsx");
+  const header = source("components/app-header.tsx");
+
+  assert.match(layout, /export const dynamic = "force-dynamic"/u);
+  assert.match(header, /digest === "DYNAMIC_SERVER_USAGE"/u);
+  assert.match(header, /if \(isNextDynamicBailout\(error\)\) throw error/u);
+  assert.doesNotMatch(header, /catch \{\s*signedIn = false;\s*\}/u);
+});
+
 test("landing keyword seeds retain validation, suggestions, payload, and redirects", () => {
   const form = source("components/run-form.tsx");
 
