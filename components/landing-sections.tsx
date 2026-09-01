@@ -9,6 +9,7 @@ import {
   SearchIcon,
   StoreIcon,
 } from "@/components/icons";
+import { SectionIntro } from "@/components/section-intro";
 import { TrafficGlobeShowcase } from "@/components/traffic-globe";
 
 type LandingVariant = "start" | "review";
@@ -45,21 +46,6 @@ export function LandingHeroCopy({ variant = "start" }: { variant?: LandingVarian
         </div>
       </div>
       <TrafficGlobeShowcase label={reviewing ? "Your market is bigger than one location" : "Opportunity has no borders"} />
-    </div>
-  );
-}
-
-function SectionIntro({ eyebrow, title, copy, inverse = false }: {
-  eyebrow: string;
-  title: string;
-  copy: string;
-  inverse?: boolean;
-}) {
-  return (
-    <div className={`marketing-heading${inverse ? " is-inverse" : ""}`}>
-      <span className="eyebrow">{eyebrow}</span>
-      <h2>{title}</h2>
-      <p>{copy}</p>
     </div>
   );
 }

@@ -1,0 +1,40 @@
+# UA-W2 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W2_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W2_SUBWINDOW_EVIDENCE_S3.md`.
+
+Window complete. Awaiting parent review. UA-W3 not authorized.
+
+```yaml
+state_version: 5
+parent_window_id: UA-W2
+parent_assignment_id: ASG-UA-W2-01
+window_agent_identity: UA-W2-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef
+parent_decision_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
+parent_checklist_revision: 626c2a7034c88fc9f2f13e25929801b637aed682cd4c5d521de981c593dc7165
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W2_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: fe25229d5bb48acf2b3bcf8a1fa699c8ea6b41c9170daf847cee453054f86d89
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W2_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: STOP
+current_assignment_id: ASG-UA-W2-01
+assigned_agent: UA-W2-WINDOW-AGENT
+subwindow_type: NONE
+authorized_write_file: NONE
+may_start_successor: false
+current_status: AWAITING_PARENT_REVIEW
+accepted_subwindows: [ASG-UA-W2-01-S001, ASG-UA-W2-01-S002, ASG-UA-W2-01-S003]
+integration_assessment: UA-W2-I001
+integration_status: PASS
+next_subwindow: STOP
+blocker: null
+last_updated: 2026-09-01T19:52:00+05:30
+```
+
+UA-W2-I001 PASS. Handoff written. A5 set AWAITING_REVIEW. UA-W3 not started.

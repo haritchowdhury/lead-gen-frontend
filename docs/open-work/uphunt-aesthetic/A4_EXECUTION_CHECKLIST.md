@@ -212,21 +212,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W2 lifecycle
 
-- [ ] UA-W2-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W2-P2 Required predecessor outputs exist and validate (UA-W1 coverage file). Evidence: ___
-- [ ] UA-W2-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W2-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W2-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W2-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W2-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W2-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W2-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W2-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W2-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W2-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W2-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W2-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W2-H6 Stop; do not assign or begin the successor.
+- [x] UA-W2-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: S3 EV-UA2-D-001; A5 ASG-UA-W2-01 pins verified at I001
+- [x] UA-W2-P2 Required predecessor outputs exist and validate (UA-W1 coverage file). Evidence: G0 digest f5137be495e260a1bf07f141247ca02c7a1c975fbaa526ae5b3b80828600c6d1
+- [x] UA-W2-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: node v24.14.1; npm test/lint scripts; browser_evidence false (G4 skipped)
+- [x] UA-W2-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: S3 EV-UA2-D-002; coordination root clean
+- [x] UA-W2-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: S003 V-A; I001 G1 156 pass; CASE-UA-W2-001..004 all pass
+- [x] UA-W2-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: I001 G1 exit 0; G2 zero owned-path needles; G3 lint exit 0
+- [x] UA-W2-V3 Confirm this window introduced no new network/DB operations (operation count 0). Evidence: I001 G7 — file-read oracles only; imports node builtins + coverage registry
+- [x] UA-W2-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: I001 G6 — three implementation files only; no globals.css or parked files
+- [x] UA-W2-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only. Evidence: I001 G5 — 4/4/4 window-local; test/.ua-executed.json 6 IDs after G1
+- [x] UA-W2-H1 Record changed files/symbols and migrations. Evidence: UA-W2_HANDOFF.md changed-file table; digests 159096f3…/914c61e5…/f65ba0c5…
+- [x] UA-W2-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: UA-W2_HANDOFF.md commands table; G4 skipped browser_evidence false
+- [x] UA-W2-H3 Diff names ⊆ authorized_write_scope. Evidence: I001 G6 implementation delta = §2 three files
+- [x] UA-W2-H4 No successor-window task or prohibited action was started. Evidence: I001 G9 — no w3 test; no UA-W3 file edits
+- [x] UA-W2-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: S3 UA-W2-I001; A6 EV-UA-W2-I-001; A5 AWAITING_REVIEW
+- [x] UA-W2-H6 Stop; do not assign or begin the successor. Evidence: S2 next_subwindow STOP; may_start_successor false
 
 ### UA-W3 lifecycle
 
@@ -509,9 +509,9 @@ browser_evidence: false
 
 globals.css is read-only here so token preservation is a test read, not a write. Token edits if any happen only in later windows' owned selectors.
 
-- [ ] UA-W2-T1 CREATE `frontend/components/section-intro.tsx` exporting `SectionIntro` per DEC-UA-002 (`className` includes `marketing-heading` and `is-inverse` iff `inverse===true`).
-- [ ] UA-W2-T2 MODIFY `landing-sections.tsx`: remove local `SectionIntro`; `import { SectionIntro } from "@/components/section-intro"`; call sites unchanged.
-- [ ] UA-W2-T3 CREATE `frontend/test/uphunt-aesthetic-w2.test.ts` for CASE-UA-W2-001 (read globals.css token assertions copied from design-system-primitives.test.ts color-signal/canvas/ink), CASE-UA-W2-002 (file exports SectionIntro), CASE-UA-W2-003 (landing-sections imports @/components/section-intro), CASE-UA-W2-004 (reduced-motion rule).
+- [x] UA-W2-T1 CREATE `frontend/components/section-intro.tsx` exporting `SectionIntro` per DEC-UA-002 (`className` includes `marketing-heading` and `is-inverse` iff `inverse===true`). Evidence: S001 digest 159096f313aa6c8d1be343f1db72511529fb4795c79be3123da9c3c3a0c38175
+- [x] UA-W2-T2 MODIFY `landing-sections.tsx`: remove local `SectionIntro`; `import { SectionIntro } from "@/components/section-intro"`; call sites unchanged. Evidence: S002 digest 914c61e593dca0863e49603cba7a38c783197157c6da89a8eaf61eb3ef69fe15; CASE-UA-W2-003 pass
+- [x] UA-W2-T3 CREATE `frontend/test/uphunt-aesthetic-w2.test.ts` for CASE-UA-W2-001 (read globals.css token assertions copied from design-system-primitives.test.ts color-signal/canvas/ink), CASE-UA-W2-002 (file exports SectionIntro), CASE-UA-W2-003 (landing-sections imports @/components/section-intro), CASE-UA-W2-004 (reduced-motion rule). Evidence: S003 digest f65ba0c50c78ef983496d0a37af1a1a6a1234332c48a5290bc344c9a5e68b78c; four tests pass
 
 ---
 

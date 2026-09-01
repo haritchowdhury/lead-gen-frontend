@@ -679,3 +679,200 @@ limitations: |
 external_mutations: none
 ```
 
+```yaml
+evidence_id: EV-UA-A-024
+timestamp: 2026-09-01T18:20:00+05:30
+phase: assignment
+claim: Requester assigned UA-W2 as ASG-UA-W2-01 to UA-W2-WINDOW-AGENT. Predecessor UA-W1 is parent-accepted (EV-UA-A-023). A1/A3/A4 hashes still matched A5 pins. Coverage file digest still f5137be495e260a1bf07f141247ca02c7a1c975fbaa526ae5b3b80828600c6d1. section-intro.tsx and uphunt-aesthetic-w2.test.ts were absent. Successor UA-W3 remains reserved for parent. may_start_successor remains false. Root ACTIVE_EXECUTION_STATE.md was not mutated.
+environment: local
+revision: A5 state_version 5
+operation: sha256sum of A1 A3 A4 vs A5 pins; test -f coverage file; test ! -f section-intro.tsx; test ! -f uphunt-aesthetic-w2.test.ts; A5 assignment fields written
+observed_result: |
+  A1 a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef MATCH;
+  A3 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300 MATCH;
+  A4 626c2a7034c88fc9f2f13e25929801b637aed682cd4c5d521de981c593dc7165 MATCH;
+  current_window UA-W2; authorized_windows [UA-W2]; current_status IN_PROGRESS
+decisive_assertion: UA-W2 may now be decomposed then executed; UA-W3 is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5
+negative_control: starting UA-W3, editing globals.css, or editing REQUIRED_CASE_IDS under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 2
+  planned: 43
+  executed: 2
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: FILE leaves remain unassigned until parent accepts the UA-W2 decomposition
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-025
+timestamp: 2026-09-01T19:20:00+05:30
+phase: review
+claim: Parent rejected the UA-W2 decomposition under ASG-UA-W2-01. Independent recomputation matched claimed S1/S2/S3 digests, A1/A3/A4 pins, A5 cf0c580a…, coverage f5137be4…, landing-sections 33f76708…, planned-file-set digest 1c928524…, W2 case-set digest 02f92049…, and starting-repo-change-set digest e64ba5df…. Package identity is UA-W2 not design-system G-R1. section-intro.tsx and uphunt-aesthetic-w2.test.ts remain ABSENT; landing-sections.tsx unmodified; no leaf assigned. Rejection cause is an internal contradiction in S1 §7.2 Edit 2 that leaves the S002 leaf a choice of how many lines to delete.
+environment: local
+revision: A5 state_version 5 still IN_PROGRESS UA-W2 ASG-UA-W2-01
+operation: |
+  sha256sum S1 S2 S3 A1 A3 A4 A5 coverage landing-sections;
+  nl landing-sections.tsx lines 50–68;
+  §4.7 set-digest recompute over the three planned paths and four CASE-UA-W2 IDs;
+  confirm implementation files absent
+observed_result: |
+  pins and claimed digests MATCH;
+  local function SectionIntro occupies lines 52–65 (14 lines);
+  trailing blank is line 66;
+  LandingProcess starts at line 67;
+  S1 §3 correctly says function lines 52–65;
+  S1 §7.2 source anchor B correctly says lines 52–66 (15 lines including the blank);
+  S1 §7.2 Edit 2 incorrectly says "16 lines: the 15 function lines plus its trailing blank line";
+  deleting 16 lines from line 52 would remove export function LandingProcess
+decisive_assertion: REJECTED; S2.decomposition_status must remain AWAITING_PARENT_DECOMPOSITION_REVIEW; do not assign ASG-UA-W2-01-S001; correct §7.2 Edit 2 to 15 lines (14 function lines 52–65 plus 1 trailing blank line 66) so it agrees with the byte anchors, recompute S1 digest, refresh S2/S3 pins, resubmit
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W2_SUBWINDOW_DECOMPOSITION_S1.md §7.2; frontend/components/landing-sections.tsx
+negative_control: parent setting S2 READY or assigning the leaf while Edit 2 still says 16 lines would authorize an ambiguous one-file transformation
+coverage_counts:
+  required: 43
+  registered: 2
+  planned: 43
+  executed: 2
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S1 is not yet frozen; the window agent may rewrite the unapproved §7.2 count in place. All other reviewed items (DAG, DEC-UA-002 §6.3 bytes, four CASE oracles, G2 needles, lint gate, no UA-W3) were consistent with A4/A5.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-026
+timestamp: 2026-09-01T19:28:00+05:30
+phase: review
+claim: Parent accepted the corrected UA-W2 decomposition under ASG-UA-W2-01. Independent recomputation matched S1 fe25229d5bb48acf2b3bcf8a1fa699c8ea6b41c9170daf847cee453054f86d89, S2 4b2bba9db796e0e0ee9acd3ddb03cea7a5865f869730c3e8d2ce46021bb96879, S3 e7cb0691d8a3bed50a116468d9f91769b06640d05e7814a2a3c066e5b2da264a, A1/A3/A4 pins, A5 cf0c580a…, coverage f5137be4…, landing-sections 33f76708…. S1 §7.2 Edit 2 now says exactly 15 lines (52–65 plus blank 66) and protects current line 67; grep found no leftover "16 lines" / "15 function" wording. Package identity is UA-W2. section-intro.tsx and uphunt-aesthetic-w2.test.ts remain ABSENT. Parent did not set S2.decomposition_status READY and did not assign UA-W2-S001. Parent did not communicate with any leaf. Root ACTIVE_EXECUTION_STATE.md was not mutated.
+environment: local
+revision: A5 state_version 5 IN_PROGRESS UA-W2 ASG-UA-W2-01
+operation: sha256sum S1 S2 S3 A1 A3 A4 A5 coverage landing-sections; read S1 §7.2 Edit 2; grep 16-line remnant; ls implementation files
+observed_result: all listed pins MATCH; Edit 2 agrees with §3 and anchor B; implementation files absent; S2 decomposition_status still AWAITING_PARENT_DECOMPOSITION_REVIEW; assigned_agent UNASSIGNED
+decisive_assertion: APPROVED; window agent may set S2.decomposition_status READY and assign ASG-UA-W2-01-S001 for UA-W2-S001 only; S001 must write S1 §6.3 bytes; then S002 then S003 then personal UA-W2-I001; UA-W3 remains unauthorized
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W2_SUBWINDOW_DECOMPOSITION_S1.md UA-W2_SUBWINDOW_STATE_S2.yaml UA-W2_SUBWINDOW_EVIDENCE_S3.md
+negative_control: parent assigning the leaf or creating section-intro.tsx would violate sub-window standard §12.1
+coverage_counts:
+  required: 43
+  registered: 2
+  planned: 43
+  executed: 2
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: leaf still UNASSIGNED until the window agent issues ASG-UA-W2-01-S001
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-027
+timestamp: 2026-09-01T19:32:00+05:30
+phase: assignment
+claim: Requester directed the parent to convert the approved UA-W2 decomposition to READY and make UA-W2-WINDOW-AGENT dispatchable. Parent set S2.decomposition_status READY and issued ASG-UA-W2-01-S001 to UA-W2-WINDOW-AGENT (collapsed FILE-leaf identity onto the window agent at requester instruction). A5 remains ASG-UA-W2-01 / IN_PROGRESS / assigned_agent UA-W2-WINDOW-AGENT and was not rewritten so the S001 P1 A5 digest pin cf0c580a… still holds. section-intro.tsx remains ABSENT. UA-W3 is not authorized.
+environment: local
+revision: A5 state_version 5; S1 fe25229d…; S2 89b9d8aed44b12da84d1b69d0b8e7f7eb55c86fd70375f3d776078db00f42d2b
+operation: write S2 READY + S001 assignment; append S3 EV-UA2-X-001
+observed_result: decomposition_status READY; current_assignment_id ASG-UA-W2-01-S001; assigned_agent UA-W2-WINDOW-AGENT; authorized_write_file frontend/components/section-intro.tsx; current_status READY; next_subwindow STOP
+decisive_assertion: UA-W2-WINDOW-AGENT may now execute S001 (byte-exact S1 §6.3) and must stop at AWAITING_WINDOW_REVIEW before S002
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W2_SUBWINDOW_STATE_S2.yaml; S3 EV-UA2-X-001
+negative_control: creating section-intro.tsx in the parent chat would pre-empt the dispatched window agent
+coverage_counts:
+  required: 43
+  registered: 2
+  planned: 43
+  executed: 2
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S002/S003/I001 remain unassigned; window agent must not start them during S001
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-W2-I-001
+timestamp: 2026-09-01T19:52:00+05:30
+phase: integration_assessment
+claim: UA-W2-I001 PASS — shared SectionIntro extracted, landing wired, four CASE tests registered and executed, tokens and reduced-motion confirmed read-only.
+environment: local
+revision: A5 state_version 5 AWAITING_REVIEW; S1 fe25229d…; S3 UA-W2-I001 WINDOW-AGENT-INTEGRATION-PASS
+operation: |
+  G0 sha256sum coverage file; G1 npm test; G2 npx tsc --noEmit --pretty false;
+  G3 npm run lint; G4 skipped browser_evidence false; G5 test/.ua-executed.json;
+  G6 git status forbidden-path search; G7 static import inspection; G8 NC re-execution;
+  G9 successor negative search; A4 UA-W2 boxes checked; UA-W2_HANDOFF.md written
+observed_result: |
+  G0 PASS f5137be4…; G1 PASS 156/0/0; G2 PASS zero owned-path needles;
+  G3 PASS lint exit 0; G5 PASS 6 executed IDs; G6 PASS three-file implementation delta;
+  G7/G8/G9 PASS; digests section-intro 159096f3… landing 914c61e5… w2 test f65ba0c5…
+decisive_assertion: READY_FOR_PARENT_REVIEW; UA-W3 not started; may_start_successor false
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W2_SUBWINDOW_EVIDENCE_S3.md UA-W2_HANDOFF.md A4 A5
+negative_control: starting UA-W3 would violate A5 prohibited_actions
+coverage_counts:
+  required: 4
+  registered: 4
+  executed: 4
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 02f920493c7935e2ecd5a3fd3edf1a97450a915add21b63d4183de1a14f449dd
+limitations: full 43-set equality deferred to UA-W15-V5
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-028
+timestamp: 2026-09-01T19:55:00+05:30
+phase: review
+claim: Parent independently accepted UA-W2. Product files section-intro.tsx 159096f313aa6c8d1be343f1db72511529fb4795c79be3123da9c3c3a0c38175 (byte-identical to S1 §6.3), landing-sections.tsx 914c61e593dca0863e49603cba7a38c783197157c6da89a8eaf61eb3ef69fe15 (HEAD 33f76708… plus exactly the two S1 §7.2 edits; 1 import, 0 local function SectionIntro, 3 call sites), uphunt-aesthetic-w2.test.ts f65ba0c50c78ef983496d0a37af1a1a6a1234332c48a5290bc344c9a5e68b78c (byte-identical to S1 §8.3). Frozen A1/A3 pins match. S1 fe25229d5bb48acf2b3bcf8a1fa699c8ea6b41c9170daf847cee453054f86d89. Coverage predecessor f5137be495e260a1bf07f141247ca02c7a1c975fbaa526ae5b3b80828600c6d1 unchanged. npm test 156/156 including CASE-UA-W1-001/002 and CASE-UA-W2-001..004. tsc --pretty false SHA-256 ef9b7f7b5a92e3b1e92fb7b6aea915c0ec41030dabf0a65a5448bc2b0fce0159 identical to SRC-UA-0092, zero owned-path needles. lint exit 0 (2 pre-existing warnings in unowned files). A4 UA-W2 P/T/V/H checkbox-only (18/18). Parked SRC-UA-0092 files unmodified. globals.css unmodified. No UA-W3 test or header/auth/not-found edits. Root ACTIVE_EXECUTION_STATE.md untouched. ASG-UA-W2-01 closed. UA-W3 not assigned.
+environment: local frontend node v24
+revision: A5 state_version 6 digest 96eab03dd27a0506df6f41d6f1b5e3444ab737b90c0d80a1fb396291ee1478ce; A4 post-UA-W2-checkbox 79816d332d8d54159cd1329d002bda38242147dee105638f90d089f3ff701486 (checkbox-only vs assignment pin 626c2a70…)
+operation: |
+  sha256sum A1 A3 A4 A5 S1 coverage section-intro landing-sections w2-test globals;
+  python byte-compare S1 §6.3/§8.3 vs disk; git diff landing-sections and A4;
+  npx tsc --noEmit --pretty false; grep owned-path needles;
+  rm -f test/.ua-executed.json; npm test; read executed set;
+  npm run lint; in-memory NC-UA-001 and NC-UA-002 probes;
+  git status parked files, successor paths, coordination root
+observed_result: |
+  A1/A3 MATCH assignment pins; S1/coverage MATCH handoff; three implementation digests MATCH;
+  G1 PASS 156/156; G2 PASS DEC-UA-014; G3 PASS lint exit 0; G8 PASS NCs falsified;
+  G9 PASS no successor artifacts; implementation delta is the three §2 files plus authorized docs/handoff;
+  executed set after npm test is 2 W1 + 4 W2 IDs
+decisive_assertion: ACCEPTED; UA-W2 complete; UA-W3 remains unassigned (successor_reserved_for parent; may_start_successor false)
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: frontend/components/section-intro.tsx; frontend/components/landing-sections.tsx; frontend/test/uphunt-aesthetic-w2.test.ts; UA-W2_HANDOFF.md; S3 WINDOW-AGENT-INTEGRATION-PASS; /tmp/ua-w2-parent-tsc.txt
+negative_control: a diagnostic naming section-intro, landing-sections, or uphunt-aesthetic-w2.test.ts would have failed G2; presence of uphunt-aesthetic-w3.test.ts would have failed successor closure
+coverage_counts:
+  required: 43
+  registered: 6
+  planned: 43
+  executed: 6
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+  window_local_required_registered_executed: 4/4/4
+  window_local_digest: 02f920493c7935e2ecd5a3fd3edf1a97450a915add21b63d4183de1a14f449dd
+limitations: |
+  Residual non-blocking: S2 remains AWAITING_PARENT_REVIEW after parent A5 READY (same class as UA-W1 S2 residual). S001 FILE-SUBWINDOW-EXECUTED V-A claimed tsc exit 0 while parked SRC-UA-0092 diagnostics imply nonzero exit; independently re-run G2 is PASS on owned-path needles. test/.ua-executed.json is generated and untracked (never commit; not in frontend/.gitignore). Full required=executed equality remains UA-W15-V5. UA-W15 npm run build vs parked files remains a later parent decision.
+external_mutations: none
+```
+
