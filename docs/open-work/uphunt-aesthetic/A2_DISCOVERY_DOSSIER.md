@@ -265,6 +265,17 @@ limitations: none
 privacy: n/a
 ```
 
+```yaml
+evidence_id: SRC-UA-0092
+classification: OBSERVED
+claim: From frontend/, npx tsc --noEmit --pretty false reports exactly 10 error TS diagnostics in five tracked test files (keyword-intelligence-api.test.ts TS2305+TS7006; keyword-intelligence-components.test.ts TS2322 x2; keyword-intelligence-inventory.test.ts TS1501 x2; landing-keyword-auth-flow.test.ts TS2339; my-runs-research-resume.test.ts TS2352). Output SHA-256 with UA-W1 file present equals output with that file moved out (ef9b7f7b5a92e3b1e92fb7b6aea915c0ec41030dabf0a65a5448bc2b0fce0159). Zero diagnostics mention uphunt-aesthetic-coverage.test.ts. Repo-wide tsc exit 0 is not an applied capability of this tree.
+source: npx tsc --noEmit --pretty false in frontend/ on 2026-09-01; independent parent re-run after EV-UA1-I-001
+observed_at: 2026-09-01T17:56:00+05:30
+environment: local frontend node v24
+limitations: next build not re-measured here
+privacy: n/a
+```
+
 ## Inferred, not contractual
 
 - Users who like Uphunt like lime-on-dark marketing; StoreSignal already has lime-on-paper landing. Not a requirement.

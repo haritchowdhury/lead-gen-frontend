@@ -249,6 +249,25 @@ implementing_tasks: [UA-W1-T1]
 verification_scenarios: [SCN-UA-005]
 ```
 
+```yaml
+decision_id: DEC-UA-014
+requirement_ids: [REQ-UA-005]
+locked_choice: Frozen typecheck for every UA-Wn window is not repo-wide tsc exit 0. From frontend/, run `npx tsc --noEmit --pretty false`. PASS iff zero output lines contain a path that is in that window's authorized_write_scope. FAIL iff any diagnostic path is in that write scope. The ten SRC-UA-0092 diagnostics are PARKED baseline; UA-W1 through UA-W15 MUST NOT edit those five test files. No baseline-repair window is authorized in this package.
+evidence_ids: [SRC-UA-0092, EV-UA1-I-001, EV-UA-A-022]
+alternatives_rejected:
+  - Keep A4 G2 as npx tsc --noEmit exit 0 (unreachable on this tree independent of UA-W1)
+  - Expand UA-W1 write scope to the five Keyword Intelligence / landing test files
+  - Authorize a UA baseline-repair window in this assignment
+reason: Parent-measured applied capability (PC-012). UA-W1 introduced zero tsc diagnostics. Repairing other-package tests is not this visual contract.
+consequences: A4 §Gates and every UA-Wn-V2 use this oracle. Window agent amends S1 G2 and re-runs UA-W1-I002. UA-W15 npm run build remains specified; if it fails solely on SRC-UA-0092 files, that is a later parent decision, not a silent skip.
+derived_values: |
+  Command: cd frontend && npx tsc --noEmit --pretty false
+  UA-W1 owned diagnostic needle: uphunt-aesthetic-coverage.test.ts
+  Parked files: test/keyword-intelligence-api.test.ts, test/keyword-intelligence-components.test.ts, test/keyword-intelligence-inventory.test.ts, test/landing-keyword-auth-flow.test.ts, test/my-runs-research-resume.test.ts
+implementing_tasks: [UA-W1-I002]
+verification_scenarios: [SCN-UA-005]
+```
+
 ## D1–D13 applicability
 
 | Ledger | Disposition | Evidence |
@@ -262,7 +281,7 @@ verification_scenarios: [SCN-UA-005]
 | D6 External | No new provider calls. Chrome screenshots are local. | SRC-UA-0020 |
 | D7 Configuration | No new env. Preserve designFixtureEnabled gate. | design-fixture-gate.ts |
 | D8 Control-plane | Presentation paths listed in A4; status mapping unchanged. | REQ-UA-007 |
-| D9 Build | next 16.2.12 existing closure. No new dependency. PROVISIONAL not used. | SRC-UA-0022 |
+| D9 Build | next 16.2.12 existing closure. No new dependency. Repo-wide `tsc --noEmit` exit 0 is not applied (SRC-UA-0092). | SRC-UA-0022 SRC-UA-0092 DEC-UA-014 |
 | D10 Environment | Local chrome path observed. Production canary parked. | SRC-UA-0020 SRC-UA-0090 |
 | D11 Scale | Existing keyword row counts; wrap heights locked. No new O(n) queries. | DEC-UA-005 |
 | D12 Compatibility | Replace owned CSS in place. Do not support a compact-lead mode flag. | DEC-UA-004 |

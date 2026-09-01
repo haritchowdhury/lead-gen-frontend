@@ -55,12 +55,12 @@ REQ-UA-004
 
 ```text
 REQ-UA-005
--> SRC-UA-0024 SRC-UA-0019
--> DEC-UA-006 DEC-UA-011 DEC-UA-013
+-> SRC-UA-0024 SRC-UA-0019 SRC-UA-0092
+-> DEC-UA-006 DEC-UA-011 DEC-UA-013 DEC-UA-014
 -> UA-W1-T1 UA-W1-T2 UA-W7-T3 UA-W8-T3 UA-W14-T2 UA-W15-T2
 -> SCN-UA-005 SCN-UA-006 CASE-UA-W1-001 CASE-UA-W1-002 CASE-UA-W7-002 CASE-UA-W8-003 CASE-UA-W14-003 CASE-UA-W15-003
 -> test/uphunt-aesthetic-coverage.test.ts ; test/ua-coverage-equality.mjs
--> PENDING execution
+-> EV-UA-W1-I-002 EV-UA-A-023 (CASE-UA-W1-001 CASE-UA-W1-002); remaining IDs PENDING later windows
 -> FR-002 FR-003
 ```
 
@@ -226,4 +226,15 @@ INV-UA-010
 
 ## Coverage ID closure
 
-Required = registered planned members: the 43 IDs in A4 §Coverage. Digest `0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05` (EV-UA-A-009). Executed set is `PENDING` until UA-W15.
+Required = registered planned members: the 43 IDs in A4 §Coverage. Digest `0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05` (EV-UA-A-009). Executed set after UA-W1 is `{CASE-UA-W1-001, CASE-UA-W1-002}` (EV-UA-A-023). Full required=executed equality remains `PENDING` until UA-W15.
+
+```text
+DEC-UA-014
+-> SRC-UA-0092 EV-UA1-I-001 EV-UA-A-022
+-> A4 §Gates G2; every UA-Wn-V2; UA-W1-I002
+-> SCN-UA-005 (owned-path tsc diagnostics must be empty)
+-> npx tsc --noEmit --pretty false; grep authorized_write_scope paths
+-> EV-UA-W1-I-002 EV-UA-A-023
+-> FR-001
+```
+

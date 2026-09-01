@@ -10,7 +10,7 @@ Other artifacts: `A1` `A1_LOCKED_PRODUCT_CONTRACT.md`; `A2` `A2_DISCOVERY_DOSSIE
 `A8` `A8_TRACEABILITY_INDEX.md`.
 
 ```yaml
-state_version: 1
+state_version: 4
 standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
 standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
 subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
@@ -18,16 +18,25 @@ subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a3
 contract_path: frontend/docs/open-work/uphunt-aesthetic/A1_LOCKED_PRODUCT_CONTRACT.md
 contract_revision: a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef
 decision_path: frontend/docs/open-work/uphunt-aesthetic/A3_DECISION_LEDGER.md
-decision_revision: edfc34d4f2ffe6f372f975f5b0247893a258da6364fb79ea638928dd687197e5
+decision_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
 checklist_path: frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md
-checklist_revision: c46ef7c2287ad9ebf9de28cdec941d8f755e45ae43f72656f0e343105b645977
+checklist_revision: 626c2a7034c88fc9f2f13e25929801b637aed682cd4c5d521de981c593dc7165
 current_window: NONE
 current_assignment_id: NONE
 assigned_agent: UNASSIGNED
 authorized_windows: []
 authorized_write_scope: []
 authorized_actions: []
-prohibited_actions: [aws, commit, push, production, paid_provider, edit_email_scraper, edit_root_ACTIVE_EXECUTION_STATE, start_any_UA-Wn, frontend_source_edit]
+prohibited_actions:
+  - start_UA-W2
+  - may_start_successor
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
 execution_environment_policy:
   sandbox_escalation_for_authorized_local_actions: true
   automatic_identical_recovery_after_proven_environment_invalidation: true
@@ -35,10 +44,11 @@ execution_environment_policy:
   external_authority_expansion: false
 may_start_successor: false
 current_status: READY
-accepted_through: NONE
-next_window: UA-W1
+accepted_through: UA-W1
+next_window: UA-W2
 stop_after: UA-W15
 blocker: null
-user_gates: [requester must create assignment ID ASG-UA-W1-* and set authorized_windows to [UA-W1] before any implementation]
-last_updated: 2026-09-01T17:05:00+05:30
+user_gates: []
+successor_reserved_for: parent
+last_updated: 2026-09-01T18:17:00+05:30
 ```

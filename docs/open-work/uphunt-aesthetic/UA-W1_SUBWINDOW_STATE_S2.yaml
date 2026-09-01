@@ -1,0 +1,79 @@
+# UA-W1 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W1_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W1_SUBWINDOW_EVIDENCE_S3.md`.
+
+```yaml
+state_version: 1
+parent_window_id: UA-W1
+parent_assignment_id: ASG-UA-W1-02
+window_agent_identity: UA-W1-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef
+parent_decision_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
+parent_checklist_revision: f1d8252cb815a541a4854c157c25698868a5caa8d27b351ce88480b6dffda99f
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W1_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: 3a82e00f7eb77325374dc089adf8e62dced40e3b79100b49bc02df6b707da2c3
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W1_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: UA-W1-I002
+current_assignment_id: WINDOW-AGENT
+assigned_agent: WINDOW-AGENT
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE
+authorized_read_scope:
+  - frontend/docs/open-work/uphunt-aesthetic/A1_LOCKED_PRODUCT_CONTRACT.md
+  - frontend/docs/open-work/uphunt-aesthetic/A3_DECISION_LEDGER.md
+  - frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md
+  - frontend/package.json
+authorized_actions:
+  - run_UA-W1-I002_personally
+  - run_npx_tsc_noEmit_pretty_false_and_needle_check
+  - run_frontend_npm_test
+  - verify_coverage_file_digest_f5137be4_for_I001_gate_citations
+  - record_git_status_and_forbidden_path_search
+  - append_S3
+  - check_UA-W1_boxes
+  - append_A6_evidence
+  - write_UA-W1_handoff
+  - set_A5_AWAITING_REVIEW_on_pass
+prohibited_actions:
+  - edit_implementation_files
+  - edit_parked_SRC-UA-0092_test_files
+  - rewrite_S1_original_G2_block
+  - edit_package_json
+  - edit_design_fixture
+  - edit_app_or_component_or_globals_files
+  - edit_REQUIRED_CASE_IDS_after_initial_create
+  - start_UA-W2
+  - may_start_successor
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: IN_PROGRESS
+accepted_subwindows: [ASG-UA-W1-01-S001]
+next_subwindow: STOP
+blocker: null
+last_updated: 2026-09-01T18:09:00+05:30
+```
+
+Assignment `ASG-UA-W1-01` closed by parent; `ASG-UA-W1-02` assigns
+UA-W1-WINDOW-AGENT to finish UA-W1 under `DEC-UA-014` / `CHG-UA-0002` (S3
+`EV-UA1-X-002`). S1 amendment `UA-W1-AM-001` re-pins gate G2 (§13); the
+original exit-0 block is retained as superseded history. Integration assessment
+`UA-W1-I002` is in progress, executed personally by this window agent. Leaf
+accepted: `ASG-UA-W1-01-S001` (`EV-UA1-R-001`).

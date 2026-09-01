@@ -1,0 +1,58 @@
+state_version: 1
+parent_window_id: W1
+parent_assignment_id: ASG-W1
+window_agent_identity: design-system-window-agent
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: 5b1982d478ac9bc9185005cf08911ec18b9343842a58c4ffe0c2fa30d54172d0
+parent_decision_revision: 5b1982d478ac9bc9185005cf08911ec18b9343842a58c4ffe0c2fa30d54172d0
+parent_checklist_revision: 5b1982d478ac9bc9185005cf08911ec18b9343842a58c4ffe0c2fa30d54172d0
+decomposition_path: frontend/docs/open-work/design-system/DESIGN_SYSTEM_W1_SUBWINDOW_CHECKLIST.md
+decomposition_revision: e19358cf218a97141844ea3ac2d4e5158e03cb8f9888a3f9d655226bbca577ec
+evidence_path: frontend/docs/open-work/design-system/DESIGN_SYSTEM_W1_SUBWINDOW_EVIDENCE.md
+decomposition_status: AWAITING_PARENT_DECOMPOSITION_REVIEW
+current_subwindow: STOP
+current_assignment_id: WINDOW-AGENT
+assigned_agent: design-system-window-agent
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE
+authorized_read_scope:
+  - frontend/docs/open-work/DESIGN_SYSTEM_EXECUTION_CHECKLIST.md
+  - frontend/docs/open-work/design-system/DESIGN_SYSTEM_W1_SUBWINDOW_CHECKLIST.md
+  - frontend/docs/open-work/design-system/DESIGN_SYSTEM_W1_SUBWINDOW_EVIDENCE.md
+  - frontend/lib/design-fixture-gate.ts
+  - frontend/app/design-fixture/page.tsx
+  - frontend/scripts/g-r1-real-component-browser.mjs
+  - frontend/test/design-system-real-component-harness.test.ts
+  - frontend/package.json
+  - frontend/proxy.ts
+  - frontend/test/fixtures.ts
+authorized_actions:
+  - update_S2_and_S3_coordination_artifacts
+  - assign_implementation_subwindows_after_parent_decomposition_approval
+prohibited_actions:
+  - edit_implementation_files_during_decomposition
+  - assign_leaf_before_parent_decomposition_review
+  - start_G-R2_or_successor_parent_windows
+  - communicate_directly_with_implementation_subagents_from_parent
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_or_read_only_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: AWAITING_PARENT_DECOMPOSITION_REVIEW
+accepted_subwindows: []
+next_subwindow: W1-S001
+blocker: null
+last_updated: 2026-09-01T17:40:00+05:30
+planned_file_set_digest: 89f14a07a1698a4d4c57f390b9fd64c67b3d1df89602b1014d72661090b7ff6a
+required_case_set_digest: 180244d4d06afff8fee2d0ec31e2e6e2fb00b846e0ad23f6f5d957c182c7d45b
+starting_repository_change_set_digest: e64ba5df31d4ad314a69c4fe784bf659d098e316f5d7acbc0690b7d58e53c450
+initial_subwindow_ids: [W1-S001, W1-S002, W1-S003, W1-S004, W1-S005]
+integration_assessment_id: W1-I001
+parallel_execution_policy:
+  permitted_waves: []
+  executable_schedule: SERIAL
