@@ -685,6 +685,15 @@ test("W5-A09 (superseded by R5-WIRE-05) selection reducer add/remove/edit/manual
   assert.equal(manual[0].metricsSnapshot, null);
   assert.deepEqual(manual[0].sourceSeeds, ["dresses"]);
 
+  const wallmart = addManualSelectedItem([], "wallmart clothes", "draft_wm", "clothing");
+  assert.equal(wallmart[0].lane, "brand_competitor");
+  const walMart = addManualSelectedItem([], "wal-mart clothes", "draft_wm2", "clothing");
+  assert.equal(walMart[0].lane, "brand_competitor");
+  const homeDepot = addManualSelectedItem([], "home depot paint", "draft_hd", "paint");
+  assert.equal(homeDepot[0].lane, "brand_competitor");
+  const wishlist = addManualSelectedItem([], "wishlist clothing", "draft_wl", "clothing");
+  assert.equal(wishlist[0].lane, "category_discovery");
+
   const fullDraft = Array.from({ length: 200 }, (_, index) =>
     selectionItem(`kw_${String(index).padStart(4, "0")}`),
   );

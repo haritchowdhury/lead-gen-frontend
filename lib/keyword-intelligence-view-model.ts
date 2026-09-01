@@ -496,10 +496,82 @@ const RETAILER_TOKENS = new Set([
   "nordstrom", "wayfair", "wish", "overstock", "rakuten", "flipkart",
   "homedepot", "lowes",
 ]);
+const RETAILER_ALIASES = ["wallmart", "amazom"] as const;
+const RETAILER_MATCH = {
+  maxEditDistance: 1,
+  minEditDistanceLength: 6,
+  minCompactSubstringLength: 7,
+} as const;
 
 function hasLocalPhrase(keyword: string): boolean {
   const low = keyword.toLowerCase();
   return LOCAL_PHRASES.some((phrase) => new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "u").test(low));
+}
+
+function retailerForms(): Set<string> {
+  const forms = new Set<string>();
+  for (const token of RETAILER_TOKENS) {
+    forms.add(token);
+    forms.add(TOKEN_ALIASES[token] || singularPluralAlias(token));
+  }
+  for (const alias of RETAILER_ALIASES) forms.add(alias);
+  return forms;
+}
+
+function orderedNormalizedTokens(keyword: string): string[] {
+  const clean = keyword.replace(/([a-z]+)['’]s\b/gi, "$1");
+  const raw = clean.toLowerCase().match(TOKEN_RE) || [];
+  return raw.map((t) => TOKEN_ALIASES[t] || singularPluralAlias(t));
+}
+
+function compactCandidates(tokens: string[]): string[] {
+  const candidates: string[] = [];
+  for (let i = 0; i < tokens.length; i++) {
+    candidates.push(tokens[i]);
+    if (i + 1 < tokens.length) candidates.push(`${tokens[i]}${tokens[i + 1]}`);
+  }
+  return candidates;
+}
+
+function levenshtein(a: string, b: string): number {
+  if (a === b) return 0;
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  const row = new Array<number>(b.length + 1);
+  for (let j = 0; j <= b.length; j++) row[j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    let previous = i - 1;
+    row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const saved = row[j];
+      const cost = a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1;
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, previous + cost);
+      previous = saved;
+    }
+  }
+  return row[b.length];
+}
+
+function keywordMatchesRetailer(keyword: string): boolean {
+  const forms = retailerForms();
+  const candidates = compactCandidates(orderedNormalizedTokens(keyword));
+  for (const candidate of candidates) {
+    if (forms.has(candidate)) return true;
+  }
+  const compact = (keyword.toLowerCase().match(TOKEN_RE) || []).join("");
+  const { minCompactSubstringLength, maxEditDistance, minEditDistanceLength } = RETAILER_MATCH;
+  for (const form of forms) {
+    if (form.length >= minCompactSubstringLength && compact.includes(form)) return true;
+  }
+  for (const candidate of candidates) {
+    if (candidate.length < minEditDistanceLength) continue;
+    for (const form of forms) {
+      if (form.length < minEditDistanceLength) continue;
+      if (Math.abs(candidate.length - form.length) > maxEditDistance) continue;
+      if (levenshtein(candidate, form) <= maxEditDistance) return true;
+    }
+  }
+  return false;
 }
 
 function facetsForSelection(tokens: Set<string>, keyword: string): KeywordFacets {
@@ -518,7 +590,7 @@ function facetsForSelection(tokens: Set<string>, keyword: string): KeywordFacets
 
 function laneForSelection(keyword: string, mainIntent: string | null, tokens: Set<string>): KeywordLane {
   if (hasLocalPhrase(keyword)) return "local_discovery";
-  if ([...tokens].some((t) => RETAILER_TOKENS.has(t))) return "brand_competitor";
+  if (keywordMatchesRetailer(keyword)) return "brand_competitor";
   const hasStore = [...tokens].some((t) => STORE_TOKENS.has(t) || t === "store");
   if ((mainIntent || "").toLowerCase() === "navigational" && !hasStore) return "brand_competitor";
   if (hasStore) return "store_discovery";
