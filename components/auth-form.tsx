@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { SectionIntro } from "@/components/section-intro";
 import { authClient } from "@/lib/auth/client";
 
 type AuthMode = "sign-up" | "sign-in";
@@ -52,15 +53,17 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
   return (
     <main className="app-canvas auth-page">
-      <section className="auth-card ds-card ds-card--floating" aria-labelledby="auth-title">
+      <section className="auth-card ds-card ds-card--floating">
         <header className="auth-card-header">
-          <span className="eyebrow">StoreSignal account</span>
-          <h1 id="auth-title">{isSignUp ? "Save your search" : "Welcome back"}</h1>
-          <p>
-            {isSignUp
-              ? "Create an account to start the search you just prepared and keep every run in one place."
-              : "Sign in to continue your pending search or return to your previous runs."}
-          </p>
+          <SectionIntro
+            eyebrow="StoreSignal account"
+            title={isSignUp ? "Save your search." : "Welcome back."}
+            copy={
+              isSignUp
+                ? "Create an account to start the search you just prepared and keep every run in one place."
+                : "Sign in to continue a pending search or return to earlier runs."
+            }
+          />
         </header>
         <form onSubmit={submit} aria-busy={pending}>
           {isSignUp && (

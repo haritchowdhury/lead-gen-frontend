@@ -230,21 +230,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W3 lifecycle
 
-- [ ] UA-W3-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W3-P2 Required predecessor outputs exist and validate (UA-W2 SectionIntro). Evidence: ___
-- [ ] UA-W3-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W3-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W3-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W3-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W3-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W3-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W3-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W3-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W3-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W3-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W3-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W3-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W3-H6 Stop; do not assign or begin the successor.
+- [x] UA-W3-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___ Evidence: S3 S001 P1 + I001 G0/G9 (ASG-UA-W3-01; A1 a33ae1d8…, A3 8faaa4e2…, A4 79816d33…, A5 f843f58f… all MATCH; standards pinned)
+- [x] UA-W3-P2 Required predecessor outputs exist and validate (UA-W2 SectionIntro). Evidence: ___ Evidence: S3 S001 P2 + I001 G0 (SectionIntro 159096f3…, coverage f5137be4…, landing 914c61e5…, w2 test f65ba0c5…)
+- [x] UA-W3-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___ Evidence: node v24.14.1; test/lint scripts present; browser_evidence true → Chrome 146.0.7680.164 present and used at G4
+- [x] UA-W3-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___ Evidence: S3 EV-UA3-D-002 (frontend delta = A5/A6 parent writes at window start; coordination root clean)
+- [x] UA-W3-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: S3 S004 V-A/V-B + I001 G1/G5 (4/4 leaf pass from ABSENT json; 4/4 in npm test; witnesses recorded; NCs 3/3 falsified at S004 V-C and I001 G8)
+- [x] UA-W3-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: I001 G1 npm test exit 0, 162/162; G2 zero owned-path needles (10 parked only); G3 lint exit 0; G4 16/16 screenshots
+- [x] UA-W3-V3 Confirm this window introduced no new network/DB operations (operation count 0). Evidence: I001 G7 (node builtins + registry import only; 0 network / 0 DB)
+- [x] UA-W3-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: I001 G6 (delta = exactly the four planned files + documented DEC-UA-011 runtime M on tracked .ua-executed.json inherited from owner commit d6121aa; no forbidden paths)
+- [x] UA-W3-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only. Evidence: I001 G5 (.ua-executed.json = 10 sorted IDs; window-local 4/4/4, digest 25e6c1d7…; full equality remains UA-W15-V5)
+- [x] UA-W3-H1 Record changed files/symbols and migrations. Evidence: ___ Evidence: UA-W3_HANDOFF.md changed-file table (4 files; ending digests efffc7b8…/0ec6a3b2…/325a442b…/635e2802…; no migrations)
+- [x] UA-W3-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___ Evidence: UA-W3_HANDOFF.md commands table (G0–G9 outcomes; G4 executed with 16 screenshots)
+- [x] UA-W3-H3 Diff names ⊆ authorized_write_scope. Evidence: ___ Evidence: I001 G6 (diff names ⊆ authorized_write_scope plus documented .ua-executed.json runtime output and coordination artifacts)
+- [x] UA-W3-H4 No successor-window task or prohibited action was started. Evidence: ___ Evidence: I001 G9 (no successor work; A5 current_window UA-W3; may_start_successor false)
+- [x] UA-W3-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___ Evidence: S3 WINDOW-AGENT-INTEGRATION-PASS UA-W3-I001; handoff written; A5 current_status AWAITING_REVIEW
+- [x] UA-W3-H6 Stop; do not assign or begin the successor. Evidence: S2 next_subwindow STOP; G9 negative search; UA-W4 not started
 
 ### UA-W4 lifecycle
 
@@ -535,9 +535,9 @@ browser_evidence: true
 
 sign-in/sign-up pages only render AuthForm; copy changes happen in auth-form.tsx.
 
-- [ ] UA-W3-T1 Restyle owned header/auth/404 CSS to card radius `--radius-panel`, padding `--space-6` on `.auth-card`, keep sticky header. Do not change layout.tsx children.
-- [ ] UA-W3-T2 AuthForm and not-found: wrap titles with SectionIntro using DEC-UA-003 sign-in/sign-up/404 strings. 404 title stays "That lead run does not exist." as existing H1; eyebrow "404 · Not found" remains; add copy already in the page as SectionIntro copy. Do not change Link hrefs.
-- [ ] UA-W3-T3 Tests CASE-UA-W3-001..004.
+- [x] UA-W3-T1 Restyle owned header/auth/404 CSS to card radius `--radius-panel`, padding `--space-6` on `.auth-card`, keep sticky header. Do not change layout.tsx children. Evidence: S3 UA-W3-S003 certificate (globals.css 7df1646d… → 325a442b…, seven hunks; sticky/radius kept)
+- [x] UA-W3-T2 AuthForm and not-found: wrap titles with SectionIntro using DEC-UA-003 sign-in/sign-up/404 strings. 404 title stays "That lead run does not exist." as existing H1; eyebrow "404 · Not found" remains; add copy already in the page as SectionIntro copy. Do not change Link hrefs. Evidence: S3 S001/S002 certificates (auth-form efffc7b8…, not-found 0ec6a3b2…; DEC-UA-003 strings; hrefs/hrefs intact)
+- [x] UA-W3-T3 Tests CASE-UA-W3-001..004. Evidence: S3 S004 certificate (test 635e2802…; CASE-UA-W3-001..004 registered and executed; 6/6 leaf pass; 10-ID set after npm test)
 
 ---
 

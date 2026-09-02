@@ -10,7 +10,7 @@ Other artifacts: `A1` `A1_LOCKED_PRODUCT_CONTRACT.md`; `A2` `A2_DISCOVERY_DOSSIE
 `A8` `A8_TRACEABILITY_INDEX.md`.
 
 ```yaml
-state_version: 6
+state_version: 8
 standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
 standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
 subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
@@ -20,7 +20,7 @@ contract_revision: a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9b
 decision_path: frontend/docs/open-work/uphunt-aesthetic/A3_DECISION_LEDGER.md
 decision_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
 checklist_path: frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md
-checklist_revision: 79816d332d8d54159cd1329d002bda38242147dee105638f90d089f3ff701486
+checklist_revision: 10543d6d3cceeb9a5775ac9dfdfe1ea8b8f658b6619d42b8fa3ccc72500ddc5e
 current_window: NONE
 current_assignment_id: NONE
 assigned_agent: UNASSIGNED
@@ -28,7 +28,7 @@ authorized_windows: []
 authorized_write_scope: []
 authorized_actions: []
 prohibited_actions:
-  - start_UA-W3
+  - start_UA-W4
   - may_start_successor
   - aws
   - commit
@@ -44,11 +44,11 @@ execution_environment_policy:
   external_authority_expansion: false
 may_start_successor: false
 current_status: READY
-accepted_through: UA-W2
-next_window: UA-W3
+accepted_through: UA-W3
+next_window: UA-W4
 stop_after: UA-W15
 blocker: null
 user_gates: []
 successor_reserved_for: parent
-last_updated: 2026-09-01T19:55:00+05:30
+last_updated: 2026-09-02T12:05:00+05:30
 ```

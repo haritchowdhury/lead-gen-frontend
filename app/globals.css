@@ -3875,13 +3875,13 @@ button {
   text-align: center;
 }
 
-.fatal-card h1 {
+.fatal-card .marketing-heading h2 {
   margin: 12px 0;
   font-size: 36px;
   letter-spacing: -0.05em;
 }
 
-.fatal-card p {
+.fatal-card .marketing-heading p {
   margin: 0 auto 27px;
   color: var(--muted);
   font-size: 13px;
@@ -3933,7 +3933,7 @@ button {
   box-shadow: var(--shadow);
 }
 
-.auth-card h1 {
+.auth-card .marketing-heading h2 {
   margin: 8px 0 12px;
   font-size: 36px;
   letter-spacing: -0.055em;
@@ -4303,7 +4303,7 @@ button {
     padding: 29px 22px;
   }
 
-  .auth-card h1 {
+  .auth-card .marketing-heading h2 {
     font-size: 31px;
   }
 
@@ -5680,7 +5680,7 @@ button {
 
 .auth-card {
   width: min(27rem, 100%);
-  padding: 0;
+  padding: var(--space-6);
   border-color: var(--color-line);
   border-radius: var(--radius-panel);
   background: var(--color-surface);
@@ -5692,15 +5692,15 @@ button {
   border-bottom: 1px solid var(--color-line);
 }
 
-.auth-card h1,
-.auth-card-header h1 {
+.auth-card .marketing-heading h2,
+.auth-card-header .marketing-heading h2 {
   margin: var(--space-1) 0 var(--space-2);
   font-size: clamp(1.75rem, 5vw, 2.125rem);
   letter-spacing: -0.045em;
   line-height: var(--line-height-tight);
 }
 
-.auth-card-header > p {
+.auth-card-header .marketing-heading p {
   margin: 0;
   color: var(--color-ink-muted);
   font-size: var(--font-size-body);
@@ -6119,12 +6119,12 @@ button {
   box-shadow: var(--elevation-card);
 }
 
-.fatal-card h1 {
+.fatal-card .marketing-heading h2 {
   margin: var(--space-2) 0;
   font-size: clamp(1.75rem, 6vw, 2.25rem);
 }
 
-.fatal-card p {
+.fatal-card .marketing-heading p {
   margin-bottom: var(--space-6);
   color: var(--color-ink-muted);
   font-size: var(--font-size-body);

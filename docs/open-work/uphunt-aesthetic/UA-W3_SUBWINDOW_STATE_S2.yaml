@@ -1,0 +1,116 @@
+# UA-W3 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W3_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W3_SUBWINDOW_EVIDENCE_S3.md`.
+
+Dispatch: identity `UA-W3-WINDOW-AGENT`, parent assignment `ASG-UA-W3-01`,
+current leaf assignment `ASG-UA-W3-01-S001`. Requester directed the parent to
+convert `decomposition_status` to `READY` and issue the S001 assignment
+(`EV-UA-A-031`). Report only as the window agent. Do not talk to the parent
+except via S3/A6/handoff. Do not start UA-W4.
+
+```yaml
+state_version: 2
+parent_window_id: UA-W3
+parent_assignment_id: ASG-UA-W3-01
+window_agent_identity: UA-W3-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef
+parent_decision_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
+parent_checklist_revision: 79816d332d8d54159cd1329d002bda38242147dee105638f90d089f3ff701486
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W3_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: 35fbc5f6489ff89cf1680a068b30e1ba6edab36ede9f7418924fbb21d9557ef2
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W3_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: STOP
+current_assignment_id: WINDOW-AGENT
+assigned_agent: UA-W3-WINDOW-AGENT
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE
+authorized_read_scope:
+  - frontend/docs/open-work/uphunt-aesthetic/A1_LOCKED_PRODUCT_CONTRACT.md
+  - frontend/docs/open-work/uphunt-aesthetic/A3_DECISION_LEDGER.md
+  - frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md
+  - frontend/docs/open-work/uphunt-aesthetic/UA-W3_SUBWINDOW_DECOMPOSITION_S1.md
+  - frontend/components/section-intro.tsx
+authorized_actions:
+  - run_UA-W3-I001_personally_per_S1_section_10_gates_G0_G9
+  - run_npm_test
+  - run_npx_tsc_noEmit_pretty_false_needle_check
+  - run_npm_run_lint
+  - run_headless_chrome_G4_screenshots_of_G4_routes
+  - verify_coverage_executed_set_and_digests
+  - record_git_status_and_forbidden_path_search
+  - append_S3_and_review_certificate
+  - run_npx_tsc_noEmit_incremental_false_as_file_local_check
+  - run_read_only_node_inspection_of_writable_file
+  - record_git_status_preflight_and_postcondition
+  - append_S3
+  - after_S001_review_assign_ASG-UA-W3-01-S002
+  - after_S002_review_assign_ASG-UA-W3-01-S003
+  - after_S003_review_assign_ASG-UA-W3-01-S004
+  - after_S004_review_run_UA-W3-I001
+  - check_UA-W3_boxes
+  - append_A6_evidence
+  - write_UA-W3_handoff
+  - set_A5_AWAITING_REVIEW_on_handoff
+prohibited_actions:
+  - edit_any_workspace_file_other_than_writable_file_during_I001
+  - repair_a_leaf_file_without_a_corrective_subwindow
+  - assert_getExecuted_equals_REQUIRED_CASE_IDS_full_set_equality
+  - call_recordExecuted_before_a_tests_assertions
+  - use_skip_filters_or_a_fifth_test
+  - edit_unowned_globals_css_selectors_or_add_new_declarations_or_properties
+  - change_any_declaration_body_of_a_retargeted_rule
+  - remove_or_change_the_sticky_or_radius_declarations
+  - edit_globals_css
+  - edit_auth_form
+  - edit_not_found
+  - edit_app_header
+  - edit_globals_css
+  - edit_w3_test_file
+  - edit_auth_form
+  - edit_section_intro
+  - edit_parked_SRC-UA-0092_test_files
+  - edit_REQUIRED_CASE_IDS
+  - edit_uphunt-aesthetic-coverage_test
+  - add_props_to_SectionIntro
+  - change_authClient_calls_form_fields_or_Link_hrefs
+  - npm_install_or_any_format_fix_generate_build_command
+  - skip_or_weaken_any_frozen_gate
+  - start_UA-W4_before_handoff
+  - start_UA-W4
+  - may_start_successor
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: AWAITING_PARENT_REVIEW
+accepted_subwindows: [ASG-UA-W3-01-S001, ASG-UA-W3-01-S002, ASG-UA-W3-01-S003, ASG-UA-W3-01-S004]
+integration_assessment: UA-W3-I001
+integration_status: PASS
+next_subwindow: STOP
+blocker: null
+last_updated: 2026-09-02T11:50:00+05:30
+```
+
+S001 (`efffc7b8…`) and S002 (`0ec6a3b2…`) executed and ACCEPTED_FOR_INTEGRATION
+(S3 certificates). S001–S004 all executed and ACCEPTED_FOR_INTEGRATION (ending digests
+`efffc7b8…`, `0ec6a3b2…`, `325a442b…`, w3 test `635e2802…`). `UA-W3-I001` PASS (G0–G9; G4 16/16 screenshots). WINDOW-AGENT-INTEGRATION-PASS
+recorded; handoff written; A5 AWAITING_REVIEW.
+Known tracked-path residue: owner commit d6121aa committed the never-commit
+`test/.ua-executed.json`; npm test will modify it (DEC-UA-011 runtime output),
+documented at G5/G6/H3 and in the handoff. UA-W4 is not authorized.
