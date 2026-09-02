@@ -1,0 +1,121 @@
+# UA-W5 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W5_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W5_SUBWINDOW_EVIDENCE_S3.md`.
+
+Dispatch: identity `UA-W5-WINDOW-AGENT` for the whole S004 turn (FILE
+executor and independent reviewer, same identity). Parent assignment
+`ASG-UA-W5-01`, current leaf assignment `ASG-UA-W5-01-S004`. Parent
+accepted S003 (`EV-UA-A-039`) after window-agent `EV-UA-W5-R-001` and
+issued S004. After the file checks, personally review the leaf; do not
+wait for a second “you are the window agent” prompt. Report only as
+the window agent. Do not talk to the parent except via S3/A6/handoff.
+Do not start I001 or UA-W6.
+
+```yaml
+state_version: 9
+parent_window_id: UA-W5
+parent_assignment_id: ASG-UA-W5-01
+window_agent_identity: UA-W5-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef
+parent_decision_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
+parent_checklist_revision: 3596522cef3d5fcd8afaf025348c8fc46055ce5c0f1147d142b1be3ef0c94da5
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W5_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: a9e024216f6f58dfb0908c6155ba9509ef95709076e4e8f5451ea8e6ab1bd8e9
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W5_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: UA-W5-I001
+current_assignment_id: WINDOW-AGENT
+assigned_agent: UA-W5-WINDOW-AGENT
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE
+authorized_read_scope:
+  - frontend/docs/open-work/uphunt-aesthetic/A1_LOCKED_PRODUCT_CONTRACT.md
+  - frontend/docs/open-work/uphunt-aesthetic/A3_DECISION_LEDGER.md
+  - frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md
+  - frontend/docs/open-work/uphunt-aesthetic/UA-W5_SUBWINDOW_DECOMPOSITION_S1.md
+  - frontend/app/globals.css
+  - frontend/components/landing-sections.tsx
+  - frontend/test/uphunt-aesthetic-coverage.test.ts
+  - frontend/test/uphunt-aesthetic-w4.test.ts
+  - frontend/test/.ua-executed.json
+authorized_actions:
+  - create_the_writable_file_with_the_exact_S1_section_7.3_bytes
+  - run_the_w5_only_test_command_under_the_section_7.4_V-D_backup_run_restore_procedure
+  - run_disposable_in_memory_negative_probes_V-C_via_node_-e
+  - run_read_only_node_inspection
+  - record_git_status_preflight_and_postcondition
+  - append_S3
+  - independently_review_S004_as_window_agent_after_execution
+  - stop_at_AWAITING_WINDOW_REVIEW
+prohibited_actions:
+  - edit_any_other_workspace_file
+  - edit_landing_sections_tsx_or_section_intro_tsx_or_globals_css
+  - add_a_third_test_or_a_skip_filter_or_todo
+  - assert_getExecuted_equals_REQUIRED_CASE_IDS_full_set_equality
+  - call_recordExecuted_before_a_tests_assertions
+  - edit_REQUIRED_CASE_IDS_or_the_coverage_test_file
+  - commit_or_stage_test/.ua-executed.json
+  - delete_test/.ua-executed.json
+  - run_npm_test_full_suite_or_npx_tsc_or_npm_run_lint
+  - assign_or_start_I001
+  - add_dependency
+  - npm_install_or_any_format_fix_generate_build_command
+  - start_UA-W6
+  - may_start_successor
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: AWAITING_PARENT_REVIEW
+accepted_subwindows: [ASG-UA-W5-01-S003, ASG-UA-W5-01-S004]
+integration_assessment: UA-W5-I001
+integration_status: PASS
+next_subwindow: STOP
+blocker: null
+last_updated: 2026-09-02T20:38:00+05:30
+```
+
+S003 is closed (`7ae36419…`, `EV-UA-W5-S-001` / `EV-UA-W5-R-001` /
+`EV-UA-A-039`). This assignment is `UA-W5-S004`: CREATE
+`frontend/test/uphunt-aesthetic-w5.test.ts` from S1 §7.3 bytes (ABSENT →
+`ee6425e9…`), then the same identity personally reviews the leaf
+(`ACCEPTED_FOR_INTEGRATION` in S3) and stops at `AWAITING_WINDOW_REVIEW`
+before I001. A5 stays `b7a76387…`. UA-W6 is not authorized.
+
+S004 executed and reviewed (S3 `EV-UA-W5-S-002` / `EV-UA-W5-R-002`, both
+**ACCEPTED_FOR_INTEGRATION**): file ABSENT → `ee6425e9…` (exact §7.3 bytes);
+V-A..V-E all PASS — V-C probes 3/3 falsified; V-D w5-only run from the ABSENT
+executed-set state 4 pass / 0 fail / 0 skipped with executed set == exactly
+{CASE-UA-W1-001, CASE-UA-W1-002, CASE-UA-W5-001, CASE-UA-W5-002}, set digest
+`78ad8111…`, json restored byte-identically to `3d7cdeea…`; V-E delta ==
+`?? test/uphunt-aesthetic-w5.test.ts` exactly. Both planned files are now
+assembled (`globals.css` `7ae36419…` + w5 test `ee6425e9…`). Current status
+`AWAITING_WINDOW_REVIEW`: `UA-W5-I001` (S1 §12, gates G1–G9) is the next
+sub-window and awaits parent dispatch per this S2 boundary. A5 remains
+`b7a76387…` untouched; UA-W6 not authorized; `next_subwindow: STOP`.
+
+WINDOW CLOSED. `UA-W5-I001` executed personally and **PASS** (S3
+`EV-UA-W5-I-001`, WINDOW-AGENT-INTEGRATION-PASS): G1 `npm test` 170/170;
+G2 0 owned tsc needles (10 parked diagnostics == W4 baseline); G3 lint 0;
+G4 route `/` at 390/768/1280/1440 (`review-evidence/uphunt-aesthetic/UA-W5/`,
+IHDR verified, server torn down); G5 14-ID executed set `847c0d06…`; G6 all
+byte pins + forbidden search 0; G7 0 network/DB; G8 NC 3/3; G9 no UA-W6 work.
+Window closed: A4 UA-W5 boxes checked, `UA-W5_HANDOFF.md` written, A6
+`EV-UA-W5-A-001` appended, `A5.current_status: AWAITING_REVIEW` (the authorized
+handoff action). Nothing committed. Parent review per standard §13 is the only
+next step; `next_subwindow: STOP`; UA-W6 not authorized.

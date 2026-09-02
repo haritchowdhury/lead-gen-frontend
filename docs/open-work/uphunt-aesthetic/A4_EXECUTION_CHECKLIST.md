@@ -266,21 +266,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W5 lifecycle
 
-- [ ] UA-W5-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W5-P2 Required predecessor outputs exist and validate (UA-W4 hero). Evidence: ___
-- [ ] UA-W5-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W5-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W5-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W5-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W5-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W5-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W5-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W5-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W5-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W5-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W5-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W5-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W5-H6 Stop; do not assign or begin the successor.
+- [x] UA-W5-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: S3 EV-UA-W5-D-001 (A5 b7a76387… state_version 11, ASG-UA-W5-01; S1 a9e02421…; A1/A3/A4 pins recomputed MATCH)
+- [x] UA-W5-P2 Required predecessor outputs exist and validate (UA-W4 hero). Evidence: S3 EV-UA-W5-D-001 + EV-UA-W5-S-001 V-A (globals 04df3d7e… starting, page 3460751e…, run-form 72576044…, w4 test 8008501d… all MATCH)
+- [x] UA-W5-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: S3 EV-UA-W5-D-001 (node v24.14.1; test/lint scripts; /usr/bin/google-chrome present) + EV-UA-W5-I-001 G4
+- [x] UA-W5-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: S3 EV-UA-W5-D-001 (§3 inventory; porcelain = A5/A6 protected + coordination artifacts; coordination root clean)
+- [x] UA-W5-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: S3 EV-UA-W5-S-002 V-D (4-ID ABSENT-json run 78ad8111…) + EV-UA-W5-R-002 + EV-UA-W5-I-001 G8 (NC N1/N2/N3 3/3 falsified)
+- [x] UA-W5-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: S3 EV-UA-W5-I-001 G1 170/170; G2 0 owned needles (13 physical lines == 10 parked diagnostics, W4 baseline); G3 exit 0
+- [x] UA-W5-V3 Confirm this window introduced no new network/DB operations (operation count 0). Evidence: S3 EV-UA-W5-I-001 G7 (imports static inspection; 0 network, 0 DB)
+- [x] UA-W5-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: S3 EV-UA-W5-I-001 G6 (forbidden-path negative search 0 hits)
+- [x] UA-W5-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only. Evidence: S3 EV-UA-W5-R-002 (exactly 2 test() blocks; ordering check true; post-G1 14-ID set 847c0d06…; full equality deferred to UA-W15-V5)
+- [x] UA-W5-H1 Record changed files/symbols and migrations. Evidence: S3 EV-UA-W5-S-001/EV-UA-W5-S-002 certificates (globals.css 04df3d7e…→7ae36419… numstat 1 1; w5 test ABSENT→ee6425e9…; no migrations)
+- [x] UA-W5-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: S3 EV-UA-W5-I-001 (G1–G9 commands and outcomes; no skipped gates)
+- [x] UA-W5-H3 Diff names ⊆ authorized_write_scope. Evidence: S3 EV-UA-W5-I-001 (actual == expected == the two planned files, digest 7723122d…)
+- [x] UA-W5-H4 No successor-window task or prohibited action was started. Evidence: S3 EV-UA-W5-I-001 G9 (no w6/w7 artifacts, no runs/keywords/continue edits, A5 untouched until the authorized handoff action)
+- [x] UA-W5-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: S3 EV-UA-W5-S-001/S-002/R-001/R-002/I-001 + WINDOW-AGENT-INTEGRATION-PASS; A5 current_status AWAITING_REVIEW at handoff
+- [x] UA-W5-H6 Stop; do not assign or begin the successor. Evidence: S2 next_subwindow STOP; UA-W5_HANDOFF.md; no UA-W6 work
 
 ### UA-W6 lifecycle
 
@@ -578,8 +578,8 @@ may_start_successor: false
 browser_evidence: true
 ```
 
-- [ ] UA-W5-T1 Do not change existing SectionIntro copy strings in landing-sections.tsx. Ensure every marketing section uses SectionIntro or `.marketing-heading`. Card borders `var(--color-line)`.
-- [ ] UA-W5-T2 Tests CASE-UA-W5-001 CASE-UA-W5-002 (H2 clamp rule still present).
+- [x] UA-W5-T1 Do not change existing SectionIntro copy strings in landing-sections.tsx. Ensure every marketing section uses SectionIntro or `.marketing-heading`. Card borders `var(--color-line)`. Evidence: S3 EV-UA-W5-S-001/R-001 + EV-UA-W5-I-001 (landing-sections 914c61e5… byte-identical, exactly 3 `<SectionIntro ` sites, grouped h2 selector untouched; the single §6.2 hunk sets `.intelligence-card` border to `1px solid var(--color-line)`, ending digest 7ae36419…)
+- [x] UA-W5-T2 Tests CASE-UA-W5-001 CASE-UA-W5-002 (H2 clamp rule still present). Evidence: S3 EV-UA-W5-S-002/R-002 + EV-UA-W5-I-001 (w5 test ee6425e9…; both cases pass in G1 170/170; clamp(36px, 4.5vw, 59px) oracle asserted; window-local 1e44ff78…)
 
 ---
 
