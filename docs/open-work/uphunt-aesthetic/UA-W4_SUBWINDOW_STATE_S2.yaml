@@ -1,0 +1,121 @@
+# UA-W4 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W4_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W4_SUBWINDOW_EVIDENCE_S3.md`.
+
+Dispatch: identity `UA-W4-WINDOW-AGENT`, parent assignment `ASG-UA-W4-01`,
+current leaf assignment `ASG-UA-W4-01-S003`. Requester directed the parent to
+convert `decomposition_status` to `READY` and issue the S003 assignment
+(`EV-UA-A-035`). Report only as the window agent. Do not talk to the parent
+except via S3/A6/handoff. Do not start UA-W5.
+
+```yaml
+state_version: 2
+parent_window_id: UA-W4
+parent_assignment_id: ASG-UA-W4-01
+window_agent_identity: UA-W4-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef
+parent_decision_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
+parent_checklist_revision: 10543d6d3cceeb9a5775ac9dfdfe1ea8b8f658b6619d42b8fa3ccc72500ddc5e
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W4_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: 7663766adb05ec772092f92d5191e3612974a0fef79e04bab50195f758852486
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W4_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: UA-W4-I001
+current_assignment_id: WINDOW-AGENT
+assigned_agent: UA-W4-WINDOW-AGENT
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE
+authorized_read_scope:
+  - frontend/docs/open-work/uphunt-aesthetic/A1_LOCKED_PRODUCT_CONTRACT.md
+  - frontend/docs/open-work/uphunt-aesthetic/A3_DECISION_LEDGER.md
+  - frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md
+  - frontend/docs/open-work/uphunt-aesthetic/UA-W4_SUBWINDOW_DECOMPOSITION_S1.md
+  - frontend/app/globals.css
+  - frontend/app/page.tsx
+  - frontend/test/uphunt-aesthetic-coverage.test.ts
+  - frontend/test/uphunt-aesthetic-w3.test.ts
+  - frontend/test/.ua-executed.json
+authorized_actions:
+  - create_S004_writable_file_with_S1_section_7.3_exact_bytes
+  - run_S004_section_7.4_checks_only
+  - run_S004_V-D_json_backup_w4-only_run_restore_procedure_via_tmp_opencode
+  - run_disposable_in_memory_negative_probes_V-C
+  - record_git_status_preflight_and_postcondition
+  - append_S3
+  - after_S004_review_run_UA-W4-I001_personally_per_S1_section_8_gates_G1_G9
+  - run_npm_test
+  - run_npx_tsc_noEmit_incremental_false_pretty_false_needle_check
+  - run_npm_run_lint
+  - run_headless_chrome_G4_screenshots_of_route_slash_at_390_768_1280_1440
+  - verify_coverage_executed_set_and_digests
+  - run_disposable_in_memory_negative_probes_G8
+  - record_git_status_and_forbidden_path_search
+  - append_S3_and_review_certificates
+  - check_UA-W4_boxes
+  - append_A6_evidence
+  - write_UA-W4_handoff
+  - set_A5_AWAITING_REVIEW_on_handoff
+prohibited_actions:
+  - edit_any_workspace_file_other_than_writable_file_during_a_leaf_subwindow
+  - delete_test/.ua-executed.json (V-D moves it aside and restores it byte-identically)
+  - repair_a_leaf_file_without_a_corrective_subwindow
+  - edit_page_tsx_or_run_form_tsx_or_landing_sections_or_section_intro
+  - edit_unowned_globals_css_selectors_or_add_new_declarations_or_properties
+  - edit_run_form_card_before_or_after_pseudo_element_rules
+  - edit_suggestion_chip_or_query_list_wrap_borders
+  - edit_css_token_definitions
+  - change_LandingHeroCopy_or_LandingProcess_strings
+  - change_createKeywordResearch_router_form_fields_or_SUGGESTIONS
+  - assert_getExecuted_equals_REQUIRED_CASE_IDS_full_set_equality
+  - call_recordExecuted_before_a_tests_assertions
+  - use_skip_filters_or_a_third_test
+  - edit_REQUIRED_CASE_IDS
+  - edit_uphunt-aesthetic-coverage_test
+  - edit_parked_SRC-UA-0092_test_files
+  - edit_unowned_app_or_component_files
+  - commit_or_stage_test/.ua-executed.json
+  - npm_install_or_any_format_fix_generate_build_command
+  - skip_or_weaken_any_frozen_gate
+  - start_UA-W5
+  - may_start_successor
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: AWAITING_PARENT_REVIEW
+accepted_subwindows: [ASG-UA-W4-01-S003, ASG-UA-W4-01-S004]
+integration_assessment: UA-W4-I001
+integration_status: PASS
+next_subwindow: STOP
+blocker: null
+last_updated: 2026-09-02T14:26:00+05:30
+```
+
+S003 executed and reviewed: `frontend/app/globals.css` `325a442b…` →
+`04df3d7e…` (S3 `EV-UA-W4-S-001`, ACCEPTED_FOR_INTEGRATION). S004 executed and
+reviewed: `frontend/test/uphunt-aesthetic-w4.test.ts` ABSENT → `8008501d…`
+(S3 `EV-UA-W4-S-002`, ACCEPTED_FOR_INTEGRATION; V-D proved the ABSENT-json
+w4-only run at exactly 4 IDs `9be62b77…` and restored `.ua-executed.json`
+byte-identically to `7d48ebc5…`). `UA-W4-I001` executed personally: **PASS**
+(S3 `EV-UA-W4-I-001`; G1 166/166; G2 10 parked diagnostics / 0 owned needles;
+G3 lint 0; G4 route `/` at 390/768/1280/1440; G5 12-ID set `c433674b…`;
+G6 byte pins + forbidden search 0; G7 0 network/DB; G8 3/3; G9 no UA-W5 work).
+Window closed: A4 UA-W4 boxes checked, `UA-W4_HANDOFF.md` written, A6
+`EV-UA-W4-A-001` appended, A5 `current_status: AWAITING_REVIEW`. Nothing
+committed. UA-W5 not started; `may_start_successor: false`; parent review is
+the only next step.

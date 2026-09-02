@@ -818,8 +818,8 @@ button {
   flex-direction: column;
   min-height: 100%;
   padding: 34px;
-  border: 1px solid rgba(18, 35, 30, 0.13);
-  border-radius: 24px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(250, 252, 245, 0.98)),
     var(--card);
@@ -4356,7 +4356,7 @@ button {
 
   .run-form-card {
     padding: 23px 20px;
-    border-radius: 17px;
+    border-radius: var(--radius-panel);
   }
 
   .textarea-wrap textarea {
@@ -6564,7 +6564,7 @@ button {
 .landing-hero .run-form-card {
   min-height: 47rem;
   padding: clamp(1.75rem, 2.6vw, 2.25rem);
-  border: 0;
+  border: 1px solid var(--color-line);
   border-radius: var(--radius-panel);
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.58), rgba(248, 251, 241, 0.4)),
@@ -6796,7 +6796,7 @@ button {
   .landing-hero .run-form-card {
     min-height: 0;
     padding: var(--space-5) var(--space-4);
-    border-radius: var(--radius-card);
+    border-radius: var(--radius-panel);
   }
 
   .landing-hero .run-form-card::before {

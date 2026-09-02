@@ -1073,3 +1073,201 @@ limitations: |
 external_mutations: none
 ```
 
+```yaml
+evidence_id: EV-UA-A-033
+timestamp: 2026-09-02T12:22:00+05:30
+phase: assignment
+claim: Requester assigned UA-W4 as ASG-UA-W4-01 to UA-W4-WINDOW-AGENT for decomposition dispatch. Predecessor UA-W3 is parent-accepted (EV-UA-A-032) and committed (frontend 818994a). A1/A3/A4 hashes still matched A5 pins. Predecessor SectionIntro 159096f3…, landing-sections 914c61e5…, coverage f5137be4…, w3 test 635e2802…, globals 325a442b…. page.tsx 3460751e… and run-form.tsx 72576044… already satisfy the CASE-UA-W4-001 import and run-form-card className. uphunt-aesthetic-w4.test.ts ABSENT. Successor UA-W5 remains reserved for parent. may_start_successor remains false. Root ACTIVE_EXECUTION_STATE.md was not mutated. Parent did not dispatch the window agent.
+environment: local
+revision: A5 state_version 9 digest cf8a54c7e74f935e2ba279c6e287415d62bfb497bf26c8b6c6aa7c8a3bfece87
+operation: sha256sum of A1 A3 A4 vs A5 pins; sha256sum SectionIntro landing-sections coverage w3-test page run-form globals; test ! -f uphunt-aesthetic-w4.test.ts; git status --porcelain frontend/ and coordination root; A5 assignment fields written
+observed_result: |
+  A1 a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef MATCH;
+  A3 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300 MATCH;
+  A4 10543d6d3cceeb9a5775ac9dfdfe1ea8b8f658b6619d42b8fa3ccc72500ddc5e MATCH;
+  current_window UA-W4; authorized_windows [UA-W4]; current_status IN_PROGRESS;
+  w4 test ABSENT; frontend git status --porcelain empty before this A5/A6 write
+parent_frozen_mechanical_consequences: |
+  These close otherwise-open S1 choices; they are uniquely determined by DEC-UA-001, DEC-UA-012, and UA-W4-T1/T2:
+  1. Do not change LandingHeroCopy or LandingProcess strings. landing-sections.tsx and section-intro.tsx are read-only. page.tsx already imports LandingHeroCopy and renders <LandingHeroCopy /> / <RunForm /> / <LandingProcess />; that file is in-scope preserved (zero JSX edits), G6 byte-identity 3460751e72842cb22b4116211408c4c8ddaef0f4efd02513f1228182902f5a86.
+  2. run-form.tsx already has className "run-form-card run-start-form ds-card". Do not change createKeywordResearch, router, form fields, SUGGESTIONS, or that className. That file is in-scope preserved (zero JSX edits), G6 byte-identity 72576044e7f57c4e76206e7b204c73202b84775b98e309ead8ba2ccc601fb8a2.
+  3. CSS edits may only set the T1-named properties border and border-radius on .run-form-card rules, using these four unique hunks and no others. Unnamed declarations stay byte-identical, including ::before/::after, grouped .hero-copy/.run-form-card min-width, height/padding/background/box-shadow, and every .landing-page/.landing-hero/.hero/.hero-copy/.hero-kicker/.hero-intro/.accent-underline rule that does not contain a T1-failing named property. Hunk 1: the unique unscoped block beginning ".run-form-card {\n  position: relative;" replace `border: 1px solid rgba(18, 35, 30, 0.13);` with `border: 1px solid var(--color-line);` and `border-radius: 24px;` with `border-radius: var(--radius-panel);`. Hunk 2: the unique `.landing-hero .run-form-card` block that contains `min-height: 47rem;` replace `border: 0;` with `border: 1px solid var(--color-line);` and keep the existing `border-radius: var(--radius-panel);`. Hunk 3: the unique media block `  .run-form-card {\n    padding: 23px 20px;\n    border-radius: 17px;\n  }` replace `border-radius: 17px;` with `border-radius: var(--radius-panel);` and do not edit the following ::before 17px. Hunk 4: the unique `.landing-hero .run-form-card` block that contains `padding: var(--space-5) var(--space-4);` replace `border-radius: var(--radius-card);` with `border-radius: var(--radius-panel);` and do not edit the following ::before --radius-card. Do not replace the rgba border on .suggestion-chip or .query-list-wrap.
+  4. CREATE test/uphunt-aesthetic-w4.test.ts with exactly two tests, CASE-UA-W4-001 and CASE-UA-W4-002. 001 asserts page.tsx contains `import { LandingHeroCopy, LandingProcess } from "@/components/landing-sections"` and `<LandingHeroCopy />`. 002 asserts the four post-hunk needles (unscoped card border `1px solid var(--color-line)` after `padding: 34px;`; landing-hero 47rem block border `1px solid var(--color-line)`; media `padding: 23px 20px` then `border-radius: var(--radius-panel)`; landing-hero mobile `padding: var(--space-5) var(--space-4)` then `border-radius: var(--radius-panel)`) and `--color-signal: #c8f04b`. recordExecuted after assertions. No fifth test. No getExecuted vs REQUIRED_CASE_IDS full-set equality.
+  5. Leaf S004 V-B from ABSENT test/.ua-executed.json expects exactly 4 IDs (2 x W1 re-executions + CASE-UA-W4-001/002). The 12-ID set {2 x W1} u {4 x W2} u {4 x W3} u {2 x W4} is asserted only at I001 G5 after npm test. Do not require W2/W3 IDs at the w4-only test command. test/.ua-executed.json is TRACKED at HEAD (owner commit d6121aa residue); treat that as inherited DEC-UA-011 runtime output, not a W4 file to commit.
+  6. I001 G4 is frozen as route `/` at 390/768/1280/1440 only (owned landing route; local_e2e, not a CASE oracle). Expected npm test after W4 is 166 pass (162 predecessor + 2 W1 re-executions from the w4 import + 2 W4 cases). Window-local case digest ea7e02bc33cc8ad7d247c60e5d300a3a83ac02814866ca2c97bbfc4fa3ead715.
+decisive_assertion: UA-W4 may now be decomposed; FILE leaves remain unassigned until parent accepts the decomposition; UA-W5 is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5
+negative_control: starting UA-W5, editing landing-sections.tsx, changing createKeywordResearch, or editing REQUIRED_CASE_IDS under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 10
+  planned: 43
+  executed: 10
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: FILE leaves remain unassigned until parent accepts the UA-W4 decomposition. browser_evidence true is an I001 obligation after implementation, not a decomposition write.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-034
+timestamp: 2026-09-02T13:40:00+05:30
+phase: review
+claim: Parent rejected the UA-W4 decomposition under ASG-UA-W4-01. Independent recomputation matched claimed S1/S2/S3 digests 6d8bce7e33001542fe414e64f5802abfe55fd1aad58a1d4accbf446d310a9ede / 7fed8b23734f6bfdc15c66c6c785c186b600c84553b1a7293e3f945dd641200a / 9b689f15c55216c888976c17fda67c191bd5bf225aee5d55add3048f94a3d003. A5 remains cf8a54c7e74f935e2ba279c6e287415d62bfb497bf26c8b6c6aa7c8a3bfece87. A1/A3/A4 pins MATCH. Predecessors page.tsx 3460751e…, run-form.tsx 72576044…, globals.css 325a442b…, coverage f5137be4…, w3 test 635e2802…, section-intro 159096f3…, landing-sections 914c61e5… MATCH and were not edited. w4 test ABSENT. Planned-file-set digest e8825b8d…, window-local ea7e02bc…, 4-ID 9be62b77…, 12-ID c433674b… MATCH. Applying the four unique 2-space CSS hunks from §0 yields ending digest 04df3d7ed3f3528c448cf05c9b0f45d78d9a422305c436dc7b8fd16487ee6a42 and post-counts 8/10/17/1/2/2/40 with N1–N4 each once. Rejection cause is S003 §6.2: the eight ```text fences are markdown-list-indented (5 leading spaces) and occur 0 times in globals.css, while §6.2 and §6.4 V-B claim each OLD string occurs exactly once and require STOP on count ≠ 1. A leaf that copies the fences cannot apply the hunks without choosing to strip indent.
+environment: local
+revision: A5 state_version 9 still IN_PROGRESS UA-W4 ASG-UA-W4-01 digest cf8a54c7e74f935e2ba279c6e287415d62bfb497bf26c8b6c6aa7c8a3bfece87
+operation: |
+  sha256sum S1 S2 S3 A1 A3 A4 A5 page run-form globals coverage w3-test section-intro landing-sections;
+  extract §6.2 ```text fences and count in globals.css;
+  apply the four unique 2-space hunks from EV-UA-A-033/S1 §0 to a copy and sha256;
+  extract §7.3 ```ts fence and sha256 with/without trailing LF;
+  recompute §4.7 set digests for planned files, 2/4/12 CASE IDs, A5+A6 path set;
+  git status implementation paths; test ! -f uphunt-aesthetic-w4.test.ts
+observed_result: |
+  claimed S1/S2/S3 and product/ending/set digests MATCH;
+  each of 8 §6.2 fences counts 0 in starting globals.css;
+  3-space common-prefix strip of the four OLD fences counts 1 (the markdown list unwrap);
+  §7.3 fence without trailing LF hashes 43079311…; fence plus one trailing LF hashes 8008501d… as pinned in the §7.3 prose (this pin is consistent);
+  S004 V-D from ABSENT expects the 4 IDs (W1 re-executions + two W4); G5 keeps the 12-ID set after npm test; G4 is frozen to / only;
+  S001/S002 retirement for zero-edit page.tsx/run-form.tsx is consistent with EV-UA-A-033;
+  implementation files untouched; UA-W5 artifacts absent
+decisive_assertion: REJECTED; S2.decomposition_status must remain AWAITING_PARENT_DECOMPOSITION_REVIEW; do not assign ASG-UA-W4-01-S003; rewrite the eight §6.2 OLD/NEW ```text fences so they are byte-identical to the starting/ending CSS (2-space property indent, 2-space media selector indent) matching §0 hunks 1–4; keep ending digest 04df3d7e…; recompute S1 digest; refresh S2/S3 pins; resubmit
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W4_SUBWINDOW_DECOMPOSITION_S1.md §6.2
+negative_control: parent setting S2 READY or assigning S003 while the fenced OLD strings count 0 would authorize a leaf that must either STOP or invent a dedent
+coverage_counts:
+  required: 43
+  registered: 10
+  planned: 43
+  executed: 10
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: |
+  S1 is not yet frozen; the window agent may rewrite the unapproved §6.2 fences in place. Independently verified as consistent with A4/A5/EV-UA-A-033 and not part of this rejection: two-file planned set with page.tsx and run-form.tsx preserved, DAG S003→S004→I001, S001/S002 retired unused, four unique CSS hunks and simulated ending digest, S004 V-D 4-ID / I001 G5 12-ID split, G4 route /, §7.3 trailing-newline digest pin, no UA-W5 artifacts.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-035
+timestamp: 2026-09-02T13:45:00+05:30
+phase: review
+claim: Parent accepted the corrected UA-W4 decomposition under ASG-UA-W4-01 and, at requester instruction not to dispatch, converted it to READY and issued ASG-UA-W4-01-S003 to UA-W4-WINDOW-AGENT. Independent recomputation matched S1 7663766adb05ec772092f92d5191e3612974a0fef79e04bab50195f758852486. All eight §6.2 fences now count 1/0 as required (OLD in starting CSS, NEW in simulated ending). Applying the fenced OLD→NEW replacements yields 04df3d7ed3f3528c448cf05c9b0f45d78d9a422305c436dc7b8fd16487ee6a42. EV-UA-A-034 finding closed. A1/A3/A4 pins and A5 cf8a54c7… MATCH. Ending digests and planned/case-set digests unchanged. Implementation files untouched; w4 test ABSENT. Parent did not dispatch a window agent. A5 was not rewritten so S003 P1 still holds. Root ACTIVE_EXECUTION_STATE.md was not mutated.
+environment: local
+revision: A5 state_version 9 IN_PROGRESS UA-W4 ASG-UA-W4-01 digest cf8a54c7e74f935e2ba279c6e287415d62bfb497bf26c8b6c6aa7c8a3bfece87; S2 646039c28a4bc2b7f60a69ed667d56ad5c1e290c4acd876c8fb57dc535069e1c
+operation: |
+  sha256sum S1 S2 S3 A1 A3 A4 A5 page run-form globals;
+  extract §6.2 ```text fences and count in starting CSS and in simulated ending CSS;
+  apply fenced OLD→NEW in order; compare ending digest;
+  §7.3 fence+LF digest; ls w4 test; git status implementation paths;
+  write S2 READY + S003 assignment; append S3 EV-UA-W4-X-001
+observed_result: |
+  all listed pins MATCH; EV-UA-A-034 finding closed (8/8 fence occurrence PASS);
+  S2 decomposition_status READY; current_assignment_id ASG-UA-W4-01-S003;
+  assigned_agent UA-W4-WINDOW-AGENT; authorized_write_file frontend/app/globals.css;
+  current_status READY; next_subwindow STOP; A5 digest unchanged
+decisive_assertion: APPROVED and executable; UA-W4-WINDOW-AGENT may execute S003 (S1 §6.2 four hunks, ending digest 04df3d7e…) and must stop at AWAITING_WINDOW_REVIEW before S004; UA-W5 remains unauthorized
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W4_SUBWINDOW_STATE_S2.yaml; S3 EV-UA-W4-X-001
+negative_control: launching S004, editing page.tsx, or starting UA-W5 under this S2 would violate next_subwindow STOP and A5 prohibited_actions
+coverage_counts:
+  required: 43
+  registered: 10
+  planned: 43
+  executed: 10
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S004/I001 remain unassigned until S003 review is recorded. Parent did not dispatch the window agent.
+external_mutations: none
+```
+
+
+
+
+
+```yaml
+evidence_id: EV-UA-W4-A-001
+timestamp: 2026-09-02T14:24:00+05:30
+phase: handoff
+claim: UA-W4 executed and closed by UA-W4-WINDOW-AGENT under ASG-UA-W4-01. S003 applied the four S1 §6.2 hunks to globals.css (325a442b… → 04df3d7e…); S004 created test/uphunt-aesthetic-w4.test.ts from the frozen §7.3 bytes (8008501d…), proved the w4-only run from ABSENT json at exactly 4 IDs (9be62b77…) and restored .ua-executed.json byte-identically (7d48ebc5…). UA-W4-I001 executed personally: G1 npm test 166/166; G2 tsc 13 physical lines / 10 parked diagnostics, zero owned needles; G3 lint exit 0; G4 route / screenshots at 390/768/1280/1440 only; G5 executed set exactly 12 IDs (c433674b…), registry 0d14982c… unchanged, window-local ea7e02bc…; G6 byte pins all match (page.tsx 3460751e…, run-form.tsx 72576044…, predecessors unchanged), forbidden-path search 0, root ACTIVE_EXECUTION_STATE.md untouched; G7 0 network/DB; G8 NCs 3/3 falsified; G9 no UA-W5 artifact. implementation delta == planned set {globals.css, w4 test} (e8825b8d…). LandingHeroCopy/LandingProcess strings, createKeywordResearch, router, form fields, and SUGGESTIONS untouched. A4 UA-W4 P/V/H boxes checked; UA-W4_HANDOFF.md written; S3 EV-UA-W4-D-001..004, EV-UA-W4-S-001/002, EV-UA-W4-I-001 appended. A5 current_status set to AWAITING_REVIEW (authorized handoff action only). Nothing committed. UA-W5 not started; may_start_successor false.
+environment: local
+revision: S1 7663766adb05ec772092f92d5191e3612974a0fef79e04bab50195f758852486; A5 pinned cf8a54c7e74f935e2ba279c6e287415d62bfb497bf26c8b6c6aa7c8a3bfece87 at execution (P1)
+operation: S1 §6.2/§7.3 leaf execution; S1 §8 gates G1–G9; handoff sequence per S1 §8 PASS oracle
+observed_result: |
+  UA-W4-I001 PASS; WINDOW-AGENT-INTEGRATION-PASS recorded in S3; handoff READY_FOR_PARENT_REVIEW; A5 AWAITING_REVIEW; S2 next_subwindow STOP
+decisive_assertion: UA-W4 complete and awaiting parent review; UA-W5 remains reserved for parent
+sandbox_privilege: local dev server + headless chrome on localhost under the inherited E8.1 policy; no escalation beyond authorized local actions
+environment_invalidated_attempt: none
+artifacts: frontend/app/globals.css; frontend/test/uphunt-aesthetic-w4.test.ts; frontend/review-evidence/uphunt-aesthetic/UA-W4/ (4 screenshots); UA-W4_HANDOFF.md; S1/S2/S3; A4 UA-W4 checkboxes; A5 current_status
+negative_control: S004 V-C 3/3 and I001 G8 3/3 falsified (render-removal, hunk-1 border revert, hunk-3 radius revert); G6 forbidden-path search 0; G9 successor search clean
+coverage_counts:
+  required: 43
+  registered: 12
+  planned: 43
+  executed: 12
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+  window_local_required_registered_executed: 2/2/2
+  window_local_digest: ea7e02bc33cc8ad7d247c60e5d300a3a83ac02814866ca2c97bbfc4fa3ead715
+  executed_set_after_npm_test_digest: c433674b9c25f667483ff9b5024bc6c8a08fad2fb02e0dd04318c9dc9194fae1
+limitations: |
+  Residual inherited non-blocking: test/.ua-executed.json is TRACKED at HEAD (owner commit d6121aa residue) and npm test modifies it (12-ID runtime output, uncommitted); untracking is a later parent decision. Full required==executed equality remains UA-W15-V5. G4 is local_e2e evidence, not a CASE oracle (SUB-UA-001).
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-036
+timestamp: 2026-09-02T17:30:00+05:30
+phase: review
+claim: Parent independently accepted UA-W4. Product files globals.css 04df3d7ed3f3528c448cf05c9b0f45d78d9a422305c436dc7b8fd16487ee6a42 (exactly the four S1 §6.2 hunks; git numstat 5/5; V-D counts 8/10/17/1/2/2/40 and N1–N4 each once; ::before 17px and ::before --radius-card preserved; suggestion-chip/query-list-wrap not in the diff) and uphunt-aesthetic-w4.test.ts 8008501d5da4b946bd07ea05260400198c306e1cfb2741fec7ed3ff44a3832a7 (byte-identical to S1 §7.3 fence; CASE-UA-W4-001/002; recordExecuted after assertions). page.tsx 3460751e72842cb22b4116211408c4c8ddaef0f4efd02513f1228182902f5a86 and run-form.tsx 72576044e7f57c4e76206e7b204c73202b84775b98e309ead8ba2ccc601fb8a2 preserved. Frozen A1/A3 pins match. S1 7663766adb05ec772092f92d5191e3612974a0fef79e04bab50195f758852486. Predecessors section-intro 159096f3…, landing-sections 914c61e5…, w2 test f65ba0c5…, w3 test 635e2802…, coverage f5137be4… unchanged. npm test 166/166 including CASE-UA-W1-001/002, CASE-UA-W2-001..004, CASE-UA-W3-001..004, CASE-UA-W4-001/002. tsc --incremental false --pretty false 13 physical lines / 10 parked SRC-UA-0092 diagnostics, zero owned-path needles. lint exit 0 (2 pre-existing warnings in unowned files). G4 4/4 screenshots of route / at widths 390/768/1280/1440 (IHDR 390x900, 768x900, 1280x900, 1440x900); 768/1280/1440 show the run-form-card hairline. A4 UA-W4 P/T/V/H checkbox-only (17/17). Parked SRC-UA-0092 files unmodified. No UA-W5 test or landing-sections edits. Root ACTIVE_EXECUTION_STATE.md untouched. ASG-UA-W4-01 closed. UA-W5 not assigned.
+environment: local frontend node v24
+revision: A5 state_version 10; A4 post-UA-W4-checkbox 3596522cef3d5fcd8afaf025348c8fc46055ce5c0f1147d142b1be3ef0c94da5 (checkbox-only vs assignment pin 10543d6d…)
+operation: |
+  sha256sum A1 A3 A4 A5 S1 coverage section-intro landing-sections w2-test w3-test page run-form globals w4-test;
+  git diff globals.css A4 A5; git diff --numstat app/globals.css;
+  V-D needle counts; extract S1 §7.3 fence vs disk;
+  npx tsc --noEmit --incremental false --pretty false; grep owned-path needles;
+  npm test (two Unexpected-end-of-JSON-input races in recordExecuted, then identical-command recovery 166/166);
+  read executed set; npm run lint;
+  in-memory NC N1/N2/N3 probes; PNG IHDR dimensions;
+  git status parked files, successor paths, coordination root
+observed_result: |
+  A1/A3 MATCH assignment pins; S1 MATCH frozen decomposition; two implementation digests MATCH handoff;
+  G1 PASS 166/166 after identical recovery; G2 PASS DEC-UA-014 (13 physical lines / 10 parked diagnostics; tsc sha e0aa27dd8bf3b86e7fbe2d4f628460aa7ae21088493533af4544e4fd9b0f663f);
+  G3 PASS lint exit 0; G4 PASS 4/4 frozen widths; G5 PASS 12-ID executed set digest c433674b… and W4 window-local ea7e02bc…;
+  G8 PASS NCs 3/3 falsified; G9 PASS no successor artifacts;
+  implementation delta is the two §2 files plus authorized docs/handoff/screenshots plus documented tracked .ua-executed.json runtime M
+decisive_assertion: ACCEPTED; UA-W4 complete; UA-W5 remains unassigned (successor_reserved_for parent; may_start_successor false)
+sandbox_privilege: none
+environment_invalidated_attempt: |
+  Two parent npm test runs failed CASE-UA-W1-001/002 with SyntaxError Unexpected end of JSON input inside getExecuted/recordExecuted while four test files concurrently write test/.ua-executed.json. Identical frozen command then passed 166/166 / 0 fail / 0 skipped. Not a UA-W4 CSS or CASE oracle failure; inherited DEC-UA-011 shared-file race, worsened by a fourth importer.
+artifacts: frontend/app/globals.css; frontend/test/uphunt-aesthetic-w4.test.ts; UA-W4_HANDOFF.md; S3 WINDOW-AGENT-INTEGRATION-PASS; /tmp/ua-w4-parent-tsc.txt; /tmp/ua-w4-parent-npm-test-pass.txt
+negative_control: a diagnostic naming uphunt-aesthetic-w4.test.ts, page.tsx, or run-form.tsx would have failed G2; presence of uphunt-aesthetic-w5.test.ts would have failed successor closure; reverting hunk-1 border or hunk-3 radius falsifies CASE-UA-W4-002
+coverage_counts:
+  required: 43
+  registered: 12
+  planned: 43
+  executed: 12
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+  window_local_required_registered_executed: 2/2/2
+  window_local_digest: ea7e02bc33cc8ad7d247c60e5d300a3a83ac02814866ca2c97bbfc4fa3ead715
+  executed_set_after_npm_test_digest: c433674b9c25f667483ff9b5024bc6c8a08fad2fb02e0dd04318c9dc9194fae1
+limitations: |
+  Residual non-blocking: S2 remains AWAITING_PARENT_REVIEW after parent A5 READY (same class as UA-W1/UA-W2/UA-W3 S2 residual). test/.ua-executed.json is tracked at HEAD via owner commit d6121aa against DEC-UA-011's never-commit contract; prescribed npm test shows it as a modified tracked path (correct 12-ID content, file digest 3d7cdeea…); untracking is a later parent decision, not a UA-W4 defect. Concurrent recordExecuted writers can transiently empty that JSON during npm test; CASE-UA-W4-001/002 passed on every parent run. Window agent left A4 T1/T2 unchecked (S1 §8 PASS oracle listed P/V/H only); parent checked them on acceptance after independent T1/T2 verification. G4 heights are 900px for all four widths (S1 froze widths only). At 390px the form card is below the 900px crop; G4 is local_e2e not a CASE oracle (SUB-UA-001). Full required=executed equality remains UA-W15-V5.
+external_mutations: none
+```
+

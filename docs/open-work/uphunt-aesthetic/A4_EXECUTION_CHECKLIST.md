@@ -248,21 +248,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W4 lifecycle
 
-- [ ] UA-W4-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W4-P2 Required predecessor outputs exist and validate (UA-W3 header/auth). Evidence: ___
-- [ ] UA-W4-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W4-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W4-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W4-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W4-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W4-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W4-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W4-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W4-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W4-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W4-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W4-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W4-H6 Stop; do not assign or begin the successor.
+- [x] UA-W4-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: S3 EV-UA-W4-S-001 P1 (A5 cf8a54c7…; S1 7663766a…; A1/A3/A4 pins matched at dispatch)
+- [x] UA-W4-P2 Required predecessor outputs exist and validate (UA-W3 header/auth). Evidence: S1 §1 pins recomputed; EV-UA-W4-D-001 (section-intro 159096f3…, coverage f5137be4…, w3 test 635e2802…, landing-sections 914c61e5…)
+- [x] UA-W4-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: EV-UA-W4-D-001 (node v24.14.1; npm test script) + EV-UA-W4-I-001 G4 (/usr/bin/google-chrome used)
+- [x] UA-W4-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: S1 §3 (change-set digest e64ba5df…; protected A5/A6); EV-UA-W4-S-001 V-A preflight
+- [x] UA-W4-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: S3 EV-UA-W4-S-002 (V-B w4-only run from ABSENT json: 4/4 pass, exactly 4 IDs; V-C NCs 3/3 falsified) + EV-UA-W4-I-001 (G1 in-suite pass; G8 NCs 3/3)
+- [x] UA-W4-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: EV-UA-W4-I-001 G1 166 pass/0 fail; G2 13 physical lines = 10 parked diagnostics, zero owned-needle lines; G3 lint exit 0
+- [x] UA-W4-V3 Confirm this window introduced no new network/DB operations (operation count 0). Evidence: EV-UA-W4-I-001 G7 (imports node:test/assert/fs/url + coverage module only; suite behavior static-file reads)
+- [x] UA-W4-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: EV-UA-W4-I-001 G6 (forbidden-path negative search: 0 hits; root ACTIVE_EXECUTION_STATE.md untouched)
+- [x] UA-W4-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only. Evidence: S1 §7.3 bytes (2 tests, recordExecuted after assertions; digest 8008501d…); EV-UA-W4-S-002 V-B (4-ID executed set from ABSENT, digest 9be62b77…); window-local digest ea7e02bc…
+- [x] UA-W4-H1 Record changed files/symbols and migrations. Evidence: S3 EV-UA-W4-S-001/002 (globals.css 325a442b…→04df3d7e…, five-line retarget on .run-form-card rules; new test file 8008501d…; no migrations)
+- [x] UA-W4-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: S3 EV-UA-W4-S-001/002/I-001 command lists; zero skipped checks
+- [x] UA-W4-H3 Diff names ⊆ authorized_write_scope. Evidence: EV-UA-W4-I-001 G6 (implementation delta == {frontend/app/globals.css, frontend/test/uphunt-aesthetic-w4.test.ts} + runtime .ua-executed.json residue + authorized coordination artifacts/screenshots)
+- [x] UA-W4-H4 No successor-window task or prohibited action was started. Evidence: EV-UA-W4-I-001 G9 (no UA-W5 artifact; A5 current_window UA-W4; may_start_successor false)
+- [x] UA-W4-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: S3 EV-UA-W4-S-001/S-002/I-001; A6 EV-UA-W4-I-001; A5 current_status AWAITING_REVIEW
+- [x] UA-W4-H6 Stop; do not assign or begin the successor. Evidence: S2 next_subwindow STOP; UA-W4_HANDOFF.md; no UA-W5 work
 
 ### UA-W5 lifecycle
 
@@ -557,8 +557,8 @@ may_start_successor: false
 browser_evidence: true
 ```
 
-- [ ] UA-W4-T1 Do not change LandingHeroCopy strings. Tighten `.run-form-card` border to `1px solid var(--color-line)` and radius `var(--radius-panel)` if not already.
-- [ ] UA-W4-T2 Tests CASE-UA-W4-001 (page still imports LandingHeroCopy), CASE-UA-W4-002 (run-form-card radius/border tokens).
+- [x] UA-W4-T1 Do not change LandingHeroCopy strings. Tighten `.run-form-card` border to `1px solid var(--color-line)` and radius `var(--radius-panel)` if not already. Evidence: parent EV-UA-A-036 (globals.css 04df3d7e…, exactly four §6.2 hunks / numstat 5/5; page.tsx 3460751e…, run-form.tsx 72576044…, landing-sections 914c61e5… byte-identical; LandingHeroCopy/LandingProcess strings untouched)
+- [x] UA-W4-T2 Tests CASE-UA-W4-001 (page still imports LandingHeroCopy), CASE-UA-W4-002 (run-form-card radius/border tokens). Evidence: parent EV-UA-A-036 (w4 test 8008501d…; CASE-UA-W4-001/002; G1 166/166 including both cases; window-local ea7e02bc…)
 
 ---
 
