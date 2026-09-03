@@ -1,0 +1,141 @@
+{
+  "fixture": "real compiled production components via the design-fixture completed route",
+  "route": "/design-fixture?scenario=completed",
+  "widths": [
+    [
+      390,
+      900
+    ],
+    [
+      768,
+      900
+    ],
+    [
+      1280,
+      900
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "shots": [
+    {
+      "name": "completed",
+      "width": 390,
+      "height": 900,
+      "viewport": {
+        "width": 409,
+        "height": 944
+      },
+      "bodyOverflow": false,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "h02": {
+        "eyebrow": "02 · Attention",
+        "title": "Where this store already appears in search.",
+        "copy": "Visibility estimates, not private storefront analytics.",
+        "fontSize": "39px",
+        "titlePresent": true,
+        "copyPresent": true,
+        "eyebrowPresent": true,
+        "readable": true
+      },
+      "h03Present": true,
+      "h04Present": true,
+      "cruxPresent": true,
+      "cruxRowPresent": true
+    },
+    {
+      "name": "completed",
+      "width": 768,
+      "height": 900,
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "h02": {
+        "eyebrow": "02 · Attention",
+        "title": "Where this store already appears in search.",
+        "copy": "Visibility estimates, not private storefront analytics.",
+        "fontSize": "46px",
+        "titlePresent": true,
+        "copyPresent": true,
+        "eyebrowPresent": true,
+        "readable": true
+      },
+      "h03Present": true,
+      "h04Present": true,
+      "cruxPresent": true,
+      "cruxRowPresent": true
+    },
+    {
+      "name": "completed",
+      "width": 1280,
+      "height": 900,
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "h02": {
+        "eyebrow": "02 · Attention",
+        "title": "Where this store already appears in search.",
+        "copy": "Visibility estimates, not private storefront analytics.",
+        "fontSize": "57.6px",
+        "titlePresent": true,
+        "copyPresent": true,
+        "eyebrowPresent": true,
+        "readable": true
+      },
+      "h03Present": true,
+      "h04Present": true,
+      "cruxPresent": true,
+      "cruxRowPresent": true
+    },
+    {
+      "name": "completed",
+      "width": 1440,
+      "height": 900,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "h02": {
+        "eyebrow": "02 · Attention",
+        "title": "Where this store already appears in search.",
+        "copy": "Visibility estimates, not private storefront analytics.",
+        "fontSize": "59px",
+        "titlePresent": true,
+        "copyPresent": true,
+        "eyebrowPresent": true,
+        "readable": true
+      },
+      "h03Present": true,
+      "h04Present": true,
+      "cruxPresent": true,
+      "cruxRowPresent": true
+    }
+  ],
+  "assertions": {
+    "firstRowExpandedAllWidths": true,
+    "leadDetailsVisibleAllWidths": true,
+    "eyebrowPresent": true,
+    "titlePresent": true,
+    "copyPresent": true,
+    "headingReadable": true,
+    "h03Present": true,
+    "h04Present": true,
+    "cruxPresent": true,
+    "cruxRowPresent": true
+  },
+  "gap": "Protected run routes require Neon auth, so G4 renders the real compiled ResultsTableView (first row expanded) + LeadDetails against the real compiled globals.css on the frozen /design-fixture?scenario=completed route; the synthetic .example pre-hydration interception technique is used per the S1 §9 G4 note. Local_e2e evidence, not a CASE oracle (SUB-UA-001)."
+}

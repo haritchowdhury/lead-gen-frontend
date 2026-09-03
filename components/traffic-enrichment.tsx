@@ -5,6 +5,7 @@ import type {
 } from "../lib/api-types";
 import { safeExternalUrl } from "../lib/lead-presentation";
 import { TrafficMarketExplorer } from "./traffic-globe";
+import { SectionIntro } from "./section-intro";
 
 type MetricRating = "good" | "needs_improvement" | "poor";
 type CoreWebVitalsAssessment = MetricRating | "incomplete";
@@ -306,12 +307,13 @@ export function TrafficEnrichmentDetails({ enrichment }: { enrichment: TrafficEn
   if (!enrichment) return null;
   const providerCount = Number(Boolean(enrichment.dataforseo)) + Number(Boolean(enrichment.crux));
   return (
-    <section className="detail-section detail-section-emphasis traffic-details" aria-labelledby="traffic-enrichment-title">
+    <section className="detail-section detail-section-emphasis traffic-details">
       <header className="traffic-details-header">
-        <div>
-          <h3 id="traffic-enrichment-title"><span>02</span>Traffic and site experience</h3>
-          <p>Lead-level search visibility and observed site experience, reported by source.</p>
-        </div>
+        <SectionIntro
+          eyebrow="02 · Attention"
+          title="Where this store already appears in search."
+          copy="Visibility estimates, not private storefront analytics."
+        />
         <span className="traffic-source-count">{providerCount} {providerCount === 1 ? "provider" : "providers"}</span>
       </header>
       <div className="traffic-source-grid">

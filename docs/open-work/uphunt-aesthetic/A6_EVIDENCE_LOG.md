@@ -2275,3 +2275,150 @@ coverage_counts:
 limitations: G4 is local_e2e not a CASE oracle (SUB-UA-001). g4-checks.json records 03/04 DEC-UA-004 strings, storeFitDt 12px, storeFitDd 14px, and 3-column grid at all widths; completed-*.png binaries are not present under UA-W10/ (same class as the current UA-W9 evidence dir, which retains only g4-checks.json + g4-browser-server.log). G1 195/192 vs expected 193/190 is +2 passing predecessor tests; behavioral oracle held. DEC-UA-011 one identical npm test rerun is documented. test/.ua-executed.json is tracked 29-ID runtime residue (never commit). Full required=executed equality remains UA-W15-V5. UA-W11 not assigned.
 external_mutations: none
 ```
+
+```yaml
+evidence_id: EV-UA-A-061
+timestamp: 2026-09-03T21:45:00+05:30
+phase: assignment
+claim: Requester assigned UA-W11 as ASG-UA-W11-01 to UA-W11-WINDOW-AGENT for decomposition dispatch. Predecessor UA-W10 is parent-accepted (EV-UA-A-060). A1/A3/A4 hashes still matched prior A5 pins. A4 4db78761… is the post-UA-W10-checkbox pin already recorded in A5. No A4 write-scope expansion required (lead-details.tsx remains in-scope but zero-edit; TrafficEnrichmentDetails call site unchanged). w11 test ABSENT. Successor UA-W12 remains reserved for parent. may_start_successor remains false. Root ACTIVE_EXECUTION_STATE.md was not mutated. Parent did not dispatch the window agent.
+environment: local workspace /home/harit/Email Scrapper
+revision: A5 state_version 25 digest computed at assignment write
+operation: sha256sum of A1 A3 vs prior A5 pins; sha256sum traffic-enrichment globals lead-details ldc-test W10 product files section-intro traffic-globe fixtures w2-w10 tests; test ! -f uphunt-aesthetic-w11.test.ts; simulate two JSX + four CSS hunks + w11 test CREATE; A5 assignment fields written
+observed_result: |
+  A1 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827 MATCH;
+  A3 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3 MATCH;
+  A4 4db7876134838f33cb7fadae2ca596b2de28d428cac473bd7515bfebb90f550a MATCH;
+  current_window UA-W11; authorized_windows [UA-W11]; current_status IN_PROGRESS;
+  traffic-enrichment 833cb54c4b06034aa6e11a044d329c04710856e25e0ea189cc9a74655623be08;
+  globals 4945bb591d78593fea95d1470b0db64445bd14d498e35f3dec8fb88a588ae872;
+  lead-details 9431f71bf7d85de0b81752dfff79206f13d3e0747405aaf25f5ee58c3b6a3727;
+  lead-details-component.test.ts ca1d02c3c685bd2d0aa95fb93111d405c20e616424d4cc60aaffc172e8b9ee96;
+  w10 test 0a2b34e632c450ff97bcf95d6be34ec4768e848b49dc250a3f9cb6419875d724;
+  w11 test ABSENT; traffic-globe 7d9567b5c8743b9257e916cf033f39ec7b33529fbec003ca02e58ba66fb74a8b
+parent_frozen_mechanical_consequences: |
+  These close otherwise-open S1 choices; they are uniquely determined by DEC-UA-004, DEC-UA-015, DEC-UA-016, UA-W11-T1/T2, and CASE-UA-W11-001..002:
+  1. FILE sub-window IDs start at UA-W11-S001. A zero-edit in-scope file gets no FILE sub-window and does not consume an S-number. Do not retire S001/S002 unused. Sequential DAG, no parallel waves: S001 frontend/components/traffic-enrichment.tsx → S002 frontend/app/globals.css → S003 frontend/test/uphunt-aesthetic-w11.test.ts → UA-W11-I001.
+  2. Zero-edit preserved (G6 pins, no FILE leaf): frontend/components/section-intro.tsx 159096f313aa6c8d1be343f1db72511529fb4795c79be3123da9c3c3a0c38175; frontend/components/traffic-globe.tsx 7d9567b5c8743b9257e916cf033f39ec7b33529fbec003ca02e58ba66fb74a8b; frontend/components/lead-details.tsx 9431f71bf7d85de0b81752dfff79206f13d3e0747405aaf25f5ee58c3b6a3727 (TrafficEnrichmentDetails call site only; byte-identical); frontend/components/results-table.tsx a4e1472fdc4129d20a61faa893d07694dba1528336cfabd257219833cd7d0b4f; frontend/components/results-filters.tsx 0ab118e47349efb0c71e4facaf9bdd2844d8ea564f3c1fbf59afbc7e6e22b881; frontend/components/cumulative-traffic.tsx 7d37a3ae2eb8e423a539f85330688bcc863a4e028525bce46222ac1cbbdb45aa; frontend/app/leads/page.tsx 21a1779908a58267cd16749c2b5b86ec2e8105ea71a566fbce361aba392bea4b; frontend/components/leads/live-leads-workspace.tsx a646f6574cb325ac1ec324c2d26e6ba343a8d87c79b099b09e5ab0b684984c36; frontend/components/run-workspace.tsx 643c3568bc7fd483cb15fcad3dfd545e74d179f6a495469b92796660c1b57cf3; frontend/test/uphunt-aesthetic-w8.test.ts cab15f7fd3e65528d8ded657da2f8092f01107026ca4c80b48528a8e9200b8b0; frontend/test/uphunt-aesthetic-w9.test.ts baee1b2e44282ff99840f35666ab3b8d68d323589f5a376429d851c44ebe1a31; frontend/test/uphunt-aesthetic-w10.test.ts 0a2b34e632c450ff97bcf95d6be34ec4768e848b49dc250a3f9cb6419875d724; frontend/test/lead-details-component.test.ts ca1d02c3c685bd2d0aa95fb93111d405c20e616424d4cc60aaffc172e8b9ee96; frontend/components/landing-sections.tsx 914c61e593dca0863e49603cba7a38c783197157c6da89a8eaf61eb3ef69fe15; frontend/components/query-editor.tsx 92efe1f7319111f58a44e823f33a61bf705a654dbaa7539759d51bd71ece886c; frontend/components/run-progress.tsx 15d840bfdb81892a5755dbe4f26d8ac9793fd2e02857568f7d9576a748518e38; frontend/app/runs/[runId]/page.tsx 719e05ea0eec73fe948f0c41a9c56c970d6db61cfff0c990e59666136a069072; frontend/test/fixtures.ts 9ea26525ed983b71063aad9e84ea492f2c85d0c95f80ba238b0a48352836c4b4; frontend/test/uphunt-aesthetic-coverage.test.ts f5137be495e260a1bf07f141247ca02c7a1c975fbaa526ae5b3b80828600c6d1; frontend/test/uphunt-aesthetic-w2.test.ts f65ba0c50c78ef983496d0a37af1a1a6a1234332c48a5290bc344c9a5e68b78c; frontend/test/uphunt-aesthetic-w3.test.ts 635e28022e14646c26407dd41c77c55a4c7fb3b34c6aa29d2f6b63eaaee69b13; frontend/test/uphunt-aesthetic-w4.test.ts 8008501d5da4b946bd07ea05260400198c306e1cfb2741fec7ed3ff44a3832a7; frontend/test/uphunt-aesthetic-w5.test.ts ee6425e9be6ca190d27981b39656dc1692f5cc2b0c049795a59f28d418cffe06; frontend/test/uphunt-aesthetic-w6.test.ts f78b8da2fad5084777ec727d25ad21d4d81a08994eaa5c406643821d8deaec1a; frontend/test/uphunt-aesthetic-w7.test.ts 92201c35dbf51758c911d11dbe312df611fd1cc2f9a27c086ff39304c98cb842. W10 store-fit/discovery symbols in lead-details.tsx and W10-owned globals selectors for store-evidence/discovery remain byte-identical. Do not edit coreWebVitalRating, coreWebVitalsAssessment, DataForSeoDetails, CruxDetails, Attribution, TrafficMarketExplorer usage, or traffic-globe.tsx.
+  3. T1 JSX only, two unique hunks, starting traffic-enrichment.tsx 833cb54c4b06034aa6e11a044d329c04710856e25e0ea189cc9a74655623be08. Ending digest 1a90378887408f16fcb15c733b39629a4c7b034f6132e3b736bc104bd0d230d1. Numstat 7 5. Hunk 1 insert `import { SectionIntro } from "./section-intro";` immediately after `import { TrafficMarketExplorer } from "./traffic-globe";`. Hunk 2 replace the unique TrafficEnrichmentDetails header block that begins `<section className="detail-section detail-section-emphasis traffic-details" aria-labelledby="traffic-enrichment-title">` and the inner `<div>` with `<h3 id="traffic-enrichment-title">…Traffic and site experience</h3>` with a `<section className="detail-section detail-section-emphasis traffic-details">` whose `<header className="traffic-details-header">` contains `<SectionIntro eyebrow="02 · Attention" title="Where this store already appears in search." copy="Visibility estimates, not private storefront analytics." />` followed by the unchanged `traffic-source-count` span. Remove `aria-labelledby` (SectionIntro h2 has no frozen id). Preserve `traffic-details-header`, `traffic-source-grid`, provider blocks, globe wiring, and rating functions byte-identical below the header.
+  4. T1 CSS only, four unique hunks on owned selectors (.traffic-details G11 guard, .traffic-details-header marketing-heading margin, .traffic-source-crux, .crux-detail-row, .traffic-scope), no new selectors outside shared_file_scope. Starting globals.css 4945bb591d78593fea95d1470b0db64445bd14d498e35f3dec8fb88a588ae872. Ending digest 4cf7a1fccba5f3b455b8c1a63e3d2aff4dc8a4f6a9dedd5731b3ea754aa87d95. Numstat 19 11. Hunk 1 replace the unique G11 cascade guard block that begins `.lead-details .traffic-details h3,` and ends `.lead-details .traffic-details dd { font-size: 11px; }` with the block that retargets section headlines to `.lead-details .traffic-details > .traffic-details-header > .marketing-heading,` and sets owned label/control font sizes to 12px and owned `dd` font sizes to 14px (exact replacement text frozen in parent simulation). Hunk 2 after `.lead-details .discovery-details-section > .marketing-heading { margin-bottom: 0.125rem; }` insert exactly `.lead-details .traffic-details > .traffic-details-header > .marketing-heading {` LF `  margin-bottom: 0.125rem;` LF `}`. Hunk 3 replace `.traffic-source-crux .traffic-scope-header h5` / `.traffic-state` / `.traffic-assessment` microtype rules with 12px equivalents (exact replacement text frozen in parent simulation). Hunk 4 replace `.traffic-source-crux h6`, combined `.fact-grid dt/dd/.vital-rating`, and `.traffic-observation` microtype rules with 12px labels / 14px values (exact replacement text frozen in parent simulation). Do not edit W10-owned store-evidence/discovery selectors or W9-owned `.lead-overview` selectors.
+  5. CREATE test/uphunt-aesthetic-w11.test.ts with exactly two tests CASE-UA-W11-001/002. Import recordExecuted from `./uphunt-aesthetic-coverage.test.ts` the same way as the w10 test file. Duplicate the compiledComponents helper from lead-details-component.test.ts (same tsc `files` list including results-table.tsx; do not otherwise edit that helper). 001: denseLead LeadDetails render contains `02 · Attention`, `Where this store already appears in search.`, and `Visibility estimates, not private storefront analytics.`. 002: denseLead render still contains `traffic-source-crux` and `crux-detail-row` (fixture-backed CrUX/traffic source markup preserved). Parent fence digest dcf22691b5e588dee95caf3af39e233fe388d666808592f7ca3bf273e2830f0c (§7.3 non-behavioral formatting freedom applies; S1 must freeze deterministic bytes).
+  6. Last FILE leaf (S003) from ABSENT `test/.ua-executed.json` expects exactly 4 IDs (2 × W1 re-executions + CASE-UA-W11-001/002), set digest f12d789daac333d2e5accefc65e402a8e047f5a6b978d415bf31805c70f3fcf6. The 31-ID set {2 × W1} ∪ {4 × W2} ∪ {4 × W3} ∪ {2 × W4} ∪ {2 × W5} ∪ {3 × W6} ∪ {2 × W7} ∪ {3 × W8} ∪ {4 × W9} ∪ {3 × W10} ∪ {2 × W11} is asserted only at I001 G5 after `npm test`, digest aa120e83587fd9792542c07dc606b0dcc50f66e8f8c45d3857ec8a0c162c671f. Do not require W2–W10 IDs at the w11-only test command. `test/.ua-executed.json` is TRACKED at HEAD (29-ID content d8ad50ab2fdc5294ee7c5f7048036268cb64ff15e35c1e42431cf85924bb184b, set digest b9c2a4676e1447f07a454f236ae0a26a2a7f0f28bfbb8ddad6ff6ee149b36d22); never commit it.
+  7. I001 G1 is DEC-UA-016: from `frontend/`, `npm test`. Expected 197 tests / 194 pass / 3 fail (195 predecessor + 2 W11 cases). PASS iff allocated UA CASE tests pass and every failing title, if any, is exactly the three named heading-oracle titles; process exit 1 is expected and is not G1 FAIL when that holds. G2 DEC-UA-014 needles are traffic-enrichment.tsx, uphunt-aesthetic-w11.test.ts (globals.css is not typechecked). G4 is frozen as route {/design-fixture?scenario=completed} at 390/768/1280/1440 only (4 screenshots, height 900), with the first results row expanded so LeadDetails is visible and section 02 headline `Where this store already appears in search.` is readable alongside existing 03/04 sections. Local next may set `STORESIGNAL_DESIGN_FIXTURES=1`. Do not screenshot live `/runs/[runId]` (it polls). If the completed fixture cannot render LeadDetails without the same G-R1-style pre-hydration synthetic `.example` interception used on UA-W7/W8/W9/W10, that technique is permitted (no live run, no credentials). Window-local case set digest 21989bfcf384dcba25aefdc3821ee54e1fb3305538facc348a61e7b41a12460f. Planned-file-set digest 26115fd2ed6dbcccccb4d798fe68423042a1eba0795ba2e37f6cbf8c887dff5b.
+  8. Do not start UA-W12. Do not edit LeadOverview/StoreEvidence/DiscoveryDetails bodies, coreWebVitalRating/coreWebVitalsAssessment, traffic-globe.tsx, section-intro.tsx, landing-sections.tsx, W8/W9/W10 product or test files, lead-details-component.test.ts, REQUIRED_CASE_IDS, parked files, or design-system-shell.test.ts. After parent accepts this decomposition, identity UA-W11-WINDOW-AGENT executes then personally reviews each FILE leaf in the same turn, then itself assigns the next S-number, then personally runs I001, then hands off (DEC-UA-015). This assignment does not execute S001. Do not write into S1 §0 any of: "parent issues the next leaf", "stop at AWAITING_WINDOW_REVIEW before S00n", "stop for parent after this leaf".
+decisive_assertion: UA-W11 may now be decomposed; FILE leaves remain unassigned until parent accepts the decomposition; UA-W12 is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5
+negative_control: starting UA-W12, editing coreWebVitalRating/coreWebVitalsAssessment, editing traffic-globe.tsx, or editing REQUIRED_CASE_IDS under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 29
+  planned: 43
+  executed: 29
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: FILE leaves remain unassigned until parent accepts the UA-W11 decomposition. browser_evidence true is an I001 obligation after implementation, not a decomposition write. Parent paste after a later decomposition accept is one paste for S001 through I001 (DEC-UA-015), not this paste. A5 must stay byte-identical until I001 handoff so S001 P1 holds.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-062
+timestamp: 2026-09-03T22:20:00+05:30
+phase: review
+claim: Parent accepted the UA-W11 decomposition under ASG-UA-W11-01 after one correction cycle (EV-UA-W11-RC-001 fixed S1 §7.2 H4 OLD fence). Independent recomputation matched S1 3e835f72992a5ebc9c73cfcf2099e66665f0176d3034113150ae4b5055e2fe34, submitted S2 updated to READY, submitted S3 0e226e2e63f747ad2761dd8465e7b1c5347eb6c14365bb14b7af22c5dc2ff19d. All two §6.2 JSX and four §7.2 CSS OLD fences count 1 in their starting files (H4 was 0 before correction; now 1). Ending digests traffic-enrichment.tsx 1a90378887408f16fcb15c733b39629a4c7b034f6132e3b736bc104bd0d230d1, globals.css 4cf7a1fccba5f3b455b8c1a63e3d2aff4dc8a4f6a9dedd5731b3ea754aa87d95. Numstat 7/5, 19/11 MATCH. §8.3 ts fence digest 40e3178898e7216d05c67f9fb14a3fd184791c7b9a9788298eb8f9838eed5c50 (parent reference dcf22691… reconciled in S1 §0 per §7.3). Authoring checklist 47/0. DAG S001→S002→S003→I001 with S001 as the real first leaf. A1/A3/A4 pins and A5 9e94fe1b… MATCH. Planned-set 26115fd2…, window-local 21989bfc…, 4-ID f12d789d…, 31-ID aa120e83… all MATCH. A5 unchanged. UA-W12 not authorized. Nothing committed.
+environment: local
+revision: A5 state_version 25 IN_PROGRESS UA-W11 ASG-UA-W11-01 digest 9e94fe1bec6065c62d833157595079b1fc411a0ca81525b2b9967be49181e685; S2 READY (digest computed at accept)
+operation: |
+  sha256sum S1 S2 S3 A1 A3 A4 A5 traffic-enrichment globals zero-edit predecessors w11 absent;
+  extract §6.2/§7.2 fences and count/apply in starting files;
+  §8.3 fence digest; §12 checkbox count; write S2 READY for continuous S001→I001
+observed_result: |
+  all listed pins MATCH; all fenced replacements PASS uniqueness and ending digest;
+  S2 decomposition_status READY; current_assignment_id ASG-UA-W11-01-S001;
+  assigned_agent UA-W11-WINDOW-AGENT; authorized_write_file frontend/components/traffic-enrichment.tsx;
+  next_subwindow UA-W11-S002; A5 digest unchanged
+decisive_assertion: APPROVED and executable; UA-W11-WINDOW-AGENT owns S001 through I001 continuously (DEC-UA-015); UA-W12 remains unauthorized
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W11_SUBWINDOW_STATE_S2.yaml
+negative_control: stopping for parent after S001, launching UA-W12, or editing coreWebVitalRating/traffic-globe under this S2 would violate DEC-UA-015 and A5 prohibited_actions
+coverage_counts:
+  required: 43
+  registered: 29
+  planned: 43
+  executed: 29
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S001 V-A porcelain must be read as the two §3 protected ` M` paths plus the three untracked UA-W11 coordination artifacts (S1/S2/S3), same class as W6–W10. Parent A6 now also contains EV-UA-A-062. S003 authoritative test digest is 40e31788… (§7.3); parent sample dcf22691… in EV-UA-A-061 consequence 5 is historical reference only.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-063
+timestamp: 2026-09-03T22:25:00+05:30
+phase: assignment
+claim: Requester authorized UA-W11 leaf execution dispatch to UA-W11-WINDOW-AGENT under ASG-UA-W11-01 / ASG-UA-W11-01-S001. Decomposition parent-accepted (EV-UA-A-062). S2 decomposition_status READY digest 65d55f9901596b39b7274c9f387a28fd16e5aeff21ca8e9f07b0f30ffcb24fbd assigns continuous S001→S003→I001 (DEC-UA-015). Starting product pins unchanged traffic-enrichment 833cb54c…, globals 4945bb59…, w11 test ABSENT. A5 9e94fe1b… byte-identical IN_PROGRESS. Successor UA-W12 reserved. may_start_successor false. Root ACTIVE_EXECUTION_STATE.md not mutated. Parent did not dispatch the window agent.
+environment: local workspace /home/harit/Email Scrapper
+revision: A5 state_version 25 digest 9e94fe1bec6065c62d833157595079b1fc411a0ca81525b2b9967be49181e685; S2 READY ASG-UA-W11-01-S001
+operation: sha256sum S1 S2 S3 A5 product starting files; test ! -f uphunt-aesthetic-w11.test.ts; verify S2 decomposition_status READY and assigned_agent UA-W11-WINDOW-AGENT
+observed_result: |
+  S1 3e835f72992a5ebc9c73cfcf2099e66665f0176d3034113150ae4b5055e2fe34 MATCH;
+  S2 65d55f9901596b39b7274c9f387a28fd16e5aeff21ca8e9f07b0f30ffcb24fbd READY;
+  S3 7048ba8c5ad3f52a1d5e8600b86558274ac8357c50eff405a9f997cd71a97580;
+  A5 9e94fe1b… IN_PROGRESS UA-W11 ASG-UA-W11-01;
+  traffic-enrichment 833cb54c…; globals 4945bb59…; w11 ABSENT
+decisive_assertion: UA-W11-WINDOW-AGENT may execute S001 through I001 in one continuous turn; UA-W12 not authorized; parent does not intervene between leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A6 only (execution dispatch record)
+negative_control: dispatching UA-W12 or editing traffic-globe/coreWebVitalRating before I001 handoff would violate A5/S2 prohibited_actions
+coverage_counts:
+  required: 43
+  registered: 29
+  planned: 43
+  executed: 29
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: One paste covers S001→I001 per DEC-UA-015. A5 must stay byte-identical until I001 handoff. test/.ua-executed.json never committed.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-064
+timestamp: 2026-09-03T22:55:00+05:30
+phase: review
+claim: Parent independently accepted UA-W11. Product files traffic-enrichment.tsx 1a90378887408f16fcb15c733b39629a4c7b034f6132e3b736bc104bd0d230d1 (numstat 7/5; DEC-UA-004 02 SectionIntro strings; aria-labelledby removed; coreWebVitalRating/CruxDetails/Attribution preserved), globals.css 4cf7a1fccba5f3b455b8c1a63e3d2aff4dc8a4f6a9dedd5731b3ea754aa87d95 (numstat 18/10 git; 19/11 difflib; G11 marketing-heading retarget; crux 12px/14px floor), uphunt-aesthetic-w11.test.ts 40e3178898e7216d05c67f9fb14a3fd184791c7b9a9788298eb8f9838eed5c50 CREATE. Zero-edit lead-details 9431f71b…, ldc-test ca1d02c3…, w10 0a2b34e6…, traffic-globe 7d9567b5…, section-intro 159096f3…, w9/w8/fixtures/w2-w7 pins MATCH. S1 3e835f72…. A1/A3 MATCH. npm test under DEC-UA-016 199/196/3 with exactly the three heading-oracle titles (parent run; CASE-UA-W11-001/002 pass). tsc zero owned needles. lint exit 0. G4 4/4 PNGs + g4-checks.json assert 02/03/04 headlines, crux row, readable 02 title at 1280 (57.6px). G5 31-ID aa120e83…. G8 N1–N5 claimed in S3. G9 no w12 artifact. A4 UA-W11 T1/T2 and P/V/H checked on parent accept. ASG-UA-W11-01 closed. UA-W12 not assigned. Root ACTIVE_EXECUTION_STATE.md untouched. Nothing committed.
+environment: local frontend node
+revision: A5 state_version 26 READY accepted_through UA-W11 digest computed at accept; A4 post-checkbox 1edc1bc7…; S3 4ed6458f…; S2 65d55f99…; HANDOFF present
+operation: |
+  sha256sum three W11 files zero-edit predecessors S1 A1 A3 A4 A5 handoff;
+  g4-checks.json assertions; git diff --numstat; npm test; npx tsc; npm run lint;
+  31-ID digest; check A4 P/V/H/T; write A5 READY
+observed_result: |
+  all product pins MATCH; G1 PASS DEC-UA-016 199/196/3 exit 1;
+  G2 PASS; G3 PASS; G4 checks PASS (4 PNGs + json);
+  G5 MATCH aa120e83…; G9 PASS;
+  A5 current_status READY; accepted_through UA-W11; assigned_agent UNASSIGNED
+decisive_assertion: ACCEPTED; UA-W11 complete; UA-W12 remains unassigned (successor_reserved_for parent; may_start_successor false; DEC-UA-015)
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: frontend/components/traffic-enrichment.tsx; frontend/app/globals.css; frontend/test/uphunt-aesthetic-w11.test.ts; UA-W11_HANDOFF.md; S3 EV-UA-W11-I-001; review-evidence/uphunt-aesthetic/UA-W11/g4-checks.json; review-evidence/uphunt-aesthetic/UA-W11/completed-*.png
+negative_control: a diagnostic naming uphunt-aesthetic-w12.test.ts or editing coreWebVitalRating would have failed G9/G6; restoring Traffic and site experience would fail CASE-UA-W11-001
+coverage_counts:
+  required: 43
+  registered: 31
+  planned: 43
+  executed: 31
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: G4 is local_e2e not a CASE oracle (SUB-UA-001). G1 199/196 vs expected 197/194 is +2 passing predecessor tests from per-file coverage-module re-execution; behavioral oracle held. S002 git numstat 18/10 vs frozen 19/11 is non-blocking (content digest matches). test/.ua-executed.json is tracked 31-ID runtime residue (never commit). Full required=executed equality remains UA-W15-V5. UA-W12 not assigned.
+external_mutations: none
+```

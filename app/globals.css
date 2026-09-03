@@ -6882,7 +6882,7 @@ button {
 }
 
 /* G11 cascade guard: individual traffic stays legible inside the legacy table canvas. */
-.lead-details .traffic-details h3,
+.lead-details .traffic-details > .traffic-details-header > .marketing-heading,
 .lead-details .traffic-details h4,
 .lead-details .traffic-details h5,
 .lead-details .traffic-details h6,
@@ -6898,9 +6898,9 @@ button {
 .lead-details .traffic-details .traffic-state,
 .lead-details .traffic-details .traffic-attribution li,
 .lead-details .traffic-details .traffic-attribution li small,
-.lead-details .traffic-details .traffic-attribution-links a { font-size: 10px; }
+.lead-details .traffic-details .traffic-attribution-links a { font-size: 12px; }
 
-.lead-details .traffic-details dd { font-size: 11px; }
+.lead-details .traffic-details dd { font-size: 14px; }
 
 @media (max-width: 720px) {
   .lead-details .traffic-details .traffic-market-explorer {
@@ -7561,6 +7561,10 @@ button {
   margin-bottom: 0.125rem;
 }
 
+.lead-details .traffic-details > .traffic-details-header > .marketing-heading {
+  margin-bottom: 0.125rem;
+}
+
 .lead-overview-grid {
   grid-template-columns: minmax(0, 1fr);
   gap: 0.25rem;
@@ -7909,19 +7913,19 @@ button {
 }
 
 .traffic-source-crux .traffic-scope-header h5 {
-  font-size: 0.5625rem;
+  font-size: 12px;
 }
 
 .traffic-source-crux .traffic-scope-header .traffic-state {
   padding: 0.125rem 0.3125rem;
-  font-size: 0.4375rem;
+  font-size: 12px;
 }
 
 .traffic-source-crux .traffic-assessment {
   min-height: 1.375rem;
   margin-bottom: 0.25rem;
   padding: 0.1875rem 0.375rem;
-  font-size: 0.5rem;
+  font-size: 12px;
 }
 
 .traffic-source-crux .traffic-metric-grid,
@@ -7933,7 +7937,7 @@ button {
 .traffic-source-crux h6 {
   display: inline-block;
   margin: 0.125rem 0;
-  font-size: 0.4375rem;
+  font-size: 12px;
 }
 
 .traffic-source-crux .fact-grid > div {
@@ -7941,9 +7945,13 @@ button {
 }
 
 .traffic-source-crux .fact-grid dt,
-.traffic-source-crux .fact-grid dd,
 .traffic-source-crux .vital-rating {
-  font-size: 0.4375rem;
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+.traffic-source-crux .fact-grid dd {
+  font-size: 14px;
   line-height: 1.15;
 }
 
@@ -7951,7 +7959,7 @@ button {
   gap: 0.125rem 0.625rem;
   margin-top: 0.1875rem;
   padding-top: 0.1875rem;
-  font-size: 0.4375rem;
+  font-size: 12px;
 }
 
 .traffic-details > .traffic-attribution {

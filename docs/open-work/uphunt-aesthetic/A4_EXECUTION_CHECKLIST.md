@@ -374,21 +374,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W11 lifecycle
 
-- [ ] UA-W11-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W11-P2 Required predecessor outputs exist and validate (UA-W10 store-fit). Evidence: ___
-- [ ] UA-W11-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W11-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W11-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W11-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W11-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W11-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W11-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W11-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W11-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W11-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W11-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W11-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W11-H6 Stop; do not assign or begin the successor.
+- [x] UA-W11-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: S3 EV-UA-W11-I-001 + EV-UA-W11-X-001 (ASG-UA-W11-01; A1 57fa49c7…, A3 094bc8bf…, A4 4db78761…, standard cda35201…, subwindow 842c2955… all MATCH; A5 state_version 25)
+- [x] UA-W11-P2 Required predecessor outputs exist and validate (UA-W10 store-fit). Evidence: S3 EV-UA-W11-I-001 G6 (lead-details 9431f71b…, w10 0a2b34e6… present & MATCH)
+- [x] UA-W11-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: S3 EV-UA-W11-I-001 G2/G4 (node v24.14.1; test script present; Chrome 146.0.7680.164 present; browser_evidence true → G4 executed)
+- [x] UA-W11-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: S3 EV-UA-W11-I-001 + A5 (two protected M + three untracked coordination artifacts; two M planned paths added by window)
+- [x] UA-W11-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: S3 EV-UA-W11-I-001 G1 G4 G8 (CASE-UA-W11-001/002 pass; N1–N5 falsified; section 02 renders)
+- [x] UA-W11-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: S3 EV-UA-W11-I-001 G1/G2/G3 (npm test 199/196/3, 3 failures all allowed heading-oracle; tsc 0 owned needles; lint exit 0)
+- [x] UA-W11-V3 Confirm this window introduced no new network/DB operations (operation count 0). Evidence: S3 EV-UA-W11-I-001 G7
+- [x] UA-W11-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: S3 EV-UA-W11-I-001 G6 (forbidden-path search NONE)
+- [x] UA-W11-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only. Evidence: S3 EV-UA-W11-I-001 G1 G5 (W11-001/002 each call recordExecuted; 31-ID set digest aa120e83…; full-set deferred)
+- [x] UA-W11-H1 Record changed files/symbols and migrations. Evidence: S3 EV-UA-W11-I-001 + UA-W11_HANDOFF (§changed-file set: traffic-enrichment.tsx, globals.css, w11.test.ts; no migrations)
+- [x] UA-W11-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: S3 EV-UA-W11-I-001 G1–G9 + UA-W11_HANDOFF (§commands and outcomes; recorded variances S002 numstat 18/10, w11-only tests 6)
+- [x] UA-W11-H3 Diff names ⊆ authorized_write_scope. Evidence: S3 EV-UA-W11-I-001 G6 (delta == exactly the three planned files)
+- [x] UA-W11-H4 No successor-window task or prohibited action was started. Evidence: S3 EV-UA-W11-I-001 G9 (no UA-W12; may_start_successor false honored)
+- [x] UA-W11-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: S3 EV-UA-W11-I-001 (WINDOW-AGENT-INTEGRATION-PASS appended; A5 AWAITING_REVIEW set)
+- [x] UA-W11-H6 Stop; do not assign or begin the successor. Evidence: S3 EV-UA-W11-I-001 G9 (A5.current_window UV-W11; next UA-W12 frozen; stop)
 
 ### UA-W12 lifecycle
 
@@ -726,8 +726,8 @@ parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
-- [ ] UA-W11-T1 Wrap TrafficEnrichmentDetails with SectionIntro 02 strings. Do not change rating functions.
-- [ ] UA-W11-T2 Tests CASE-UA-W11-001 CASE-UA-W11-002.
+- [x] UA-W11-T1 Wrap TrafficEnrichmentDetails with SectionIntro 02 strings. Do not change rating functions. Evidence: S3 EV-UA-W11-I-001 (S001 §6.2 H1/H2; rating functions unchanged; ending 1a903788…)
+- [x] UA-W11-T2 Tests CASE-UA-W11-001 CASE-UA-W11-002. Evidence: S3 EV-UA-W11-I-001 G1 (CASE-UA-W11-001/002 pass)
 
 ---
 

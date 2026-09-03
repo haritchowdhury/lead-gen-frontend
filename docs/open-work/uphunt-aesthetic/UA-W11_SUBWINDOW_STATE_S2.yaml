@@ -1,0 +1,108 @@
+# UA-W11 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W11_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W11_SUBWINDOW_EVIDENCE_S3.md`.
+
+Parent accepted the UA-W11 decomposition (`EV-UA-A-062`). Identity
+`UA-W11-WINDOW-AGENT` owns the frozen DAG without parent checkpoints:
+execute then personally review each FILE leaf in the same turn, then
+immediately assign and start the next S-number, then personally run I001,
+then handoff (`DEC-UA-015`). Communicate upward only on I001 PASS, a genuine
+blocker, or UA-W12 (never). Do not wait for the parent between S001, S002,
+S003, or I001. `AWAITING_WINDOW_REVIEW` is the FILE H3 certificate field, not a
+parent stop. `A5` remains byte-identical `9e94fe1b…` until the authorized I001
+handoff action.
+
+```yaml
+state_version: 2
+parent_window_id: UA-W11
+parent_assignment_id: ASG-UA-W11-01
+window_agent_identity: UA-W11-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827
+parent_decision_revision: 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3
+parent_checklist_revision: 4db7876134838f33cb7fadae2ca596b2de28d428cac473bd7515bfebb90f550a
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W11_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: 3e835f72992a5ebc9c73cfcf2099e66665f0176d3034113150ae4b5055e2fe34
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W11_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: UA-W11-S001
+current_assignment_id: ASG-UA-W11-01-S001
+assigned_agent: UA-W11-WINDOW-AGENT
+subwindow_type: FILE
+authorized_write_file: frontend/components/traffic-enrichment.tsx
+authorized_read_scope:
+  - frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md (§UA-W11)
+  - frontend/docs/open-work/uphunt-aesthetic/UA-W11_SUBWINDOW_DECOMPOSITION_S1.md (§0 and §6)
+  - frontend/components/section-intro.tsx (pinned 159096f3…)
+  - frontend/components/traffic-globe.tsx (pinned 7d9567b5…)
+  - frontend/components/traffic-enrichment.tsx (own file)
+authorized_actions:
+  - execute_then_personally_review_UA-W11-S001
+  - assign_and_execute_then_personally_review_UA-W11-S002
+  - assign_and_execute_then_personally_review_UA-W11-S003
+  - execute_UA-W11-I001
+  - append_S3_evidence
+  - check_UA-W11_boxes
+  - append_A6_evidence
+  - write_UA-W11_HANDOFF
+  - set_A5_AWAITING_REVIEW_on_handoff
+prohibited_actions:
+  - stop_for_parent_between_FILE_leaves
+  - treat_AWAITING_WINDOW_REVIEW_as_parent_stop
+  - start_UA-W12
+  - may_start_successor
+  - edit_A5_except_authorized_handoff_action_after_I001
+  - edit_LeadOverview_StoreEvidence_DiscoveryDetails_bodies
+  - edit_coreWebVitalRating_coreWebVitalsAssessment
+  - edit_DataForSeoDetails_CruxDetails_Attribution_bodies
+  - edit_TrafficMarketExplorer_usage_or_traffic_globe_tsx
+  - edit_section_intro
+  - edit_landing_sections
+  - edit_results_table_tsx
+  - edit_results_filters_tsx
+  - edit_cumulative_traffic_tsx
+  - edit_leads_page
+  - edit_live_leads_workspace
+  - edit_run_workspace
+  - edit_query_editor
+  - edit_run_progress
+  - edit_unowned_globals_css_selectors
+  - edit_W9_lead_overview_or_W10_store_evidence_discovery_selectors
+  - edit_REQUIRED_CASE_IDS
+  - edit_uphunt_aesthetic_coverage_test
+  - edit_uphunt_aesthetic_w2_w3_w4_w5_w6_w7_w8_w9_w10_test_files
+  - edit_lead_details_component_test
+  - edit_fixtures_ts
+  - edit_parked_SRC-UA-0092_test_files
+  - edit_design-system-shell_test
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: READY
+accepted_subwindows: []
+next_subwindow: UA-W11-S002
+blocker: null
+last_updated: 2026-09-03T22:20:00+05:30
+```
+
+Planned implementation set (three files, §4.7 digest
+`26115fd2ed6dbcccccb4d798fe68423042a1eba0795ba2e37f6cbf8c887dff5b`):
+frontend/components/traffic-enrichment.tsx → S001, frontend/app/globals.css → S002,
+frontend/test/uphunt-aesthetic-w11.test.ts → S003, then UA-W11-I001.
+`decomposition_revision` is the frozen S1 SHA-256
+`3e835f72992a5ebc9c73cfcf2099e66665f0176d3034113150ae4b5055e2fe34`.
