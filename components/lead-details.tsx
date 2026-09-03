@@ -310,7 +310,7 @@ function CategoryList({ categories }: { categories: CategoryIntent[] }) {
 
 function StoreEvidence({ lead }: { lead: Lead }) {
   return (
-    <DetailSection title="Category and store fit" order="03" className="store-evidence-section">
+    <DetailSection title="Whether this shop belongs in the market you asked for." order="03" className="store-evidence-section" eyebrow="03 · Fit" copy="Exact input, normalized category, and the store-fit evidence behind the call.">
       <dl className="fact-grid">
         <Fact label="Exact category input" value={lead.original_shop_type} />
         <Fact label="Normalized category" value={lead.shop_type} />
@@ -452,7 +452,7 @@ function DiscoveryDetails({ lead }: { lead: Lead }) {
   const hasDistinctGeneratedQuery =
     lead.generated_query && lead.generated_query !== primaryQuery;
   return (
-    <DetailSection title="Discovery provenance" order="04" className="discovery-details-section">
+    <DetailSection title="How this store entered the list." order="04" className="discovery-details-section" eyebrow="04 · Provenance" copy="Query, rank, and the occurrences that produced this row.">
       <dl className="fact-grid">
         <Fact label="Search query" value={primaryQuery} />
         <Fact label="Generated query" value={hasDistinctGeneratedQuery ? lead.generated_query : null} />

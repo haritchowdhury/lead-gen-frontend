@@ -1,0 +1,8 @@
+▲ Next.js 16.2.12 (Turbopack)
+- Local:         http://127.0.0.1:4540
+- Network:       http://127.0.0.1:4540
+- Environments: .env.local
+✓ Ready in 1025ms
+
+ GET / 200 in 4.5s (next.js: 1662ms, application-code: 2.8s)
+ GET /design-fixture?scenario=completed 200 in 1106ms (next.js: 89ms, application-code: 1017ms)

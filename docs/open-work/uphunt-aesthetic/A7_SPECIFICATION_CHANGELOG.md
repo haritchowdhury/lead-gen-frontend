@@ -94,3 +94,21 @@ compatibility_or_migration_effect: none; presentation-only package; no product f
 authorization_effect: UA-W9 is assigned as ASG-UA-W9-01 to UA-W9-WINDOW-AGENT for decomposition only. FILE leaves remain unassigned until parent accepts the decomposition. UA-W10 remains unauthorized. Root ACTIVE_EXECUTION_STATE.md is not this package.
 resumption_state: A5 current_window UA-W9, current_assignment_id ASG-UA-W9-01, assigned_agent UA-W9-WINDOW-AGENT, current_status IN_PROGRESS, blocker null, next_window UA-W10, stop_after UA-W15, may_start_successor false
 ```
+
+```yaml
+change_id: CHG-UA-0006
+timestamp: 2026-09-03T20:30:00+05:30
+trigger_evidence: [EV-UA-A-057, EV-UA-A-058]
+reason: UA-W10 replaces DEC-UA-004 03 title that frontend/test/lead-details-component.test.ts still asserts as "Category and store fit" in the overview ordering witness. DEC-UA-016 treats any failure outside the three named heading-oracle titles as G1 FAIL, so that assertion line must move with the product string. Uniquely determined; no new product decision.
+old_revision: 0380ea831cf345e48433a9dc9d0e573e8f993a0d9ec1e00dfdd3305a06c98c4d
+new_revision: fa71ebb3df07916e39d00052f19d907e8985fd99fb58136bc1284abc06a91076
+changed_requirements: []
+changed_decisions: []
+affected_windows: [UA-W10]
+invalidated_evidence:
+  - A4 F1 UA-W10 authorized_write_scope three-path list (superseded by the four-path list plus UA-W10-T3)
+  - EV-UA-A-057 A5 READY checklist_revision 0380ea83… (superseded by this assignment pin)
+compatibility_or_migration_effect: none; presentation-only package; no product file change in this revision
+authorization_effect: UA-W10 is assigned as ASG-UA-W10-01 to UA-W10-WINDOW-AGENT for decomposition only. FILE leaves remain unassigned until parent accepts the decomposition. UA-W11 remains unauthorized. Root ACTIVE_EXECUTION_STATE.md is not this package.
+resumption_state: A5 current_window UA-W10, current_assignment_id ASG-UA-W10-01, assigned_agent UA-W10-WINDOW-AGENT, current_status IN_PROGRESS, blocker null, next_window UA-W11, stop_after UA-W15, may_start_successor false
+```

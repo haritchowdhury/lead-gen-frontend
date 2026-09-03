@@ -6821,8 +6821,8 @@ button {
 }
 
 /* G10 cascade guard: required recursive evidence never falls back to legacy microtype. */
-.lead-details .store-evidence-section h3,
-.lead-details .discovery-details-section h3,
+.lead-details .store-evidence-section > .marketing-heading,
+.lead-details .discovery-details-section > .marketing-heading,
 .lead-details .store-evidence-section summary,
 .lead-details .discovery-details-section summary,
 .lead-details .store-evidence-section dt,
@@ -6832,19 +6832,19 @@ button {
 .lead-details .store-evidence-section .evidence-row-source,
 .lead-details .discovery-details-section .evidence-row-source,
 .lead-details .store-evidence-section .evidence-row-source a,
-.lead-details .discovery-details-section .evidence-row-source a { font-size: 10px; }
+.lead-details .discovery-details-section .evidence-row-source a { font-size: 12px; }
 
 .lead-details .store-evidence-section dd,
 .lead-details .discovery-details-section dd,
 .lead-details .store-evidence-section .evidence-row-header strong,
-.lead-details .discovery-details-section .evidence-row-header strong { font-size: 11px; }
+.lead-details .discovery-details-section .evidence-row-header strong { font-size: 14px; }
 
 .lead-details .store-evidence-section .token-values > span,
 .lead-details .discovery-details-section .token-values > span,
 .lead-details .store-evidence-section .tag-list > span,
-.lead-details .discovery-details-section .tag-list > span { font-size: 10px; }
+.lead-details .discovery-details-section .tag-list > span { font-size: 12px; }
 
-.lead-details .store-evidence-section .evidence-ledger-list > li > .nested-evidence > summary { font-size: 10px; }
+.lead-details .store-evidence-section .evidence-ledger-list > li > .nested-evidence > summary { font-size: 12px; }
 
 @media (max-width: 700px) {
   .lead-details .store-evidence-section > .fact-grid,
@@ -7556,6 +7556,11 @@ button {
   padding-right: 7rem;
 }
 
+.lead-details .store-evidence-section > .marketing-heading,
+.lead-details .discovery-details-section > .marketing-heading {
+  margin-bottom: 0.125rem;
+}
+
 .lead-overview-grid {
   grid-template-columns: minmax(0, 1fr);
   gap: 0.25rem;
@@ -7793,9 +7798,11 @@ button {
 }
 
 .lead-details .evidence-ledger-list > li > .fact-grid,
-.lead-details .occurrence-record > .fact-grid {
+.lead-details .occurrence-record > .fact-grid,
+.lead-details .store-fit-record > .fact-grid {
   gap: 0.125rem;
   margin: 0.25rem 0 0.125rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .lead-details .fact-grid > div {
@@ -7809,6 +7816,24 @@ button {
 .lead-details .fact-grid dd {
   font-size: 0.5rem;
   line-height: 1.25;
+}
+
+.lead-details .store-evidence-section .fact-grid dt,
+.lead-details .discovery-details-section .fact-grid dt,
+.lead-details .store-fit-record .fact-grid dt,
+.lead-details .occurrence-record .fact-grid dt,
+.lead-details .subordinate-ledger .fact-grid dt,
+.lead-details .category-intent-ledger .fact-grid dt {
+  font-size: 12px;
+}
+
+.lead-details .store-evidence-section .fact-grid dd,
+.lead-details .discovery-details-section .fact-grid dd,
+.lead-details .store-fit-record .fact-grid dd,
+.lead-details .occurrence-record .fact-grid dd,
+.lead-details .subordinate-ledger .fact-grid dd,
+.lead-details .category-intent-ledger .fact-grid dd {
+  font-size: 14px;
 }
 
 .lead-details .nested-evidence {

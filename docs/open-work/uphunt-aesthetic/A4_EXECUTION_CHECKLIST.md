@@ -356,21 +356,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W10 lifecycle
 
-- [ ] UA-W10-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W10-P2 Required predecessor outputs exist and validate (UA-W9 overview CSS). Evidence: ___
-- [ ] UA-W10-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W10-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W10-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W10-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W10-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W10-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W10-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W10-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W10-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W10-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W10-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W10-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W10-H6 Stop; do not assign or begin the successor.
+- [x] UA-W10-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: A5 ASG-UA-W10-01, UA-W10-WINDOW-AGENT, current_window UA-W10; A1 57fa49c7…, A3 094bc8bf…, A4 fa71ebb3…, subwindow standard 842c2955… all recomputed MATCH; S1 f4fb3972… (§12.1 SW-A02; EV-UA-W10-I-001)
+- [x] UA-W10-P2 Required predecessor outputs exist and validate (UA-W9 overview CSS). Evidence: W9 lead-details 5f32de7f…/globals 6e57268a… (starting pins); W9 overview DetailSection 01 title and the `.lead-overview > .marketing-heading` block (H2 anchor) present; W9 owned `.lead-details .detail-section > h3` floor 1.375rem intact (§3/G6)
+- [x] UA-W10-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: node v24.14.1; package.json test/lint/check scripts; `node --test`; /usr/bin/google-chrome present (§3; G3/G4 ran)
+- [x] UA-W10-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: frontend porcelain == the four §3 protected ` M` paths + three `??` coordination artifacts; coordination root clean; protected A4/A5/A6/A7 and the four planned files inventoried (§3; EV-UA-W10-D-001)
+- [x] UA-W10-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: CASE-UA-W10-001/002/003 each one test() + recordExecuted after the activation witness; G1 pass; N1–N6 falsified (G8); S4 §9.4 V-C/V-D
+- [x] UA-W10-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: G1 195/192/3 (allowed 3 fails; DEC-UA-011 W8 race cleared by one identical rerun); G2 zero owned-path needles, only 13-line parked SRC-UA-0092; G3 lint exit 0
+- [x] UA-W10-V3 Confirm this window introduced no new network/DB operations (operation count 0). Evidence: G7 static import/suite — 0 network, 0 DB, 0 WebSocket
+- [x] UA-W10-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: G6 forbidden-path negative search — NONE; implementation delta == exactly the four planned files
+- [x] UA-W10-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only. Evidence: 3/3/3/0/0/0 (CASE-UA-W10-001..003); W10 3-ID digest 3b210dab…; 29-ID post-G1 digest b9c2a467…
+- [x] UA-W10-H1 Record changed files/symbols and migrations. Evidence: UA-W10_HANDOFF.md changed-file table (MODIFY lead-details/globals/ldc-test, CREATE w10.test.ts; no migrations)
+- [x] UA-W10-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: UA-W10_HANDOFF.md commands table (G1–G9 outcomes; no skipped checks)
+- [x] UA-W10-H3 Diff names ⊆ authorized_write_scope. Evidence: UA-W10_HANDOFF.md; implementation delta == exactly the four §4 planned files (G6)
+- [x] UA-W10-H4 No successor-window task or prohibited action was started. Evidence: UA-W10_HANDOFF.md; G9 no UA-W11 artifact; A5.current_window UA-W10; next_window UA-W11 untouched
+- [x] UA-W10-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: S3 EV-UA-W10-S-001..004 + EV-UA-W10-R-001..004 + WINDOW-AGENT-INTEGRATION-PASS; A6 EV-UA-W10-I-001; A5 current_status AWAITING_REVIEW (34608dc4…)
+- [x] UA-W10-H6 Stop; do not assign or begin the successor. Evidence: S2 next_subwindow STOP; UA-W10_HANDOFF.md; no UA-W11 work
 
 ### UA-W11 lifecycle
 
@@ -690,7 +690,7 @@ browser_evidence: true
 window_id: UA-W10
 objective: Store-fit and discovery provenance sections use DEC-UA-004 headlines and type floor.
 depends_on: [UA-W9]
-authorized_write_scope: [frontend/components/lead-details.tsx, frontend/app/globals.css, frontend/test/uphunt-aesthetic-w10.test.ts]
+authorized_write_scope: [frontend/components/lead-details.tsx, frontend/app/globals.css, frontend/test/lead-details-component.test.ts, frontend/test/uphunt-aesthetic-w10.test.ts]
 shared_file_scope:
   frontend/app/globals.css: [.store-evidence-section, .discovery-details-section, .evidence-ledger, .store-fit-record, .occurrence-record, .nested-evidence, .token-disclosure]
   frontend/components/lead-details.tsx: [StoreEvidence, StoreFitItem, StoreFitPage, DiscoveryDetails, OccurrenceList, CategoryList]
@@ -703,6 +703,7 @@ browser_evidence: true
 
 - [ ] UA-W10-T1 SectionIntro for 03 and 04. Nested disclosures remain. Type floor on owned selectors. Fact-grid max 3 columns.
 - [ ] UA-W10-T2 Tests CASE-UA-W10-001..003; fixture fields still in markup.
+- [ ] UA-W10-T3 Update only the one title-order assertion in `lead-details-component.test.ts` that still references `Category and store fit` to the DEC-UA-004 03 title. No other edits in that file.
 
 ---
 
@@ -966,7 +967,7 @@ Critical invariants INV-UA-001..010 map to NC-UA-005 (forbidden paths), NC-UA-00
 | frontend/components/results-filters.tsx | UA-W8 | CASE-UA-W8-003 |
 | frontend/components/cumulative-traffic.tsx | UA-W8 | CASE-UA-W8-001 |
 | frontend/components/lead-details.tsx | UA-W9 overview; UA-W10 store-fit/discovery; UA-W11 TrafficEnrichmentDetails call | CASE-UA-W9-* CASE-UA-W10-* CASE-UA-W11-* |
-| frontend/test/lead-details-component.test.ts | UA-W9 T4 title-order assertions only | predecessor G1 (DEC-UA-016) |
+| frontend/test/lead-details-component.test.ts | UA-W9 T4 title-order assertions; UA-W10 T3 one-line 03 title-order assertion | predecessor G1 (DEC-UA-016) |
 | frontend/components/traffic-enrichment.tsx | UA-W11 | CASE-UA-W11-001/002 |
 | frontend/app/keywords/[researchId]/page.tsx | UA-W12 | CASE-UA-W12-001 |
 | frontend/components/keyword-intelligence/research-dashboard.tsx | UA-W12 intro; UA-W13 reorder | CASE-UA-W12-* CASE-UA-W13-004 |

@@ -1,0 +1,120 @@
+{
+  "fixture": "real compiled production components (ResultsTableView, first row expanded) against real compiled globals.css via the design-fixture completed route",
+  "route": "/design-fixture?scenario=completed",
+  "widths": [
+    390,
+    768,
+    1280,
+    1440
+  ],
+  "shots": [
+    {
+      "name": "completed",
+      "width": 390,
+      "height": 900,
+      "viewport": {
+        "width": 409,
+        "height": 944
+      },
+      "bodyOverflow": false,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "h03Eyebrow": "03 · Fit",
+      "h03Title": "Whether this shop belongs in the market you asked for.",
+      "h03Copy": "Exact input, normalized category, and the store-fit evidence behind the call.",
+      "h03FontSize": "39px",
+      "h04Eyebrow": "04 · Provenance",
+      "h04Title": "How this store entered the list.",
+      "h04Copy": "Query, rank, and the occurrences that produced this row.",
+      "h04FontSize": "39px",
+      "storeFitGridColumns": "86px 86px 86px",
+      "storeFitDt": "12px",
+      "storeFitDd": "14px"
+    },
+    {
+      "name": "completed",
+      "width": 768,
+      "height": 900,
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "h03Eyebrow": "03 · Fit",
+      "h03Title": "Whether this shop belongs in the market you asked for.",
+      "h03Copy": "Exact input, normalized category, and the store-fit evidence behind the call.",
+      "h03FontSize": "46px",
+      "h04Eyebrow": "04 · Provenance",
+      "h04Title": "How this store entered the list.",
+      "h04Copy": "Query, rank, and the occurrences that produced this row.",
+      "h04FontSize": "46px",
+      "storeFitGridColumns": "704.062px 704.062px 704.062px",
+      "storeFitDt": "12px",
+      "storeFitDd": "14px"
+    },
+    {
+      "name": "completed",
+      "width": 1280,
+      "height": 900,
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "h03Eyebrow": "03 · Fit",
+      "h03Title": "Whether this shop belongs in the market you asked for.",
+      "h03Copy": "Exact input, normalized category, and the store-fit evidence behind the call.",
+      "h03FontSize": "57.6px",
+      "h04Eyebrow": "04 · Provenance",
+      "h04Title": "How this store entered the list.",
+      "h04Copy": "Query, rank, and the occurrences that produced this row.",
+      "h04FontSize": "57.6px",
+      "storeFitGridColumns": "704.062px 704.062px 704.062px",
+      "storeFitDt": "12px",
+      "storeFitDd": "14px"
+    },
+    {
+      "name": "completed",
+      "width": 1440,
+      "height": 900,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": false,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "h03Eyebrow": "03 · Fit",
+      "h03Title": "Whether this shop belongs in the market you asked for.",
+      "h03Copy": "Exact input, normalized category, and the store-fit evidence behind the call.",
+      "h03FontSize": "59px",
+      "h04Eyebrow": "04 · Provenance",
+      "h04Title": "How this store entered the list.",
+      "h04Copy": "Query, rank, and the occurrences that produced this row.",
+      "h04FontSize": "59px",
+      "storeFitGridColumns": "704.062px 704.062px 704.062px",
+      "storeFitDt": "12px",
+      "storeFitDd": "14px"
+    }
+  ],
+  "gap": "Protected run routes require Neon authentication, so G4 renders the real compiled ResultsTableView (first row expanded) with the real compiled globals.css on the frozen /design-fixture?scenario=completed route; the synthetic .example pre-hydration interception technique is used per the S1 §10 G4 note. Local_e2e evidence, not a CASE oracle (SUB-UA-001).",
+  "assertions": {
+    "firstRowExpandedAllWidths": true,
+    "leadDetailsVisibleAllWidths": true,
+    "fitEyebrowText": true,
+    "fitHeadingText": true,
+    "fitCopyText": true,
+    "fitHeadingReadable": true,
+    "provenanceEyebrowText": true,
+    "provenanceHeadingText": true,
+    "provenanceCopyText": true,
+    "provenanceHeadingReadable": true,
+    "storeFitGrid3Columns": true,
+    "storeFitDt12": true,
+    "storeFitDd14": true
+  }
+}
