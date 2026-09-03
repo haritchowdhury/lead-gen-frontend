@@ -1,0 +1,114 @@
+{
+  "leads": [
+    {
+      "name": "leads",
+      "viewport": {
+        "width": 442,
+        "height": 1020
+      },
+      "heading": "Live lead workspaceEvery shop you have already found, in one place.One live record per store, with the evidence from every discovering run still attached.",
+      "bodyOverflow": false
+    },
+    {
+      "name": "leads",
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "heading": "Live lead workspaceEvery shop you have already found, in one place.One live record per store, with the evidence from every discovering run still attached.",
+      "bodyOverflow": false
+    },
+    {
+      "name": "leads",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "heading": "Live lead workspaceEvery shop you have already found, in one place.One live record per store, with the evidence from every discovering run still attached.",
+      "bodyOverflow": false
+    },
+    {
+      "name": "leads",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "heading": "Live lead workspaceEvery shop you have already found, in one place.One live record per store, with the evidence from every discovering run still attached.",
+      "bodyOverflow": false
+    }
+  ],
+  "completed": [
+    {
+      "name": "completed",
+      "viewport": {
+        "width": 409,
+        "height": 944
+      },
+      "heading": "Lead discoveryThe stores this search was able to stand behind.Inspect the evidence, then keep the prospects worth approaching.",
+      "bodyOverflow": false
+    },
+    {
+      "name": "completed",
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "heading": "Lead discoveryThe stores this search was able to stand behind.Inspect the evidence, then keep the prospects worth approaching.",
+      "bodyOverflow": false
+    },
+    {
+      "name": "completed",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "heading": "Lead discoveryThe stores this search was able to stand behind.Inspect the evidence, then keep the prospects worth approaching.",
+      "bodyOverflow": false
+    },
+    {
+      "name": "completed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "heading": "Lead discoveryThe stores this search was able to stand behind.Inspect the evidence, then keep the prospects worth approaching.",
+      "bodyOverflow": false
+    }
+  ],
+  "pngs": [
+    "completed-1280.png",
+    "completed-1440.png",
+    "completed-390.png",
+    "completed-768.png",
+    "leads-1280.png",
+    "leads-1440.png",
+    "leads-390.png",
+    "leads-768.png"
+  ],
+  "requestTail": [
+    {
+      "path": "/api/runs/run_fixture_completed",
+      "search": ""
+    },
+    {
+      "path": "/api/runs/run_fixture_completed/results",
+      "search": "?page=1&pageSize=25&sortBy=lead_score&sortDirection=desc"
+    },
+    {
+      "path": "/api/runs/run_fixture_completed/traffic-overview",
+      "search": ""
+    },
+    {
+      "path": "/api/runs/run_fixture_completed/traffic-overview",
+      "search": ""
+    },
+    {
+      "path": "/api/runs/run_fixture_completed/traffic-overview",
+      "search": ""
+    },
+    {
+      "path": "/api/runs/run_fixture_completed/traffic-overview",
+      "search": ""
+    }
+  ]
+}

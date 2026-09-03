@@ -6,6 +6,7 @@ import { CumulativeTrafficSection } from "@/components/cumulative-traffic";
 import { ResultsTable } from "@/components/results-table";
 import { SearchIcon } from "@/components/icons";
 import { MasterExportButton } from "@/components/leads/master-export-button";
+import { SectionIntro } from "@/components/section-intro";
 import type { MasterLeadPage } from "@/lib/api-types";
 import { parseMasterLeadPage } from "@/lib/api-validation";
 import { apiRequest, errorMessage } from "@/lib/client-api";
@@ -55,7 +56,7 @@ export function LiveLeadsWorkspace() {
       discoveryQueries={discoveryQueries} />
     {trafficSettled && <section className="results-section">
       <header className="results-heading">
-        <div><span className="eyebrow">Current master data</span><h2>Unique shops</h2><p>One live record per shop, with every discovering run retained.</p></div>
+        <SectionIntro eyebrow="Live lead workspace" title="Every shop you have already found, in one place." copy="One live record per store, with the evidence from every discovering run still attached." />
         <MasterExportButton search={search} discoveryQueries={discoveryQueries} />
       </header>
       <div className="results-panel">

@@ -320,21 +320,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W8 lifecycle
 
-- [ ] UA-W8-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W8-P2 Required predecessor outputs exist and validate (UA-W7 query/progress intros). Evidence: ___
-- [ ] UA-W8-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W8-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W8-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W8-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W8-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W8-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W8-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W8-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W8-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W8-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W8-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W8-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W8-H6 Stop; do not assign or begin the successor.
+- [x] UA-W8-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: EV-UA-W8-D-001 + parent EV-UA-A-054 (ASG-UA-W8-01; S1 `8e40cf4f…`; A1/A3 MATCH)
+- [x] UA-W8-P2 Required predecessor outputs exist and validate (UA-W7 query/progress intros). Evidence: parent EV-UA-A-054 (query-editor `92efe1f7…`; run-progress `15d840bf…`; w7 test `92201c35…`)
+- [x] UA-W8-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: EV-UA-W8-D-001; parent G1/G2/G3/G4 executed
+- [x] UA-W8-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: EV-UA-W8-D-001 (frontend ` M A5`/` M A6`; coordination root clean)
+- [x] UA-W8-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
+- [x] UA-W8-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [x] UA-W8-V3 Confirm this window introduced no new network/DB operations (operation count 0).
+- [x] UA-W8-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
+- [x] UA-W8-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
+- [x] UA-W8-H1 Record changed files/symbols and migrations. Evidence: UA-W8_HANDOFF.md (MODIFY leads/page, live-leads-workspace, run-workspace, globals.css; CREATE w8.test.ts; no migrations)
+- [x] UA-W8-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: UA-W8_HANDOFF.md (G1–G9 outcomes; no skipped checks)
+- [x] UA-W8-H3 Diff names ⊆ authorized_write_scope. Evidence: UA-W8-I001 G6 (delta = exactly the 5 §4 planned files + coordination artifacts + json residue + browser evidence)
+- [x] UA-W8-H4 No successor-window task or prohibited action was started. Evidence: UA-W8-I001 G9 (no UA-W9; may_start_successor false)
+- [x] UA-W8-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: EV-UA-W8-I-001; A5 `current_status: AWAITING_REVIEW` (`de474043…`)
+- [x] UA-W8-H6 Stop; do not assign or begin the successor.
 
 ### UA-W9 lifecycle
 
@@ -654,9 +654,9 @@ browser_evidence: true
 
 run-workspace.tsx is shared with UA-W7 read-only; UA-W8 may edit completed-results heading JSX only (symbols `results-heading`, completed title row), not polling.
 
-- [ ] UA-W8-T1 SectionIntro on /leads and completed run heading per DEC-UA-003.
-- [ ] UA-W8-T2 Collapsed row min-height 56px; keep columns. Expansion shell padding `var(--space-5)`.
-- [ ] UA-W8-T3 Tests CASE-UA-W8-001..003; assert sort query keys unchanged (`sortBy`, `sortDirection`, `page`, `search`).
+- [x] UA-W8-T1 SectionIntro on /leads and completed run heading per DEC-UA-003. Evidence: parent EV-UA-A-054 (leads/page `21a17799…`; live-leads-workspace `a646f657…`; run-workspace `643c3568…`; DEC-UA-003 strings exact; RETRY_DELAYS and href="/runs" preserved; numstat 2 1 / 2 1 / 2 8)
+- [x] UA-W8-T2 Collapsed row min-height 56px; keep columns. Expansion shell padding `var(--space-5)`. Evidence: parent EV-UA-A-054 (globals.css `f1a7e45a…`; `min-height: 56px;` == 1; both `.lead-expansion-shell` paddings `var(--space-5)`; store-column 28% / toggle-column 7% unchanged; numstat 3 3)
+- [x] UA-W8-T3 Tests CASE-UA-W8-001..003; assert sort query keys unchanged (`sortBy`, `sortDirection`, `page`, `search`). Evidence: parent EV-UA-A-054 (w8 test `cab15f7f…`; three cases pass inside G1 184/181/3; params.get needles and sortBy/sortDirection remain; window-local 3/3/3)
 
 ---
 

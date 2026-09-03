@@ -1,0 +1,116 @@
+# UA-W8 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W8_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W8_SUBWINDOW_EVIDENCE_S3.md`.
+
+Parent accepted the UA-W8 decomposition (`EV-UA-A-053`). Identity
+`UA-W8-WINDOW-AGENT` owns the frozen DAG without parent checkpoints:
+execute then personally review each FILE leaf in the same turn, then
+immediately assign and start the next S-number, then personally run I001,
+then handoff (`DEC-UA-015`). Communicate upward only on I001 PASS, a genuine
+blocker, or UA-W9 (never). Do not wait for the parent between S001, S002,
+S003, S004, S005, or I001. `AWAITING_WINDOW_REVIEW` is the FILE H3 certificate
+field, not a parent stop. `A5` remains byte-identical `c6a4ba50…` until the
+authorized I001 handoff action.
+
+```yaml
+state_version: 8
+parent_window_id: UA-W8
+parent_assignment_id: ASG-UA-W8-01
+window_agent_identity: UA-W8-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827
+parent_decision_revision: 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3
+parent_checklist_revision: 34d5d8969c85bc57394d4b728b0e489b83537044de96311787f2df539f371cee
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W8_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: 8e40cf4ff234efa596dd89adbe2cc18a31bb4141617bd2a52217fb78845ce879
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W8_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: UA-W8-I001
+current_assignment_id: ASG-UA-W8-01-I001
+assigned_agent: UA-W8-WINDOW-AGENT
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: (none; I001 verifies the assembled five planned files)
+authorized_read_scope:
+  - frontend/app/leads/page.tsx (post-S001)
+  - frontend/components/leads/live-leads-workspace.tsx (post-S002)
+  - frontend/components/run-workspace.tsx (post-S003)
+  - frontend/app/globals.css (post-S004)
+  - frontend/test/uphunt-aesthetic-w8.test.ts (post-S005)
+  - frontend/test/uphunt-aesthetic-coverage.test.ts
+  - frontend/docs/open-work/uphunt-aesthetic/UA-W8_SUBWINDOW_DECOMPOSITION_S1.md (§0 and §11/§14)
+  - frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md (§UA-W8)
+authorized_actions:
+  - execute_then_personally_review_UA-W8-S001
+  - assign_and_execute_then_personally_review_UA-W8-S002
+  - assign_and_execute_then_personally_review_UA-W8-S003
+  - assign_and_execute_then_personally_review_UA-W8-S004
+  - assign_and_execute_then_personally_review_UA-W8-S005
+  - personally_run_UA-W8-I001
+  - write_UA-W8_handoff
+  - set_A5_AWAITING_REVIEW_on_handoff
+  - append_S3_evidence
+  - append_A6_evidence
+  - check_UA-W8_boxes
+prohibited_actions:
+  - parent_assign_or_accept_FILE_leaf
+  - stop_for_parent_between_FILE_leaves
+  - treat_AWAITING_WINDOW_REVIEW_as_parent_stop
+  - start_UA-W9
+  - may_start_successor
+  - edit_A5_except_authorized_handoff_action_after_I001
+  - edit_RETRY_DELAYS
+  - edit_poll_fetch
+  - edit_sort_query_keys
+  - edit_runs_runId_page
+  - edit_query_editor
+  - edit_run_progress
+  - edit_results_table_tsx
+  - edit_results_filters_tsx
+  - edit_cumulative_traffic_tsx
+  - edit_section_intro
+  - edit_landing_sections
+  - edit_lead-details.tsx
+  - edit_unowned_globals_css_selectors
+  - edit_app_page_header_or_W6_selectors
+  - edit_intelligence_card_or_W5_selectors
+  - edit_run_form_card_or_W4_selectors
+  - edit_query_editor_or_progress_or_W7_selectors
+  - edit_auth_card
+  - edit_lead_details_css
+  - edit_REQUIRED_CASE_IDS
+  - edit_uphunt-aesthetic-coverage_test
+  - edit_uphunt-aesthetic-w2_w3_w4_w5_w6_w7_test_files
+  - edit_parked_SRC-UA-0092_test_files
+  - edit_design-system-shell_test
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: READY_FOR_PARENT_REVIEW
+accepted_subwindows: [UA-W8-S001, UA-W8-S002, UA-W8-S003, UA-W8-S004, UA-W8-S005]
+next_subwindow: (none; UA-W8 completed, successor UA-W9 reserved for parent per A5)
+blocker: null
+last_updated: 2026-09-03T17:55:00+05:30
+```
+
+Planned implementation set (five files, §4.7 digest
+`88a8fc3280241ce819c353c1160d37d48e61f56def1cf726180059d9f64cd9e0`):
+frontend/app/leads/page.tsx → S001, frontend/components/leads/live-leads-workspace.tsx
+→ S002, frontend/components/run-workspace.tsx → S003, frontend/app/globals.css
+→ S004, frontend/test/uphunt-aesthetic-w8.test.ts → S005, then UA-W8-I001.
+Zero-edit in-scope files (results-table.tsx, results-filters.tsx,
+cumulative-traffic.tsx) consume no S-number.

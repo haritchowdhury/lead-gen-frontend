@@ -17,6 +17,7 @@ import { ResultsFilters } from "@/components/results-filters";
 import { ResultsTable } from "@/components/results-table";
 import { RunLoadingSkeleton, RunProgress } from "@/components/run-progress";
 import { QueryEditor } from "@/components/query-editor";
+import { SectionIntro } from "@/components/section-intro";
 import type {
   LeadStatus,
   ResultFilters,
@@ -324,14 +325,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
         {run.resultsAvailable && (
           <section className="results-section">
             <div className="results-heading">
-              <div>
-                <span className="eyebrow">Lead workspace</span>
-                <h2>Your store leads</h2>
-                <p>
-                  Review the evidence, focus on qualified prospects, or export
-                  the complete dataset.
-                </p>
-              </div>
+              <SectionIntro eyebrow="Lead discovery" title="The stores this search was able to stand behind." copy="Inspect the evidence, then keep the prospects worth approaching." />
               <div className="results-heading-utilities">
                 <span className={`ds-badge ${runStateTone(run.state)}`}>
                   {runStateLabel(run.state)}

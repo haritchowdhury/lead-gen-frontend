@@ -1856,3 +1856,119 @@ limitations: |
   Residual non-blocking: S2 remains a window-agent coordination artifact after parent A5 READY (still IN_PROGRESS at I001). test/.ua-executed.json is tracked at HEAD via d6121aa against DEC-UA-011's never-commit contract; prescribed npm test shows it modified (correct 19-ID content); untracking is a later parent decision. Concurrent recordExecuted writers can fail an extra CASE with empty JSON; DEC-UA-016 names W1; this parent G1 run was clean 176/3. G4 used G-R1-style pre-hydration synthetic .example fetch interception because design-fixture mounts RunWorkspace on run_fixture_* ids that are not backend rows and the data route is auth-gated; frozen G4 routes were used; live /runs/[runId] was not screenshotted; no credentials; G4 is local_e2e not a CASE oracle. G4 heights 900px (S1 froze widths). At 390px the query-editor SectionIntro sits below the 900px crop (visible at 768/1280/1440); runtime DEC-UA-003 strings are visible at all four widths. Full required=executed equality remains UA-W15-V5. DEC-UA-016 does not repair predecessor heading oracles. A4 T1-T3 were unchecked at handoff; parent checked them on accept. UA-W8 not assigned.
 external_mutations: none
 ```
+
+```yaml
+evidence_id: EV-UA-A-052
+timestamp: 2026-09-03T16:55:00+05:30
+phase: assignment
+claim: Requester assigned UA-W8 as ASG-UA-W8-01 to UA-W8-WINDOW-AGENT for decomposition dispatch. Predecessor UA-W7 is parent-accepted (EV-UA-A-051) and committed (frontend 41d6632). A1/A3 hashes still matched A5 pins. A4 34d5d896… is the post-UA-W7-T-checkbox pin already recorded in A5. w8 test ABSENT. Successor UA-W9 remains reserved for parent. may_start_successor remains false. Root ACTIVE_EXECUTION_STATE.md was not mutated. Parent did not dispatch the window agent.
+environment: local workspace /home/harit/Email Scrapper
+revision: A5 state_version 19 digest c6a4ba507365261c14a7e87108e440c4cb2bd71720baf61631fcb5a9c1fc05a3
+operation: sha256sum of A1 A3 A4 vs prior A5 pins; sha256sum leads/page live-leads-workspace run-workspace results-table results-filters cumulative-traffic globals css W7 product files; test ! -f uphunt-aesthetic-w8.test.ts; git status --porcelain; simulate three CSS hunks ending digest; A5 assignment fields written
+observed_result: |
+  A1 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827 MATCH;
+  A3 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3 MATCH;
+  A4 34d5d8969c85bc57394d4b728b0e489b83537044de96311787f2df539f371cee MATCH;
+  current_window UA-W8; authorized_windows [UA-W8]; current_status IN_PROGRESS;
+  leads/page 9fad9d0b55b5959e75c016fad0643ba81255cb609871140c0b77b0b1d70bed79;
+  live-leads-workspace 294201ad42d2831b1c04d0beef0e3b64ca8874fe4160b5dcd221d6fef488ab01;
+  run-workspace 9472450d3a22143befe5f52569328eb5c07df94fee543ecb873c0ca05914c8c3;
+  globals b5c79578012da0ea47ee85665bce96b1127aca5b5526964074c52656b7359d6d;
+  w8 test ABSENT; frontend HEAD 41d6632 W7; frontend and coordination-root porcelain empty before this A5/A6 write
+parent_frozen_mechanical_consequences: |
+  These close otherwise-open S1 choices; they are uniquely determined by DEC-UA-002, DEC-UA-003, DEC-UA-015, DEC-UA-016, UA-W8-T1/T2/T3, and CASE-UA-W8-001..003:
+  1. FILE sub-window IDs start at UA-W8-S001. A zero-edit in-scope file gets no FILE sub-window and does not consume an S-number. Do not retire S001/S002 unused. Sequential DAG, no parallel waves: S001 frontend/app/leads/page.tsx → S002 frontend/components/leads/live-leads-workspace.tsx → S003 frontend/components/run-workspace.tsx → S004 frontend/app/globals.css → S005 frontend/test/uphunt-aesthetic-w8.test.ts → UA-W8-I001.
+  2. Zero-edit preserved (G6 pins, no FILE leaf): frontend/components/results-table.tsx a4e1472fdc4129d20a61faa893d07694dba1528336cfabd257219833cd7d0b4f (already has className="detail-row" once; CASE-UA-W8-003 reads it); frontend/components/results-filters.tsx 0ab118e47349efb0c71e4facaf9bdd2844d8ea564f3c1fbf59afbc7e6e22b881 (sortBy/sortDirection/page needles stay); frontend/components/cumulative-traffic.tsx 7d37a3ae2eb8e423a539f85330688bcc863a4e028525bce46222ac1cbbdb45aa; frontend/app/runs/[runId]/page.tsx 719e05ea0eec73fe948f0c41a9c56c970d6db61cfff0c990e59666136a069072; frontend/components/query-editor.tsx 92efe1f7319111f58a44e823f33a61bf705a654dbaa7539759d51bd71ece886c; frontend/components/run-progress.tsx 15d840bfdb81892a5755dbe4f26d8ac9793fd2e02857568f7d9576a748518e38; frontend/components/lead-details.tsx 0ceec9058af2c24d65c8ef880848b114674352a2c0593ec0a64914a0f9aefc5b; section-intro.tsx 159096f313aa6c8d1be343f1db72511529fb4795c79be3123da9c3c3a0c38175. Do not change RETRY_DELAYS, poll/fetch, filtersFromParams key names, resultsQuery key names, metadata titles, or Link href="/runs".
+  3. T1 JSX: Import `{ SectionIntro } from "@/components/section-intro"`. leads/page.tsx: keep `div.run-title-row.app-page-header` and `<Link className="ds-button ds-button--secondary" href="/runs">View runs</Link>` and metadata title "My leads". Replace only the inner `<div><span className="eyebrow">Live lead workspace</span></div>` (count 1) with `<SectionIntro eyebrow="Live lead workspace" title="Every shop you have already found, in one place." copy="One live record per store, with the evidence from every discovering run still attached." />` (DEC-UA-003 exact, periods included). live-leads-workspace.tsx: keep `header.results-heading`, MasterExportButton, navigate/sort/search/apiRequest. Replace only the unique inner title block `Current master data` / `Unique shops` / `One live record per shop, with every discovering run retained.` (each counts 1) with the same three DEC-UA-003 /leads SectionIntro props. run-workspace.tsx: edit completed-results heading JSX only. Keep `div.results-heading`, `div.results-heading-utilities`, ds-badge, ExportCsvButton, RunProgress, QueryEditor, polling, `const RETRY_DELAYS = [3_000, 5_000, 10_000, 15_000];`, and the run-title-row `<h1>Lead discovery run</h1>`. Replace only the unique inner results-heading children `Lead workspace` / `Your store leads` / `Review the evidence, focus on qualified prospects, or export the complete dataset.` (each counts 1) with `<SectionIntro eyebrow="Lead discovery" title="The stores this search was able to stand behind." copy="Inspect the evidence, then keep the prospects worth approaching." />` (DEC-UA-003 completed, periods included).
+  4. T2 CSS only, three unique hunks, no new selectors. Starting globals.css b5c79578012da0ea47ee85665bce96b1127aca5b5526964074c52656b7359d6d. Ending digest f1a7e45a61d27fd635910d2cc594ba9711609474d7238690b9fc2b34ca00e10c. Numstat 3 3. Hunk 1 `.results-table tbody > tr:not(.detail-row) > td` replace `height: 3.25rem;` with `min-height: 56px;` (keep the padding declaration). Hunk 2 first `.lead-expansion-shell` (width/min-width block) replace `padding: 2px;` with `padding: var(--space-5);`. Hunk 3 later `.lead-expansion-shell { padding: 0; border: 0;` replace `padding: 0;` with `padding: var(--space-5);`. Keep `.results-table .store-column` through `.toggle-column` widths byte-identical. Do not edit `.lead-details`, W4 `.run-form-card`, W5 `.intelligence-card`, W6 `.app-page-header`, W7 query-editor/progress selectors, tokens, or `.auth-card`.
+  5. CREATE test/uphunt-aesthetic-w8.test.ts with exactly three tests CASE-UA-W8-001/002/003. 001: run-workspace.tsx has the SectionIntro import and the three completed DEC-UA-003 strings, and still contains `const RETRY_DELAYS = [3_000, 5_000, 10_000, 15_000];`. 002: leads/page.tsx has the import, the three /leads DEC-UA-003 strings, and href="/runs"; live-leads-workspace.tsx has the import and the same three /leads strings. 003: results-table.tsx contains `className="detail-row"`; results-filters.tsx still contains `sortBy` and `sortDirection`; run-workspace.tsx still contains `params.get("page")`, `params.get("sortBy")`, `params.get("sortDirection")`, and `params.get("search")`; globals.css contains `min-height: 56px;` and `padding: var(--space-5);` inside a `.lead-expansion-shell` rule. recordExecuted after assertions. No fourth test. No getExecuted vs REQUIRED_CASE_IDS full-set equality. Import recordExecuted from `./uphunt-aesthetic-coverage.test.ts` the same way as the w7 test file.
+  6. Last FILE leaf (S005) from ABSENT test/.ua-executed.json expects exactly 5 IDs (2 x W1 re-executions + CASE-UA-W8-001/002/003), set digest 703c8441470da81b31c474099b78e2cd38b4e2c1c79756e3e0d9d63d14bfc8c7. The 22-ID set {2 x W1} u {4 x W2} u {4 x W3} u {2 x W4} u {2 x W5} u {3 x W6} u {2 x W7} u {3 x W8} is asserted only at I001 G5 after npm test, digest 9da0dc92b33e9eec059c774d2591cd1a1120a77f70110c94312f57f0ec7904fd. Do not require W2–W7 IDs at the w8-only test command. test/.ua-executed.json is TRACKED at HEAD (19-ID content 0aab3c5911e4a5c624d803286be998e88be8d503a9d95c1acf4f9678ac48f978); never commit it.
+  7. I001 G1 is DEC-UA-016: from frontend/, `npm test`. Expected 184 tests / 181 pass / 3 fail (179 predecessor + 2 W1 re-executions from the w8 import + 3 W8 cases). PASS iff allocated UA CASE tests pass and every failing title, if any, is exactly the three named heading-oracle titles; process exit 1 is expected and is not G1 FAIL when that holds. G2 DEC-UA-014 needles are leads/page.tsx, live-leads-workspace.tsx, run-workspace.tsx, uphunt-aesthetic-w8.test.ts (globals.css is not typechecked). G4 is frozen as routes {/leads, /design-fixture?scenario=completed} at 390/768/1280/1440 only (8 screenshots, height 900). Local next may set STORESIGNAL_DESIGN_FIXTURES=1 for the fixture route. Do not screenshot live `/runs/[runId]` (it polls). Unauthenticated /leads may 307 to /sign-in (record it; not a CASE oracle). If the completed fixture cannot render the results heading without the same G-R1-style pre-hydration synthetic `.example` interception used on UA-W7, that technique is permitted (no live run, no credentials); a fixture 404 without that recovery is PARENT_BLOCKED. Window-local case digest fb88fd2a8409b4a7527585e36e0868c833b72fa5ee0bb9785747df7babd3e8cc. Planned implementation set {frontend/app/leads/page.tsx, frontend/components/leads/live-leads-workspace.tsx, frontend/components/run-workspace.tsx, frontend/app/globals.css, frontend/test/uphunt-aesthetic-w8.test.ts}, digest 00726b4e5cd1f95c764afad43bf3208e440a3f536167cfe2048707450c0b33f2.
+  8. Do not start UA-W9. Do not edit section-intro.tsx, landing-sections.tsx, lead-details.tsx, W7 product/test files, REQUIRED_CASE_IDS, parked files, or design-system-shell.test.ts. After parent accepts this decomposition, identity UA-W8-WINDOW-AGENT executes then personally reviews each FILE leaf in the same turn, then itself assigns the next S-number, then personally runs I001, then hands off (DEC-UA-015). This assignment does not execute S001. Do not write into S1 §0 any of: "parent issues the next leaf", "stop at AWAITING_WINDOW_REVIEW before S00n", "stop for parent after this leaf".
+decisive_assertion: UA-W8 may now be decomposed; FILE leaves remain unassigned until parent accepts the decomposition; UA-W9 is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5
+negative_control: starting UA-W9, editing lead-details.tsx, editing RETRY_DELAYS, or editing REQUIRED_CASE_IDS under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 19
+  planned: 43
+  executed: 19
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: FILE leaves remain unassigned until parent accepts the UA-W8 decomposition. browser_evidence true is an I001 obligation after implementation, not a decomposition write. Parent paste after a later decomposition accept is one paste for S001 through I001 (DEC-UA-015), not this paste.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-053
+timestamp: 2026-09-03T17:25:00+05:30
+phase: review
+claim: Parent accepted the UA-W8 decomposition under ASG-UA-W8-01 and, without dispatching, converted it to READY. Independent recomputation matched S1 8e40cf4ff234efa596dd89adbe2cc18a31bb4141617bd2a52217fb78845ce879, submitted S2 ac8a6d478b581c24943e076bda35068e5fd63b0be32a511ba4f41999441d2112, submitted S3 25ab55b2056ac4b6ff4ba0b62f149d1e6d73b28495b0c1bd92e0a6e61a4f42bb. All 9 §6.2/§7.2/§8.2 tsx and §9.2 CSS OLD fences count 1 in their starting files. Ending digests 21a1779908a58267cd16749c2b5b86ec2e8105ea71a566fbce361aba392bea4b, a646f6574cb325ac1ec324c2d26e6ba343a8d87c79b099b09e5ab0b684984c36, 643c3568bc7fd483cb15fcad3dfd545e74d179f6a495469b92796660c1b57cf3, f1a7e45a61d27fd635910d2cc594ba9711609474d7238690b9fc2b34ca00e10c. numstat 2/1, 2/1, 2/8, 3/3 MATCH. §10.3 ts fence digest cab15f7fd3e65528d8ded657da2f8092f01107026ca4c80b48528a8e9200b8b0. Authoring checklist 47/0. DAG S001→S002→S003→S004→S005→I001 with S001 used as the real first leaf. A1/A3/A4 pins and A5 c6a4ba50… MATCH. Planned-set §4.7 88a8fc32… (A6 consequence 7 unsorted 00726b4e… over the same five paths; G6 uses §4.7), window-local fb88fd2a…, 5-ID 703c8441…, 22-ID 9da0dc92… MATCH. Implementation files untouched; w8 test ABSENT. Zero-edit results-table/results-filters/cumulative-traffic/runs/[runId]/page/query-editor/run-progress/lead-details/section-intro MATCH. Parent did not dispatch a window agent. A5 was not rewritten so S001 P1 still holds. Root ACTIVE_EXECUTION_STATE.md was not mutated. Per DEC-UA-015 the next parent paste is one paste for S001 through I001; parent does not issue S002 or later FILE leaves.
+environment: local
+revision: A5 state_version 19 IN_PROGRESS UA-W8 ASG-UA-W8-01 digest c6a4ba507365261c14a7e87108e440c4cb2bd71720baf61631fcb5a9c1fc05a3; S2 READY c3bdd1d6638f4a84afedd964cd2cb4432fb58ecd56311d53a35f26d79918239f
+operation: |
+  sha256sum S1 S2 S3 A1 A3 A4 A5 leads/page live-leads-workspace run-workspace globals zero-edit predecessors w8-test;
+  extract §6.2/§7.2/§8.2 ```tsx and §9.2 unlabeled fences and count/apply in starting files;
+  §10.3 fence digest; git diff --no-index --numstat of simulated endings;
+  §13 checkbox count; forbidden-phrase scan; ls w8 test; git status implementation paths;
+  write S2 READY for continuous S001→I001; append S3 EV-UA-W8-X-001
+observed_result: |
+  all listed pins MATCH; all fenced replacements PASS uniqueness and ending digest;
+  S2 decomposition_status READY; current_assignment_id ASG-UA-W8-01-S001;
+  assigned_agent UA-W8-WINDOW-AGENT; authorized_write_file frontend/app/leads/page.tsx;
+  current_status READY; next_subwindow UA-W8-S002; A5 digest unchanged
+decisive_assertion: APPROVED and executable; UA-W8-WINDOW-AGENT owns S001 through I001 continuously (DEC-UA-015); UA-W9 remains unauthorized
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W8_SUBWINDOW_STATE_S2.yaml; S3 EV-UA-W8-X-001
+negative_control: stopping for parent after S001, launching UA-W9, or editing lead-details.tsx under this S2 would violate DEC-UA-015 and A5 prohibited_actions
+coverage_counts:
+  required: 43
+  registered: 19
+  planned: 43
+  executed: 19
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S001 V-A porcelain "exactly the two §3 protected paths" must be read as those two plus the three untracked UA-W8 coordination artifacts (S1/S2/S3), same class as W6/W7. Parent A6 now also contains EV-UA-A-053 on the protected A6 path. G7 lists node:url among inspected imports (W7 copy residue); §10.3 bytes do not import node:url — same class as accepted UA-W7 G7; G7 oracle remains 0 network/DB operations.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-054
+timestamp: 2026-09-03T18:05:00+05:30
+phase: review
+claim: Parent independently accepted UA-W8. Product files leads/page.tsx 21a1779908a58267cd16749c2b5b86ec2e8105ea71a566fbce361aba392bea4b (numstat 2 1; DEC-UA-003 /leads strings; href="/runs" and metadata My leads preserved), live-leads-workspace.tsx a646f6574cb325ac1ec324c2d26e6ba343a8d87c79b099b09e5ab0b684984c36 (numstat 2 1; same /leads SectionIntro; navigate( == 6; MasterExportButton kept), run-workspace.tsx 643c3568bc7fd483cb15fcad3dfd545e74d179f6a495469b92796660c1b57cf3 (numstat 2 8; DEC-UA-003 completed strings; RETRY_DELAYS and h1 Lead discovery run preserved), globals.css f1a7e45a61d27fd635910d2cc594ba9711609474d7238690b9fc2b34ca00e10c (numstat 3 3; min-height 56px; two lead-expansion-shell paddings var(--space-5)), uphunt-aesthetic-w8.test.ts cab15f7fd3e65528d8ded657da2f8092f01107026ca4c80b48528a8e9200b8b0 CREATE. Zero-edit results-table/results-filters/cumulative-traffic/runs/[runId]/page/query-editor/run-progress/lead-details/section-intro MATCH. S1 8e40cf4f…. A1/A3 MATCH 57fa49c7… / 094bc8bf…. npm test under DEC-UA-016 184/181/3 with exactly the three heading-oracle titles (first parent run; CASE-UA-W8-001/002/003 pass). tsc sha e0aa27dd… 13 lines 0 owned needles. lint exit 0. G4 8/8 PNGs widths 390/768/1280/1440 height 900. G5 22-ID 9da0dc92…. G8 N1–N5 falsified in-memory. G9 no w9 test. A4 UA-W8 P/V/H/T checked on parent accept (window agent left them unchecked). ASG-UA-W8-01 closed. UA-W9 not assigned. Root ACTIVE_EXECUTION_STATE.md untouched. Nothing committed.
+environment: local frontend node
+revision: A5 state_version 20 READY accepted_through UA-W8 digest bfb81c55497ad6d22595fe44171070eeeb3da687b5b4f5c54b8c52ca57b97147; A4 post-checkbox e93443356612e1c1b9dfbd482b1153771e8e55f02e0eff15a8e8d0230aafbf68
+operation: |
+  sha256sum five W8 files zero-edit predecessors S1 A1 A3 A4 A5 A6 handoff;
+  PNG IHDR; git diff --numstat; npm test; npx tsc; npm run lint;
+  in-memory N1–N5; check A4 P/V/H/T; write A5 READY
+observed_result: |
+  all product pins MATCH; G1 PASS DEC-UA-016 on confirming run 184/181/3;
+  G2 PASS; G3 PASS; G4 8/8 IHDR exact; G5 MATCH; G8 PASS; G9 PASS;
+  A5 current_status READY; accepted_through UA-W8; assigned_agent UNASSIGNED
+decisive_assertion: ACCEPTED; UA-W8 complete; UA-W9 remains unassigned (successor_reserved_for parent; may_start_successor false; DEC-UA-015)
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: frontend/app/leads/page.tsx; frontend/components/leads/live-leads-workspace.tsx; frontend/components/run-workspace.tsx; frontend/app/globals.css; frontend/test/uphunt-aesthetic-w8.test.ts; UA-W8_HANDOFF.md; S3 EV-UA-W8-I-001; review-evidence/uphunt-aesthetic/UA-W8/
+negative_control: a diagnostic naming uphunt-aesthetic-w8.test.ts or leads/page.tsx would have failed G2; presence of uphunt-aesthetic-w9.test.ts would have failed G9; restoring Unique shops would fail CASE-UA-W8-002
+coverage_counts:
+  required: 43
+  registered: 22
+  planned: 43
+  executed: 22
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: |
+  G4 is local_e2e not a CASE oracle (SUB-UA-001). g4-checks.json records 390 content bounding boxes 442×1020 / 409×944; PNG IHDR is the frozen 390×900. G-R1-style synthetic .example interception produced visible fixture parse errors (masterLeads.items[0].master on /leads; trafficOverview.scope on completed) — same class as W7 G4 residual. completed-1280/1440 show a table-scoped horizontal scrollbar on the long-name fixture row; G8 table overflow is scoped to the table. Duplicate SectionIntro on /leads (page header + live-leads-workspace header) is the T1 contract. Window agent left A4 P/V/H/T unchecked; parent checked them on accept (same class as W4 T). Extra g4-checks.json and g4-browser-server.log sit beside the eight PNGs. G7 lists node:url (W7 copy residue); §10.3 does not import it. test/.ua-executed.json is tracked 22-ID runtime residue (never commit). Full required=executed equality remains UA-W15-V5.
+external_mutations: none
+```

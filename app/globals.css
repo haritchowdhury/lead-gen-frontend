@@ -2338,7 +2338,7 @@ button {
 .lead-expansion-shell {
   width: 100%;
   min-width: 0;
-  padding: 2px;
+  padding: var(--space-5);
   overflow: visible;
   border: 1px solid var(--color-line-strong);
   border-radius: var(--radius-card);
@@ -7511,7 +7511,7 @@ button {
 }
 
 .lead-expansion-shell {
-  padding: 0;
+  padding: var(--space-5);
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -8072,7 +8072,7 @@ button {
 
 /* Collapsed lead rows: quiet, compact, and still scannable. */
 .results-table tbody > tr:not(.detail-row) > td {
-  height: 3.25rem;
+  min-height: 56px;
   padding: 0.375rem 0.625rem;
 }
 
