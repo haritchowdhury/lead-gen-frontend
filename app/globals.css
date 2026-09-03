@@ -5809,6 +5809,7 @@ button {
 
 .app-page-header {
   align-items: flex-end;
+  gap: var(--space-6);
   margin-bottom: var(--space-7);
 }
 
@@ -6175,7 +6176,7 @@ button {
 
   .app-page-header {
     align-items: stretch;
-    gap: var(--space-4);
+    gap: var(--space-6);
     margin-bottom: var(--space-5);
   }
 

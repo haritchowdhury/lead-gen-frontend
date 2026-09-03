@@ -40,3 +40,39 @@ compatibility_or_migration_effect: none; presentation-only package; parked SRC-U
 authorization_effect: ASG-UA-W1-01 is closed for further work. New assignment ASG-UA-W1-02 resumes UA-W1 for S1 G2 append, S2 pin refresh, personal UA-W1-I002, A4 UA-W1 boxes, handoff, and A5 AWAITING_REVIEW. Write scope unchanged for product files. UA-W2 remains unauthorized. Root ACTIVE_EXECUTION_STATE.md is not this package.
 resumption_state: A5 current_window UA-W1, current_assignment_id ASG-UA-W1-02, assigned_agent UA-W1-WINDOW-AGENT, current_status IN_PROGRESS, blocker null, next_window UA-W2, stop_after UA-W15, may_start_successor false
 ```
+
+```yaml
+change_id: CHG-UA-0003
+timestamp: 2026-09-03T14:10:00+05:30
+trigger_evidence: [EV-UA-A-044, EV-UA-A-045]
+reason: Plan docs omitted who advances FILE leaves. Parent had frozen the opposite of the sub-window standard (parent-per-leaf). DEC-UA-015 locks window-agent leaf advancement for UA-W7 through UA-W15. Does not accept UA-W6 and does not assign UA-W7.
+old_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
+new_revision: c5c41162ec2d7406d285422e8aeae0508e13989161507d122e787512fef31870
+changed_requirements: [REQ-UA-008]
+changed_decisions: [DEC-UA-015]
+affected_windows: [UA-W7, UA-W8, UA-W9, UA-W10, UA-W11, UA-W12, UA-W13, UA-W14, UA-W15]
+invalidated_evidence:
+  - EV-UA-A-041 consequence 8 last clause "parent issues the next leaf" (superseded; historical row retained)
+  - EV-UA-A-042 / EV-UA-A-043 parent-per-leaf paste instructions (superseded by EV-UA-A-044 and this decision)
+compatibility_or_migration_effect: none; presentation-only package; no product file change in this revision
+authorization_effect: UA-W6 remains the current window and is not accepted by this change. UA-W7 remains unauthorized. Future UA-W7+ assignment pastes MUST copy DEC-UA-015. Root ACTIVE_EXECUTION_STATE.md is not this package.
+resumption_state: A5 current_window UA-W6, current_assignment_id ASG-UA-W6-01, assigned_agent UA-W6-WINDOW-AGENT, next_window UA-W7, stop_after UA-W15, may_start_successor false
+```
+
+```yaml
+change_id: CHG-UA-0004
+timestamp: 2026-09-03T14:20:00+05:30
+trigger_evidence: [EV-UA-W6-I-001, EV-UA-A-046]
+reason: UA-W6-I001 PARENT_BLOCKED on G1. Three predecessor tests assert <h1>My searches</h1> which DEC-UA-003 /runs SectionIntro removes. Parked MRR file cannot be edited. DEC-UA-016 re-pins G1 to named heading-oracle failures. Does not accept UA-W6. Does not assign UA-W7.
+old_revision: c5c41162ec2d7406d285422e8aeae0508e13989161507d122e787512fef31870
+new_revision: 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3
+changed_requirements: []
+changed_decisions: [DEC-UA-016]
+affected_windows: [UA-W6, UA-W7, UA-W8, UA-W9, UA-W10, UA-W11, UA-W12, UA-W13, UA-W14, UA-W15]
+invalidated_evidence:
+  - EV-UA-A-041 consequence 7 "Expected npm test after W6 is 175 pass" (superseded for G1 PASS; historical row retained)
+  - UA-W6-I001 G1 FAIL under the old exit-0/175-pass oracle (disposition superseded by DEC-UA-016 plus UA-W6-I002)
+compatibility_or_migration_effect: none; presentation-only package; UA-W6 product files unchanged by this revision
+authorization_effect: ASG-UA-W6-01 is closed for further work under the old G1. New assignment ASG-UA-W6-02 resumes UA-W6 for S1 §17 G1 append, personal UA-W6-I002, A4 UA-W6 boxes, handoff, and A5 AWAITING_REVIEW. Product write scope removed. UA-W7 remains unauthorized. Root ACTIVE_EXECUTION_STATE.md is not this package.
+resumption_state: A5 current_window UA-W6, current_assignment_id ASG-UA-W6-02, assigned_agent UA-W6-WINDOW-AGENT, current_status IN_PROGRESS, blocker null, next_window UA-W7, stop_after UA-W15, may_start_successor false
+```

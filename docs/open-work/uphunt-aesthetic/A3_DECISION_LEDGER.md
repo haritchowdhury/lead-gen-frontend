@@ -268,6 +268,80 @@ implementing_tasks: [UA-W1-I002]
 verification_scenarios: [SCN-UA-005]
 ```
 
+```yaml
+decision_id: DEC-UA-015
+requirement_ids: [REQ-UA-008]
+locked_choice: |
+  DEC-UA-007 is unchanged: one parent window per assignment, may_start_successor
+  false, window agent decomposes into one-file leaves. This decision locks who
+  advances those leaves. This package uses one identity UA-Wn-WINDOW-AGENT as
+  both window agent and file executor. FILE H3 AWAITING_WINDOW_REVIEW is a
+  FILE-SUBWINDOW-EXECUTED certificate field on that write; it is not a parent
+  stop and not a wait-to-be-told-you-are-the-window-agent stop. After the parent
+  accepts the decomposition, that identity executes then personally reviews each
+  FILE leaf in the same turn, then itself assigns the next S-number (sub-window
+  standard §5.5), then personally runs I00n, then hands off. Parent checkpoints
+  for a window are only: decomposition review (sub-window standard §1.1/§12.1),
+  genuine PARENT_BLOCKED, and whole-window review after A5 AWAITING_REVIEW
+  (parent standard §10.3–10.4). may_start_successor false means do not start the
+  next parent window (UA-Wn+1); it is not a FILE-leaf brake. Forbidden in every
+  future assignment paste and every future S1 §0 freeze: "parent issues the next
+  leaf", "stop at AWAITING_WINDOW_REVIEW before S00n", "stop for parent after
+  this leaf". EV-UA-A-041 consequence 8 last clause is superseded. Historical A6
+  rows that used those phrases remain as the defect; they are not copied forward.
+evidence_ids: [EV-UA-A-044, EV-UA-A-045]
+alternatives_rejected:
+  - Parent assigns or accepts each FILE leaf
+  - Treat FILE H3 AWAITING_WINDOW_REVIEW as a parent halt
+  - Use may_start_successor false as a leaf brake
+reason: Sub-window standard §1.1, §1.2, §1.3, §5.5, §12.1 and parent standard §10.3–10.4 already require this. Plan docs omitted it; parent invented the opposite freeze.
+consequences: UA-W7 through UA-W15 assignment pastes copy this decision. Parent paste after decomposition accept is one paste for the remaining DAG. Next parent paste is I001 handoff review or a blocker.
+derived_values: none
+implementing_tasks: []
+verification_scenarios: [SCN-UA-006]
+```
+
+```yaml
+decision_id: DEC-UA-016
+requirement_ids: [REQ-UA-005]
+locked_choice: |
+  Frozen npm test G1 for UA-W6 through UA-W15 is not "exit 0 / 175 pass".
+  From frontend/, run `npm test`. PASS iff (a) CASE-UA-W6-001, CASE-UA-W6-002,
+  and CASE-UA-W6-003 pass when those tests exist in the suite, and the active
+  window's allocated CASE-UA-Wn tests pass; AND (b) every failing test title,
+  if any, is a member of the predecessor heading-oracle set:
+    1. "My searches presents keyword research and identifiable run dossiers without rendering IDs"
+    2. "MRR-FE-01 exact research payload and two-section surface"
+    3. "MRR-W2 frontend unit certificate"
+  FAIL iff any other test fails, or any allocated UA CASE fails.
+  npm test process exit 1 is expected while members of that set fail; exit 1
+  is not G1 FAIL when (a) and (b) hold. Parent-measured baseline after UA-W6
+  product files: 175 tests, 172 pass, 3 fail, exactly those three titles.
+  Do not edit test/my-runs-research-resume.test.ts (DEC-UA-014 parked). Do not
+  edit test/design-system-shell.test.ts in this package (unowned predecessor
+  oracle; not in the UA-W6 planned set). Do not revert DEC-UA-003 /runs
+  SectionIntro. If CASE-UA-W1-001 or CASE-UA-W1-002 fail solely with
+  SyntaxError Unexpected end of JSON input from getExecuted, that is the
+  known concurrent recordExecuted race on tracked test/.ua-executed.json
+  (DEC-UA-011 residue): one identical rerun is permitted (E8.1); it is not a
+  product failure and is not a member of the heading-oracle set.
+evidence_ids: [EV-UA-W6-I-001, EV-UA-A-046]
+alternatives_rejected:
+  - Keep G1 as npm test exit 0 / 175 pass (unreachable after DEC-UA-003 /runs heading)
+  - Revert runs/page.tsx to <h1>My searches</h1>
+  - Authorize editing parked my-runs-research-resume.test.ts
+  - Authorize a UA-W6 corrective that edits design-system-shell.test.ts (does not clear G1 while MRR remains parked)
+reason: Parent-measured G1 after independently confirming five UA-W6 file pins and reproducing 175/172/3. The three failures assert the pre-W6 h1 that DEC-UA-003 removes. Parked-file edit is forbidden. Scope expansion is not this visual contract.
+consequences: A4 §Gates and UA-W6 through UA-W15 V2 npm test use this oracle. ASG-UA-W6-01 is closed for further work under the old 175-pass G1. ASG-UA-W6-02 resumes UA-W6 for S1 §17 G1 append, personal UA-W6-I002 (G1–G9), A4 boxes, handoff. Product files stay at the W6 ending pins. UA-W7 remains unauthorized.
+derived_values: |
+  Named predecessor heading-oracle titles (exact):
+  "My searches presents keyword research and identifiable run dossiers without rendering IDs"
+  "MRR-FE-01 exact research payload and two-section surface"
+  "MRR-W2 frontend unit certificate"
+implementing_tasks: [UA-W6-I002]
+verification_scenarios: [SCN-UA-005]
+```
+
 ## D1–D13 applicability
 
 | Ledger | Disposition | Evidence |
@@ -367,7 +441,7 @@ cleanup: none
 ```yaml
 scenario_id: SCN-UA-006
 requirements: [REQ-UA-008]
-decisions: [DEC-UA-007, DEC-UA-011]
+decisions: [DEC-UA-007, DEC-UA-011, DEC-UA-015]
 preconditions: coverage registry file
 inputs: listRequiredCaseIds()
 actions: digest equality required=registered; executed set filled by each test

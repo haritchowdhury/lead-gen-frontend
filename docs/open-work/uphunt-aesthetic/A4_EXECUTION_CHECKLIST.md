@@ -6,7 +6,7 @@ Other artifacts: `A1` `A1_LOCKED_PRODUCT_CONTRACT.md`; `A2` `A2_DISCOVERY_DOSSIE
 
 Standards: parent `PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md` revision `cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848`; sub-window `PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md` revision `842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0`.
 
-After a parent window is assigned, a window agent SHALL decompose it into single-file sub-windows under the sub-window standard. This `A4` does not itself assign sub-windows.
+After a parent window is assigned, a window agent SHALL decompose it into single-file sub-windows under the sub-window standard. This `A4` does not itself assign sub-windows. After decomposition is parent-accepted (`READY`), the parent also does not assign, correct, or accept FILE leaves (`DEC-UA-015`). The window agent owns S00x through I00n. Parent checkpoints for a window are only decomposition review, genuine `PARENT_BLOCKED`, and whole-window review after `A5` `AWAITING_REVIEW`. `may_start_successor: false` is the next parent window, not the next FILE leaf. FILE H3 `AWAITING_WINDOW_REVIEW` is a file-writer certificate field, not a parent stop. Parent paste after decomposition accept is one paste for the remaining DAG; the next parent paste is I001 handoff or a blocker.
 
 ## 0. Authoring readiness (mandatory copies)
 
@@ -61,7 +61,7 @@ Checked items cite `A6` evidence IDs. Unchecked items keep the package draft.
 - [x] `PC-012` Applied environment capabilities and limits are measured or gated. Evidence: SRC-UA-0020 SRC-UA-0090 SRC-UA-0092 DEC-UA-014
 - [x] `PC-013` Scale, operation-growth and resource ceilings are locked. Evidence: A3 D11 DEC-UA-005 heights
 - [x] `PC-014` Historical/mixed-version policy is an explicit product decision. Evidence: A1 §6 A3 D12 compact-lead mode not supported
-- [x] `PC-015` No task leaves two materially different implementations possible. Evidence: DEC-UA-001 through DEC-UA-013
+- [x] `PC-015` No task leaves two materially different implementations possible. Evidence: DEC-UA-001 through DEC-UA-016
 - [x] `PC-016` Storage transport, namespace, migration history and test cleanup are proven isolated. Evidence: A3 D2A
 
 ### 7.5 Scenario and acceptance closure
@@ -96,7 +96,7 @@ Checked items cite `A6` evidence IDs. Unchecked items keep the package draft.
 - [x] `PW-004` Every task has one complete mechanical trace. Evidence: A8
 - [x] `PW-005` Every window has exact write, read, action and prohibition scope. Evidence: F1 yaml
 - [x] `PW-006` Shared-file ownership is symbol-specific and ordered. Evidence: F1 shared_file_scope
-- [x] `PW-007` Default assignments authorize exactly one window. Evidence: DEC-UA-007 A5
+- [x] `PW-007` Default assignments authorize exactly one window. Evidence: DEC-UA-007 DEC-UA-015 A5
 - [x] `PW-008` Successor reservation and `may_start_successor` are explicit. Evidence: F1 successor fields
 - [x] `PW-009` Handoff verifies the actual diff against authorized scope. Evidence: handoff H1
 - [x] `PW-010` No successor task is required to satisfy predecessor acceptance. Evidence: each window local CASE ids
@@ -166,14 +166,14 @@ consumes: predecessor window produces plus this package A1-A8
 UA-W1 -> UA-W2 -> UA-W3 -> UA-W4 -> UA-W5 -> UA-W6 -> UA-W7 -> UA-W8 -> UA-W9 -> UA-W10 -> UA-W11 -> UA-W12 -> UA-W13 -> UA-W14 -> UA-W15 -> STOP
 ```
 
-No parallel parent windows (`globals.css` shared). `may_start_successor: false` on every window.
+No parallel parent windows (`globals.css` shared). `may_start_successor: false` on every window (next parent window only; not a FILE-leaf brake; `DEC-UA-015`).
 
 ## Gates
 
 From `frontend/` unless noted:
 
 - Diagnostic during edit: owned test file via `node --experimental-strip-types --test test/<file>.test.ts`
-- Frozen window gate: `npm test`
+- Frozen window gate: `npm test` (DEC-UA-016 from UA-W6 onward: PASS iff no failure outside the named predecessor heading-oracle set; allocated UA CASE tests must pass; process exit 1 is not G1 FAIL when only that set fails). Before UA-W6, G1 was exit 0.
 - Frozen typecheck G2: from `frontend/`, `npx tsc --noEmit --pretty false`. PASS iff zero diagnostics mention a path in the active window's `authorized_write_scope` (DEC-UA-014). Repo-wide tsc exit 0 is not required.
 - Frozen window gate when CSS/JSX owned: `npm run lint`
 - Frozen window gate UA-W15 only: `npm run build` (sandbox escalation allowed; identical retry once per E8.1)
@@ -284,21 +284,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W6 lifecycle
 
-- [ ] UA-W6-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W6-P2 Required predecessor outputs exist and validate (UA-W5 landing). Evidence: ___
-- [ ] UA-W6-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W6-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W6-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W6-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W6-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W6-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W6-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W6-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W6-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W6-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W6-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W6-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W6-H6 Stop; do not assign or begin the successor.
+- [x] UA-W6-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ASG-UA-W6-01 (S1 a4155461…, S3 D-001) then ASG-UA-W6-02 (A5 169efd89…, A3 094bc8bf…/DEC-UA-016, A4 f45b4163…, A1 57fa49c7… all recomputed at I002 preflight)
+- [x] UA-W6-P2 Required predecessor outputs exist and validate (UA-W5 landing). Evidence: landing pins 914c61e5…/3460751e…/72576044… verified; W5 G1 baseline 170 carried into I002 G1; w5 test ee6425e9… unchanged
+- [x] UA-W6-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: node v24, npm test = node --experimental-strip-types --test, /usr/bin/google-chrome present; 8 screenshots captured
+- [x] UA-W6-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: S1 §3 inventory (change-set e64ba5df…); leaf V-A rows S/R-001..005; porcelain before I002 = 4 implementation M + protected coordination M + 3 UA-W6 untracked artifacts
+- [x] UA-W6-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: S005 w6-only run 5/5 (json 5-ID digest 98d03fa1…); I002 G1 W6 cases pass; NC N1/N2/N3 falsified fresh at I002 G8 (S3 S-005, I-002)
+- [x] UA-W6-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: I002 G1 175/172/3 exactly the DEC-UA-016 heading-oracle titles, W6 cases pass, exit 1 expected (S3 I-002); G2 13 physical lines, 0 owned-path needles, 10 parked SRC-UA-0092 diagnostics; G3 lint exit 0
+- [x] UA-W6-V3 Confirm this window introduced no new network/DB operations (operation count 0). Evidence: I002 G7 — w6 test imports node:assert/strict, node:fs/promises, node:test, coverage registry only; 0 fetch/http/net/db references; suites are source-text oracles
+- [x] UA-W6-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: I002 G6 negative search over git diff --name-only HEAD — product delta exactly {4 implementation files, test/.ua-executed.json residue}; zero forbidden-path matches; all 17 preserved/predecessor pins byte-identical
+- [x] UA-W6-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only. Evidence: §10.3 bytes pinned f78b8da2…; 3 tests, recordExecuted after oracle; window-local 3/3/3/0/0/0 + 2 W1 registry re-executions; G5 17-ID digest e7895fa5… after npm test; full 43-set equality deferred to UA-W15-V5
+- [x] UA-W6-H1 Record changed files/symbols and migrations. Evidence: exactly the five planned files (85d3d712…): runs/page.tsx 24c146e8…→86392720…, keywords/page.tsx 07a82664…→8376447d…, run-continuation.tsx e0e4f14f…→d57edbe3…, globals.css 7ae36419…→b5c79578… (2 hunks), + new w6 test f78b8da2…; no migrations
+- [x] UA-W6-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: S3 EV-UA-W6-S/R-001..005 (leaf V-B..V-E), I-002 (G1–G9 all PASS under DEC-UA-016); zero skipped checks; one E8.1-observed transient registry race (W1 empty-JSON, not reproduced, one identical rerun authorized by DEC-UA-016 and not needed in I002)
+- [x] UA-W6-H3 Diff names ⊆ authorized_write_scope. Evidence: leaf V-E attributable-set rows + I002 G6 forbidden-path search; parked/design-system-shell/preserved files untouched (byte-verified)
+- [x] UA-W6-H4 No successor-window task or prohibited action was started. Evidence: I002 G9 — no UA-W7 artifacts, A5 current_window UA-W6, next_window untouched; no commit/push/AWS/paid-provider actions; .ua-executed.json never staged
+- [x] UA-W6-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: S3 FILE-SUBWINDOW-EXECUTED certificates (S-001..005) + INTEGRATION-PASS certificate (I-002); A5 current_status set to AWAITING_REVIEW at handoff
+- [x] UA-W6-H6 Stop; do not assign or begin the successor. Evidence: S2 state_version 7 next_subwindow STOP; UA-W7 unauthorized; no UA-W7 work exists
 
 ### UA-W7 lifecycle
 
@@ -307,7 +307,7 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 - [ ] UA-W7-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
 - [ ] UA-W7-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
 - [ ] UA-W7-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W7-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [ ] UA-W7-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
 - [ ] UA-W7-V3 Confirm this window introduced no new network/DB operations (operation count 0).
 - [ ] UA-W7-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
 - [ ] UA-W7-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
@@ -325,7 +325,7 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 - [ ] UA-W8-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
 - [ ] UA-W8-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
 - [ ] UA-W8-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W8-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [ ] UA-W8-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
 - [ ] UA-W8-V3 Confirm this window introduced no new network/DB operations (operation count 0).
 - [ ] UA-W8-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
 - [ ] UA-W8-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
@@ -343,7 +343,7 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 - [ ] UA-W9-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
 - [ ] UA-W9-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
 - [ ] UA-W9-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W9-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [ ] UA-W9-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
 - [ ] UA-W9-V3 Confirm this window introduced no new network/DB operations (operation count 0).
 - [ ] UA-W9-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
 - [ ] UA-W9-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
@@ -361,7 +361,7 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 - [ ] UA-W10-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
 - [ ] UA-W10-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
 - [ ] UA-W10-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W10-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [ ] UA-W10-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
 - [ ] UA-W10-V3 Confirm this window introduced no new network/DB operations (operation count 0).
 - [ ] UA-W10-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
 - [ ] UA-W10-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
@@ -379,7 +379,7 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 - [ ] UA-W11-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
 - [ ] UA-W11-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
 - [ ] UA-W11-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W11-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [ ] UA-W11-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
 - [ ] UA-W11-V3 Confirm this window introduced no new network/DB operations (operation count 0).
 - [ ] UA-W11-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
 - [ ] UA-W11-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
@@ -397,7 +397,7 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 - [ ] UA-W12-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
 - [ ] UA-W12-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
 - [ ] UA-W12-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W12-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [ ] UA-W12-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
 - [ ] UA-W12-V3 Confirm this window introduced no new network/DB operations (operation count 0).
 - [ ] UA-W12-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
 - [ ] UA-W12-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
@@ -415,7 +415,7 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 - [ ] UA-W13-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
 - [ ] UA-W13-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
 - [ ] UA-W13-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W13-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [ ] UA-W13-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
 - [ ] UA-W13-V3 Confirm this window introduced no new network/DB operations (operation count 0).
 - [ ] UA-W13-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
 - [ ] UA-W13-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
@@ -433,7 +433,7 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 - [ ] UA-W14-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
 - [ ] UA-W14-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
 - [ ] UA-W14-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W14-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [ ] UA-W14-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
 - [ ] UA-W14-V3 Confirm this window introduced no new network/DB operations (operation count 0).
 - [ ] UA-W14-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
 - [ ] UA-W14-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
@@ -451,7 +451,7 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 - [ ] UA-W15-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
 - [ ] UA-W15-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
 - [ ] UA-W15-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W15-V2 Frozen gate: from frontend/, `npm test`; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [ ] UA-W15-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
 - [ ] UA-W15-V3 Confirm wrap-height and type-floor ceilings still match DEC-UA-004 and DEC-UA-005.
 - [ ] UA-W15-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
 - [ ] UA-W15-V5 Assert required = registered = executed coverage-case IDs, zero required skips, digest 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05.
@@ -481,6 +481,7 @@ prohibited_actions: [edit_production_source, aws, commit]
 successor: UA-W2
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: false
 ```
 
@@ -504,6 +505,7 @@ prohibited_actions: [edit_globals_css, add_dependency, aws, commit]
 successor: UA-W3
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: false
 ```
 
@@ -530,6 +532,7 @@ prohibited_actions: [change_authClient_calls, aws, commit]
 successor: UA-W4
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -554,6 +557,7 @@ read_only_scope: [frontend/components/landing-sections.tsx, frontend/components/
 successor: UA-W5
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -575,6 +579,7 @@ read_only_scope: [frontend/components/section-intro.tsx]
 successor: UA-W6
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -595,12 +600,13 @@ shared_file_scope:
 successor: UA-W7
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
-- [ ] UA-W6-T1 Replace run-title-row contents on those three pages with SectionIntro and DEC-UA-003 strings. Keep existing buttons/links.
-- [ ] UA-W6-T2 Restyle `.app-page-header` gap to `var(--space-6)`.
-- [ ] UA-W6-T3 Tests CASE-UA-W6-001..003.
+- [x] UA-W6-T1 Replace run-title-row contents on those three pages with SectionIntro and DEC-UA-003 strings. Keep existing buttons/links. Evidence: parent EV-UA-A-048 (runs 86392720…, keywords 8376447d…, run-continuation d57edbe3…; Link href="/" and href="/runs" preserved; metadata titles unchanged)
+- [x] UA-W6-T2 Restyle `.app-page-header` gap to `var(--space-6)`. Evidence: parent EV-UA-A-048 (globals 7ae36419…→b5c79578…; numstat 2 1; unscoped needle `align-items: flex-end;\n  gap: var(--space-6);` count 1)
+- [x] UA-W6-T3 Tests CASE-UA-W6-001..003. Evidence: parent EV-UA-A-048 (w6 test f78b8da2…; three cases pass inside G1 175/172/3; window-local 3/3/3; 17-ID digest e7895fa5…)
 
 ---
 
@@ -618,6 +624,7 @@ prohibited_actions: [edit_RETRY_DELAYS, edit_poll_fetch, aws, commit]
 successor: UA-W8
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -641,6 +648,7 @@ prohibited_actions: [edit_lead-details.tsx, edit_sort_query_keys, aws, commit]
 successor: UA-W9
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -665,6 +673,7 @@ shared_file_scope:
 successor: UA-W10
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -687,6 +696,7 @@ shared_file_scope:
 successor: UA-W11
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -710,6 +720,7 @@ prohibited_actions: [edit_coreWebVitalRating, edit_aggregation_math, aws, commit
 successor: UA-W12
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -730,6 +741,7 @@ read_only_scope: [frontend/components/section-intro.tsx, frontend/components/key
 successor: UA-W13
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: false
 ```
 
@@ -749,6 +761,7 @@ shared_file_scope: []
 successor: UA-W14
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -770,6 +783,7 @@ prohibited_actions: [edit_getFiltered, edit_saveKeywordSelection, aws, commit]
 successor: UA-W15
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
@@ -791,6 +805,7 @@ prohibited_actions: [aws, commit, production]
 successor: STOP
 successor_reserved_for: parent
 may_start_successor: false
+parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 

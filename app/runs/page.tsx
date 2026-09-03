@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { RunHistory } from "@/components/run-history";
+import { SectionIntro } from "@/components/section-intro";
 
 export const metadata: Metadata = { title: "My searches" };
 export const dynamic = "force-dynamic";
@@ -11,11 +12,11 @@ export default function RunsPage() {
     <main className="app-canvas history-page">
       <div className="shell">
         <div className="run-title-row app-page-header">
-          <div>
-            <span className="eyebrow">Account workspace</span>
-            <h1>My searches</h1>
-            <p>Continue keyword research or revisit the leads discovered in an earlier market.</p>
-          </div>
+          <SectionIntro
+            eyebrow="Account workspace"
+            title="Return to the searches you already started."
+            copy="Continue keyword research or open the leads from an earlier market."
+          />
           <Link className="ds-button ds-button--primary" href="/">New discovery</Link>
         </div>
         <RunHistory />

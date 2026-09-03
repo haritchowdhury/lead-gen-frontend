@@ -107,6 +107,8 @@ Every parent window's authorized write scope SHALL be an exact file list plus
 symbol-specific `globals.css` ownership. After parent assignment, decomposition
 SHALL follow `PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md`
 (one writable file per `FILE` sub-window; tests separate from production files).
+The parent does not accept FILE leaves; the parent accepts the parent window
+(DEC-UA-015).
 
 ## 3. Invariants
 

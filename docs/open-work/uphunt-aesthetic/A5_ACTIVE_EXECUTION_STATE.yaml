@@ -10,17 +10,17 @@ Other artifacts: `A1` `A1_LOCKED_PRODUCT_CONTRACT.md`; `A2` `A2_DISCOVERY_DOSSIE
 `A8` `A8_TRACEABILITY_INDEX.md`.
 
 ```yaml
-state_version: 12
+state_version: 16
 standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
 standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
 subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
 subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
 contract_path: frontend/docs/open-work/uphunt-aesthetic/A1_LOCKED_PRODUCT_CONTRACT.md
-contract_revision: a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef
+contract_revision: 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827
 decision_path: frontend/docs/open-work/uphunt-aesthetic/A3_DECISION_LEDGER.md
-decision_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
+decision_revision: 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3
 checklist_path: frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md
-checklist_revision: 713462c8b26fba4a1e94caa36ec8d28b1e6481b171fbce399491231dccb74c64
+checklist_revision: 0a834df7f96677c78d0772564fd2c6a92ca161d0a5ce59c5c5ad6c112182a9a8
 current_window: NONE
 current_assignment_id: NONE
 assigned_agent: UNASSIGNED
@@ -28,8 +28,11 @@ authorized_windows: []
 authorized_write_scope: []
 authorized_actions: []
 prohibited_actions:
-  - start_UA-W6
+  - start_UA-W7
   - may_start_successor
+  - parent_assign_or_accept_FILE_leaf
+  - stop_for_parent_between_FILE_leaves
+  - treat_AWAITING_WINDOW_REVIEW_as_parent_stop
   - aws
   - commit
   - push
@@ -44,11 +47,11 @@ execution_environment_policy:
   external_authority_expansion: false
 may_start_successor: false
 current_status: READY
-accepted_through: UA-W5
-next_window: UA-W6
+accepted_through: UA-W6
+next_window: UA-W7
 stop_after: UA-W15
 blocker: null
 user_gates: []
 successor_reserved_for: parent
-last_updated: 2026-09-02T20:10:00+05:30
+last_updated: 2026-09-03T14:50:00+05:30
 ```

@@ -1,0 +1,66 @@
+# UA-W6 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W6_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W6_SUBWINDOW_EVIDENCE_S3.md`.
+
+All five FILE leaves (S001–S005) executed and personally reviewed
+(ACCEPTED_FOR_INTEGRATION, S3 `EV-UA-W6-S/R-001..005`); every ending digest
+matches its parent pin. `UA-W6-I001` was personally executed and returned
+**PARENT_BLOCKED on G1** (S3 `EV-UA-W6-I-001` + `…-ERRATUM-1`): three
+predecessor accepted tests (`design-system-shell.test.ts`,
+parked `my-runs-research-resume.test.ts` ×2) pin the `<h1>My searches</h1>`
+heading that the parent-frozen DEC-UA-003 change removes; the remedy requires
+editing a parked file / a file outside the frozen planned set and a parent
+decision freezing the replacement oracle bytes. G2/G3/G5 PASS; G4/G6–G9 not
+reached. A4 boxes, `UA-W6_HANDOFF.md`, and the A5 handoff action are NOT
+performed (they require I001 PASS). `A5` remains byte-identical `8620953c…`.
+
+```yaml
+state_version: 7
+parent_window_id: UA-W6
+parent_assignment_id: ASG-UA-W6-01
+window_agent_identity: UA-W6-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: a33ae1d8af4442de2680dc70f2c6e793a668b1400f0814833489061848c9baef
+parent_decision_revision: 8faaa4e2411235d8a83ec94de6a07e53c54ece91d99121a3c0e09cb6052f4300
+parent_checklist_revision: 713462c8b26fba4a1e94caa36ec8d28b1e6481b171fbce399491231dccb74c64
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W6_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: a415546155a35ab0c560d94706b407ebf02eac248842863c2c9de008b4bf09b4
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W6_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: UA-W6-I001
+current_assignment_id: UA-W6-I001
+assigned_agent: UA-W6-WINDOW-AGENT
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE
+current_status: AWAITING_REVIEW
+accepted_subwindows:
+  - ASG-UA-W6-01-S001
+  - ASG-UA-W6-01-S002
+  - ASG-UA-W6-01-S003
+  - ASG-UA-W6-01-S004
+  - ASG-UA-W6-01-S005
+next_subwindow: STOP
+blocker: null
+
+prohibited_actions:
+  - edit_the_parked_or_predecessor_test_files_without_parent_decision
+  - start_UA-W7
+  - may_start_successor
+  - edit_A5_except_authorized_handoff_action
+  - commit
+  - push
+  - aws
+  - production
+  - paid_provider
+may_start_successor: false
+last_updated: 2026-09-03T17:00:00+05:30
+```
+
+Leaf ending digests (all verified against parent pins): runs/page.tsx
+`86392720…`, keywords/page.tsx `8376447d…`, run-continuation.tsx `d57edbe3…`,
+globals.css `b5c79578…`, uphunt-aesthetic-w6.test.ts `f78b8da2…`.

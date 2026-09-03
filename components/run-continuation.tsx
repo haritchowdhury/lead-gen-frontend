@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { SectionIntro } from "@/components/section-intro";
 import type { SearchContinuationResponse } from "@/lib/api-types";
 import { parseSearchContinuationResponse } from "@/lib/api-validation";
 import { ApiRequestError, apiRequest, errorMessage } from "@/lib/client-api";
@@ -54,11 +55,11 @@ export function RunContinuation() {
     <main className="app-canvas auth-page">
       <section className="auth-card continuation-card ds-card" aria-live="polite">
         <span className="continuation-spinner" aria-hidden="true" />
-        <span className="eyebrow">Preparing your search</span>
-        <h1>{error ? "We could not continue yet" : "Starting your saved search…"}</h1>
-        <p>
-          {error ?? "Your account is ready. We are attaching the pending search and opening its workspace."}
-        </p>
+        <SectionIntro
+          eyebrow="Preparing run"
+          title="Your search is being prepared."
+          copy="Continue when the next step is ready."
+        />
         {error && (
           <div className="continuation-actions">
             <button className="ds-button ds-button--primary" onClick={retryClaim}>Try again</button>

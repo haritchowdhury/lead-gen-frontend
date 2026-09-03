@@ -56,7 +56,7 @@ REQ-UA-004
 ```text
 REQ-UA-005
 -> SRC-UA-0024 SRC-UA-0019 SRC-UA-0092
--> DEC-UA-006 DEC-UA-011 DEC-UA-013 DEC-UA-014
+-> DEC-UA-006 DEC-UA-011 DEC-UA-013 DEC-UA-014 DEC-UA-016
 -> UA-W1-T1 UA-W1-T2 UA-W7-T3 UA-W8-T3 UA-W14-T2 UA-W15-T2
 -> SCN-UA-005 SCN-UA-006 CASE-UA-W1-001 CASE-UA-W1-002 CASE-UA-W7-002 CASE-UA-W8-003 CASE-UA-W14-003 CASE-UA-W15-003
 -> test/uphunt-aesthetic-coverage.test.ts ; test/ua-coverage-equality.mjs
@@ -89,8 +89,8 @@ REQ-UA-007
 ```text
 REQ-UA-008
 -> SRC-UA-0002
--> DEC-UA-007
--> UA-W1-T1 (registry shape); parent assignment then window-agent decomposition (not a UA-Wn product task)
+-> DEC-UA-007 DEC-UA-015
+-> UA-W1-T1 (registry shape); parent assignment then window-agent decomposition and leaf advancement (not a UA-Wn product task)
 -> SCN-UA-006 CASE-UA-W1-002
 -> A4 F1 file lists plus symbol-specific globals.css
 -> PENDING execution
