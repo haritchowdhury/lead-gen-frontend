@@ -76,3 +76,21 @@ compatibility_or_migration_effect: none; presentation-only package; UA-W6 produc
 authorization_effect: ASG-UA-W6-01 is closed for further work under the old G1. New assignment ASG-UA-W6-02 resumes UA-W6 for S1 §17 G1 append, personal UA-W6-I002, A4 UA-W6 boxes, handoff, and A5 AWAITING_REVIEW. Product write scope removed. UA-W7 remains unauthorized. Root ACTIVE_EXECUTION_STATE.md is not this package.
 resumption_state: A5 current_window UA-W6, current_assignment_id ASG-UA-W6-02, assigned_agent UA-W6-WINDOW-AGENT, current_status IN_PROGRESS, blocker null, next_window UA-W7, stop_after UA-W15, may_start_successor false
 ```
+
+```yaml
+change_id: CHG-UA-0005
+timestamp: 2026-09-03T18:20:00+05:30
+trigger_evidence: [EV-UA-A-054, EV-UA-A-055]
+reason: UA-W9 replaces DEC-UA-004 overview titles that frontend/test/lead-details-component.test.ts still asserts as "Lead overview" / "Score semantics" / "Store identity" / "Outreach evidence". DEC-UA-016 treats any failure outside the three named heading-oracle titles as G1 FAIL, so those three assertion lines must move with the product strings. Uniquely determined; no new product decision.
+old_revision: e93443356612e1c1b9dfbd482b1153771e8e55f02e0eff15a8e8d0230aafbf68
+new_revision: 75005e558cfc238d89839ee2af0e94b94b682dae7ff432a4762c0f4a63c9a7c0
+changed_requirements: []
+changed_decisions: []
+affected_windows: [UA-W9]
+invalidated_evidence:
+  - A4 F1 UA-W9 authorized_write_scope three-path list (superseded by the four-path list plus UA-W9-T4; historical A4 bytes retained in git)
+  - EV-UA-A-054 A5 READY checklist_revision e9344335… (superseded by this assignment pin)
+compatibility_or_migration_effect: none; presentation-only package; no product file change in this revision
+authorization_effect: UA-W9 is assigned as ASG-UA-W9-01 to UA-W9-WINDOW-AGENT for decomposition only. FILE leaves remain unassigned until parent accepts the decomposition. UA-W10 remains unauthorized. Root ACTIVE_EXECUTION_STATE.md is not this package.
+resumption_state: A5 current_window UA-W9, current_assignment_id ASG-UA-W9-01, assigned_agent UA-W9-WINDOW-AGENT, current_status IN_PROGRESS, blocker null, next_window UA-W10, stop_after UA-W15, may_start_successor false
+```

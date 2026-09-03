@@ -92,9 +92,9 @@ function compiledComponents(): Promise<Components> {
 test("actual expanded details render every full-evidence family and every contact channel", async () => {
   const { LeadDetails } = await compiledComponents();
   const html = renderToStaticMarkup(createElement(LeadDetails, { lead: lead() }));
-  assert.ok(html.indexOf("Lead overview") < html.indexOf("Category and store fit"));
-  assert.ok(html.indexOf("Score semantics") < html.indexOf("Store identity"));
-  assert.ok(html.indexOf("Store identity") < html.indexOf("Outreach evidence"));
+  assert.ok(html.indexOf("Know the business behind this domain.") < html.indexOf("Category and store fit"));
+  assert.ok(html.indexOf("Why this lead sits where it does.") < html.indexOf("The storefront StoreSignal resolved."));
+  assert.ok(html.indexOf("The storefront StoreSignal resolved.") < html.indexOf("A real way in, if one was found."));
   assert.match(html, /outcome-badge/u);
   assert.match(html, /contact-evidence-disclosure/u);
   assert.match(html, /href="https:\/\/fixture\.example\/"[^>]*>Resolved storefront/u);

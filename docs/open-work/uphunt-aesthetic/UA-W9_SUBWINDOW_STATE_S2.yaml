@@ -1,0 +1,107 @@
+# UA-W9 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W9_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W9_SUBWINDOW_EVIDENCE_S3.md`.
+
+Parent accepted the UA-W9 decomposition (`EV-UA-A-056`). Identity
+`UA-W9-WINDOW-AGENT` owns the frozen DAG without parent checkpoints:
+execute then personally review each FILE leaf in the same turn, then
+immediately assign and start the next S-number, then personally run I001,
+then handoff (`DEC-UA-015`). Communicate upward only on I001 PASS, a genuine
+blocker, or UA-W10 (never). Do not wait for the parent between S001, S002,
+S003, S004, or I001. `AWAITING_WINDOW_REVIEW` is the FILE H3 certificate
+field, not a parent stop. `A5` remains byte-identical `d23fccfe…` until the
+authorized I001 handoff action.
+
+```yaml
+state_version: 2
+parent_window_id: UA-W9
+parent_assignment_id: ASG-UA-W9-01
+window_agent_identity: UA-W9-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827
+parent_decision_revision: 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3
+parent_checklist_revision: 75005e558cfc238d89839ee2af0e94b94b682dae7ff432a4762c0f4a63c9a7c0
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W9_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: c900cebe930791a438fd23c3c311597a7f79e27dfef15dfaa0650ea96849d149
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W9_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: UA-W9-I001
+current_assignment_id: ASG-UA-W9-01-I001
+assigned_agent: UA-W9-WINDOW-AGENT
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE (I001 writes no application file; may write review-evidence screenshots + append S3/A6 + A5 handoff action)
+authorized_read_scope:
+  - frontend/test/uphunt-aesthetic-w9.test.ts (post-S004, digest baee1b2e…)
+  - frontend/components/lead-details.tsx (post-S001 5f32de7f…)
+  - frontend/app/globals.css (post-S002 6e57268a…)
+  - frontend/test/lead-details-component.test.ts (post-S003 f8f7323c…)
+  - frontend/test/.ua-executed.json (runtime 34f5b71a…)
+  - frontend/docs/open-work/uphunt-aesthetic/UA-W9_SUBWINDOW_DECOMPOSITION_S1.md (§10 gates, §11 sandbox, §13/§14)
+  - frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md (§UA-W9)
+authorized_actions:
+  - execute_then_personally_review_UA-W9-S001
+  - assign_and_execute_then_personally_review_UA-W9-S002
+  - assign_and_execute_then_personally_review_UA-W9-S003
+  - assign_and_execute_then_personally_review_UA-W9-S004
+  - execute_UA-W9-I001
+  - append_S3_evidence
+  - check_UA-W9_boxes
+  - append_A6_evidence
+  - write_UA-W9_handoff
+  - set_A5_AWAITING_REVIEW_on_handoff
+prohibited_actions:
+  - stop_for_parent_between_FILE_leaves
+  - treat_AWAITING_WINDOW_REVIEW_as_parent_stop
+  - start_UA-W10
+  - may_start_successor
+  - edit_A5_except_authorized_handoff_action_after_I001
+  - edit_StoreEvidence_or_DiscoveryDetails_bodies
+  - edit_TrafficEnrichmentDetails_call_or_traffic_enrichment_tsx
+  - edit_section_intro
+  - edit_landing_sections
+  - edit_results_table_tsx
+  - edit_results_filters_tsx
+  - edit_cumulative_traffic_tsx
+  - edit_leads_page
+  - edit_live_leads_workspace
+  - edit_run_workspace
+  - edit_query_editor
+  - edit_run_progress
+  - edit_unowned_globals_css_selectors
+  - edit_lead_expansion_shell_or_W8_selectors
+  - edit_REQUIRED_CASE_IDS
+  - edit_uphunt-aesthetic-coverage_test
+  - edit_uphunt-aesthetic-w2_w3_w4_w5_w6_w7_w8_test_files
+  - edit_lead_details_component_test_except_three_title_order_assertions
+  - edit_parked_SRC-UA-0092_test_files
+  - edit_design-system-shell_test
+  - edit_fixtures_ts
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: READY_FOR_PARENT_REVIEW
+accepted_subwindows: [UA-W9-S001, UA-W9-S002, UA-W9-S003, UA-W9-S004]
+next_subwindow: null
+blocker: null
+last_updated: 2026-09-03T19:53:00+05:30
+```
+
+Planned implementation set (four files, §4.7 digest `85f56b7b570f3f92bbafbfc55ba8ca9c1178ac23826f15daa39e7861a5adc04f`):
+frontend/components/lead-details.tsx → S001, frontend/app/globals.css → S002,
+frontend/test/lead-details-component.test.ts → S003, frontend/test/uphunt-aesthetic-w9.test.ts
+→ S004, then UA-W9-I001.

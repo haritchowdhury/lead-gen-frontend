@@ -16,6 +16,7 @@ import {
   scorePresentation,
 } from "../lib/lead-presentation";
 import { TrafficEnrichmentDetails } from "./traffic-enrichment";
+import { SectionIntro } from "./section-intro";
 
 function ExternalDetailLink({
   href,
@@ -38,18 +39,26 @@ function DetailSection({
   title,
   order,
   emphasis = false,
+  eyebrow,
+  copy,
   className,
   children,
 }: {
   title: string;
   order: string;
   emphasis?: boolean;
+  eyebrow?: string;
+  copy?: string;
   className?: string;
   children: React.ReactNode;
 }) {
   return (
     <section className={`detail-section${emphasis ? " detail-section-emphasis" : ""}${className ? ` ${className}` : ""}`}>
-      <h3><span>{order}</span>{title}</h3>
+      {eyebrow !== undefined && copy !== undefined ? (
+        <SectionIntro eyebrow={eyebrow} title={title} copy={copy} />
+      ) : (
+        <h3><span>{order}</span>{title}</h3>
+      )}
       {children}
     </section>
   );
@@ -58,15 +67,18 @@ function DetailSection({
 function OverviewPanel({
   title,
   className,
+  copy,
   children,
 }: {
   title: string;
   className: string;
+  copy?: string;
   children: React.ReactNode;
 }) {
   return (
     <section className={`lead-overview-panel ${className}`}>
       <h4>{title}</h4>
+      {copy !== undefined && <p className="detail-copy">{copy}</p>}
       {children}
     </section>
   );
@@ -171,7 +183,7 @@ function ContactDetails({ lead }: { lead: Lead }) {
     ...(lead.contact_evidence?.organizationNames ?? []),
   ];
   return (
-    <OverviewPanel title="Outreach evidence" className="overview-outreach">
+    <OverviewPanel title="Reachability" className="overview-outreach" copy="A real way in, if one was found.">
       <p className="detail-callout">
         <strong>{contactabilityLabel(lead.contactability_tier)}</strong>
         <span>{humanizeToken(lead.contactability_tier ?? "unrecorded")}</span>
@@ -324,7 +336,7 @@ function ScoreDetails({ lead }: { lead: Lead }) {
   const score = scorePresentation(lead);
   const components = scoreComponents(lead.score_breakdown);
   return (
-    <OverviewPanel title="Score semantics" className="overview-score">
+    <OverviewPanel title="Strength" className="overview-score" copy="Why this lead sits where it does.">
       <p className={`detail-score score-${score.tone}`}><strong>{score.value}</strong><span>{score.label}</span></p>
       <p className="detail-copy">{score.explanation}</p>
       {components.length > 0 && (
@@ -344,7 +356,7 @@ function IdentityDetails({ lead }: { lead: Lead }) {
   const canonical = identity?.canonical;
   const resolvedStorefront = lead.resolved_domain ? `https://${lead.resolved_domain}` : null;
   return (
-    <OverviewPanel title="Store identity" className="overview-identity">
+    <OverviewPanel title="Identity" className="overview-identity" copy="The storefront StoreSignal resolved.">
       <dl className="fact-grid">
         <Fact label="MyShopify domain" value={lead.myshopify_domain} />
         <Fact label="Resolved domain" value={lead.resolved_domain} />
@@ -366,7 +378,7 @@ function IdentityDetails({ lead }: { lead: Lead }) {
 
 function LeadOverview({ lead }: { lead: Lead }) {
   return (
-    <DetailSection title="Lead overview" order="01" emphasis className="lead-overview">
+    <DetailSection title="Know the business behind this domain." order="01" emphasis className="lead-overview" eyebrow="01 · The store" copy="Score, identity, and the outreach paths that were actually recorded.">
       <OutcomeBadge lead={lead} />
       <div className="lead-overview-grid">
         <div className="lead-overview-primary">

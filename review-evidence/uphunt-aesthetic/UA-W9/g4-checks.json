@@ -1,0 +1,73 @@
+{
+  "fixture": "real compiled production components (ResultsTableView, first row expanded) against real compiled globals.css via the design-fixture completed route",
+  "route": "/design-fixture?scenario=completed",
+  "widths": [
+    390,
+    768,
+    1280,
+    1440
+  ],
+  "shots": [
+    {
+      "width": 390,
+      "height": 900,
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "bodyOverflow": true,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "sectionIntro": true,
+      "hasStrengthCopy": true,
+      "fontSize": "22px",
+      "columnCount": "86.6562px 86.6719px 86.6562px"
+    },
+    {
+      "width": 768,
+      "height": 900,
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "bodyOverflow": true,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "sectionIntro": true,
+      "hasStrengthCopy": true,
+      "fontSize": "22px",
+      "columnCount": "668.062px 668.062px 668.062px"
+    },
+    {
+      "width": 1280,
+      "height": 900,
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "bodyOverflow": true,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "sectionIntro": true,
+      "hasStrengthCopy": true,
+      "fontSize": "22px",
+      "columnCount": "668.062px 668.062px 668.062px"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "bodyOverflow": true,
+      "firstRowExpanded": true,
+      "leadDetailsVisible": true,
+      "sectionIntro": true,
+      "hasStrengthCopy": true,
+      "fontSize": "22px",
+      "columnCount": "668.062px 668.062px 668.062px"
+    }
+  ],
+  "gap": "Protected run routes require Neon authentication, so G4 renders the real compiled ResultsTableView (first row expanded) with the real compiled globals.css on the frozen /design-fixture?scenario=completed route; the synthetic .example pre-hydration interception technique is used per the S1 §10 G4 note. Local_e2e evidence, not a CASE oracle (SUB-UA-001)."
+}

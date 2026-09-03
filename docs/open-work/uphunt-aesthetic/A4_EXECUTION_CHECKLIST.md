@@ -338,21 +338,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W9 lifecycle
 
-- [ ] UA-W9-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W9-P2 Required predecessor outputs exist and validate (UA-W8 table shell). Evidence: ___
-- [ ] UA-W9-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W9-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W9-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W9-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W9-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W9-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W9-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W9-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W9-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W9-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W9-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W9-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W9-H6 Stop; do not assign or begin the successor.
+- [x] UA-W9-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: EV-UA-W9-D-001 + parent EV-UA-A-057 (ASG-UA-W9-01; S1 `c900cebe…`; A1/A3 MATCH)
+- [x] UA-W9-P2 Required predecessor outputs exist and validate (UA-W8 table shell). Evidence: parent EV-UA-A-057 (results-table `a4e1472f…`; run-workspace `643c3568…`; w8 test `cab15f7f…`; lead-expansion-shell paddings preserved)
+- [x] UA-W9-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: EV-UA-W9-D-001; parent G1/G2/G3/G4 executed
+- [x] UA-W9-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: EV-UA-W9-D-001 (frontend coordination writes; coordination root clean)
+- [x] UA-W9-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
+- [x] UA-W9-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
+- [x] UA-W9-V3 Confirm this window introduced no new network/DB operations (operation count 0).
+- [x] UA-W9-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
+- [x] UA-W9-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
+- [x] UA-W9-H1 Record changed files/symbols and migrations. Evidence: UA-W9_HANDOFF.md (MODIFY lead-details, globals.css, ldc-test; CREATE w9.test.ts; no migrations)
+- [x] UA-W9-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: UA-W9_HANDOFF.md (G1–G9 outcomes; no skipped checks)
+- [x] UA-W9-H3 Diff names ⊆ authorized_write_scope. Evidence: UA-W9-I001 G6 (delta = exactly the 4 §4 planned files + coordination artifacts + json residue + browser evidence)
+- [x] UA-W9-H4 No successor-window task or prohibited action was started. Evidence: UA-W9-I001 G9 (no UA-W10; may_start_successor false)
+- [x] UA-W9-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: EV-UA-W9-I-001; A5 `current_status: AWAITING_REVIEW` (`1cb028ec…`)
+- [x] UA-W9-H6 Stop; do not assign or begin the successor.
 
 ### UA-W10 lifecycle
 
@@ -666,7 +666,7 @@ run-workspace.tsx is shared with UA-W7 read-only; UA-W8 may edit completed-resul
 window_id: UA-W9
 objective: Lead overview, score, identity, outreach readable; remove dense type for owned selectors.
 depends_on: [UA-W8]
-authorized_write_scope: [frontend/components/lead-details.tsx, frontend/app/globals.css, frontend/test/uphunt-aesthetic-w9.test.ts]
+authorized_write_scope: [frontend/components/lead-details.tsx, frontend/app/globals.css, frontend/test/lead-details-component.test.ts, frontend/test/uphunt-aesthetic-w9.test.ts]
 shared_file_scope:
   frontend/app/globals.css: [.lead-details, .detail-section, .detail-section-emphasis, .lead-overview, .lead-overview-grid, .lead-overview-panel, .outcome-badge, .fact-grid, .outreach-channel-list, .contact-evidence-item, .detail-score]
   frontend/components/lead-details.tsx: [LeadOverview, ScoreDetails, IdentityDetails, ContactDetails, OutcomeBadge, DetailSection]
@@ -677,9 +677,10 @@ parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
-- [ ] UA-W9-T1 Replace DetailSection title rendering with SectionIntro using DEC-UA-004 strings for overview/score/identity/reachability. Keep field Fact/TokenList components and conditions.
-- [ ] UA-W9-T2 Replace dense-lead rules for owned selectors: h3 min 1.375rem; dt 12px; dd 14px; fact-grid `repeat(3, minmax(0, 1fr))` max; padding `var(--space-6) var(--space-5)`. Delete `.lead-overview .overview-identity .fact-grid { grid-template-columns: repeat(8, ...)` and `.score-components { repeat(6, ...)`.
-- [ ] UA-W9-T3 Tests CASE-UA-W9-001..004 using denseLead fixture; assert email/phone/score markup still present when fixture has them.
+- [x] UA-W9-T1 Replace DetailSection title rendering with SectionIntro using DEC-UA-004 strings for overview/score/identity/reachability. Keep field Fact/TokenList components and conditions. Evidence: parent EV-UA-A-057 (lead-details `5f32de7f…`; SectionIntro import; DEC-UA-004 01 + Strength/Identity/Reachability copy; 03/04 h3 path preserved; numstat 17 5)
+- [x] UA-W9-T2 Replace dense-lead rules for owned selectors: h3 min 1.375rem; dt 12px; dd 14px; fact-grid `repeat(3, minmax(0, 1fr))` max; padding `var(--space-6) var(--space-5)`. Delete `.lead-overview .overview-identity .fact-grid { grid-template-columns: repeat(8, ...)` and `.score-components { repeat(6, ...)`. Evidence: parent EV-UA-A-057 (globals.css `6e57268a…`; eight hunks; `font-size: 1.375rem;`; combined repeat(3); marketing-heading retargets; numstat 9 9)
+- [x] UA-W9-T3 Tests CASE-UA-W9-001..004 using denseLead fixture; assert email/phone/score markup still present when fixture has them. Evidence: parent EV-UA-A-057 (w9 test `baee1b2e…`; four cases pass inside G1 190/187/3; window-local 4/4/4)
+- [x] UA-W9-T4 Update only the three title-order assertions in `lead-details-component.test.ts` to the DEC-UA-004 unique strings. No other edits in that file. Evidence: parent EV-UA-A-057 (ldc-test `f8f7323c…`; three assertion lines only; numstat 3 3; ldc single-file 11/11)
 
 ---
 
@@ -965,6 +966,7 @@ Critical invariants INV-UA-001..010 map to NC-UA-005 (forbidden paths), NC-UA-00
 | frontend/components/results-filters.tsx | UA-W8 | CASE-UA-W8-003 |
 | frontend/components/cumulative-traffic.tsx | UA-W8 | CASE-UA-W8-001 |
 | frontend/components/lead-details.tsx | UA-W9 overview; UA-W10 store-fit/discovery; UA-W11 TrafficEnrichmentDetails call | CASE-UA-W9-* CASE-UA-W10-* CASE-UA-W11-* |
+| frontend/test/lead-details-component.test.ts | UA-W9 T4 title-order assertions only | predecessor G1 (DEC-UA-016) |
 | frontend/components/traffic-enrichment.tsx | UA-W11 | CASE-UA-W11-001/002 |
 | frontend/app/keywords/[researchId]/page.tsx | UA-W12 | CASE-UA-W12-001 |
 | frontend/components/keyword-intelligence/research-dashboard.tsx | UA-W12 intro; UA-W13 reorder | CASE-UA-W12-* CASE-UA-W13-004 |
