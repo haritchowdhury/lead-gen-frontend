@@ -1,3 +1,4 @@
+import { SectionIntro } from "@/components/section-intro";
 import type { RunStatus } from "@/lib/api-types";
 import { runStateLabel, runStateTone, trafficProgressState } from "@/lib/run-presentation";
 import { stageLabel, stagePercent } from "@/lib/stages";
@@ -41,12 +42,12 @@ export function RunProgress({ run }: RunProgressProps) {
         <div className="progress-stage">
           <span className={`state-indicator ${active ? "is-active" : ""}`} />
           <div>
-            <span className="eyebrow">
-              {isQueryPreparation
-                ? "Preparing your search plan"
-                : "Current stage"}
-            </span>
-            <h2>{stageLabel(run.stage)}</h2>
+            <SectionIntro
+              eyebrow="Discovery"
+              title="StoreSignal is looking for matching stores."
+              copy="The stages and counts below are the existing run status."
+            />
+            <p>{stageLabel(run.stage)}</p>
           </div>
         </div>
         <div className="progress-state">

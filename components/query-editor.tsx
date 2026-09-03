@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ArrowRightIcon, PlusIcon } from "@/components/icons";
+import { SectionIntro } from "@/components/section-intro";
 import type { QuerySet, RunQuery, StartScrapeResponse } from "@/lib/api-types";
 import { parseQuerySet, parseStartScrapeResponse } from "@/lib/api-validation";
 import { ApiRequestError, apiRequest, errorMessage } from "@/lib/client-api";
@@ -217,11 +218,13 @@ export function QueryEditor({
   return (
     <section id="query-review" className="run-form-card query-editor-card ds-card" aria-busy={busy !== null}>
       <div className="form-heading-row query-editor-heading">
-        <div>
-          <span className="eyebrow">Query review · revision {querySet.revision}</span>
-          <h2>Review your searches</h2>
-        </div>
+        <SectionIntro
+          eyebrow="Search plan"
+          title="Shape the searches before discovery starts."
+          copy="Review, edit, or add queries, then start when the direction feels right."
+        />
         <span className="step-badge">02</span>
+        <span>revision {querySet.revision}</span>
       </div>
 
       <div className="query-editor-scroll">

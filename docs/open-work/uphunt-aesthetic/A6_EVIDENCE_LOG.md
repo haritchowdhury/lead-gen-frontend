@@ -1736,3 +1736,123 @@ limitations: |
   Residual non-blocking: S2 remains a window-agent coordination artifact after parent A5 READY. test/.ua-executed.json is tracked at HEAD via d6121aa against DEC-UA-011's never-commit contract; prescribed npm test shows it modified (correct 17-ID content); untracking is a later parent decision. Concurrent recordExecuted writers can fail an extra CASE with empty JSON; DEC-UA-016 names W1, parent also observed W4-002; confirming run was clean 172/3. G4 /runs captures unauthenticated 307 to /sign-in (handoff disclosure); G4 is local_e2e not a CASE oracle. G4 heights 900px (S1 froze widths). Full required=executed equality remains UA-W15-V5. DEC-UA-016 does not repair predecessor heading oracles. A4 T1-T3 were unchecked at handoff; parent checked them on accept. UA-W7 not assigned.
 external_mutations: none
 ```
+
+```yaml
+evidence_id: EV-UA-A-049
+timestamp: 2026-09-03T15:25:00+05:30
+phase: assignment
+claim: Requester assigned UA-W7 as ASG-UA-W7-01 to UA-W7-WINDOW-AGENT for decomposition dispatch. Predecessor UA-W6 is parent-accepted (EV-UA-A-048) and committed (frontend b83b8e9). A1/A3/A4 hashes still matched prior A5 pins. Starting query-editor/run-progress have no SectionIntro. w7 test ABSENT. Successor UA-W8 remains reserved for parent. may_start_successor remains false. Root ACTIVE_EXECUTION_STATE.md was not mutated. Parent did not dispatch the window agent.
+environment: local workspace /home/harit/Email Scrapper
+revision: A5 state_version 17 digest 13285c12cdaec6b406ae37c209c7a14ea62b87bf1e191c1e7d50f5c04cc872eb
+operation: sha256sum of A1 A3 A4 vs prior A5 pins; sha256sum query-editor run-progress run-workspace runs/[runId]/page globals section-intro landing-sections coverage w2-w6 tests continue/run-history/research-form; test ! -f uphunt-aesthetic-w7.test.ts; git status --porcelain frontend/ and coordination root; A5 assignment fields written
+observed_result: |
+  A1 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827 MATCH;
+  A3 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3 MATCH;
+  A4 0a834df7f96677c78d0772564fd2c6a92ca161d0a5ce59c5c5ad6c112182a9a8 MATCH;
+  current_window UA-W7; authorized_windows [UA-W7]; current_status IN_PROGRESS;
+  query-editor ce09064c490a17a4ba93209438b545504d9ab928a12b13edb604931a3d5e6e12;
+  run-progress e12b8c5ba6f8835c9d2215ed985651b97b720fe7d47303ca236d3dc2c1ae6697;
+  run-workspace 9472450d3a22143befe5f52569328eb5c07df94fee543ecb873c0ca05914c8c3;
+  runs/[runId]/page 719e05ea0eec73fe948f0c41a9c56c970d6db61cfff0c990e59666136a069072;
+  globals b5c79578012da0ea47ee85665bce96b1127aca5b5526964074c52656b7359d6d;
+  w7 test ABSENT; frontend and coordination-root porcelain empty before this A5/A6 write
+parent_frozen_mechanical_consequences: |
+  These close otherwise-open S1 choices; they are uniquely determined by DEC-UA-002, DEC-UA-003, DEC-UA-015, DEC-UA-016, UA-W7-T1/T2/T3, and CASE-UA-W7-001..002:
+  1. FILE sub-window IDs start at UA-W7-S001. A zero-edit in-scope file gets no FILE sub-window and does not consume an S-number. Do not retire S001/S002 unused. Sequential DAG, no parallel waves: S001 frontend/components/query-editor.tsx → S002 frontend/components/run-progress.tsx → S003 frontend/test/uphunt-aesthetic-w7.test.ts → UA-W7-I001.
+  2. Zero-edit preserved (G6 pins, no FILE leaf): frontend/app/globals.css b5c79578012da0ea47ee85665bce96b1127aca5b5526964074c52656b7359d6d (F1 lists it; T1/T2/T3 name no CSS hunk; A4 `.query-editor` selector does not exist — do not invent it); frontend/components/run-workspace.tsx 9472450d3a22143befe5f52569328eb5c07df94fee543ecb873c0ca05914c8c3 (`const RETRY_DELAYS = [3_000, 5_000, 10_000, 15_000];` once; poll/fetch unchanged); frontend/app/runs/[runId]/page.tsx 719e05ea0eec73fe948f0c41a9c56c970d6db61cfff0c990e59666136a069072. section-intro.tsx is read-only 159096f313aa6c8d1be343f1db72511529fb4795c79be3123da9c3c3a0c38175. Do not change save/start/load, apiRequest URLs, metric calculations, stagePercent, stageLabel function, formatDuration, RunLoadingSkeleton, or LandingHeroCopy usage in run-workspace.
+  3. T1 JSX: keep `section#query-review` with existing `run-form-card query-editor-card ds-card` classes, keep `div.form-heading-row.query-editor-heading`, keep `<span className="step-badge">02</span>`, keep the query list/footer and `onClick={() => void save()}` / `onClick={() => void start()}`. Replace only the inner heading `<div>` that currently contains the unique eyebrow `Query review · revision {querySet.revision}` and unique `<h2>Review your searches</h2>` (each counts 1) with `<SectionIntro eyebrow="Search plan" title="Shape the searches before discovery starts." copy="Review, edit, or add queries, then start when the direction feels right." />` (DEC-UA-003 exact, periods included). Keep `querySet.revision` visible in that heading row as `<span>revision {querySet.revision}</span>` beside the step-badge; do not put the revision number into SectionIntro props. Import `{ SectionIntro } from "@/components/section-intro"`. Do not change the loading-card branch.
+  4. T2 JSX: keep `section.progress-card`, `div.progress-head`, `div.progress-stage`, the `state-indicator` span, `div.progress-state` badge+duration, progress-track, and both ProgressCount metric branches. Replace only the inner `.progress-stage` `<div>` children that are the unique conditional eyebrow (`Preparing your search plan` / `Current stage`) and unique `<h2>{stageLabel(run.stage)}</h2>` (each counts 1) with `<SectionIntro eyebrow="Discovery" title="StoreSignal is looking for matching stores." copy="The stages and counts below are the existing run status." />` (DEC-UA-003 exact, periods included). Immediately after SectionIntro in that same inner div, keep `{stageLabel(run.stage)}` as `<p>{stageLabel(run.stage)}</p>` — not a second marketing h2 and not inside SectionIntro. Do not put phase/error strings into SectionIntro copy. Do not edit `RunLoadingSkeleton`. Import `{ SectionIntro } from "@/components/section-intro"`.
+  5. CREATE test/uphunt-aesthetic-w7.test.ts with exactly two tests CASE-UA-W7-001/002. 001: query-editor.tsx has the SectionIntro import and the three query-editor DEC-UA-003 strings. 002: run-progress.tsx has the import and the three run-progress DEC-UA-003 strings, and run-workspace.tsx still contains `const RETRY_DELAYS = [3_000, 5_000, 10_000, 15_000];`. recordExecuted after assertions. No third test. No getExecuted vs REQUIRED_CASE_IDS full-set equality. Import recordExecuted from `./uphunt-aesthetic-coverage.test.ts` the same way as the w6 test file.
+  6. Last FILE leaf (S003) from ABSENT test/.ua-executed.json expects exactly 4 IDs (2 x W1 re-executions + CASE-UA-W7-001/002), set digest 3ae216075ca80627b76f559b880ac0d7270b646832e70543300989957d07e52e. The 19-ID set {2 x W1} u {4 x W2} u {4 x W3} u {2 x W4} u {2 x W5} u {3 x W6} u {2 x W7} is asserted only at I001 G5 after npm test, digest 3bf626bfcd753aa30685f57a4285c441bfd3b68a2a5fb7ada03ad85218532ffb. Do not require W2–W6 IDs at the w7-only test command. test/.ua-executed.json is TRACKED at HEAD (owner commit d6121aa residue; W6 left 17-ID content f136c564642a363831bbc3797aeb1b34356501672ba3188e5d32a797e1c95bfc); never commit it.
+  7. I001 G1 is DEC-UA-016: from frontend/, `npm test`. Expected 179 tests / 176 pass / 3 fail (175 predecessor + 2 W1 re-executions from the w7 import + 2 W7 cases). PASS iff allocated UA CASE tests pass and every failing title, if any, is exactly the three named heading-oracle titles; process exit 1 is expected and is not G1 FAIL when that holds. G2 DEC-UA-014 needles are query-editor.tsx, run-progress.tsx, uphunt-aesthetic-w7.test.ts (globals.css is not typechecked). G4 is frozen as local next with `STORESIGNAL_DESIGN_FIXTURES=1` on routes {/design-fixture?scenario=query-review, /design-fixture?scenario=runtime} at 390/768/1280/1440 only (8 screenshots, height 900). Do not screenshot live `/runs/[runId]` (it polls). If the fixture 404s, that is PARENT_BLOCKED, not a live run. Window-local case digest a8c74516b3979e433aa07e11262d4504f3935076b3d7e70a8a5629872bf70394. Planned implementation set {frontend/components/query-editor.tsx, frontend/components/run-progress.tsx, frontend/test/uphunt-aesthetic-w7.test.ts}, digest b0421156aac24cb62a33ed3695e2f87a04c3210e97ea26c0f2d1a47a8ba254cb.
+  8. Do not start UA-W8. Do not edit section-intro.tsx, landing-sections.tsx, W6 product/test files, REQUIRED_CASE_IDS, parked files, or design-system-shell.test.ts. After parent accepts this decomposition, identity UA-W7-WINDOW-AGENT executes then personally reviews each FILE leaf in the same turn, then itself assigns the next S-number, then personally runs I001, then hands off (DEC-UA-015). This assignment does not execute S001. Do not write into S1 §0 any of: "parent issues the next leaf", "stop at AWAITING_WINDOW_REVIEW before S00n", "stop for parent after this leaf".
+decisive_assertion: UA-W7 may now be decomposed; FILE leaves remain unassigned until parent accepts the decomposition; UA-W8 is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5
+negative_control: starting UA-W8, editing run-workspace.tsx, editing globals.css, or editing REQUIRED_CASE_IDS under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 17
+  planned: 43
+  executed: 17
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: FILE leaves remain unassigned until parent accepts the UA-W7 decomposition. browser_evidence true is an I001 obligation after implementation, not a decomposition write. Parent paste after a later decomposition accept is one paste for S001 through I001 (DEC-UA-015), not this paste.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-050
+timestamp: 2026-09-03T16:05:00+05:30
+phase: review
+claim: Parent accepted the UA-W7 decomposition under ASG-UA-W7-01 and, without dispatching, converted it to READY. Independent recomputation matched S1 cd335578dd6b831fa553e0f3b02f73c40bb43e16f354756ea4411cf52150261e, submitted S2 a049a5a2a4a06e3bde8569aa319fa988b893a099e7759a40d2c5ea12d43b69e8, submitted S3 3ee964e18c4f371301669d9c68cc8c2f2000c7015ae74fce51f8060afd5ee870. All 5 §6.2/§7.2 tsx OLD fences count 1 in their starting files and 0 after simulated apply; NEW count 0/1. Ending jsx digests 92efe1f7319111f58a44e823f33a61bf705a654dbaa7539759d51bd71ece886c and 15d840bfdb81892a5755dbe4f26d8ac9793fd2e02857568f7d9576a748518e38. numstat 7/4 and 7/6 MATCH. §8.3 ts fence digest 92201c35dbf51758c911d11dbe312df611fd1cc2f9a27c086ff39304c98cb842. Authoring checklist 47/0. DAG S001→S002→S003→I001 with S001 used as the real first leaf. A1/A3/A4 pins and A5 13285c12… MATCH. Planned-set b0421156…, window-local a8c74516…, 4-ID 3ae21607…, 19-ID 3bf626bf… MATCH. Implementation files untouched; w7 test ABSENT. Zero-edit globals/run-workspace/runs/[runId]/page pins MATCH. Parent did not dispatch a window agent. A5 was not rewritten so S001 P1 still holds. Root ACTIVE_EXECUTION_STATE.md was not mutated. Per DEC-UA-015 the next parent paste is one paste for S001 through I001; parent does not issue S002 or later FILE leaves.
+environment: local
+revision: A5 state_version 17 IN_PROGRESS UA-W7 ASG-UA-W7-01 digest 13285c12cdaec6b406ae37c209c7a14ea62b87bf1e191c1e7d50f5c04cc872eb; S2 READY 960f61cadbc9b081c15a9b58987fbc395c4bcb310298498b621a6acfd5d8a006
+operation: |
+  sha256sum S1 S2 S3 A1 A3 A4 A5 query-editor run-progress run-workspace runs/[runId]/page globals section-intro w7-test;
+  extract §6.2/§7.2 ```tsx fences and count/apply in starting files;
+  §8.3 fence digest; git diff --no-index --numstat of simulated endings;
+  §11 checkbox count; forbidden-phrase scan; ls w7 test; git status implementation paths;
+  write S2 READY for continuous S001→I001; append S3 EV-UA-W7-X-001
+observed_result: |
+  all listed pins MATCH; all fenced replacements PASS uniqueness and ending digest;
+  S2 decomposition_status READY; current_assignment_id ASG-UA-W7-01-S001;
+  assigned_agent UA-W7-WINDOW-AGENT; authorized_write_file frontend/components/query-editor.tsx;
+  current_status READY; next_subwindow UA-W7-S002; A5 digest unchanged
+decisive_assertion: APPROVED and executable; UA-W7-WINDOW-AGENT owns S001 through I001 continuously (DEC-UA-015); UA-W8 remains unauthorized
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W7_SUBWINDOW_STATE_S2.yaml; S3 EV-UA-W7-X-001
+negative_control: stopping for parent after S001, launching UA-W8, or editing run-workspace.tsx under this S2 would violate DEC-UA-015 and A5 prohibited_actions
+coverage_counts:
+  required: 43
+  registered: 17
+  planned: 43
+  executed: 17
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S001 V-A porcelain "exactly the two §3 protected paths" must be read as those two plus the three untracked UA-W7 coordination artifacts (S1/S2/S3), same class as W6. Parent A6 now also contains EV-UA-A-050 on the protected A6 path.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-051
+timestamp: 2026-09-03T16:50:00+05:30
+phase: review
+claim: Parent independently accepted UA-W7. Product files query-editor.tsx 92efe1f7319111f58a44e823f33a61bf705a654dbaa7539759d51bd71ece886c (numstat 7 4; DEC-UA-003 Search plan strings; void save()/start() preserved), run-progress.tsx 15d840bfdb81892a5755dbe4f26d8ac9793fd2e02857568f7d9576a748518e38 (numstat 7 6; DEC-UA-003 Discovery strings; stageLabel kept as p; RunLoadingSkeleton untouched), uphunt-aesthetic-w7.test.ts 92201c35dbf51758c911d11dbe312df611fd1cc2f9a27c086ff39304c98cb842 CREATE. Zero-edit globals/run-workspace/runs/[runId]/page/section-intro MATCH. S1 cd335578…. A1/A3 MATCH 57fa49c7… / 094bc8bf…. npm test under DEC-UA-016 179/176/3 with exactly the three heading-oracle titles (first parent run; CASE-UA-W7-001/002 pass). tsc sha e0aa27dd… 13 lines 0 owned needles. lint exit 0. G4 8/8 PNGs widths 390/768/1280/1440 height 900. G5 19-ID 3bf626bf…. G8 N1/N2/N3 falsified in-memory. G9 no w8 test. A4 UA-W7 T1-T3 checked on parent accept (P/V/H already checked). ASG-UA-W7-01 closed. UA-W8 not assigned. Root ACTIVE_EXECUTION_STATE.md untouched. Nothing committed.
+environment: local frontend node
+revision: A5 state_version 18 READY accepted_through UA-W7; A4 post-T-checkbox 34d5d8969c85bc57394d4b728b0e489b83537044de96311787f2df539f371cee
+operation: |
+  sha256sum three W7 files zero-edit predecessors S1 A1 A3 A4 A5 A6 handoff;
+  PNG IHDR; git diff --numstat; npm test; npx tsc; npm run lint;
+  in-memory N1/N2/N3; check A4 T1-T3; write A5 READY
+observed_result: |
+  all product pins MATCH; G1 PASS DEC-UA-016 on confirming run 179/176/3;
+  G2 PASS; G3 PASS; G4 8/8; G5 MATCH; G8 PASS; G9 PASS;
+  A5 current_status READY; accepted_through UA-W7; assigned_agent UNASSIGNED
+decisive_assertion: ACCEPTED; UA-W7 complete; UA-W8 remains unassigned (successor_reserved_for parent; may_start_successor false; DEC-UA-015)
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: frontend/components/query-editor.tsx; frontend/components/run-progress.tsx; frontend/test/uphunt-aesthetic-w7.test.ts; UA-W7_HANDOFF.md; S3 EV-UA-W7-I001; review-evidence/uphunt-aesthetic/UA-W7/
+negative_control: a diagnostic naming uphunt-aesthetic-w7.test.ts or query-editor.tsx would have failed G2; presence of uphunt-aesthetic-w8.test.ts would have failed G9; restoring Review your searches would fail CASE-UA-W7-001
+coverage_counts:
+  required: 43
+  registered: 19
+  planned: 43
+  executed: 19
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+  window_local_required_registered_executed: 2/2/2
+  window_local_digest: a8c74516b3979e433aa07e11262d4504f3935076b3d7e70a8a5629872bf70394
+  executed_set_after_npm_test_digest: 3bf626bfcd753aa30685f57a4285c441bfd3b68a2a5fb7ada03ad85218532ffb
+limitations: |
+  Residual non-blocking: S2 remains a window-agent coordination artifact after parent A5 READY (still IN_PROGRESS at I001). test/.ua-executed.json is tracked at HEAD via d6121aa against DEC-UA-011's never-commit contract; prescribed npm test shows it modified (correct 19-ID content); untracking is a later parent decision. Concurrent recordExecuted writers can fail an extra CASE with empty JSON; DEC-UA-016 names W1; this parent G1 run was clean 176/3. G4 used G-R1-style pre-hydration synthetic .example fetch interception because design-fixture mounts RunWorkspace on run_fixture_* ids that are not backend rows and the data route is auth-gated; frozen G4 routes were used; live /runs/[runId] was not screenshotted; no credentials; G4 is local_e2e not a CASE oracle. G4 heights 900px (S1 froze widths). At 390px the query-editor SectionIntro sits below the 900px crop (visible at 768/1280/1440); runtime DEC-UA-003 strings are visible at all four widths. Full required=executed equality remains UA-W15-V5. DEC-UA-016 does not repair predecessor heading oracles. A4 T1-T3 were unchecked at handoff; parent checked them on accept. UA-W8 not assigned.
+external_mutations: none
+```

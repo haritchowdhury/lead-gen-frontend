@@ -1,0 +1,99 @@
+# UA-W7 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W7_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W7_SUBWINDOW_EVIDENCE_S3.md`.
+
+Parent accepted the UA-W7 decomposition (`EV-UA-A-050`). Identity
+`UA-W7-WINDOW-AGENT` owns the frozen DAG without parent checkpoints:
+execute then personally review each FILE leaf in the same turn, then
+immediately assign and start the next S-number, then personally run I001,
+then handoff (`DEC-UA-015`). Communicate upward only on I001 PASS, a genuine
+blocker, or UA-W8 (never). Do not wait for the parent between S001, S002,
+S003, or I001. `AWAITING_WINDOW_REVIEW` is the FILE H3 certificate field,
+not a parent stop. `A5` remains byte-identical `13285c12…` until the
+authorized I001 handoff action.
+
+```yaml
+state_version: 2
+parent_window_id: UA-W7
+parent_assignment_id: ASG-UA-W7-01
+window_agent_identity: UA-W7-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827
+parent_decision_revision: 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3
+parent_checklist_revision: 0a834df7f96677c78d0772564fd2c6a92ca161d0a5ce59c5c5ad6c112182a9a8
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W7_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: cd335578dd6b831fa553e0f3b02f73c40bb43e16f354756ea4411cf52150261e
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W7_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: IN_PROGRESS
+current_subwindow: UA-W7-I001
+current_assignment_id: ASG-UA-W7-01-I001
+assigned_agent: UA-W7-WINDOW-AGENT
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE
+authorized_read_scope:
+  - frontend/components/query-editor.tsx
+  - frontend/components/run-progress.tsx
+  - frontend/components/run-workspace.tsx
+  - frontend/test/uphunt-aesthetic-w7.test.ts
+  - frontend/test/uphunt-aesthetic-coverage.test.ts
+  - frontend/docs/open-work/uphunt-aesthetic/UA-W7_SUBWINDOW_DECOMPOSITION_S1.md (§0 and §9)
+  - frontend/docs/open-work/uphunt-aesthetic/A4_EXECUTION_CHECKLIST.md (§UA-W7)
+authorized_actions:
+  - personally_run_UA-W7-I001
+  - write_UA-W7_handoff
+  - set_A5_AWAITING_REVIEW_on_handoff
+  - append_S3_evidence
+  - append_A6_evidence
+  - check_UA-W7_boxes
+prohibited_actions:
+  - parent_assign_or_accept_FILE_leaf
+  - stop_for_parent_between_FILE_leaves
+  - treat_AWAITING_WINDOW_REVIEW_as_parent_stop
+  - start_UA-W8
+  - may_start_successor
+  - edit_A5_except_authorized_handoff_action_after_I001
+  - edit_RETRY_DELAYS
+  - edit_poll_fetch
+  - edit_run_workspace
+  - edit_runs_runId_page
+  - change_query_save_or_start_handlers
+  - change_metric_calculations
+  - edit_globals_css
+  - edit_section_intro
+  - edit_landing_sections
+  - edit_REQUIRED_CASE_IDS
+  - edit_uphunt-aesthetic-coverage_test
+  - edit_w2_w3_w4_w5_w6_test_files
+  - edit_parked_SRC-UA-0092_test_files
+  - edit_design-system-shell_test
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: IN_PROGRESS
+accepted_subwindows: [UA-W7-S001, UA-W7-S002, UA-W7-S003]
+next_subwindow: STOP
+blocker: null
+last_updated: 2026-09-03T16:40:00+05:30
+```
+
+Planned implementation set (three files, §4.7 digest
+`b0421156aac24cb62a33ed3695e2f87a04c3210e97ea26c0f2d1a47a8ba254cb`):
+frontend/components/query-editor.tsx → S001, frontend/components/run-progress.tsx
+→ S002, frontend/test/uphunt-aesthetic-w7.test.ts → S003, then UA-W7-I001.
+Zero-edit in-scope files (globals.css, run-workspace.tsx, runs/[runId]/page.tsx)
+consume no S-number.
