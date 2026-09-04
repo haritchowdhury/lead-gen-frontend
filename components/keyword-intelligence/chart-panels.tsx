@@ -41,6 +41,7 @@ import {
 } from "@/lib/keyword-intelligence-view-model";
 
 import styles from "./keyword-dashboard.module.css";
+import { SectionIntro } from "@/components/section-intro";
 
 Chart.register(
   ArcElement,
@@ -70,10 +71,18 @@ type ChartPanelsProps = {
 };
 
 type ChartPanelSections = {
-  seedPerformance: ReactNode;
   heatmapPanel: ReactNode;
-  overviewSignals: ReactNode;
+  seedPerformance: ReactNode;
+  intentPanel: ReactNode;
+  recommendedPanel: ReactNode;
+  histogramPanel: ReactNode;
+  flagsPanel: ReactNode;
   historyPanel: ReactNode;
+  topKeywordsPanel: ReactNode;
+  clusterVolumePanel: ReactNode;
+  bubblePanel: ReactNode;
+  scatterPanel: ReactNode;
+  overviewSignals: ReactNode;
   analysisCharts: ReactNode;
 };
 
@@ -1118,13 +1127,27 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
   const emptyCls = (present: boolean) =>
     present ? `${styles.chartEmpty} ${styles.hidden}` : styles.chartEmpty;
 
+  const heatmapPanel = (
+    <section className={styles.keywordHeatmap} aria-label="Demand map">
+      <SectionIntro
+        eyebrow="Demand map"
+        title="See which clusters hold the search demand."
+        copy="Cluster size is the share of filtered volume, not a ranking of quality."
+      />
+      <div className={styles.keywordHeatmapChart}>
+        <canvas ref={treemapRef} data-surface="chart:treemap" />
+        <div className={emptyCls(hasData.treemap)}>No data</div>
+      </div>
+    </section>
+  );
+
   const seedPerformance = (
-      <section className={`${styles.decisionPanel} ${styles.seedAnalysis}`} aria-label="Seed phrase analysis">
-        <h2>Seed performance</h2>
-        <div className={styles.panelNote}>
-          Search volume by seed, split into recommended, declining, and remaining keywords. Hover for active
-          count, median volume, and commercial share.
-        </div>
+      <section className={`${styles.decisionPanel} ${styles.seedAnalysis}`} aria-label="Seed phrases">
+        <SectionIntro
+          eyebrow="Seed phrases"
+          title="Which starting phrases actually pulled weight."
+          copy="Volume split into recommended, declining, and remaining keywords."
+        />
         <div className={`${styles.chartWrap} ${styles.seedPerformanceChart}`}>
           <canvas ref={seedsRef} data-surface="chart:seeds" />
           <div className={emptyCls(hasData.seeds)}>No data</div>
@@ -1132,63 +1155,70 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
       </section>
   );
 
-  const overviewSignals = (
-      <div className={styles.overviewSignals}>
-        <div className={styles.chartCard}>
-          <h3
-            className={`${styles.chartTitle} ${styles.tip}`}
-            data-tip="Share of active keywords by search intent label"
-          >
-            Search Intent Mix
-          </h3>
-          <div className={styles.chartWrap}>
-            <canvas ref={intentRef} data-surface="chart:intent" />
-            <div className={emptyCls(hasData.intent)}>No data</div>
-          </div>
+  const intentPanel = (
+      <section className={styles.chartCard} aria-label="Intent">
+        <SectionIntro
+          eyebrow="Intent"
+          title="What people mean when they search these phrases."
+          copy="Share of active keywords by search-intent label."
+        />
+        <div className={styles.chartWrap}>
+          <canvas ref={intentRef} data-surface="chart:intent" />
+          <div className={emptyCls(hasData.intent)}>No data</div>
         </div>
-        <div className={styles.chartCard}>
-          <h3
-            className={`${styles.chartTitle} ${styles.tip}`}
-            data-tip="Share of active keywords that the pipeline recommends targeting vs rejects"
-          >
-            Recommended vs Rejected
-          </h3>
-          <div className={styles.chartWrap}>
-            <canvas ref={recommendedRef} data-surface="chart:recommended" />
-            <div className={emptyCls(hasData.recommended)}>No data</div>
-          </div>
+      </section>
+  );
+
+  const recommendedPanel = (
+      <section className={styles.chartCard} aria-label="Recommendation">
+        <SectionIntro
+          eyebrow="Recommendation"
+          title="What the pipeline would keep, and what it would drop."
+          copy="Recommendation status for the active set, not a new score."
+        />
+        <div className={styles.chartWrap}>
+          <canvas ref={recommendedRef} data-surface="chart:recommended" />
+          <div className={emptyCls(hasData.recommended)}>No data</div>
         </div>
-        <div className={styles.chartCard}>
-          <h3
-            className={`${styles.chartTitle} ${styles.tip}`}
-            data-tip="Distribution of opportunity scores in 10-point buckets (0–10 … 90–100)"
-          >
-            Opportunity-Score Distribution
-          </h3>
-          <div className={styles.chartSub}>{histogramNote}</div>
-          <div className={styles.chartWrap}>
-            <canvas ref={histogramRef} data-surface="chart:histogram" />
-            <div className={emptyCls(hasData.histogram)}>No data</div>
-          </div>
+      </section>
+  );
+
+  const histogramPanel = (
+      <section className={styles.chartCard} aria-label="Opportunity">
+        <SectionIntro
+          eyebrow="Opportunity"
+          title="Where the scores actually sit."
+          copy="Active keywords in 10-point buckets from 0–10 through 90–100."
+        />
+        <div className={styles.chartSub}>{histogramNote}</div>
+        <div className={styles.chartWrap}>
+          <canvas ref={histogramRef} data-surface="chart:histogram" />
+          <div className={emptyCls(hasData.histogram)}>No data</div>
         </div>
-        <div className={styles.chartCard}>
-          <h3
-            className={`${styles.chartTitle} ${styles.tip}`}
-            data-tip="How many active keywords carry each quality flag: declining traffic, too broad, or too little traffic"
-          >
-            Flag Breakdown
-          </h3>
-          <div className={styles.chartWrap}>
-            <canvas ref={flagsRef} data-surface="chart:flags" />
-            <div className={emptyCls(hasData.flags)}>No data</div>
-          </div>
+      </section>
+  );
+
+  const flagsPanel = (
+      <section className={styles.chartCard} aria-label="Quality flags">
+        <SectionIntro
+          eyebrow="Quality flags"
+          title="The warnings attached to this set."
+          copy="Declining traffic, too-broad phrases, and too-little traffic."
+        />
+        <div className={styles.chartWrap}>
+          <canvas ref={flagsRef} data-surface="chart:flags" />
+          <div className={emptyCls(hasData.flags)}>No data</div>
         </div>
-      </div>
+      </section>
   );
 
   const historyPanel = (
       <section className={`${styles.decisionPanel} ${styles.wide} ${styles.historyPanel}`}>
-        <h2>Actual monthly search history</h2>
+        <SectionIntro
+          eyebrow="History"
+          title="How volume moved, month by month."
+          copy="Combined history for the filtered set, or one keyword at a time."
+        />
         <div className={styles.panelNote}>{historyNote}</div>
         <div className={styles.historyToolbar}>
           <select
@@ -1206,7 +1236,7 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
             ))}
           </select>
         </div>
-        <div className={styles.chartWrap}>
+        <div className={`${styles.chartWrap} ${styles.historyChart}`}>
           <canvas ref={historyRef} data-surface="chart:history" />
           <div className={emptyCls(hasData.history)}>
             Run the pipeline again to add monthly history to the output.
@@ -1215,80 +1245,83 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
       </section>
   );
 
-  const heatmapPanel = (
-    <section className={styles.keywordHeatmap} aria-label="Keyword cluster heatmap">
-      <div className={styles.keywordHeatmapHead}>
-        <span className={styles.sectionKicker}>Demand map</span>
-        <p>Cluster size reflects the share of filtered search demand.</p>
-      </div>
-      <div className={styles.keywordHeatmapChart}>
-        <canvas ref={treemapRef} data-surface="chart:treemap" />
-        <div className={emptyCls(hasData.treemap)}>No data</div>
-      </div>
-    </section>
+  const topKeywordsPanel = (
+      <section className={styles.chartCard} aria-label="Volume and trend">
+        <SectionIntro
+          eyebrow="Volume and trend"
+          title="The phrases, their volume, and whether they are rising."
+          copy="Columns are volume. The line is seasonality-adjusted momentum."
+        />
+        <div className={styles.chartSub}>{topKeywordNote}</div>
+        <div className={`${styles.chartWrap} ${styles.topKeywordsChart}`}>
+          <canvas ref={topKeywordsRef} data-surface="chart:top-keywords" />
+          <div className={emptyCls(hasData.topKeywords)}>No active keywords</div>
+        </div>
+      </section>
+  );
+
+  const clusterVolumePanel = (
+      <section className={styles.chartCard} aria-label="Cluster volume">
+        <SectionIntro
+          eyebrow="Cluster volume"
+          title="Combined search volume, cluster by cluster."
+          copy="Sorted by volume. Color is share of the filtered total."
+        />
+        <div className={styles.chartSub}>
+          Combined search volume by cluster across {datasets.clusterEntries.length} cluster
+          {datasets.clusterEntries.length === 1 ? "" : "s"}.
+        </div>
+        <div className={`${styles.chartWrap} ${styles.tall}`}>
+          <canvas ref={clusterVolumeRef} data-surface="chart:cluster-volume" />
+          <div className={emptyCls(hasData.clusterVolume)}>No data</div>
+        </div>
+      </section>
+  );
+
+  const bubblePanel = (
+      <section className={styles.chartCard} aria-label="Difficulty">
+        <SectionIntro
+          eyebrow="Difficulty"
+          title="High demand is not the same as an easy phrase."
+          copy="Each bubble is a keyword: volume, difficulty, CPC, commercial intent."
+        />
+        <div className={`${styles.chartWrap} ${styles.bubbleChart}`}>
+          <canvas ref={bubbleRef} data-surface="chart:bubble" />
+          <div className={emptyCls(hasData.bubble)}>No data</div>
+        </div>
+      </section>
+  );
+
+  const scatterPanel = (
+      <section className={styles.chartCard} aria-label="Competition">
+        <SectionIntro
+          eyebrow="Competition"
+          title="Low competition, high opportunity — if that quadrant exists here."
+          copy="Each point is a keyword on competition versus opportunity score."
+        />
+        <div className={`${styles.chartWrap} ${styles.scatterChart}`}>
+          <canvas ref={scatterRef} data-surface="chart:scatter" />
+          <div className={emptyCls(hasData.scatter)}>No data</div>
+        </div>
+      </section>
+  );
+
+  const overviewSignals = (
+    <>
+      {intentPanel}
+      {recommendedPanel}
+      {histogramPanel}
+      {flagsPanel}
+    </>
   );
 
   const analysisCharts = (
-      <section className={styles.charts} aria-label="Charts">
-        <div className={`${styles.chartCard} ${styles.featureChart}`}>
-          <h3
-            className={`${styles.chartTitle} ${styles.tip}`}
-            data-tip="Every active keyword is included. Columns use the left volume axis; the line uses seasonality-adjusted year-over-year momentum."
-          >
-            Active Keywords · Search Volume and Trend
-          </h3>
-          <div className={styles.chartSub}>{topKeywordNote}</div>
-          <div className={`${styles.chartWrap} ${styles.topKeywordsChart}`}>
-            <canvas ref={topKeywordsRef} data-surface="chart:top-keywords" />
-            <div className={emptyCls(hasData.topKeywords)}>No active keywords</div>
-          </div>
-        </div>
-
-        <div className={`${styles.chartCard} ${styles.wide}`}>
-          <h3
-            className={`${styles.chartTitle} ${styles.tip}`}
-            data-tip="Combined search volume per cluster, sorted descending; color shows relative share of the filtered total"
-          >
-            Cluster volume
-          </h3>
-          <div className={styles.chartSub}>
-            Combined search volume by cluster across {datasets.clusterEntries.length} cluster
-            {datasets.clusterEntries.length === 1 ? "" : "s"}.
-          </div>
-          <div className={styles.chartWrap}>
-            <canvas ref={clusterVolumeRef} data-surface="chart:cluster-volume" />
-            <div className={emptyCls(hasData.clusterVolume)}>No data</div>
-          </div>
-        </div>
-
-        <div className={styles.chartPair}>
-          <div className={styles.chartCard}>
-            <h3
-              className={`${styles.chartTitle} ${styles.tip}`}
-              data-tip="Each bubble is a keyword: X = keyword difficulty (0–100), Y = search volume, bubble size = CPC, color = commercial intent (blue = low, red = high)"
-            >
-              Volume vs Keyword Difficulty
-            </h3>
-            <div className={styles.chartWrap}>
-              <canvas ref={bubbleRef} data-surface="chart:bubble" />
-              <div className={emptyCls(hasData.bubble)}>No data</div>
-            </div>
-          </div>
-          <div className={styles.chartCard}>
-            <h3
-              className={`${styles.chartTitle} ${styles.tip}`}
-              data-tip="Each point is a keyword: X = competition (0–1), Y = opportunity score (0–100). Points in the top-left quadrant are attractive low-competition opportunities."
-            >
-              Competition vs Opportunity Score
-            </h3>
-            <div className={styles.chartWrap}>
-              <canvas ref={scatterRef} data-surface="chart:scatter" />
-              <div className={emptyCls(hasData.scatter)}>No data</div>
-            </div>
-          </div>
-        </div>
-
-      </section>
+    <>
+      {topKeywordsPanel}
+      {clusterVolumePanel}
+      {bubblePanel}
+      {scatterPanel}
+    </>
   );
 
   return (
@@ -1303,7 +1336,7 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
           <span>Some charts could not be rendered. Reload the page to try again.</span>
         </div>
       )}
-      {children({ seedPerformance, heatmapPanel, overviewSignals, historyPanel, analysisCharts })}
+      {children({ heatmapPanel, seedPerformance, intentPanel, recommendedPanel, histogramPanel, flagsPanel, historyPanel, topKeywordsPanel, clusterVolumePanel, bubblePanel, scatterPanel, overviewSignals, analysisCharts })}
     </div>
   );
 }

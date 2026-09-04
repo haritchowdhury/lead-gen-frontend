@@ -1,0 +1,74 @@
+# UA-W13 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W13_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W13_SUBWINDOW_EVIDENCE_S3.md`.
+
+Parent independently accepted UA-W13 after C001 + I002 (`EV-UA-A-074`).
+Window complete. Do not start UA-W14. `A5` is READY / accepted_through UA-W13.
+
+```yaml
+state_version: 4
+parent_window_id: UA-W13
+parent_assignment_id: ASG-UA-W13-01
+window_agent_identity: UA-W13-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827
+parent_decision_revision: 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3
+parent_checklist_revision: 9d2bb23a93bad57e991bfe1603de6ab9a2acba604af9cde18fef52fd369b918a
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W13_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: 38019d351a4da19ecb66adb14da43d27a33809d8c9832ec505ca286eada2a616
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W13_SUBWINDOW_EVIDENCE_S3.md
+decomposition_status: READY
+current_subwindow: STOP
+current_assignment_id: NONE
+assigned_agent: UNASSIGNED
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE
+integration_status: PASS
+authorized_read_scope: []
+authorized_actions: []
+prohibited_actions:
+  - start_UA-W14
+  - may_start_successor
+  - add_new_data_surface_token
+  - edit_KEYWORD_INTELLIGENCE_SURFACE_INVENTORY
+  - edit_I_F15_LITERAL
+  - edit_keyword-intelligence-view-model
+  - edit_keyword-intelligence-inventory-test
+  - edit_test/browser/keyword-intelligence-dashboard.mjs
+  - edit_summary-cards
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: READY
+accepted_subwindows:
+  - UA-W13-S001
+  - UA-W13-S002
+  - UA-W13-S003
+  - UA-W13-S004
+  - UA-W13-C001
+next_subwindow: STOP
+blocker: null
+last_updated: 2026-09-04T12:40:00+05:30
+```
+
+Decomposition DAG: `UA-W13-S001` → `UA-W13-S002` → `UA-W13-S003` →
+`UA-W13-S004` → `UA-W13-I001`, sequential, no parallel wave. Planned file set
+digest `411e2eeaca13cd3c07f5bee879666477697197420e13783d63d5a1b427d5823f`.
+S001 ending `2847411e…` / 158 125; S002 `3095e384…` / 18 14; S003 `82f8a628…`
+/ 32 36; S004 fence `8e96d6de…`. C001 recaptured full-page G4 under
+`frontend/review-evidence/uphunt-aesthetic/UA-W13/` only; I002 PASS.

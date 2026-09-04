@@ -131,3 +131,22 @@ compatibility_or_migration_effect: none; S002 is retracted; selection-review.tsx
 authorization_effect: UA-W12-WINDOW-AGENT may author and execute UA-W12-C001 then personally run UA-W12-I002. Do not edit lib/keyword-intelligence-view-model.ts or test/keyword-intelligence-inventory.test.ts. UA-W13 remains unauthorized.
 resumption_state: A5 current_window UA-W12, current_assignment_id ASG-UA-W12-01, assigned_agent UA-W12-WINDOW-AGENT, current_status IN_PROGRESS, blocker EV-UA-A-067_S002_new_surface_vs_W5-I05, next_window UA-W13, stop_after UA-W15, may_start_successor false
 ```
+
+```yaml
+change_id: CHG-UA-0008
+timestamp: 2026-09-04T11:20:00+05:30
+trigger_evidence: [EV-UA-A-070, EV-UA-W13-D-007]
+reason: Submitted UA-W13 S1 consequences 3/5 remove surface:summary-cards, the dashboard h1, summary.marketOverview(charts.overviewSignals), {charts.analysisCharts}, and ChartPanelSections members overviewSignals/analysisCharts. Parked uneditable test/keyword-intelligence-inventory.test.ts W5-I05 and VIS-KD assert those strings, one dashboard h1, and a fixed source-order. DEC-UA-016 treats those failures as G1 FAIL. Same class as CHG-UA-0007: do not edit the parked inventory test or expand inventories. Retract the over-frozen removals. Keep DEC-UA-005 titled full-width charts and CSS heights. No new product decision.
+old_revision: 7962776cb55e8228dab77f9f09826a6db0a297880d25d1ed772d3d686c362385
+new_revision: 7962776cb55e8228dab77f9f09826a6db0a297880d25d1ed772d3d686c362385
+changed_requirements: []
+changed_decisions: []
+affected_windows: [UA-W13]
+invalidated_evidence:
+  - EV-UA-A-069 parent_frozen_mechanical_consequences items 3 and 5 (remove composites/hero/marketOverview)
+  - UA-W13 S1 ending pins 3dab75d4… and 3a527dae… (must be resimulated)
+  - UA-W13 S1 V1d grep overviewSignals/analysisCharts => 0
+compatibility_or_migration_effect: none; inventories and parked tests unchanged; S002 CSS pin 3095e384… remains
+authorization_effect: UA-W13-WINDOW-AGENT may rewrite S1/S2/S3 under ASG-UA-W13-01. FILE leaves remain unexecuted. UA-W14 remains unauthorized.
+resumption_state: A5 current_window UA-W13, current_assignment_id ASG-UA-W13-01, assigned_agent UA-W13-WINDOW-AGENT, current_status IN_PROGRESS, blocker EV-UA-A-070_VIS-KD_W5-I05_vs_removed_composites, next_window UA-W14, stop_after UA-W15, may_start_successor false
+```

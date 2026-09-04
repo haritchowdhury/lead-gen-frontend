@@ -361,11 +361,11 @@ section.filters {
 
 .overviewFlow .decisionPanel { box-shadow: none; background: transparent; }
 
-.overviewSignals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.overviewSignals { display: grid; grid-template-columns: 1fr; gap: 18px; }
 
 .overviewSignals .chartCard { box-shadow: none; padding: 12px 0 0; min-width: 0; background: transparent; border: 0; }
 
-.overviewSignals .chartWrap { height: 220px; }
+.overviewSignals .chartWrap { height: 360px; }
 
 .overviewSignals .chartTitle { font-size: 13px; }
 
@@ -452,7 +452,11 @@ section.filters {
 
 .compactTable th, .compactTable td { padding: 7px 9px; }
 
-.seedPerformanceChart { height: 285px; }
+.seedPerformanceChart { height: 420px; }
+
+.historyChart,
+.bubbleChart,
+.scatterChart { height: 420px; }
 
 .warningList { display: grid; gap: 9px; }
 
@@ -500,7 +504,7 @@ section.filters {
 
 .clusterInspector strong { color: var(--primary); }
 
-.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 34px 28px; margin-bottom: 34px; }
+.charts { display: grid; grid-template-columns: 1fr; gap: 34px 28px; margin-bottom: 34px; }
 
 .chartCard {
   background: transparent; border: 0; border-radius: 0;
@@ -510,20 +514,20 @@ section.filters {
 .chartCard.wide,
 .chartCard.featureChart { grid-column: 1 / -1; }
 
-.chartPair { display: contents; }
+.chartPair { display: block; }
 
 .chartTitle { margin: 0 0 4px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
 
 .chartSub { color: var(--muted); font-size: 11px; margin: 0 0 10px; }
 
-.chartWrap { position: relative; height: 255px; }
+.chartWrap { position: relative; height: 360px; }
 
 .chartWrap.tall { height: 380px; }
 
 .topKeywordsChart {
   width: 100%;
   min-width: 0;
-  height: 300px;
+  height: 420px;
   overflow: hidden;
 }
 
@@ -917,7 +921,7 @@ section.filters {
   grid-column: 1;
   grid-row: 2;
   min-width: 0;
-  min-height: 360px;
+  min-height: 520px;
   display: flex;
   flex-direction: column;
   border: 0;
@@ -928,7 +932,7 @@ section.filters {
   grid-column: 1;
   grid-row: 3;
   min-width: 0;
-  min-height: 360px;
+  min-height: 520px;
   display: flex;
   flex-direction: column;
   border: 0;
@@ -953,7 +957,7 @@ section.filters {
 .keywordHeatmapChart {
   position: relative;
   flex: 1;
-  min-height: 330px;
+  min-height: 520px;
   margin-top: 14px;
 }
 
@@ -968,7 +972,7 @@ section.filters {
   flex: 1;
   display: grid;
   place-items: center;
-  min-height: 330px;
+  min-height: 520px;
 }
 
 .marketGlobe .isActive {
@@ -1065,7 +1069,7 @@ section.filters,
   .dashboardToolbar { align-items: flex-start; flex-direction: column; }
   .filterDock { position: relative; top: auto; padding-top: 0; backdrop-filter: none; }
   .filterRow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .overviewSignals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .overviewSignals { grid-template-columns: 1fr; }
   .selectionStep { justify-content: center; grid-column: 1; grid-row: auto; }
   .researchHero {
     grid-template-columns: 1fr;
@@ -1092,5 +1096,5 @@ section.filters,
   .filter.flagsFilter { grid-column: span 2; }
   .overviewSignals { grid-template-columns: 1fr; }
   .keywordHeatmap,
-  .marketGlobe { min-height: 370px; }
+  .marketGlobe { min-height: 520px; }
 }

@@ -101,10 +101,11 @@ function KeywordMarketGlobe({
   return (
     <section className={styles.marketGlobe} aria-label="Keyword demand by market">
       <div className={styles.marketGlobeHead}>
-        <div>
-          <span className={styles.sectionKicker}>Market lens</span>
-          <p>Select a highlighted country to focus every keyword metric and chart.</p>
-        </div>
+        <SectionIntro
+          eyebrow="Market lens"
+          title="The same keywords, nine markets."
+          copy="Move between worldwide and country views without leaving this research."
+        />
         <button
           type="button"
           className={`${styles.btn} ${selectedMarket === "all" ? styles.isActive : ""}`}
@@ -639,46 +640,41 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
                           onDraftChange={handleDraftChange}
                         />
                       </div>
-
-                      {charts.heatmapPanel}
-
-                      <KeywordMarketGlobe
-                        markets={result.markets}
-                        rows={result.keywords}
-                        selectedMarket={filter.market}
-                        onMarketChange={(market) => handleFilterChange({ market, page: 1 })}
-                      />
                     </section>
 
-                    <section aria-label="Keyword charts and table">
-                      <div className={styles.dashboardFlow}>
-                      {charts.seedPerformance}
+                    {charts.heatmapPanel}
 
-                      <ClusterLandscape
-                        clusters={clusterRows}
-                        selectedClusterId={selectedClusterId}
-                        onSelect={setSelectedClusterId}
+                    <KeywordMarketGlobe
+                      markets={result.markets}
+                      rows={result.keywords}
+                      selectedMarket={filter.market}
+                      onMarketChange={(market) => handleFilterChange({ market, page: 1 })}
+                    />
+
+                    {charts.seedPerformance}
+
+                    <ClusterLandscape
+                      clusters={clusterRows}
+                      selectedClusterId={selectedClusterId}
+                      onSelect={setSelectedClusterId}
+                    />
+
+                    {summary.marketOverview(charts.overviewSignals)}
+
+                    {summary.overlapPanel}
+
+                    {charts.historyPanel}
+
+                    {charts.analysisCharts}
+
+                    <div data-surface="surface:keyword-table">
+                      <KeywordTable
+                        rows={activeRowsIn}
+                        filter={filter}
+                        selectionItemIds={selectionItemIds}
+                        onToggleRow={handleToggleRow}
                       />
-
-                      {summary.marketOverview(charts.overviewSignals)}
-
-                      <section className={styles.decisionGrid} aria-label="Decision summary">
-                        {summary.overlapPanel}
-                        {charts.historyPanel}
-                      </section>
-
-                      {charts.analysisCharts}
-
-                      <div data-surface="surface:keyword-table">
-                        <KeywordTable
-                          rows={activeRowsIn}
-                          filter={filter}
-                          selectionItemIds={selectionItemIds}
-                          onToggleRow={handleToggleRow}
-                        />
-                      </div>
-                      </div>
-                    </section>
+                    </div>
                   </>
                 )}
               </ChartPanels>

@@ -1,0 +1,11 @@
+▲ Next.js 16.2.12 (Turbopack)
+- Local:         http://127.0.0.1:4567
+- Network:       http://127.0.0.1:4567
+- Environments: .env.local
+✓ Ready in 1221ms
+
+ GET /keywords 200 in 4.0s (next.js: 2.5s, application-code: 1520ms)
+ GET /keywords/kr_abcdefghijklmnopqrstuvwx 200 in 2.4s (next.js: 1760ms, application-code: 689ms)
+ GET /keywords/kr_abcdefghijklmnopqrstuvwx 200 in 831ms (next.js: 136ms, application-code: 695ms)
+ GET /keywords/kr_abcdefghijklmnopqrstuvwx 200 in 635ms (next.js: 145ms, application-code: 490ms)
+ GET /keywords/kr_abcdefghijklmnopqrstuvwx 200 in 733ms (next.js: 169ms, application-code: 563ms)
