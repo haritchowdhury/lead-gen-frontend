@@ -446,21 +446,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W15 lifecycle
 
-- [ ] UA-W15-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W15-P2 Required predecessor outputs exist and validate (UA-W14 table/cluster intros). Evidence: ___
-- [ ] UA-W15-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W15-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W15-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W15-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W15-V3 Confirm wrap-height and type-floor ceilings still match DEC-UA-004 and DEC-UA-005.
-- [ ] UA-W15-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W15-V5 Assert required = registered = executed coverage-case IDs, zero required skips, digest 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05.
-- [ ] UA-W15-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W15-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W15-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W15-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W15-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W15-H6 Stop; do not assign or begin the successor.
+- [x] UA-W15-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: parent EV-UA-A-086 (ASG-UA-W15-01; A1 57fa49c7…, A3 094bc8bf… MATCH; A4 68f6669a… at I001 handoff)
+- [x] UA-W15-P2 Required predecessor outputs exist and validate (UA-W14 table/cluster intros). Evidence: parent EV-UA-A-081 / EV-UA-A-086 (w14 test 2436f2c8…; cluster d1ed9ad4…)
+- [x] UA-W15-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: parent EV-UA-A-086 (npm test/lint/build; G4 PNGs)
+- [x] UA-W15-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: S3 EV-UA-W15-D-001; parent EV-UA-A-086
+- [x] UA-W15-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: parent EV-UA-A-086 (CASE-UA-W15-001/002 pass; CASE-UA-W15-003 via equality script)
+- [x] UA-W15-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: parent EV-UA-A-086 (218/215/3; G2 zero needles; lint exit 0)
+- [x] UA-W15-V3 Confirm wrap-height and type-floor ceilings still match DEC-UA-004 and DEC-UA-005. Evidence: parent EV-UA-A-086 (module.css 3095e384… 520/420/360/380; h3 1.375rem)
+- [x] UA-W15-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: parent EV-UA-A-086 (implementation delta = two CREATE paths)
+- [x] UA-W15-V5 Assert required = registered = executed coverage-case IDs, zero required skips, digest 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05. Evidence: parent EV-UA-A-086 (43-ID after equality; serial diagnostic MATCH 42 then 43)
+- [x] UA-W15-H1 Record changed files/symbols and migrations. Evidence: UA-W15_HANDOFF.md; parent EV-UA-A-086
+- [x] UA-W15-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: UA-W15_HANDOFF.md; S3 I-001; parent EV-UA-A-086
+- [x] UA-W15-H3 Diff names ⊆ authorized_write_scope. Evidence: parent EV-UA-A-086 (w15 test + equality mjs; globals.css zero-edit)
+- [x] UA-W15-H4 No successor-window task or prohibited action was started. Evidence: parent EV-UA-A-086 (no UA-W16; may_start_successor false)
+- [x] UA-W15-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: EV-UA-A-085; A5 state 39
+- [x] UA-W15-H6 Stop; do not assign or begin the successor. Evidence: parent EV-UA-A-086 (ASG closed; next_window STOP)
 
 ---
 
@@ -811,8 +811,8 @@ parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
-- [ ] UA-W15-T1 CREATE `frontend/test/uphunt-aesthetic-w15.test.ts` with `CASE-UA-W15-001` asserting the existing `prefers-reduced-motion: reduce` rule remains in `globals.css`, and `CASE-UA-W15-002` asserting owned `.lead-details .detail-section > h3` is not `0.5rem`. Do not use CASE-UA-W15-003 for these assertions. Call `recordExecuted` after each witness. Do not add new globals selectors except leftover `@media` adjustments to UA-owned lead-details and header rules already introduced. Do not change `.shell` width; keyword shell remains the existing `.kiDashboard` module rule.
-- [ ] UA-W15-T2 CREATE `frontend/test/ua-coverage-equality.mjs` which is not matched by `test/*.test.ts`. The script imports `listRequiredCaseIds`, `coverageDigest`, `getExecuted`, and `recordExecuted` from `./uphunt-aesthetic-coverage.test.ts`, asserts `getExecuted()` equals `REQUIRED_CASE_IDS` minus `{CASE-UA-W15-003}`, then calls `recordExecuted("CASE-UA-W15-003")`, then asserts `coverageDigest(getExecuted()) === "0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05"` and set equality required=registered=executed, zero skips, no duplicates, no unexpected IDs. Frozen coverage sequence from `frontend/` is exactly: `rm -f test/.ua-executed.json` then `npm test` then `node --experimental-strip-types test/ua-coverage-equality.mjs`. Frozen gate additionally includes typecheck G2 per DEC-UA-014, `npm run lint`, and `npm run build`. Do not put CASE-UA-W15-003 inside a `test()` that `npm test` runs.
+- [x] UA-W15-T1 CREATE `frontend/test/uphunt-aesthetic-w15.test.ts` with `CASE-UA-W15-001` asserting the existing `prefers-reduced-motion: reduce` rule remains in `globals.css`, and `CASE-UA-W15-002` asserting owned `.lead-details .detail-section > h3` is not `0.5rem`. Do not use CASE-UA-W15-003 for these assertions. Call `recordExecuted` after each witness. Do not add new globals selectors except leftover `@media` adjustments to UA-owned lead-details and header rules already introduced. Do not change `.shell` width; keyword shell remains the existing `.kiDashboard` module rule. Evidence: parent EV-UA-A-086 (0a34acf1…; globals.css 4cf7a1fc… zero-edit)
+- [x] UA-W15-T2 CREATE `frontend/test/ua-coverage-equality.mjs` which is not matched by `test/*.test.ts`. The script imports `listRequiredCaseIds`, `coverageDigest`, `getExecuted`, and `recordExecuted` from `./uphunt-aesthetic-coverage.test.ts`, asserts `getExecuted()` equals `REQUIRED_CASE_IDS` minus `{CASE-UA-W15-003}`, then calls `recordExecuted("CASE-UA-W15-003")`, then asserts `coverageDigest(getExecuted()) === "0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05"` and set equality required=registered=executed, zero skips, no duplicates, no unexpected IDs. Frozen coverage sequence from `frontend/` is exactly: `rm -f test/.ua-executed.json` then `npm test` then `node --experimental-strip-types test/ua-coverage-equality.mjs`. Frozen gate additionally includes typecheck G2 per DEC-UA-014, `npm run lint`, and `npm run build`. Do not put CASE-UA-W15-003 inside a `test()` that `npm test` runs. Evidence: parent EV-UA-A-086 (921d5df7…; G10 build exit 0)
 
 ---
 

@@ -1,0 +1,15 @@
+▲ Next.js 16.2.12 (Turbopack)
+- Local:         http://127.0.0.1:4665
+- Network:       http://127.0.0.1:4665
+- Environments: .env.local
+✓ Ready in 636ms
+
+ GET / 200 in 3.7s (next.js: 1624ms, application-code: 2.0s)
+ GET / 200 in 626ms (next.js: 8ms, application-code: 618ms)
+ GET /api/health 502 in 154ms (next.js: 117ms, application-code: 37ms)
+ GET / 200 in 627ms (next.js: 113ms, application-code: 514ms)
+ GET /api/health 502 in 12ms (next.js: 3ms, application-code: 9ms)
+ GET / 200 in 559ms (next.js: 181ms, application-code: 378ms)
+ GET /api/health 502 in 9ms (next.js: 2ms, application-code: 7ms)
+ GET / 200 in 694ms (next.js: 205ms, application-code: 488ms)
+ GET /api/health 502 in 16ms (next.js: 5ms, application-code: 11ms)

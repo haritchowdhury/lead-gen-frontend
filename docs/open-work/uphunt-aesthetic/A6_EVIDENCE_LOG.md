@@ -3079,3 +3079,191 @@ coverage_counts:
 limitations: G1 214/211 vs frozen decomposition expected 212/209 is +2 passing predecessor tests from per-file coverage-module re-execution; behavioral oracle held. test/.ua-executed.json is tracked 40-ID runtime residue (never commit). Full required=executed equality remains UA-W15-V5. UA-W15 not assigned.
 external_mutations: none
 ```
+
+## EV-UA-A-082 — assign UA-W15 for decomposition
+
+```yaml
+evidence_id: EV-UA-A-082
+timestamp: 2026-09-04T14:25:00+05:30
+phase: assignment
+claim: Requester assigned UA-W15 as ASG-UA-W15-01 to UA-W15-WINDOW-AGENT for decomposition dispatch. Predecessor UA-W14 is parent-accepted (EV-UA-A-081). A1/A3 hashes match prior A5 pins. A4 68f6669a… is the post-UA-W14-checkbox pin. w15 test ABSENT; ua-coverage-equality.mjs ABSENT. globals.css is in-scope zero-edit. Successor is STOP (no UA-W16). may_start_successor remains false. Root ACTIVE_EXECUTION_STATE.md was not mutated. Parent did not dispatch the window agent. This assignment does not execute S001.
+environment: local workspace /home/harit/Email Scrapper
+revision: A5 state_version 38 digest 7e75f75b5f5c8e662f1868871fd2e53b6bce5ecac20763469984e462277d88e5
+operation: sha256sum of A1 A3 vs prior A5 pins; sha256sum globals.css lead-details app-header coverage w14/w13/w12 tests KI product pins; test ! -f uphunt-aesthetic-w15.test.ts; test ! -f ua-coverage-equality.mjs; A5 assignment fields written
+observed_result: |
+  A1 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827 MATCH;
+  A3 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3 MATCH;
+  A4 68f6669acfeecb801ec76c9f2500199204c0f6103f9e65bce554b79fb84dec54 MATCH;
+  current_window UA-W15; authorized_windows [UA-W15]; current_status IN_PROGRESS;
+  globals.css 4cf7a1fccba5f3b455b8c1a63e3d2aff4dc8a4f6a9dedd5731b3ea754aa87d95;
+  lead-details 9431f71bf7d85de0b81752dfff79206f13d3e0747405aaf25f5ee58c3b6a3727;
+  app-header 050da7c4a8835e9421d9a9621bba748c17398204a6ae1347fd1c8c4ca942c2a1;
+  coverage.test.ts f5137be495e260a1bf07f141247ca02c7a1c975fbaa526ae5b3b80828600c6d1;
+  w14 test 2436f2c88d7e3a5aacc7cca64f179c510cf1e8b12ad440930852b347ae09dbe9;
+  w15 test ABSENT; ua-coverage-equality.mjs ABSENT
+parent_frozen_mechanical_consequences: |
+  These close otherwise-open S1 choices; they are uniquely determined by DEC-UA-004, DEC-UA-005 leftover wrap/type floors, DEC-UA-008 reduced-motion, DEC-UA-014, DEC-UA-015, DEC-UA-016, INV-UA-010, UA-W15-T1/T2, CASE-UA-W15-001..003, and UA-W15-V3/V5:
+  1. FILE sub-window IDs start at UA-W15-S001. A zero-edit in-scope file gets no FILE sub-window and does not consume an S-number. Do not retire S001 unused. Sequential DAG, no parallel waves: S001 frontend/test/uphunt-aesthetic-w15.test.ts CREATE → S002 frontend/test/ua-coverage-equality.mjs CREATE → UA-W15-I001. frontend/app/globals.css is in-scope but zero-edit (4cf7a1fccba5f3b455b8c1a63e3d2aff4dc8a4f6a9dedd5731b3ea754aa87d95); leftover @media on already-owned lead-details and header rules is already present; do not add any new globals selector; do not invent CSS polish. Do not change `.shell { width: min(1180px, calc(100% - 40px)); }`. Keyword shell remains existing `.kiDashboard` in keyword-dashboard.module.css (out of write scope except as a G6 pin).
+  2. Zero-edit preserved (G6 pins, no FILE leaf): globals.css 4cf7a1fc…; keyword-dashboard.module.css 3095e384…; lead-details.tsx 9431f71b…; app-header.tsx 050da7c4…; cluster-landscape.tsx d1ed9ad4…; summary-cards.tsx c60d6bad…; keyword-table.tsx 96ce5e0e…; filter-bar.tsx 17edbde0…; research-dashboard.tsx 82f8a628…; chart-panels.tsx 2847411e…; uphunt-aesthetic-w14.test.ts 2436f2c8…; uphunt-aesthetic-w13.test.ts 8e96d6de…; uphunt-aesthetic-w12.test.ts 41711cc5…; uphunt-aesthetic-w9.test.ts baee1b2e…; uphunt-aesthetic-w2.test.ts f65ba0c5…; selection-review.tsx 5550dffa…; keywords/[researchId]/page.tsx a46b89bc…; section-intro.tsx 159096f3…; lib/keyword-intelligence-view-model.ts 8328b023…; test/keyword-intelligence-inventory.test.ts 2a6e6b24…; test/browser/keyword-intelligence-dashboard.mjs 317d3fa1…; traffic-enrichment.tsx 1a903788…; traffic-globe.tsx 7d9567b5…; uphunt-aesthetic-coverage.test.ts f5137be4…. Do not edit REQUIRED_CASE_IDS, listRequiredCaseIds, coverageDigest, PINNED_REQUIRED_SET_DIGEST, getFiltered, saveKeywordSelection, Chart.js Chart.register, dataset math, tooltip callbacks, parked SRC-UA-0092 files, or design-system-shell.test.ts.
+  3. CREATE frontend/test/uphunt-aesthetic-w15.test.ts with exactly two tests CASE-UA-W15-001 and CASE-UA-W15-002. Import recordExecuted from `./uphunt-aesthetic-coverage.test.ts` the same way as the w14 test. Unit tests that read source (not render). 001: globals.css contains `@media (prefers-reduced-motion: reduce)` and `transition-duration: 0.01ms !important`. 002: extract the `.lead-details .detail-section > h3 {` block with the same regex as CASE-UA-W9-002 (`/\.lead-details \.detail-section > h3 \{[\s\S]*?\}/u`); the block includes `font-size: 1.375rem;` and does not include `font-size: 0.5rem;`. Call recordExecuted after each witness. Do not use CASE-UA-W15-003 in this file. No third test(). S1 must freeze deterministic bytes (§7.3 non-behavioral formatting freedom applies).
+  4. CREATE frontend/test/ua-coverage-equality.mjs which is not matched by `test/*.test.ts`. The script imports `listRequiredCaseIds`, `coverageDigest`, `getExecuted`, and `recordExecuted` from `./uphunt-aesthetic-coverage.test.ts`. It asserts `getExecuted()` equals `REQUIRED_CASE_IDS` minus `{CASE-UA-W15-003}` as a set (42 IDs, digest 434a1f5eb42ce7e8640ba1ab8d80e54c2d0225c9f155a4f781d9f2ef76418cbd), then calls `recordExecuted("CASE-UA-W15-003")`, then asserts `coverageDigest(getExecuted()) === "0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05"` and set equality required=registered=executed, zero skips, no duplicates, no unexpected IDs. Do not put CASE-UA-W15-003 inside a `test()` that `npm test` runs. S1 must freeze deterministic bytes. Do not run this script at S002 (coverage sequence is I001 only).
+  5. FILE leaf S001 from ABSENT test/.ua-executed.json, running only the w15 test file, expects exactly 4 IDs (2 × W1 + CASE-UA-W15-001 + CASE-UA-W15-002), set digest 3172a45acdd6329e0bcf45f28e24279349be5157c5fd0da199afe1409bdb17db. S002 is the last FILE leaf (CREATE mjs) and MUST NOT run the equality script; its V-B is file existence plus the frozen S1 bytes, not an executed-set digest. Window-local 2-ID digest 5ac8c2a9ad2545c3f88d52826827138d9ed24a418a7cc64c26215f09bbd51343. Planned-file-set digest 16ed1b8b21e6e6278b66a601789e83bd4a8b7d63dbfdad70ddb381cfe47df74a over the two CREATE paths (globals.css excluded as zero-edit). Do not require W2–W14 IDs at the w15-only test command. test/.ua-executed.json is TRACKED at HEAD (never commit).
+  6. Frozen coverage sequence is I001 only, from frontend/: `rm -f test/.ua-executed.json` then `npm test` then `node --experimental-strip-types test/ua-coverage-equality.mjs`. After `npm test` and before the equality script, getExecuted is the 42-ID set digest 434a1f5eb42ce7e8640ba1ab8d80e54c2d0225c9f155a4f781d9f2ef76418cbd (40-ID W1–W14 union CASE-UA-W15-001/002). After the equality script, getExecuted is the 43-ID required set digest 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05. That 43-ID equality is UA-W15-V5 / CASE-UA-W15-003 and is asserted only at I001 G5 after the frozen sequence. Predecessor 40-ID digest remains 2c31828460d630208cbee7ae9875298058412258efc81682bba597ea5109a875 until this window's tests run.
+  7. I001 G1 is DEC-UA-016: from `frontend/`, `npm test`. Parent-measured predecessor after W14 is 214 tests / 211 pass / 3 fail; expected after W15 is 216 / 213 / 3. PASS iff allocated UA CASE tests (including CASE-UA-W15-001 and CASE-UA-W15-002) pass and every failing title, if any, is exactly the three named heading-oracle titles; process exit 1 is expected and is not G1 FAIL when that holds. Per-file coverage-module re-execution may add +2 passing tests versus 216/213 (same class as W14 214/211 vs 212/209); the behavioral oracle holds either way. G2 DEC-UA-014 needles are uphunt-aesthetic-w15.test.ts and ua-coverage-equality.mjs (globals.css is not a tsc input). G3 `npm run lint` because CSS remains in F1 write scope even as zero-edit; lint needles are those two CREATE paths plus globals.css. I001 G10 is `npm run build` from frontend/. If build fails solely on parked SRC-UA-0092 files, STOP and escalate; do not silently skip, do not edit parked files, and do not treat that as G10 PASS. I001 V3 reads (does not edit) keyword-dashboard.module.css wrap heights 520/420/360/380 and the owned h3 type floor 1.375rem; they must still match DEC-UA-004 and DEC-UA-005.
+  8. G4 browser_evidence true: four full-page PNGs under frontend/review-evidence/uphunt-aesthetic/UA-W15/ at widths 390, 768, 1280, 1440 (viewport height 900) of local route `/` only. captureBeyondViewport must be true. Do not require PNG IHDR height > 900 (landing may fit in 900). Assert `.site-header` is present in the DOM at 1280 (g4-checks.json). Do not screenshot `/design-fixture`. Do not screenshot a live `/keywords/{id}` against production. Do not edit test/browser/keyword-intelligence-dashboard.mjs. Helper scripts and g4-checks.json may live only under that review-evidence directory (not a planned product file). G4 is local_e2e evidence, not a CASE oracle.
+  9. Do not start UA-W16 (none exists). Do not add any new data-surface token. Do not edit globals.css, lead-details.tsx, app-header.tsx, view-model inventories, research-dashboard, chart-panels, W2–W14 test files, REQUIRED_CASE_IDS, parked files, or design-system-shell.test.ts. After parent accepts this decomposition, identity UA-W15-WINDOW-AGENT executes then personally reviews each FILE leaf in the same turn, then itself assigns the next S-number, then personally runs I001, then hands off (DEC-UA-015). This assignment does not execute S001. Do not write into S1 §0 any of: "parent issues the next leaf", "stop at AWAITING_WINDOW_REVIEW before S00n", "stop for parent after this leaf".
+decisive_assertion: UA-W15 may now be decomposed; FILE leaves remain unassigned until parent accepts the decomposition; UA-W16 does not exist; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5
+negative_control: executing S001, editing globals.css, putting CASE-UA-W15-003 in a npm-test test(), starting a UA-W16, or editing REQUIRED_CASE_IDS under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 40
+  planned: 43
+  executed: 40
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: FILE leaves remain unassigned until parent accepts the UA-W15 decomposition. Parent paste after a later decomposition accept is one paste for S001 through I001 (DEC-UA-015), not this paste. A5 must stay byte-identical until I001 handoff so S001 P1 holds. CREATE-file ending digests are not parent-simulated; S1 must pin them. npm run build vs parked SRC-UA-0092 remains escalate-if-fail, not silent skip.
+external_mutations: none
+```
+
+## EV-UA-A-083 — UA-W15 decomposition submission
+
+```yaml
+evidence_id: EV-UA-A-083
+timestamp: 2026-09-04T14:36:00+05:30
+phase: decomposition
+actor: UA-W15-WINDOW-AGENT
+role: window agent
+claim: Window agent submitted the UA-W15 sub-window decomposition under ASG-UA-W15-01. S1 9dc3f93caf7af3ea2321f6f29217d106f9c295d59a5698f7cff35a35cd6fb925; submitted S2 ff559aa16c3b7052b17551cd40a2e91d60d3571c0171b1431b8ece2b62bca8be; S3 063142f2032e0c48f839df7cea75b8beb08c3525fb12a80ebc8550ded2bc4370. A5 7e75f75b5f5c8e662f1868871fd2e53b6bce5ecac20763469984e462277d88e5 state_version 38 byte-identical. Product files untouched; globals.css 4cf7a1fc… zero-edit (no FILE leaf); w15 test and ua-coverage-equality.mjs ABSENT. §0 transcribes parent_frozen_mechanical_consequences items 1–9. DAG S001→S002→I001. S001 fence 0a34acf1…; S002 fence 921d5df7…. Planned-set 16ed1b8b…, 2-ID window-local 5ac8c2a9…, isolated 4-ID 3172a45a…, post-G1 42-ID 434a1f5e…, required 43-ID 0d14982c…. Authoring 47/0. No FILE leaf executed. UA-W16 not authorized. Nothing committed.
+environment: local workspace /home/harit/Email Scrapper
+operation: sha256sum S1/S2/A5; disposable creation-simulation for the two CREATE-file fences (no workspace mutation); set-digest recomputation; document-lint + self-falsification (§14)
+observed_result: |
+  S1 9dc3f93c…; S2 ff559aa1…; S3 063142f2…; A5 7e75f75b… byte-identical.
+  planned-file-set 16ed1b8b21e6e6278b66a601789e83bd4a8b7d63dbfdad70ddb381cfe47df74a; window-local 2-ID 5ac8c2a9ad2545c3f88d52826827138d9ed24a418a7cc64c26215f09bbd51343; isolated 4-ID 3172a45acdd6329e0bcf45f28e24279349be5157c5fd0da199afe1409bdb17db; post-G1 42-ID 434a1f5eb42ce7e8640ba1ab8d80e54c2d0225c9f155a4f781d9f2ef76418cbd; required 43-ID 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05; predecessor 40-ID 2c31828460d630208cbee7ae9875298058412258efc81682bba597ea5109a875; protected {A5,A6} be27e220fe5344934ab989e59c12b2156a28001ecc9f34cec397f1de00193b5a.
+  S001 fence 0a34acf1e5a168a19c8db534f41c1ac934e27a2bdc79285e9a4f325bd21431d7; S002 fence 921d5df708348fe141b0ecffa19c7bce664a68be6d43ffc364e78bebf479a0eb.
+  I001 gates G1 (DEC-UA-016 216/213/3) / G2 (DEC-UA-014 needles w15 test + mjs) / G3 npm run lint / G4 four full-page PNGs captureBeyondViewport / G5 43-ID equality / G6 forbidden-path search / G8 NC-UA-001/003/005/006 / G10 npm run build (escalate-if-fail on parked SRC-UA-0092) / V3 wrap+type-floor read authored in S1 §7.2.
+decisive_assertion: UA-W15 decomposition is AWAITING_PARENT_DECOMPOSITION_REVIEW; FILE leaves remain unassigned until parent accepts; UA-W16 does not exist and is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W15_SUBWINDOW_DECOMPOSITION_S1.md; UA-W15_SUBWINDOW_STATE_S2.yaml; UA-W15_SUBWINDOW_EVIDENCE_S3.md; A5
+negative_control: starting UA-W16, adding a new data-surface token, editing globals.css/lead-details.tsx/app-header.tsx, editing REQUIRED_CASE_IDS, or executing a FILE leaf under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 40
+  planned: 43
+  executed: 40
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: decomposition only; FILE leaves remain unassigned until parent accepts. The two CREATE-file ending digests are window-agent simulated (not parent-simulated); S1 pins them as leaf fences. A5 must stay byte-identical until I001 handoff so S001 P1 holds. npm run build vs parked SRC-UA-0092 remains escalate-if-fail, not silent skip.
+external_mutations: none
+```
+
+## EV-UA-A-084 — parent accept UA-W15 decomposition
+
+```yaml
+evidence_id: EV-UA-A-084
+timestamp: 2026-09-04T14:48:00+05:30
+phase: review
+claim: Parent independently accepted the UA-W15 decomposition under ASG-UA-W15-01. S1 9dc3f93caf7af3ea2321f6f29217d106f9c295d59a5698f7cff35a35cd6fb925 MATCH. Submitted S2 ff559aa16c3b7052b17551cd40a2e91d60d3571c0171b1431b8ece2b62bca8be MATCH then parent-set READY. Submitted S3 063142f2032e0c48f839df7cea75b8beb08c3525fb12a80ebc8550ded2bc4370 MATCH. A5 7e75f75b5f5c8e662f1868871fd2e53b6bce5ecac20763469984e462277d88e5 byte-identical. Product files untouched; globals.css 4cf7a1fc… zero-edit; w15 test and ua-coverage-equality.mjs ABSENT. §0 transcribes EV-UA-A-082 items 1–9. S001 fence 0a34acf1e5a168a19c8db534f41c1ac934e27a2bdc79285e9a4f325bd21431d7 MATCH independent re-apply; S002 fence 921d5df708348fe141b0ecffa19c7bce664a68be6d43ffc364e78bebf479a0eb MATCH independent re-apply. Authoring 47/0. Planned-set 16ed1b8b…. Window-local 5ac8c2a9…, 4-ID 3172a45a…, 42-ID 434a1f5e…, 43-ID 0d14982c…. DAG S001→S002→I001. UA-W16 does not exist. Nothing committed.
+environment: local
+revision: A5 state_version 38 IN_PROGRESS UA-W15 ASG-UA-W15-01 digest 7e75f75b5f5c8e662f1868871fd2e53b6bce5ecac20763469984e462277d88e5; S2 READY 0116c3fbcdb4fbf12a8b9c80a2c09eff8f2a3ea2e20dc6476e07152f5020cdd8
+operation: |
+  sha256sum S1 S2 S3 A1 A3 A4 A5 globals.css;
+  extract S001 ts fence and S002 js fence and sha256 with trailing LF;
+  confirm DAG, zero-edit globals, CASE oracles, G1/G4/G5/G10; §10 checkbox count 47/0; write S2 READY
+observed_result: |
+  all listed pins MATCH; S001 fence 0a34acf1… MATCH; S002 fence 921d5df7… MATCH;
+  S2 decomposition_status READY; current_assignment_id ASG-UA-W15-01-S001;
+  assigned_agent UA-W15-WINDOW-AGENT; authorized_write_file frontend/test/uphunt-aesthetic-w15.test.ts;
+  next_subwindow UA-W15-S002; A5 digest unchanged
+decisive_assertion: APPROVED and executable; UA-W15-WINDOW-AGENT owns S001 through I001 continuously (DEC-UA-015); UA-W16 does not exist
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W15_SUBWINDOW_STATE_S2.yaml
+negative_control: stopping for parent after S001, editing globals.css, putting CASE-UA-W15-003 in an npm-test test(), starting UA-W16, or editing REQUIRED_CASE_IDS under this S2 would violate DEC-UA-015 and A5 prohibited_actions
+coverage_counts:
+  required: 43
+  registered: 40
+  planned: 43
+  executed: 40
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S001 porcelain must treat A5/A6 plus UA-W15 S1/S2/S3 as protected coordination residue. test/.ua-executed.json never committed. npm run build vs parked SRC-UA-0092 remains escalate-if-fail.
+external_mutations: none
+```
+
+## EV-UA-A-085 — UA-W15 I001 PASS and handoff
+
+```yaml
+evidence_id: EV-UA-A-085
+timestamp: 2026-09-04T15:08:00+05:30
+phase: integration
+actor: UA-W15-WINDOW-AGENT
+role: window agent
+claim: UA-W15 I001 PASS; all FILE leaves executed and personally reviewed in one turn (DEC-UA-015); window handed off. S001 0a34acf1… (2 test()/2 recordExecuted, no CASE-UA-W15-003, isolated 4-ID 3172a45a…); S002 921d5df7… (no equality run at S002). G1 218/215/3 (only the three heading-oracle titles fail; CASE-UA-W15-001/002 pass; 218 vs 216 = +2 W1 coverage re-registration, same class as W14). G2 zero needles on w15 test/mjs. G3 lint exit 0 (0 errors, 4 warnings out of scope). G4 four full-page PNGs of `/` (390/768/1280/1440, captureBeyondViewport true; no IHDR>900 requirement; `.site-header` present at 1280). G5 42-ID 434a1f5e… then 43-ID 0d14982c… (UA-W15-V5 / CASE-UA-W15-003). G6 diff scope pass, zero forbidden path. G8 NC-UA-001/003/005/006 structural. G10 npm run build exit 0. V3 wrap 520/420/360/380 + h3 1.375rem. A5 set to AWAITING_REVIEW (state 39, 25d0dcf6…). No UA-W15-C00n, no UA-W16 start, nothing committed.
+environment: local workspace /home/harit/Email Scrapper
+operation: execute S001-S002; personally review each; run I001 (npm test DEC-UA-016, tsc DEC-UA-014, npm run lint, local `/` full-page PNGs via g4-uphunt-aesthetic-w15.mjs, g4-checks.json, rm -f + npm test + equality, git diff scope, npm run build, V3 wrap/type-floor read); write UA-W15_HANDOFF.md; append I001/certificate to S3; set A5 current_status AWAITING_REVIEW
+observed_result: |
+  S001 0a34acf1e5a168a19c8db534f41c1ac934e27a2bdc79285e9a4f325bd21431d7; S002 921d5df708348fe141b0ecffa19c7bce664a68be6d43ffc364e78bebf479a0eb; implementation set 16ed1b8b… MATCH.
+  G1 PASS (218/215/3; three heading-oracle titles only). G4 PASS (home-390 390×11944, home-768 753×10598, home-1280 1265×7597, home-1440 1425×7793; .site-header present at 1280). G5 PASS (42-ID 434a1f5eb42ce7e8640ba1ab8d80e54c2d0225c9f155a4f781d9f2ef76418cbd then 43-ID 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05).
+  A5 25d0dcf6c0f33bd47eef541cfefccb5543f42226c13716256ad6638a33ebf61a (state 39, AWAITING_REVIEW). S1 9dc3f93c…; S2 ff2ae38f…; S3 81adec39….
+decisive_assertion: UA-W15 complete; awaiting parent review. UA-W16 does not exist; may_start_successor false; nothing committed.
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: frontend/review-evidence/uphunt-aesthetic/UA-W15_HANDOFF.md; UA-W15_SUBWINDOW_EVIDENCE_S3.md; A5_ACTIVE_EXECUTION_STATE.yaml; frontend/test/uphunt-aesthetic-w15.test.ts; frontend/test/ua-coverage-equality.mjs
+negative_control: a new data-surface token, a forbidden-path edit, running the equality script at S002, or a UA-W16 start would have failed G6/G8/G9
+coverage_counts:
+  required: 43
+  registered: 43
+  planned: 43
+  executed: 43
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: 43-ID required=registered=executed (UA-W15-V5 / CASE-UA-W15-003) asserted at G5; A5 transitioned to AWAITING_REVIEW (state 39) on the authorized handoff action.
+external_mutations: none
+```
+
+## EV-UA-A-086 — parent accept UA-W15 I001
+
+```yaml
+evidence_id: EV-UA-A-086
+timestamp: 2026-09-04T18:15:00+05:30
+phase: review
+claim: Parent independently accepted UA-W15 after I001. Product files MATCH frozen oracles: uphunt-aesthetic-w15.test.ts 0a34acf1e5a168a19c8db534f41c1ac934e27a2bdc79285e9a4f325bd21431d7 CREATE (2 test(), 2 recordExecuted, no CASE-UA-W15-003); ua-coverage-equality.mjs 921d5df708348fe141b0ecffa19c7bce664a68be6d43ffc364e78bebf479a0eb CREATE. globals.css 4cf7a1fc… zero-edit; .shell width unchanged; lead-details 9431f71b…; coverage.test.ts f5137be4…; w14 test 2436f2c8…; module.css 3095e384…. S1 9dc3f93c…. A1/A3 MATCH. npm test under DEC-UA-016 218/215/3 with exactly the three heading-oracle titles (parent run; CASE-UA-W15-001/002 pass). tsc zero owned needles (exit 1 repo-wide parked). lint exit 0 (0 errors). G4 full-page IHDR 390×11944, 753×10598, 1265×7597, 1425×7793; parent-inspected home-1280.png shows StoreSignal site-header and Sign in; g4-checks.json siteHeaderPresentAt1280 true. G5 equality script PASS 43-ID 0d14982c… after serial diagnostic 42-ID 434a1f5e… (parallel npm test JSON race left 41 IDs on two parent runs; DEC-UA-011 class; behavioral G1 held). G10 npm run build exit 0. V3 wrap 520/420/360/380 + h3 1.375rem. G9 no UA-W16. A4 UA-W15 P/V/H/T checked on parent accept. ASG-UA-W15-01 closed. Root ACTIVE_EXECUTION_STATE.md untouched. Nothing committed.
+environment: local frontend node
+revision: A5 state_version 40 READY accepted_through UA-W15 digest 1001b5bcaaaad14be5e6e2dd75fdcadb5e5e144ec1a87132ef88aa598d990725; A4 post-checkbox 97bd3dd5cc6fab7497a078be66f5e763526c66c037039d9ea9deaeb0e0a2d99e; S2 ff2ae38ff01ec94e494db3baf745d46bc9796a362012837fb292bd2d4de0ab59; HANDOFF 37cae091774522c33969f1a42a795639216facde210774b701e85427f4b09e26 at review-evidence/uphunt-aesthetic/UA-W15_HANDOFF.md
+operation: |
+  sha256sum two CREATE files plus zero-edit globals.css lead-details coverage w14 S1 A4 A5 handoff;
+  identify PNG IHDR; inspect home-1280.png header band;
+  npm test (218/215/3); npx tsc needles; eslint; rm+npm test JSON race; serial --test-concurrency=1 then equality; npm run build; check A4 P/V/H/T; write A5 READY
+observed_result: |
+  all product pins MATCH; G1 PASS DEC-UA-016 218/215/3 exit 1;
+  G2 PASS; G3 PASS; G4 PASS full-page header in PNG; G5 MATCH 0d14982c… on serial+equality;
+  G10 PASS exit 0; G9 PASS; A5 current_status READY; accepted_through UA-W15; assigned_agent UNASSIGNED; next_window STOP; blocker null
+decisive_assertion: ACCEPTED; UA-W15 complete; DAG stop (successor_reserved_for parent; may_start_successor false; no UA-W16; DEC-UA-015)
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: frontend/test/uphunt-aesthetic-w15.test.ts; frontend/test/ua-coverage-equality.mjs; frontend/review-evidence/uphunt-aesthetic/UA-W15/; frontend/review-evidence/uphunt-aesthetic/UA-W15_HANDOFF.md
+negative_control: editing globals.css, putting CASE-UA-W15-003 in npm-test test(), starting UA-W16, or committing test/.ua-executed.json would have failed this parent decision
+coverage_counts:
+  required: 43
+  registered: 43
+  planned: 43
+  executed: 43
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: G1 218/215 vs frozen decomposition expected 216/213 is +2 passing predecessor tests from per-file coverage-module re-execution; behavioral oracle held. Parent parallel npm test twice produced 41-ID .ua-executed.json (missing W5-001 then W7-002) from concurrent recordExecuted writers; one serial diagnostic then equality MATCH 42-ID 434a1f5e… then 43-ID 0d14982c…. test/.ua-executed.json is tracked runtime residue (never commit). A5 handoff had accepted_through UA-W15 while still AWAITING_REVIEW (corrected on this parent READY). Window agent left A4 P/V/H/T unchecked; parent checked them on accept.
+external_mutations: none
+```

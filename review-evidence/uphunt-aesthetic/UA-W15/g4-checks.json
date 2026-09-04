@@ -1,0 +1,87 @@
+{
+  "summary": {
+    "fixture": "local route `/` landing page (no fetch interception; no synthetic research data)",
+    "route": "/",
+    "widths": [
+      390,
+      768,
+      1280,
+      1440
+    ],
+    "fullPageCapture": true,
+    "captureBeyondViewport": true,
+    "pngHeightThreshold": "PNG IHDR height NOT required to exceed 900 (landing may fit in 900)",
+    "siteHeaderPresentAt1280": true,
+    "siteHeaderAt1280": {
+      "present": true,
+      "display": "block",
+      "visible": true,
+      "width": 1280,
+      "height": 65,
+      "text": "StoreSignal\nHow it works\nWhat you get\nUse cases\nFAQ\nSHOPIFY LEAD INTELLIGENCE\nSign in"
+    },
+    "assertion": "full-page PNG (captureBeyondViewport true) at 390/768/1280/1440 of local route `/`; `.site-header` present in the DOM at 1280. No screenshot of /design-fixture or a live /keywords/{id}."
+  },
+  "shots": [
+    {
+      "width": 390,
+      "pngWidth": 390,
+      "pngHeight": 11944,
+      "viewportHeight": 900,
+      "requiresHeightGreaterThan900": false,
+      "siteHeader": {
+        "present": true,
+        "display": "block",
+        "visible": true,
+        "width": 390,
+        "height": 61,
+        "text": "StoreSignal\nSign in"
+      }
+    },
+    {
+      "width": 768,
+      "pngWidth": 753,
+      "pngHeight": 10598,
+      "viewportHeight": 900,
+      "requiresHeightGreaterThan900": false,
+      "siteHeader": {
+        "present": true,
+        "display": "block",
+        "visible": true,
+        "width": 768,
+        "height": 61,
+        "text": "StoreSignal\nSign in"
+      }
+    },
+    {
+      "width": 1280,
+      "pngWidth": 1265,
+      "pngHeight": 7597,
+      "viewportHeight": 900,
+      "requiresHeightGreaterThan900": false,
+      "siteHeader": {
+        "present": true,
+        "display": "block",
+        "visible": true,
+        "width": 1280,
+        "height": 65,
+        "text": "StoreSignal\nHow it works\nWhat you get\nUse cases\nFAQ\nSHOPIFY LEAD INTELLIGENCE\nSign in"
+      }
+    },
+    {
+      "width": 1440,
+      "pngWidth": 1425,
+      "pngHeight": 7793,
+      "viewportHeight": 900,
+      "requiresHeightGreaterThan900": false,
+      "siteHeader": {
+        "present": true,
+        "display": "block",
+        "visible": true,
+        "width": 1440,
+        "height": 65,
+        "text": "StoreSignal\nHow it works\nWhat you get\nUse cases\nFAQ\nSHOPIFY LEAD INTELLIGENCE\nSign in"
+      }
+    }
+  ]
+}
