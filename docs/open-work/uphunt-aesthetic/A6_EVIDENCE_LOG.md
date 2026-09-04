@@ -2820,3 +2820,262 @@ coverage_counts:
 limitations: G1 209/206 vs frozen decomposition expected 207/204 is +2 passing predecessor tests from per-file coverage-module re-execution; behavioral oracle held. S002 git numstat 17/13 vs frozen 18/14 is non-blocking because digest 3095e384… MATCH. CHG-UA-0008 residual (hero kept; marketOverview/analysisCharts composites; keyword-count h1) remains accepted. test/.ua-executed.json is tracked 37-ID runtime residue (never commit). Full required=executed equality remains UA-W15-V5. UA-W14 not assigned.
 external_mutations: none
 ```
+
+## EV-UA-A-075 — assign UA-W14 for decomposition
+
+```yaml
+evidence_id: EV-UA-A-075
+timestamp: 2026-09-04T12:48:00+05:30
+phase: assignment
+claim: Requester assigned UA-W14 as ASG-UA-W14-01 to UA-W14-WINDOW-AGENT for decomposition dispatch. Predecessor UA-W13 is parent-accepted (EV-UA-A-074). A1/A3/A4 hashes match prior A5 pins. A4 9d2bb23a… is the post-UA-W13-checkbox pin. w14 test ABSENT. filter-bar.tsx and keyword-dashboard.module.css are in-scope zero-edit. Successor UA-W15 remains reserved for parent. may_start_successor remains false. Root ACTIVE_EXECUTION_STATE.md was not mutated. Parent did not dispatch the window agent. This assignment does not execute S001.
+environment: local workspace /home/harit/Email Scrapper
+revision: A5 state_version 34 digest 3664892e41d91111870e2feb3746ee7d8af91844cef3019b059f4b662854bdfb
+operation: sha256sum of A1 A3 vs prior A5 pins; sha256sum cluster-landscape summary-cards keyword-table filter-bar module.css research-dashboard chart-panels selection-review page w13 test inventories view-model KI browser harness; test ! -f uphunt-aesthetic-w14.test.ts; A5 assignment fields written
+observed_result: |
+  A1 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827 MATCH;
+  A3 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3 MATCH;
+  A4 9d2bb23a93bad57e991bfe1603de6ab9a2acba604af9cde18fef52fd369b918a MATCH;
+  current_window UA-W14; authorized_windows [UA-W14]; current_status IN_PROGRESS;
+  cluster-landscape 2304b0c8c9d40b89a364a2ad1badd6ba871767a7bad49fdf30f2257675409e6a;
+  summary-cards 19fbd558703a8e97560ec2c36c6b2e0db5d81f27774cf2ff961f4fd752815b51;
+  keyword-table 91480058fbda5c0942c8a7abe07ed9267ad52c63400d6050769b63246e32ed61;
+  filter-bar 17edbde0e27e3df688f0f2e88fc8c2a342980458d58144ad2bbb5890562d7f23;
+  keyword-dashboard.module.css 3095e3842443abccb1a656373101cf4127f29b4adf7594efc280561bfa25a6bd;
+  research-dashboard 82f8a6284087dd9e8daa9da12496445299e263825e991f3ead5805f80de728aa;
+  chart-panels 2847411eb93de729798eccec0ae0f976bc0b9dcf845119b9c791a11dd236d562;
+  w13 test 8e96d6de1ad4b91774b6fd93c864c2d8cc866c6a361c4fe98bfc6e9d42240328;
+  w14 test ABSENT; section-intro 159096f313aa6c8d1be343f1db72511529fb4795c79be3123da9c3c3a0c38175
+parent_frozen_mechanical_consequences: |
+  These close otherwise-open S1 choices; they are uniquely determined by DEC-UA-005 items 5/10/16, DEC-UA-009, DEC-UA-015, DEC-UA-016, INV-UA-010, CHG-UA-0007, CHG-UA-0008, UA-W14-T1/T2, CASE-UA-W14-001..003, VIS-KD, and W5-I05:
+  1. FILE sub-window IDs start at UA-W14-S001. A zero-edit in-scope file gets no FILE sub-window and does not consume an S-number. Do not retire S001 unused. Sequential DAG, no parallel waves: S001 frontend/components/keyword-intelligence/cluster-landscape.tsx → S002 frontend/components/keyword-intelligence/summary-cards.tsx → S003 frontend/components/keyword-intelligence/keyword-table.tsx → S004 frontend/test/uphunt-aesthetic-w14.test.ts CREATE → UA-W14-I001. frontend/components/keyword-intelligence/filter-bar.tsx is in-scope but zero-edit (17edbde0e27e3df688f0f2e88fc8c2a342980458d58144ad2bbb5890562d7f23); it consumes no S-number. frontend/components/keyword-intelligence/keyword-dashboard.module.css is in-scope but zero-edit (3095e3842443abccb1a656373101cf4127f29b4adf7594efc280561bfa25a6bd); DEC-UA-005 leftover module rules for this window are none (W13 already locked chart heights). Do not add SectionIntro on the research-dashboard ClusterLandscape or KeywordTable call sites (those files are out of write scope). Do not wrap filters in SectionIntro.
+  2. Zero-edit preserved (G6 pins, no FILE leaf): filter-bar.tsx 17edbde0…; keyword-dashboard.module.css 3095e384…; research-dashboard.tsx 82f8a628…; chart-panels.tsx 2847411e…; uphunt-aesthetic-w13.test.ts 8e96d6de…; selection-review.tsx 5550dffa…; keywords/[researchId]/page.tsx a46b89bc…; section-intro.tsx 159096f3…; lib/keyword-intelligence-view-model.ts 8328b023…; test/keyword-intelligence-inventory.test.ts 2a6e6b24…; test/browser/keyword-intelligence-dashboard.mjs 317d3fa1…; globals.css 4cf7a1fc…; traffic-enrichment.tsx 1a903788…; traffic-globe.tsx 7d9567b5…; uphunt-aesthetic-w12.test.ts 41711cc5…; uphunt-aesthetic-coverage.test.ts f5137be4…. Do not edit getFiltered, saveKeywordSelection, Chart.js Chart.register, dataset math, tooltip callbacks, REQUIRED_CASE_IDS, or empty-state copy except as required to keep those nodes beside the same canvas/table/cluster scene.
+  3. T1 cluster, starting cluster-landscape.tsx 2304b0c8c9d40b89a364a2ad1badd6ba871767a7bad49fdf30f2257675409e6a. S1 MUST freeze deterministic ending bytes and git numstat via disposable unique-hunk simulation. Insert `import { SectionIntro } from "@/components/section-intro";` once. Replace the clusterHeroTitle inner h2 "Cluster landscape" and the clusterHeroSub paragraph with one SectionIntro eyebrow="Clusters" title="Related phrases, grouped so you can choose a lane." copy="Select a cluster to inspect its volume, CPC, and mix." Keep data-surface="surface:cluster-landscape" and data-surface="landscape:cluster-scene" byte-identical. Keep canvas, drag/select, tableMeta cluster counts, and overlap-note math. Do not add a new data-surface token.
+  4. T1 overlap, starting summary-cards.tsx 19fbd558703a8e97560ec2c36c6b2e0db5d81f27774cf2ff961f4fd752815b51. S1 MUST freeze ending digest and numstat via disposable unique-hunk simulation. Insert the same SectionIntro import once. In overlapPanel only, replace the h2 "Possible volume overlap" and the following panelNote about identical-volume variants with one SectionIntro eyebrow="Overlap" title="Phrases that may be counting the same demand twice." copy="Variants that share metrics and monthly history." Keep overlap stats, groups, and empty-state note. Keep word-boundary members marketOverview and overlapPanel. Keep Market overview and Store-discovery mix chrome (CHG-UA-0008 / VIS-KD). Do not add a data-surface attribute. Do not edit discovery-mix math.
+  5. T1 table, starting keyword-table.tsx 91480058fbda5c0942c8a7abe07ed9267ad52c63400d6050769b63246e32ed61. S1 MUST freeze ending digest and numstat via disposable unique-hunk simulation. Insert the same SectionIntro import once. Replace the h2 "Keyword workspace" with one SectionIntro eyebrow="Shortlist" title="Every active phrase, ready to inspect and keep." copy="Sort, filter, and select without leaving the evidence above." Keep the existing tableMeta row-count line. Keep sort/paginate/toggle, TABLE_COLS, and FLAG_META. Keep styles.kiDashboard absent, "<th>Action</th>" absent, and styles.rowEdit absent (VIS-KD). Do not add data-surface on KeywordTable (dashboard already wraps surface:keyword-table). Do not edit getFiltered or saveKeywordSelection.
+  6. CREATE test/uphunt-aesthetic-w14.test.ts with exactly three tests CASE-UA-W14-001..003. Import recordExecuted from `./uphunt-aesthetic-coverage.test.ts` the same way as the w13 test. Unit tests that read source (not render). 001: keyword-table.tsx contains `Every active phrase, ready to inspect and keep.` 002: cluster-landscape.tsx contains `Related phrases, grouped so you can choose a lane.` and summary-cards.tsx contains `Phrases that may be counting the same demand twice.` 003: filter-bar.tsx contains `data-filter="market"`. recordExecuted after assertions. No fourth test. S1 must freeze deterministic bytes (§7.3 non-behavioral formatting freedom applies).
+  7. Last FILE leaf (S004) from ABSENT test/.ua-executed.json expects exactly 5 IDs (2 × W1 + CASE-UA-W14-001..003), set digest 2dac0041db87b97e360260c76a4aa5bfb145b8a1e49252c1ca1fa5b6f322de48. The 40-ID set {2 × W1} ∪ {4 × W2} ∪ {4 × W3} ∪ {2 × W4} ∪ {2 × W5} ∪ {3 × W6} ∪ {2 × W7} ∪ {3 × W8} ∪ {4 × W9} ∪ {3 × W10} ∪ {2 × W11} ∪ {2 × W12} ∪ {4 × W13} ∪ {3 × W14} is asserted only at I001 G5 after `npm test`, digest 2c31828460d630208cbee7ae9875298058412258efc81682bba597ea5109a875. Window-local 3-ID digest d2d3e48bb9a225e7bfa63b0faaa858c569439d8f8e41c59914da3cd083639c88. Planned-file-set digest 541169bc3ebd4c72932bc1b47b5bdf93de4c964517115ea93618edc97f949383 over the four planned paths (filter-bar and module.css excluded as zero-edit). Do not require W2–W13 IDs at the w14-only test command. test/.ua-executed.json is TRACKED at HEAD (never commit).
+  8. I001 G1 is DEC-UA-016: from `frontend/`, `npm test`. Parent-measured predecessor after W13 is 209 tests / 206 pass / 3 fail; expected after W14 is 212 / 209 / 3. PASS iff allocated UA CASE tests (including CASE-UA-W14-001..003) pass and every failing title, if any, is exactly the three named heading-oracle titles; process exit 1 is expected and is not G1 FAIL when that holds. G2 DEC-UA-014 needles are cluster-landscape.tsx, summary-cards.tsx, keyword-table.tsx, filter-bar.tsx, uphunt-aesthetic-w14.test.ts (keyword-dashboard.module.css is not a tsc input). G3 npm run lint on those JSX/TS needles. G4 browser_evidence true: do not screenshot `/design-fixture` and do not screenshot a live `/keywords/{id}` against production. Do not edit test/browser/keyword-intelligence-dashboard.mjs. I001 records four full-page PNGs under frontend/review-evidence/uphunt-aesthetic/UA-W14/ at widths 390, 768, 1280, 1440 (viewport height 900) of synthetic `/keywords/kr_abcdefghijklmnopqrstuvwx` with same-class fetch interception of `/api/keyword-research*` completed payloads (copy interception from UA-W13 G4; do not mutate the KI-W5 harness). captureBeyondViewport must be true (W13 C001 class). PNG IHDR height must exceed 900. Assert the table SectionIntro title `Every active phrase, ready to inspect and keep.` is present and readable at 1280, and the cluster title `Related phrases, grouped so you can choose a lane.` is present in g4-checks.json at 1280. Helper scripts and g4-checks.json may live only under that review-evidence directory (not a planned product file; G9 still forbids UA-W15 artifacts).
+  9. Do not start UA-W15. Do not add any new data-surface token. Do not edit view-model inventories, research-dashboard, chart-panels, w13 tests, globals.css, section-intro.tsx, W2–W13 test files, REQUIRED_CASE_IDS, parked files, or design-system-shell.test.ts. After parent accepts this decomposition, identity UA-W14-WINDOW-AGENT executes then personally reviews each FILE leaf in the same turn, then itself assigns the next S-number, then personally runs I001, then hands off (DEC-UA-015). This assignment does not execute S001. Do not write into S1 §0 any of: "parent issues the next leaf", "stop at AWAITING_WINDOW_REVIEW before S00n", "stop for parent after this leaf".
+decisive_assertion: UA-W14 may now be decomposed; FILE leaves remain unassigned until parent accepts the decomposition; UA-W15 is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5
+negative_control: starting UA-W15, adding a new data-surface token, editing filter-bar.tsx, editing getFiltered, wrapping ClusterLandscape in research-dashboard, or editing REQUIRED_CASE_IDS under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 37
+  planned: 43
+  executed: 37
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: FILE leaves remain unassigned until parent accepts the UA-W14 decomposition. Parent paste after a later decomposition accept is one paste for S001 through I001 (DEC-UA-015), not this paste. A5 must stay byte-identical until I001 handoff so S001 P1 holds. cluster-landscape.tsx, summary-cards.tsx, and keyword-table.tsx ending digests are not parent-simulated (file-scale JSX); S1 must pin them.
+external_mutations: none
+```
+
+## EV-UA-A-076 — UA-W14 decomposition submission
+
+```yaml
+evidence_id: EV-UA-A-076
+timestamp: 2026-09-04T13:10:00+05:30
+phase: decomposition
+actor: UA-W14-WINDOW-AGENT
+role: window agent
+claim: Window agent submitted the UA-W14 sub-window decomposition under ASG-UA-W14-01. S1 7c673e7ced54c224d7aae603ed88f8fc305f7036fdb8f79ca67e16a2630828a6; submitted S2 5652f61536c0f4925ade2692a5724894315c50a6bd7766e53b67dabb0eadc14d; S3 ae480890187bffb46abdb05f7feadbec9db4d40aaad93b3ba52fd08c6cb793c8. A5 3664892e41d91111870e2feb3746ee7d8af91844cef3019b059f4b662854bdfb state_version 34 byte-identical. Product files untouched (cluster-landscape 2304b0c8…, summary-cards 19fbd558…, keyword-table 91480058…; filter-bar 17edbde0… and module.css 3095e384… zero-edit pins); w14 test ABSENT. §0 transcribes parent_frozen_mechanical_consequences items 1–9. DAG S001→S002→S003→S004→I001. S001 ending d1ed9ad4… / 6 11, S002 ending c60d6bad… / 6 5, S003 ending 96ce5e0e… / 6 6, S004 fence 2436f2c8…. Planned-set 541169bc…, window-local 3-ID d2d3e48b…, 5-ID 2dac0041…, 40-ID 2c318284…. Authoring 47/0. No FILE leaf executed. UA-W15 not authorized. Nothing committed.
+environment: local workspace /home/harit/Email Scrapper
+operation: sha256sum S1/S2/A5; disposable unique-hunk simulation for the three edited-source endings (no workspace mutation); set-digest recomputation; document-lint + self-falsification (§14)
+observed_result: |
+  S1 7c673e7c…; S2 5652f615…; S3 ae480890…; A5 3664892e… byte-identical.
+  planned-file-set 541169bc3ebd4c72932bc1b47b5bdf93de4c964517115ea93618edc97f949383; window-local 3-ID d2d3e48bb9a225e7bfa63b0faaa858c569439d8f8e41c59914da3cd083639c88; isolated 5-ID 2dac0041db87b97e360260c76a4aa5bfb145b8a1e49252c1ca1fa5b6f322de48; post-G1 40-ID 2c31828460d630208cbee7ae9875298058412258efc81682bba597ea5109a875.
+  S001 ending d1ed9ad4d8a1148f2e8b7deedf5c0bc9e39c682793cc19d55dce3f68cdcfcd53 / 6 11; S002 ending c60d6bad700060134d8f4fcf2ef57aa1f1fb133a428a5f5e3c5d20ebaa1711f0 / 6 5; S003 ending 96ce5e0e198f398b8ab6f9884c6ecd26c45bf8cd9b7b26ec4f851366ca2134ee / 6 6; S004 fence 2436f2c88d7e3a5aacc7cca64f179c510cf1e8b12ad440930852b347ae09dbe9.
+  I001 gates G0–G9 authored in S1 §7.2 (G1 DEC-UA-016 212/209/3; G4 four full-page PNGs captureBeyondViewport; G5 40-ID 2c318284…).
+decisive_assertion: UA-W14 decomposition is AWAITING_PARENT_DECOMPOSITION_REVIEW; FILE leaves remain unassigned until parent accepts; UA-W15 is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W14_SUBWINDOW_DECOMPOSITION_S1.md; UA-W14_SUBWINDOW_STATE_S2.yaml; UA-W14_SUBWINDOW_EVIDENCE_S3.md; A5
+negative_control: starting UA-W15, adding a new data-surface token, editing filter-bar.tsx, editing getFiltered, or executing a FILE leaf under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 37
+  planned: 43
+  executed: 37
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: decomposition only; FILE leaves remain unassigned until parent accepts. cluster-landscape.tsx, summary-cards.tsx, and keyword-table.tsx ending digests are window-agent simulated (not parent-simulated); S1 pins them as leaf oracles. A5 must stay byte-identical until I001 handoff so S001 P1 holds.
+external_mutations: none
+```
+
+## EV-UA-A-077 — reject UA-W14 decomposition (S001 V1c)
+
+```yaml
+evidence_id: EV-UA-A-077
+timestamp: 2026-09-04T13:15:00+05:30
+phase: review
+claim: Parent independently rejected the submitted UA-W14 decomposition (S1 7c673e7c…, S2 5652f615…, S3 ae480890…) as not executable. Artifact hashes MATCH the agent report. A5 was 3664892e… at submission and is now state_version 35 f1332422… after this review write. Product files untouched; w14 test ABSENT. Planned-set 541169bc…, window-local d2d3e48b…, 5-ID 2dac0041…, 40-ID 2c318284… MATCH. Authoring 47/0 MATCH. S004 js fence independently hashed MATCH 2436f2c8…. Parent independently re-applied unique hunks with tight SectionIntro import immediately after the styles import: S001 ending d1ed9ad4… / 6 11 MATCH; S002 c60d6bad… / 6 5 MATCH; S003 96ce5e0e… / 6 6 MATCH. Flag 1 is blocking: S001 V1c requires grep -c "Cluster landscape" => 0 while the same S001 block requires the surrounding section including aria-label="Cluster landscape" kept byte-identical. After the unique hunk that string remains exactly once. An executor cannot satisfy both V1a (d1ed9ad4…) and V1c. S002/S003 V1c grep-zero oracles are executable (Possible volume overlap / Keyword workspace are unique to the replaced headings). Do not edit product files. Do not start UA-W15. Nothing committed. FILE leaves not assigned.
+environment: local workspace /home/harit/Email Scrapper
+revision: A5 state_version 35 digest f13324222a6eb426d42b33983956a30fff8ab3da9fe94690567769206cb2e6ec
+operation: |
+  sha256sum S1 S2 S3 A5 A1 A3 A4; re-apply S001/S002/S003 unique hunks in /tmp; hash S004 js fence; grep Cluster landscape in cluster-landscape.tsx
+observed_result: |
+  S1 7c673e7ced54c224d7aae603ed88f8fc305f7036fdb8f79ca67e16a2630828a6 MATCH;
+  S2 5652f61536c0f4925ade2692a5724894315c50a6bd7766e53b67dabb0eadc14d MATCH;
+  S3 ae480890187bffb46abdb05f7feadbec9db4d40aaad93b3ba52fd08c6cb793c8 MATCH;
+  submitted A5 3664892e… MATCH at review start; live cluster-landscape.tsx contains aria-label="Cluster landscape" and h2 Cluster landscape
+parent_frozen_mechanical_consequences: |
+  These amend EV-UA-A-075 item 3 only (V1c). Items 1, 2, 4–9 and the S001/S002/S003/S004 ending oracles remain. Uniquely determined by the required keep of aria-label="Cluster landscape":
+  3V. S001 V1c MUST NOT require grep -c "Cluster landscape" => 0. After the unique hunk, `Cluster landscape` remains exactly once as aria-label="Cluster landscape" and that attribute stays. Required V1c counts: grep -c "Related phrases, grouped so you can choose a lane." >= 1; grep -c "See where demand concentrates" => 0; grep -c "data-surface=\"surface:cluster-landscape\"" => 1; grep -c "data-surface=\"landscape:cluster-scene\"" => 1; grep -c "aria-label=\"Cluster landscape\"" => 1. Ending digest d1ed9ad4d8a1148f2e8b7deedf5c0bc9e39c682793cc19d55dce3f68cdcfcd53 / numstat 6 11 is unchanged. Rewrite S1/S2/S3; do not change product starting bytes. Do not set S2 decomposition_status READY on 7c673e7c….
+decisive_assertion: REJECTED; not READY; UA-W14-WINDOW-AGENT must rewrite S1/S2/S3; FILE leaves remain unassigned; UA-W15 unauthorized
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5; submitted S1/S2/S3 (not accepted)
+negative_control: deleting aria-label="Cluster landscape" to satisfy the old V1c, setting S2 READY on 7c673e7c…, or executing S001 would violate this review
+coverage_counts:
+  required: 43
+  registered: 37
+  planned: 43
+  executed: 37
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S002/S003/S004 oracles independently MATCH and are not reopened. Transition-table phrase "do not begin S002 before the S001 review" is non-blocking because S1 §11 names window-agent personal review, not a parent stop. Parent did not dispatch.
+external_mutations: none
+```
+
+## EV-UA-A-078 — UA-W14 decomposition resubmission (revised S001 V1c)
+
+```yaml
+evidence_id: EV-UA-A-078
+timestamp: 2026-09-04T13:25:00+05:30
+phase: decomposition
+actor: UA-W14-WINDOW-AGENT
+role: window agent
+claim: Window agent resubmitted the revised UA-W14 sub-window decomposition under ASG-UA-W14-01 after the parent rejection EV-UA-A-077 (S001 V1c). S1 81715b8688b9e97a7d9522177852d396d9fd80215bc9872f4c3cfeeeabd43684; S2 14d3c36212867e494a7e9aa5f42cc4c327b2f2f0d4160483d439d6523370c358; S3 d2f6612614cc314b6af7cf762698549a35f71ff8e63c04781a65e6bad858a589. A5 f13324222a6eb426d42b33983956a30fff8ab3da9fe94690567769206cb2e6ec state_version 35 byte-identical. Product files untouched (cluster-landscape 2304b0c8…, summary-cards 19fbd558…, keyword-table 91480058…; filter-bar 17edbde0… and module.css 3095e384… zero-edit pins); w14 test ABSENT. §0 transcribes EV-UA-A-075 items 1–9 plus EV-UA-A-077 3V. S001 V1c now requires aria-label="Cluster landscape" == 1 and does NOT require the raw Cluster landscape string == 0. S001 ending d1ed9ad4… / 6 11, S002 ending c60d6bad… / 6 5, S003 ending 96ce5e0e… / 6 6, S004 fence 2436f2c8… unchanged. Planned-set 541169bc…, window-local 3-ID d2d3e48b…, 5-ID 2dac0041…, 40-ID 2c318284…. Authoring 47/0. No FILE leaf executed; S2 decomposition_status stays AWAITING_PARENT_DECOMPOSITION_REVIEW (NOT READY). UA-W15 not authorized. Nothing committed.
+environment: local workspace /home/harit/Email Scrapper
+operation: sha256sum S1/S2/A5; apply EV-UA-A-077 3V to S1 §0 and S001 V1c; disposable unique-hunk re-verify of the three edited-source endings (no workspace mutation); set-digest recomputation; document-lint + self-falsification (§14)
+observed_result: |
+  S1 81715b86…; S2 14d3c362…; S3 d2f66126…; A5 f1332422… byte-identical.
+  planned-file-set 541169bc3ebd4c72932bc1b47b5bdf93de4c964517115ea93618edc97f949383; window-local 3-ID d2d3e48bb9a225e7bfa63b0faaa858c569439d8f8e41c59914da3cd083639c88; isolated 5-ID 2dac0041db87b97e360260c76a4aa5bfb145b8a1e49252c1ca1fa5b6f322de48; post-G1 40-ID 2c31828460d630208cbee7ae9875298058412258efc81682bba597ea5109a875.
+  S001 ending d1ed9ad4d8a1148f2e8b7deedf5c0bc9e39c682793cc19d55dce3f68cdcfcd53 / 6 11; S002 ending c60d6bad700060134d8f4fcf2ef57aa1f1fb133a428a5f5e3c5d20ebaa1711f0 / 6 5; S003 ending 96ce5e0e198f398b8ab6f9884c6ecd26c45bf8cd9b7b26ec4f851366ca2134ee / 6 6; S004 fence 2436f2c88d7e3a5aacc7cca64f179c510cf1e8b12ad440930852b347ae09dbe9.
+  S001 V1c counts (3V): Related phrases, grouped so you can choose a lane. >= 1; See where demand concentrates == 0; data-surface="surface:cluster-landscape" == 1; data-surface="landscape:cluster-scene" == 1; aria-label="Cluster landscape" == 1.
+decisive_assertion: UA-W14 revised decomposition is AWAITING_PARENT_DECOMPOSITION_REVIEW; FILE leaves remain unassigned until parent accepts; UA-W15 is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W14_SUBWINDOW_DECOMPOSITION_S1.md; UA-W14_SUBWINDOW_STATE_S2.yaml; UA-W14_SUBWINDOW_EVIDENCE_S3.md; A5
+negative_control: deleting aria-label="Cluster landscape", starting UA-W15, adding a new data-surface token, or executing a FILE leaf under this assignment would violate A5 / EV-UA-A-077
+coverage_counts:
+  required: 43
+  registered: 37
+  planned: 43
+  executed: 37
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: decomposition only; FILE leaves remain unassigned until parent accepts. S001/S002/S003 ending digests are window-agent simulated (not parent-simulated) and unchanged. S2.decomposition_status is AWAITING_PARENT_DECOMPOSITION_REVIEW, NOT READY. A5 must stay byte-identical until I001 handoff so S001 P1 holds.
+external_mutations: none
+```
+
+## EV-UA-A-079 — parent accept revised UA-W14 decomposition
+
+```yaml
+evidence_id: EV-UA-A-079
+timestamp: 2026-09-04T13:30:00+05:30
+phase: review
+claim: Parent independently accepted the revised UA-W14 decomposition under ASG-UA-W14-01. S1 81715b8688b9e97a7d9522177852d396d9fd80215bc9872f4c3cfeeeabd43684 MATCH. Submitted S2 14d3c36212867e494a7e9aa5f42cc4c327b2f2f0d4160483d439d6523370c358 MATCH then parent-set READY. Submitted S3 d2f6612614cc314b6af7cf762698549a35f71ff8e63c04781a65e6bad858a589 MATCH. A5 f13324222a6eb426d42b33983956a30fff8ab3da9fe94690567769206cb2e6ec byte-identical. Product files untouched (cluster-landscape 2304b0c8…, summary-cards 19fbd558…, keyword-table 91480058…, filter-bar 17edbde0…, module.css 3095e384…); w14 test ABSENT. §0 transcribes EV-UA-A-075 items 1–9 plus 3V. S001 V1c requires aria-label="Cluster landscape" == 1 and MUST NOT require Cluster landscape == 0. S001 ending d1ed9ad4… / 6 11, S002 c60d6bad… / 6 5, S003 96ce5e0e… / 6 6, S004 fence 2436f2c8… MATCH independent re-apply from prior review. Authoring 47/0. Planned-set 541169bc…. Window-local d2d3e48b…, 5-ID 2dac0041…, 40-ID 2c318284…. DAG S001→S002→S003→S004→I001. UA-W15 not authorized. Nothing committed.
+environment: local
+revision: A5 state_version 35 IN_PROGRESS UA-W14 ASG-UA-W14-01 digest f13324222a6eb426d42b33983956a30fff8ab3da9fe94690567769206cb2e6ec; S2 READY d3f5d4c466136d66287bfe8d457e57592d1f3c31f1334ca616d1384ab99a6ec0
+operation: |
+  sha256sum S1 S2 S3 A1 A3 A4 A5 cluster-landscape summary-cards keyword-table filter-bar module.css;
+  extract S004 js fence and sha256; confirm V1c 3V; §10 checkbox count; write S2 READY
+observed_result: |
+  all listed pins MATCH; S004 fence 2436f2c8… MATCH;
+  S2 decomposition_status READY; current_assignment_id ASG-UA-W14-01-S001;
+  assigned_agent UA-W14-WINDOW-AGENT; authorized_write_file cluster-landscape.tsx;
+  next_subwindow UA-W14-S002; A5 digest unchanged
+decisive_assertion: APPROVED and executable; UA-W14-WINDOW-AGENT owns S001 through I001 continuously (DEC-UA-015); UA-W15 remains unauthorized
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W14_SUBWINDOW_STATE_S2.yaml
+negative_control: stopping for parent after S001, launching UA-W15, adding a new data-surface, deleting aria-label="Cluster landscape", or editing keyword-intelligence-inventory.test.ts under this S2 would violate DEC-UA-015, 3V, and A5 prohibited_actions
+coverage_counts:
+  required: 43
+  registered: 37
+  planned: 43
+  executed: 37
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S001 porcelain must treat A5/A6 plus UA-W14 S1/S2/S3 as protected coordination residue. A5 blocker string EV-UA-A-077_… remains on the frozen A5 bytes; S2 READY is the live execution authority. test/.ua-executed.json never committed.
+external_mutations: none
+```
+
+## EV-UA-A-080 — UA-W14 I001 PASS and handoff
+
+```yaml
+evidence_id: EV-UA-A-080
+timestamp: 2026-09-04T14:00:00+05:30
+phase: integration
+actor: UA-W14-WINDOW-AGENT
+role: window agent
+claim: UA-W14 I001 PASS; all FILE leaves executed and personally reviewed; window handed off (DEC-UA-015). S001 d1ed9ad4…/6 11, S002 c60d6bad…/6 5, S003 96ce5e0e…/6 6, S004 fence 2436f2c8…. G1 214/211/3 (only the three heading-oracle titles fail; CASE-UA-W14-001..003 pass). G4 four full-page PNGs (390/768/1280/1440, IHDR > 900; table title readable at 1280; cluster title present). G5 .ua-executed.json == 40-ID set 2c318284…. G2/G3/G6/G7/G8/G9 PASS. A5 set to AWAITING_REVIEW (state 36, f46acfa7…). No UA-W14-C00n, no UA-W15 start, nothing committed.
+environment: local workspace /home/harit/Email Scrapper
+operation: execute S001-S004; personally review each; run I001 (npm test, tsc, lint, synthetic full-page PNGs, git diff scope, coverage set); write UA-W14_HANDOFF.md; set A5 current_status AWAITING_REVIEW
+observed_result: |
+  Implementation digests frozen and MATCH. G1 PASS (214/211/3). G4 PASS (4 PNGs > 900; table readable 1280; cluster present 1280; surfaces identical to W13). G5 PASS (40-ID digest 2c31828460d630208cbee7ae9875298058412258efc81682bba597ea5109a875). A5 f46acfa7f83c042eb06bbaf0f037fbfef1dc74832777260b262e23f10b9852f1 (state 36, AWAITING_REVIEW).
+decisive_assertion: UA-W14 complete; awaiting parent review. UA-W15 is the next reserved parent window; may_start_successor false.
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: frontend/review-evidence/uphunt-aesthetic/UA-W14_HANDOFF.md; UA-W14_SUBWINDOW_EVIDENCE_S3.md; A5_ACTIVE_EXECUTION_STATE.yaml
+negative_control: a new data-surface token, a forbidden-path edit, or a UA-W15 start would have failed G6/G8/G9
+coverage_counts:
+  required: 43
+  registered: 40
+  planned: 43
+  executed: 40
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: 40-ID set (W1-W14) asserted; full 43-set (incl. UA-W15) remains UA-W15-V5.
+external_mutations: none
+```
+
+## EV-UA-A-081 — parent accept UA-W14 I001
+
+```yaml
+evidence_id: EV-UA-A-081
+timestamp: 2026-09-04T14:10:00+05:30
+phase: review
+claim: Parent independently accepted UA-W14 after I001. Product files MATCH frozen oracles: cluster-landscape.tsx d1ed9ad4d8a1148f2e8b7deedf5c0bc9e39c682793cc19d55dce3f68cdcfcd53 (6/11), summary-cards.tsx c60d6bad700060134d8f4fcf2ef57aa1f1fb133a428a5f5e3c5d20ebaa1711f0 (6/5), keyword-table.tsx 96ce5e0e198f398b8ab6f9884c6ecd26c45bf8cd9b7b26ec4f851366ca2134ee (6/6), uphunt-aesthetic-w14.test.ts 2436f2c88d7e3a5aacc7cca64f179c510cf1e8b12ad440930852b347ae09dbe9 CREATE. filter-bar.tsx 17edbde0… and keyword-dashboard.module.css 3095e384… zero-edit. 3V aria-label="Cluster landscape" count 1. No new data-surface. S1 81715b86…. A1/A3 MATCH. npm test under DEC-UA-016 214/211/3 with exactly the three heading-oracle titles (parent run; CASE-UA-W14-001..003 pass; W5-I05 pass). tsc zero owned needles. lint exit 0. G4 full-page IHDR 390→12431, 753→11308, 1265→11332, 1425→11481 (all height > 900); parent-inspected dashboard-1280.png bands show CLUSTERS / Related phrases… and SHORTLIST / Every active phrase… in the PNG pixels; g4-checks.json inPngBounds true. G5 40-ID 2c318284…. G9 no UA-W15 artifact. A4 UA-W14 P/V/H/T checked on parent accept. ASG-UA-W14-01 closed. UA-W15 not assigned. Root ACTIVE_EXECUTION_STATE.md untouched. Nothing committed.
+environment: local frontend node
+revision: A5 state_version 37 READY accepted_through UA-W14 digest 1c1947f73922506b2a57be47367659638bf129379b701579e2e805e20f79ff30; A4 post-checkbox 68f6669acfeecb801ec76c9f2500199204c0f6103f9e65bce554b79fb84dec54; S2 1b2b62488423969fac287571cc53e1f6374351d5a1d9cd8478b7dbb697635b96; HANDOFF 94bf3565db45366d6610fadc2bb3a2bcbe5e705eb2d583ddc958bd0400d7d09d at review-evidence/uphunt-aesthetic/UA-W14_HANDOFF.md
+operation: |
+  sha256sum four product files plus zero-edit predecessors S1 A4 A5 handoff;
+  git diff --numstat; identify PNG IHDR sizes; crop dashboard-1280.png at cluster/table y;
+  npm test; npx tsc; eslint needles; 40-ID digest; check A4 P/V/H/T; write A5 READY
+observed_result: |
+  all product pins MATCH; G1 PASS DEC-UA-016 214/211/3 exit 1;
+  G2 PASS; G3 PASS; G4 PASS full-page titles in PNG pixels; G5 MATCH 2c318284…; G9 PASS;
+  A5 current_status READY; accepted_through UA-W14; assigned_agent UNASSIGNED; blocker null
+decisive_assertion: ACCEPTED; UA-W14 complete; UA-W15 remains unassigned (successor_reserved_for parent; may_start_successor false; DEC-UA-015)
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: frontend/components/keyword-intelligence/cluster-landscape.tsx; frontend/components/keyword-intelligence/summary-cards.tsx; frontend/components/keyword-intelligence/keyword-table.tsx; frontend/test/uphunt-aesthetic-w14.test.ts; frontend/review-evidence/uphunt-aesthetic/UA-W14/; frontend/review-evidence/uphunt-aesthetic/UA-W14_HANDOFF.md
+negative_control: shipping viewport-only 900px PNGs, starting UA-W15, or deleting aria-label="Cluster landscape" would have failed this parent decision
+coverage_counts:
+  required: 43
+  registered: 40
+  planned: 43
+  executed: 40
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: G1 214/211 vs frozen decomposition expected 212/209 is +2 passing predecessor tests from per-file coverage-module re-execution; behavioral oracle held. test/.ua-executed.json is tracked 40-ID runtime residue (never commit). Full required=executed equality remains UA-W15-V5. UA-W15 not assigned.
+external_mutations: none
+```

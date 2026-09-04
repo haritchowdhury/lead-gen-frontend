@@ -6,6 +6,7 @@ import type { ClusterLaneCounts, ClusterRow, KeywordLane } from "@/lib/keyword-i
 import { fmtCpc, fmtNum, fmtPct, laneLabel } from "@/lib/keyword-intelligence-view-model";
 
 import styles from "./keyword-dashboard.module.css";
+import { SectionIntro } from "@/components/section-intro";
 
 const CLUSTER_COLORS = [
   "#6366f1",
@@ -566,17 +567,11 @@ export function ClusterLandscape({ clusters, selectedClusterId, onSelect }: Clus
       aria-label="Cluster landscape"
     >
       <div className={styles.sectionHead}>
-        <div className={styles.clusterHeroTitle}>
-          <h2
-            className={styles.tip}
-            data-tip="A filtered market map of the keyword clusters. Volume, CPC, and commercial intent are recomputed from visible keywords; trend and opportunity come from the clustering pipeline."
-          >
-            Cluster landscape
-          </h2>
-          <div className={styles.clusterHeroSub}>
-            See where demand concentrates, which themes are recommended, and how strong each opportunity is.
-          </div>
-        </div>
+        <SectionIntro
+          eyebrow="Clusters"
+          title="Related phrases, grouped so you can choose a lane."
+          copy="Select a cluster to inspect its volume, CPC, and mix."
+        />
         <div className={styles.tableMeta}>
           {rows.length} cluster{rows.length === 1 ? "" : "s"} · {totalKeywordPoints} keyword points
         </div>

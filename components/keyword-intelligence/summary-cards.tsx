@@ -14,6 +14,7 @@ import {
 } from "@/lib/keyword-intelligence-view-model";
 
 import styles from "./keyword-dashboard.module.css";
+import { SectionIntro } from "@/components/section-intro";
 
 type SummaryCardsProps = {
   result: ResearchResult;
@@ -204,11 +205,11 @@ export function SummaryCards({ result, marketCode, children }: SummaryCardsProps
 
   const overlapPanel = (
         <div className={`${styles.decisionPanel} ${styles.wide}`}>
-          <h2>Possible volume overlap</h2>
-          <div className={styles.panelNote}>
-            Variants with the same reported metrics and monthly history are treated as a likely
-            shared Google volume bucket. The raw and adjusted totals remain visible.
-          </div>
+          <SectionIntro
+            eyebrow="Overlap"
+            title="Phrases that may be counting the same demand twice."
+            copy="Variants that share metrics and monthly history."
+          />
           {overlapGroups.length === 0 ? (
             <div className={styles.panelNote}>
               No identical-volume variant groups in the filtered data.

@@ -428,21 +428,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W14 lifecycle
 
-- [ ] UA-W14-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W14-P2 Required predecessor outputs exist and validate (UA-W13 stacked charts). Evidence: ___
-- [ ] UA-W14-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W14-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W14-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W14-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W14-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W14-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W14-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W14-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W14-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W14-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W14-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W14-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W14-H6 Stop; do not assign or begin the successor.
+- [x] UA-W14-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: parent EV-UA-A-081 (ASG-UA-W14-01; A1 57fa49c7…, A3 094bc8bf… MATCH; A4 9d2bb23a… at I001 handoff)
+- [x] UA-W14-P2 Required predecessor outputs exist and validate (UA-W13 stacked charts). Evidence: parent EV-UA-A-074; chart-panels 2847411e…, research-dashboard 82f8a628… MATCH
+- [x] UA-W14-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: S3/I001; G4 full-page PNGs; npm test/tsc/lint ran
+- [x] UA-W14-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: S3 EV-UA-W14-D-001
+- [x] UA-W14-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: parent EV-UA-A-081 (CASE-UA-W14-001..003 pass; W5-I05 pass)
+- [x] UA-W14-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: parent EV-UA-A-081 (214/211/3; tsc 0 owned needles; lint exit 0)
+- [x] UA-W14-V3 Confirm this window introduced no new network/DB operations (operation count 0). Evidence: source-text CASE tests + G4 synthetic interception; no live provider
+- [x] UA-W14-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: parent EV-UA-A-081 G6
+- [x] UA-W14-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only. Evidence: parent EV-UA-A-081 G5 (W14-001..003; 40-ID 2c318284…)
+- [x] UA-W14-H1 Record changed files/symbols and migrations. Evidence: UA-W14_HANDOFF (cluster-landscape, summary-cards, keyword-table, w14 test; no migrations)
+- [x] UA-W14-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: I001 G0–G9 PASS; G1 214 vs predicted 212 is +2 coverage re-exec
+- [x] UA-W14-H3 Diff names ⊆ authorized_write_scope. Evidence: net four planned files + review-evidence UA-W14/ + coordination artifacts
+- [x] UA-W14-H4 No successor-window task or prohibited action was started. Evidence: parent EV-UA-A-081 G9 (no UA-W15)
+- [x] UA-W14-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: UA-W14_HANDOFF; A5 AWAITING_REVIEW at I001
+- [x] UA-W14-H6 Stop; do not assign or begin the successor. Evidence: parent EV-UA-A-081 (ASG closed; next_window UA-W15 unassigned)
 
 ### UA-W15 lifecycle
 
@@ -789,8 +789,8 @@ parent_file_leaf_checkpoints: forbidden
 browser_evidence: true
 ```
 
-- [ ] UA-W14-T1 SectionIntro for table and cluster per DEC-UA-005 items 5 and 16. Overlap panel title per item 10.
-- [ ] UA-W14-T2 Tests CASE-UA-W14-001..003; assert filter select `data-filter="market"` still present.
+- [x] UA-W14-T1 SectionIntro for table and cluster per DEC-UA-005 items 5 and 16. Overlap panel title per item 10. Evidence: parent EV-UA-A-081 (cluster d1ed9ad4…, summary-cards c60d6bad…, table 96ce5e0e…)
+- [x] UA-W14-T2 Tests CASE-UA-W14-001..003; assert filter select `data-filter="market"` still present. Evidence: parent EV-UA-A-081 (w14 2436f2c8…; three tests pass; filter-bar 17edbde0… zero-edit)
 
 ---
 

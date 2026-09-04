@@ -17,6 +17,7 @@ import {
 } from "@/lib/keyword-intelligence-view-model";
 
 import styles from "./keyword-dashboard.module.css";
+import { SectionIntro } from "@/components/section-intro";
 
 const HVOL = 500000;
 const HCI = 0.8;
@@ -218,12 +219,11 @@ export function KeywordTable({
     <section className={styles.tableSection} aria-label="Keyword table">
       <div className={styles.sectionHead}>
         <div>
-          <h2
-            className={styles.tip}
-            data-tip="Active keywords only (merged duplicates are excluded). Select rows to edit your keyword set."
-          >
-            Keyword workspace
-          </h2>
+          <SectionIntro
+            eyebrow="Shortlist"
+            title="Every active phrase, ready to inspect and keep."
+            copy="Sort, filter, and select without leaving the evidence above."
+          />
           <div className={styles.tableMeta}>
             <span>
               {total} row{total === 1 ? "" : "s"}
