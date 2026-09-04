@@ -2422,3 +2422,188 @@ coverage_counts:
 limitations: G4 is local_e2e not a CASE oracle (SUB-UA-001). G1 199/196 vs expected 197/194 is +2 passing predecessor tests from per-file coverage-module re-execution; behavioral oracle held. S002 git numstat 18/10 vs frozen 19/11 is non-blocking (content digest matches). test/.ua-executed.json is tracked 31-ID runtime residue (never commit). Full required=executed equality remains UA-W15-V5. UA-W12 not assigned.
 external_mutations: none
 ```
+
+```yaml
+evidence_id: EV-UA-A-065
+timestamp: 2026-09-04T08:50:00+05:30
+phase: assignment
+claim: Requester assigned UA-W12 as ASG-UA-W12-01 to UA-W12-WINDOW-AGENT for decomposition dispatch. Predecessor UA-W11 is parent-accepted (EV-UA-A-064). A1/A3/A4 hashes still matched prior A5 pins. A4 1edc1bc7… is the post-UA-W11-checkbox pin already recorded in A5. No A4 write-scope expansion required (keywords/[researchId]/page.tsx remains in-scope but zero-edit; chart-panels.tsx and keyword-dashboard.module.css remain read-only for W12). w12 test ABSENT. Successor UA-W13 remains reserved for parent. may_start_successor remains false. Root ACTIVE_EXECUTION_STATE.md was not mutated. Parent did not dispatch the window agent.
+environment: local workspace /home/harit/Email Scrapper
+revision: A5 state_version 27 digest computed at assignment write
+operation: sha256sum of A1 A3 vs prior A5 pins; sha256sum research-dashboard selection-review page chart-panels keyword-dashboard.module.css traffic-enrichment globals w11 test section-intro fixtures w2-w11 tests; test ! -f uphunt-aesthetic-w12.test.ts; simulate four JSX + one attribute hunk + w12 test CREATE; A5 assignment fields written
+observed_result: |
+  A1 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827 MATCH;
+  A3 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3 MATCH;
+  A4 1edc1bc7a9d7f46a62a4f88ec74e5e468e1c1d17395b9b1aa0b810ce308e8aab MATCH;
+  current_window UA-W12; authorized_windows [UA-W12]; current_status IN_PROGRESS;
+  research-dashboard 806eaf59032d99b81e621cd77bfedd0e3dd9f1483ecd2df40d80d5ac4427fee9;
+  selection-review 5550dffa70db24bc923c2ba405cefaa568e29a7bbb281bac261429cf049a3ae2;
+  keywords/[researchId]/page a46b89bcb02af1092c4f265072e719fb9ce401fd7a30588147b75835663acb18;
+  chart-panels 5bf17d06389a9163080f080dffa2257e83ae9db017bdfff1cd90b32d317db8ac;
+  keyword-dashboard.module.css d416ece7de0407e81c95e415841b29759e95f765cfcccaadd2ed3c49fe51d460;
+  traffic-enrichment 1a90378887408f16fcb15c733b39629a4c7b034f6132e3b736bc104bd0d230d1;
+  globals 4cf7a1fccba5f3b455b8c1a63e3d2aff4dc8a4f6a9dedd5731b3ea754aa87d95;
+  w11 test 40e3178898e7216d05c67f9fb14a3fd184791c7b9a9788298eb8f9838eed5c50;
+  w12 test ABSENT; section-intro 159096f313aa6c8d1be343f1db72511529fb4795c79be3123da9c3c3a0c38175
+parent_frozen_mechanical_consequences: |
+  These close otherwise-open S1 choices; they are uniquely determined by DEC-UA-003, DEC-UA-005 item 1 (page intro only; chart reorder deferred), DEC-UA-015, DEC-UA-016, UA-W12-T1/T2, and CASE-UA-W12-001..002:
+  1. FILE sub-window IDs start at UA-W12-S001. A zero-edit in-scope file gets no FILE sub-window and does not consume an S-number. Do not retire S001/S002 unused. Sequential DAG, no parallel waves: S001 frontend/components/keyword-intelligence/research-dashboard.tsx → S002 frontend/components/keyword-intelligence/selection-review.tsx → S003 frontend/test/uphunt-aesthetic-w12.test.ts → UA-W12-I001. frontend/app/keywords/[researchId]/page.tsx is in-scope but zero-edit (a46b89bc…); it consumes no S-number.
+  2. Zero-edit preserved (G6 pins, no FILE leaf): frontend/app/keywords/[researchId]/page.tsx a46b89bcb02af1092c4f265072e719fb9ce401fd7a30588147b75835663acb18; frontend/components/section-intro.tsx 159096f313aa6c8d1be343f1db72511529fb4795c79be3123da9c3c3a0c38175; frontend/components/keyword-intelligence/chart-panels.tsx 5bf17d06389a9163080f080dffa2257e83ae9db017bdfff1cd90b32d317db8ac; frontend/components/keyword-intelligence/keyword-dashboard.module.css d416ece7de0407e81c95e415841b29759e95f765cfcccaadd2ed3c49fe51d460; frontend/app/globals.css 4cf7a1fccba5f3b455b8c1a63e3d2aff4dc8a4f6a9dedd5731b3ea754aa87d95; frontend/components/traffic-enrichment.tsx 1a90378887408f16fcb15c733b39629a4c7b034f6132e3b736bc104bd0d230d1; frontend/components/lead-details.tsx 9431f71bf7d85de0b81752dfff79206f13d3e0747405aaf25f5ee58c3b6a3727; frontend/test/lead-details-component.test.ts ca1d02c3c685bd2d0aa95fb93111d405c20e616424d4cc60aaffc172e8b9ee96; frontend/test/uphunt-aesthetic-w11.test.ts 40e3178898e7216d05c67f9fb14a3fd184791c7b9a9788298eb8f9838eed5c50; frontend/test/uphunt-aesthetic-w10.test.ts 0a2b34e632c450ff97bcf95d6be34ec4768e848b49dc250a3f9cb6419875d724; frontend/test/uphunt-aesthetic-w9.test.ts baee1b2e44282ff99840f35666ab3b8d68d323589f5a376429d851c44ebe1a31; frontend/test/uphunt-aesthetic-w8.test.ts cab15f7fd3e65528d8ded657da2f8092f01107026ca4c80b48528a8e9200b8b0; frontend/test/uphunt-aesthetic-w7.test.ts 92201c35dbf51758c911d11dbe312df611fd1cc2f9a27c086ff39304c98cb842; frontend/test/uphunt-aesthetic-w6.test.ts f78b8da2fad5084777ec727d25ad21d4d81a08994eaa5c406643821d8deaec1a; frontend/test/uphunt-aesthetic-w5.test.ts ee6425e9be6ca190d27981b39656dc1692f5cc2b0c049795a59f28d418cffe06; frontend/test/uphunt-aesthetic-w4.test.ts 8008501d5da4b946bd07ea05260400198c306e1cfb2741fec7ed3ff44a3832a7; frontend/test/uphunt-aesthetic-w3.test.ts 635e28022e14646c26407dd41c77c55a4c7fb3b34c6aa29d2f6b63eaaee69b13; frontend/test/uphunt-aesthetic-w2.test.ts f65ba0c50c78ef983496d0a37af1a1a6a1234332c48a5290bc344c9a5e68b78c; frontend/test/fixtures.ts 9ea26525ed983b71063aad9e84ea492f2c85d0c95f80ba238b0a48352836c4b4; frontend/test/uphunt-aesthetic-coverage.test.ts f5137be495e260a1bf07f141247ca02c7a1c975fbaa526ae5b3b80828600c6d1. Do not edit chart child order, ChartPanels wiring, filter/save/finalize handlers, or W11 traffic/crux product files.
+  3. T1 JSX only, four unique hunks, starting research-dashboard.tsx 806eaf59032d99b81e621cd77bfedd0e3dd9f1483ecd2df40d80d5ac4427fee9. Ending digest 3936764824ed80346be54fac256a0b7c6dbc78bb9fd8235a2d3705c3869f9e63. Numstat 17 4. Hunk 1 insert `import { SectionIntro } from "@/components/section-intro";` immediately after `import { SummaryCards } from "./summary-cards";`. Hunk 2 after the closing `</div>` of `{phase !== "empty" && (` filterDock block and before `{saveError && (`, insert `{result && (` LF `  <section aria-label="Keyword research introduction">` LF `    <SectionIntro` LF `      eyebrow="Keyword intelligence"` LF `      title="The landscape behind this market."` LF `      copy="Active phrases, recommended targets, and the clusters that hold the demand."` LF `    />` LF `  </section>` LF `)}` (DEC-UA-003 exact strings including periods). Keep filterDock sticky position and all filter/save/finalize/export handlers byte-identical. Hunk 3 replace the non-empty branch opener `) : (` LF `        <>` LF `          <div className={styles.marketContext}` with `) : (` LF `        <section aria-label="Keyword research results">` LF `          <div className={styles.marketContext}` and replace the matching closer `</SummaryCards>` LF `        </>` LF `      )}` with `</SummaryCards>` LF `        </section>` LF `      )}` (stacked section wrapper; chart/grid child order inside SummaryCards/ChartPanels unchanged). Hunk 4 wrap the existing `dashboardFlow` div: replace `<div className={styles.dashboardFlow}>` with `<section aria-label="Keyword charts and table">` LF `                      <div className={styles.dashboardFlow}>` and replace the matching `</div>` LF `                    </div>` LF `                  </>` before `)}` LF `              </ChartPanels>` with `</div>` LF `                    </section>` LF `                  </>` (one additional stacked section around the chart/table flow only; do not reorder charts.seedPerformance, ClusterLandscape, decisionGrid, analysisCharts, or KeywordTable siblings).
+  4. T1 attribute only, one unique hunk, starting selection-review.tsx 5550dffa70db24bc923c2ba405cefaa568e29a7bbb281bac261429cf049a3ae2. Ending digest 87b7232ba7cbe77a2378107ab63cffc2ff7d89007d8f108d44e9e1048fc99807. Numstat 1 0. On the outer `<section className={`${styles.seedCard} ${styles.selectionPanel}`} aria-label="Selection review">`, add `data-surface="surface:selection-review-panel"` before the closing `>`. Do not change the h2 `Recommended keywords, ready for your final edit.`, finalize/save handlers, or chip UI.
+  5. CREATE test/uphunt-aesthetic-w12.test.ts with exactly two tests CASE-UA-W12-001/002. Import recordExecuted from `./uphunt-aesthetic-coverage.test.ts` the same way as the w6 test file. Read research-dashboard.tsx source only (unit tests, not render). 001: file contains `The landscape behind this market.`, `Keyword intelligence`, and `Active phrases, recommended targets, and the clusters that hold the demand.`. 002: file contains `import { SectionIntro } from "@/components/section-intro";`. recordExecuted after assertions. No third test. Parent fence digest 83eca3de54c7def4321aa4722928b791038d98449f72a6cb5e568d7f68c0f30d0 (§7.3 non-behavioral formatting freedom applies; S1 must freeze deterministic bytes).
+  6. Last FILE leaf (S003) from ABSENT test/.ua-executed.json expects exactly 4 IDs (2 × W1 re-executions + CASE-UA-W12-001/002), set digest 8bc38aad6abdde959247deb61e19e8d99fa0887879d65ea5daf15cfad1677f2f. The 33-ID set {2 × W1} ∪ {4 × W2} ∪ {4 × W3} ∪ {2 × W4} ∪ {2 × W5} ∪ {3 × W6} ∪ {2 × W7} ∪ {3 × W8} ∪ {4 × W9} ∪ {3 × W10} ∪ {2 × W11} ∪ {2 × W12} is asserted only at I001 G5 after `npm test`, digest cf0e61acc57d90a55d9738018f214a574b97a72a26bcbce9e81c2792751935e4. Do not require W2–W11 IDs at the w12-only test command. test/.ua-executed.json is TRACKED at HEAD (31-ID content 7f4bd402bbe152f799ef376042e0dd8d71828d3d8885b5fc85113f2cfd967714, set digest aa120e83587fd9792542c07dc606b0dcc50f66e8f8c45d3857ec8a0c162c671f); never commit it.
+  7. I001 G1 is DEC-UA-016: from `frontend/`, `npm test`. Expected 201 tests / 198 pass / 3 fail (199 predecessor + 2 W12 cases). PASS iff allocated UA CASE tests pass and every failing title, if any, is exactly the three named heading-oracle titles; process exit 1 is expected and is not G1 FAIL when that holds. G2 DEC-UA-014 needles are research-dashboard.tsx, selection-review.tsx, uphunt-aesthetic-w12.test.ts (globals.css and keyword-dashboard.module.css are not in write scope). G3 npm run lint when JSX owned. G4 browser_evidence false for UA-W12 (no screenshots). Window-local case set digest 2956f82027ffb1acad77613eb23af4f22df96ba168e29de77cede5242685efd8. Planned-file-set digest 49cff36ab4e7adc0439d7e6436d3a974b70cbf2998f303eacd778f116e39bd92.
+  8. Do not start UA-W13. Do not edit chart-panels.tsx, keyword-dashboard.module.css, summary-cards.tsx, filter-bar.tsx, keyword-table.tsx, cluster-landscape.tsx, globals.css, section-intro.tsx, lead-details.tsx, traffic-enrichment.tsx, W2–W11 test files, lead-details-component.test.ts, REQUIRED_CASE_IDS, parked files, or design-system-shell.test.ts. After parent accepts this decomposition, identity UA-W12-WINDOW-AGENT executes then personally reviews each FILE leaf in the same turn, then itself assigns the next S-number, then personally runs I001, then hands off (DEC-UA-015). This assignment does not execute S001. Do not write into S1 §0 any of: "parent issues the next leaf", "stop at AWAITING_WINDOW_REVIEW before S00n", "stop for parent after this leaf".
+decisive_assertion: UA-W12 may now be decomposed; FILE leaves remain unassigned until parent accepts the decomposition; UA-W13 is not authorized; parent does not assign FILE leaves
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5
+negative_control: starting UA-W13, editing chart-panels.tsx or keyword-dashboard.module.css, reordering chart children, or editing REQUIRED_CASE_IDS under this assignment would violate A5
+coverage_counts:
+  required: 43
+  registered: 31
+  planned: 43
+  executed: 31
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: FILE leaves remain unassigned until parent accepts the UA-W12 decomposition. browser_evidence false means no G4 screenshots at I001. Parent paste after a later decomposition accept is one paste for S001 through I001 (DEC-UA-015), not this paste. A5 must stay byte-identical until I001 handoff so S001 P1 holds.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-066
+timestamp: 2026-09-04T09:25:00+05:30
+phase: review
+claim: Parent accepted the UA-W12 decomposition under ASG-UA-W12-01. Independent recomputation matched S1 9d3d1d696c158960c7edc202e276ca2aad97e9b1e60ab046b35277bcf203cbed, submitted S2 updated to READY, submitted S3 1ff42123d6e483cd4c7da5290b7f097560ff55e2da1367a9617236ff1e08fc6b. All four S001 hunks apply in starting research-dashboard.tsx with ending digest 3936764824ed80346be54fac256a0b7c6dbc78bb9fd8235a2d3705c3869f9e63 numstat 17/4 MATCH. S002 ending selection-review.tsx 87b7232ba7cbe77a2378107ab63cffc2ff7d89007d8f108d44e9e1048fc99807 numstat 1/0 MATCH. S003 §5 js fence digest 41711cc556e9706430a9e8f226f285d545aefca822b5a7529680fbdd995237e7 (parent reference 83eca3de… in EV-UA-A-065 consequence 5 reconciled in S2 per §7.3; test titles and assertion wrap only; oracles identical). Authoring checklist 47/0. DAG S001→S002→S003→I001 with S001 as the real first leaf. A1/A3/A4 pins and A5 6ccc1ce2… MATCH. Planned-set 49cff36a…, window-local 2956f820…, 4-ID 8bc38aad…, 33-ID cf0e61ac… all MATCH. A5 unchanged. UA-W13 not authorized. Nothing committed.
+environment: local
+revision: A5 state_version 27 IN_PROGRESS UA-W12 ASG-UA-W12-01 digest 6ccc1ce226145c7e016e0bddb97fe4a7f76a42feabc0d323f59fb302b032a229; S2 READY (digest computed at accept)
+operation: |
+  sha256sum S1 S2 S3 A1 A3 A4 A5 research-dashboard selection-review page chart-panels w12 absent;
+  apply four S001 hunks and one S002 hunk in starting files;
+  extract S003 §5 js fence digest; §10 checkbox count; write S2 READY for continuous S001→I001
+observed_result: |
+  all listed pins MATCH; all hunks apply with pinned ending digests;
+  S2 decomposition_status READY; current_assignment_id ASG-UA-W12-01-S001;
+  assigned_agent UA-W12-WINDOW-AGENT; authorized_write_file research-dashboard.tsx;
+  next_subwindow UA-W12-S002; A5 digest unchanged
+decisive_assertion: APPROVED and executable; UA-W12-WINDOW-AGENT owns S001 through I001 continuously (DEC-UA-015); UA-W13 remains unauthorized
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: UA-W12_SUBWINDOW_STATE_S2.yaml
+negative_control: stopping for parent after S001, launching UA-W13, or editing chart-panels/module.css under this S2 would violate DEC-UA-015 and A5 prohibited_actions
+coverage_counts:
+  required: 43
+  registered: 31
+  planned: 43
+  executed: 31
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: S001 V-A porcelain must be read as the two §3 protected ` M` paths plus the three untracked UA-W12 coordination artifacts (S1/S2/S3), same class as W6–W11. Parent A6 now also contains EV-UA-A-066. S003 authoritative test digest is 41711cc5… (§5 js fence); parent sample 83eca3de… in EV-UA-A-065 consequence 5 is historical reference only.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-A-067
+timestamp: 2026-09-04T09:55:00+05:30
+phase: review
+claim: Parent confirms UA-W12-I001 PARENT_BLOCKED at G1. Window-agent diagnosis is accepted. Frozen S002 added unregistered data-surface surface:selection-review-panel; W5-I05 requires registered IDs deep-equal KEYWORD_INTELLIGENCE_SURFACE_INVENTORY / I_F15_LITERAL which already include surface:selection-review on the research-dashboard wrapper. Inventory expansion is rejected (out of UA-W12 write scope; contradicts INV-UA-010 / DEC-UA-009). CHG-UA-0007 retracts S002. Authorized correction is UA-W12-C001 revert selection-review.tsx 87b7232b… → 5550dffa… then UA-W12-I002. A5 state_version 28. UA-W13 not authorized. Parent did not dispatch the window agent.
+environment: local workspace /home/harit/Email Scrapper
+revision: A5 state_version 28 digest f3fb808a4ecea899cfa3f3d84e248044aad4cacc11a7a0075d60cd02f2e41beb
+operation: inspect W5-I05, KEYWORD_INTELLIGENCE_SURFACE_INVENTORY, data-surface registrations; confirm duplicate-token vs new-token; write CHG-UA-0007; update A5/S2
+observed_result: |
+  W5-I05 scans components/keyword-intelligence for data-surface="…" into a Set and deep-equals I_F15_LITERAL;
+  surface:selection-review already present at research-dashboard.tsx wrapper;
+  surface:selection-review-panel is not in either inventory;
+  S001/S003 pins remain required; S002 net product change retracted
+parent_frozen_mechanical_consequences: |
+  These close the escalated choice; they are uniquely determined by INV-UA-010, DEC-UA-009, W5-I05, and CHG-UA-0007:
+  1. Do not edit lib/keyword-intelligence-view-model.ts or test/keyword-intelligence-inventory.test.ts. Do not add surface:selection-review-panel (or any other new token) to KEYWORD_INTELLIGENCE_SURFACE_INVENTORY or I_F15_LITERAL.
+  2. UA-W12-C001 owns only frontend/components/keyword-intelligence/selection-review.tsx. Starting digest 87b7232ba7cbe77a2378107ab63cffc2ff7d89007d8f108d44e9e1048fc99807. Ending digest 5550dffa70db24bc923c2ba405cefaa568e29a7bbb281bac261429cf049a3ae2. Numstat 0 1. Remove the unique line `      data-surface="surface:selection-review-panel"` so the outer section is again className + aria-label="Selection review" only. Do not change the h2, handlers, or chip UI.
+  3. Keep S001 ending 3936764824ed80346be54fac256a0b7c6dbc78bb9fd8235a2d3705c3869f9e63 and S003 41711cc556e9706430a9e8f226f285d545aefca822b5a7529680fbdd995237e7. Keep existing data-surface="surface:selection-review" on the research-dashboard wrapper.
+  4. After C001, net implementation set is two files (research-dashboard.tsx, uphunt-aesthetic-w12.test.ts), planned-file-set digest 54cf2d3693093e58e19ae8c35fec70a657eef02b80efdbf0b8d340fc2121ee1b. selection-review.tsx is in-scope zero-edit at 5550dffa….
+  5. Then personally run UA-W12-I002. G1 DEC-UA-016 expected 201/198/3 (only three heading-oracle titles). G5 33-ID digest cf0e61ac…. G4 N/A. G9 no UA-W13.
+  6. Do not rewrite S002 history; C001 is append-only. Do not start UA-W13. Do not commit.
+decisive_assertion: inventory expansion is refused; C001 revert is the only authorized fix; I001 remains PARENT_BLOCKED until I002 PASS
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: A5; A7 CHG-UA-0007; UA-W12_SUBWINDOW_STATE_S2.yaml
+negative_control: adding surface:selection-review-panel to either inventory, or leaving the new attribute in selection-review.tsx, would fail this parent decision
+coverage_counts:
+  required: 43
+  registered: 33
+  planned: 43
+  executed: 33
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: I001 G1 203/199/4 is accepted as measured. A5 was not set AWAITING_REVIEW (correct). S001/S003 product bytes stay. Parent paste is C001 then I002, not a new inventory window.
+external_mutations: none
+```
+
+```yaml
+evidence_id: EV-UA-W12-I-001
+timestamp: 2026-09-04T10:06:00+05:30
+actor: UA-W12-WINDOW-AGENT
+role: window agent
+window_id: UA-W12
+assignment_id: ASG-UA-W12-01
+subwindow_ids: [UA-W12-C001, UA-W12-I002]
+claim: Whole-window reassessment after the C001 corrective revert. C001 removed the S002-introduced `data-surface="surface:selection-review-panel"` line (selection-review.tsx ending 5550dffa…, numstat 0 1), restoring W5-I05. I002 reassessment passes every gate.
+operation: |
+  remove the S002 data-surface line; sha256sum selection-review.tsx (5550dffa…); git diff --numstat (0 1); isolated W5-I05 run (pass); `npm test` (203/200/3, only three heading-oracle titles, CASE-UA-W12-001/002 pass); `npx tsc --noEmit` (0 needles); `npx eslint` on the three needles (exit 0); 33-ID set digest cf0e61acc57d90a55d9738018f214a574b97a72a26bcbce9e81c2792751935e4; net 2-file set digest 54cf2d3693093e58e19ae8c35fec70a657eef02b80efdbf0b8d340fc2121ee1b.
+result: |
+  UA-W12-I002 PASS (G0–G9, G4 N/A). Net changed-file set = {frontend/components/keyword-intelligence/research-dashboard.tsx, frontend/test/uphunt-aesthetic-w12.test.ts}. selection-review.tsx reverted to 5550dffa… (in-scope zero-edit). S001 ending 39367648…, S003 41711cc5… preserved. No UA-W13 artifact created.
+decisive_assertion: window complete and READY_FOR_PARENT_REVIEW; surface inventories were NOT expanded; no successor parent window began.
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: S1 §13; S3 EV-UA-W12-C-001 / EV-UA-W12-I002; A5 current_status AWAITING_REVIEW
+coverage_counts:
+  required: 43
+  registered: 33
+  executed: 33
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: G1 is graded by the DEC-UA-016 title oracle, not a fixed test count (203 total, 3 heading-oracle failures).
+external_mutations: test/.ua-executed.json (33-ID residue, tracked at HEAD, never committed)
+```
+
+```yaml
+evidence_id: EV-UA-A-068
+timestamp: 2026-09-04T10:35:00+05:30
+phase: review
+claim: Parent independently accepted UA-W12 after C001 + I002. Product files research-dashboard.tsx 3936764824ed80346be54fac256a0b7c6dbc78bb9fd8235a2d3705c3869f9e63 (numstat 17/4; DEC-UA-003 result SectionIntro after filterDock; stacked section wrappers; charts not reordered), uphunt-aesthetic-w12.test.ts 41711cc556e9706430a9e8f226f285d545aefca822b5a7529680fbdd995237e7 CREATE. selection-review.tsx reverted 5550dffa… (C001; in-scope zero-edit). Inventories unchanged. Zero-edit page a46b89bc…, chart-panels 5bf17d06…, module.css d416ece7…, globals 4cf7a1fc…, traffic-enrichment 1a903788…, section-intro 159096f3…, w11 40e31788… MATCH. S1 cd6c8f8f…. A1/A3 MATCH. npm test under DEC-UA-016 203/200/3 with exactly the three heading-oracle titles (parent run; CASE-UA-W12-001/002 pass; W5-I05 pass). tsc zero owned needles. lint exit 0. G4 N/A. G5 33-ID cf0e61ac…. G9 no w13 artifact. A4 UA-W12 T1/T2 and P/V/H checked on parent accept. ASG-UA-W12-01 closed. UA-W13 not assigned. Root ACTIVE_EXECUTION_STATE.md untouched. Nothing committed.
+environment: local frontend node
+revision: A5 state_version 29 READY accepted_through UA-W12 digest computed at accept; A4 post-checkbox 7962776c…; S3 10ea73ff…; S2 f42517b5…; HANDOFF b08b19c7… at docs/open-work/uphunt-aesthetic/UA-W12_HANDOFF.md
+operation: |
+  sha256sum two net W12 files plus selection-review zero-edit predecessors S1 A1 A3 A4 A5 handoff;
+  git diff --numstat; npm test; npx tsc; npm run lint; isolated W5-I05 + w12 tests;
+  33-ID digest; check A4 P/V/H/T; write A5 READY
+observed_result: |
+  all product pins MATCH; G1 PASS DEC-UA-016 203/200/3 exit 1;
+  G2 PASS; G3 PASS; G4 N/A; G5 MATCH cf0e61ac…; G9 PASS;
+  A5 current_status READY; accepted_through UA-W12; assigned_agent UNASSIGNED
+decisive_assertion: ACCEPTED; UA-W12 complete; UA-W13 remains unassigned (successor_reserved_for parent; may_start_successor false; DEC-UA-015)
+sandbox_privilege: none
+environment_invalidated_attempt: none
+artifacts: frontend/components/keyword-intelligence/research-dashboard.tsx; frontend/test/uphunt-aesthetic-w12.test.ts; frontend/docs/open-work/uphunt-aesthetic/UA-W12_HANDOFF.md; S3 EV-UA-W12-I002
+negative_control: a diagnostic naming uphunt-aesthetic-w13.test.ts or restoring surface:selection-review-panel would have failed G9/W5-I05
+coverage_counts:
+  required: 43
+  registered: 33
+  planned: 43
+  executed: 33
+  skipped: 0
+  duplicate: 0
+  unexpected: 0
+  required_case_set_digest: 0d14982c83cfb36a4a0a907f528e0b3a7dc5c7d15b9a4dd9f7b361505ed34c05
+limitations: G1 203/200 vs frozen decomposition expected 201/198 is +2 passing predecessor tests from per-file coverage-module re-execution; behavioral oracle held. HANDOFF lives at docs/open-work/uphunt-aesthetic/UA-W12_HANDOFF.md rather than review-evidence/ (content digest matches agent report). test/.ua-executed.json is tracked 33-ID runtime residue (never commit). Full required=executed equality remains UA-W15-V5. UA-W13 not assigned.
+external_mutations: none
+```

@@ -112,3 +112,22 @@ compatibility_or_migration_effect: none; presentation-only package; no product f
 authorization_effect: UA-W10 is assigned as ASG-UA-W10-01 to UA-W10-WINDOW-AGENT for decomposition only. FILE leaves remain unassigned until parent accepts the decomposition. UA-W11 remains unauthorized. Root ACTIVE_EXECUTION_STATE.md is not this package.
 resumption_state: A5 current_window UA-W10, current_assignment_id ASG-UA-W10-01, assigned_agent UA-W10-WINDOW-AGENT, current_status IN_PROGRESS, blocker null, next_window UA-W11, stop_after UA-W15, may_start_successor false
 ```
+
+```yaml
+change_id: CHG-UA-0007
+timestamp: 2026-09-04T09:55:00+05:30
+trigger_evidence: [EV-UA-A-067]
+reason: Parent-frozen UA-W12 S002 added a new data-surface token surface:selection-review-panel. W5-I05 requires the registered set to equal KEYWORD_INTELLIGENCE_SURFACE_INVENTORY / I_F15_LITERAL, which already contain surface:selection-review on the research-dashboard wrapper. INV-UA-010 and DEC-UA-009 preserve existing data-surface values; they do not authorize a new surface identity or an inventory expansion. Uniquely determined: revert S002. No new product decision.
+old_revision: 1edc1bc7a9d7f46a62a4f88ec74e5e468e1c1d17395b9b1aa0b810ce308e8aab
+new_revision: 1edc1bc7a9d7f46a62a4f88ec74e5e468e1c1d17395b9b1aa0b810ce308e8aab
+changed_requirements: []
+changed_decisions: []
+affected_windows: [UA-W12]
+invalidated_evidence:
+  - EV-UA-A-065 parent_frozen_mechanical_consequences item 4 (S002 new data-surface)
+  - EV-UA-A-066 S002 ending pin as a required net product change
+  - UA-W12 planned-file-set digest 49cff36a… (three files; superseded by two-file net set 54cf2d36…)
+compatibility_or_migration_effect: none; S002 is retracted; selection-review.tsx returns to starting digest 5550dffa…; inventories unchanged
+authorization_effect: UA-W12-WINDOW-AGENT may author and execute UA-W12-C001 then personally run UA-W12-I002. Do not edit lib/keyword-intelligence-view-model.ts or test/keyword-intelligence-inventory.test.ts. UA-W13 remains unauthorized.
+resumption_state: A5 current_window UA-W12, current_assignment_id ASG-UA-W12-01, assigned_agent UA-W12-WINDOW-AGENT, current_status IN_PROGRESS, blocker EV-UA-A-067_S002_new_surface_vs_W5-I05, next_window UA-W13, stop_after UA-W15, may_start_successor false
+```

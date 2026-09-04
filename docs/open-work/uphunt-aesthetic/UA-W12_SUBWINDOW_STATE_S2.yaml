@@ -1,0 +1,76 @@
+# UA-W12 active sub-window state (`S2`)
+
+Machine-scannable authority below. No history. Companion artifacts:
+`S1` `frontend/docs/open-work/uphunt-aesthetic/UA-W12_SUBWINDOW_DECOMPOSITION_S1.md`
+and `S3` `frontend/docs/open-work/uphunt-aesthetic/UA-W12_SUBWINDOW_EVIDENCE_S3.md`.
+
+`UA-W12-C001` executed (revert S002) and `UA-W12-I002` passed (G0–G9, G4 N/A).
+Window handed off at `READY_FOR_PARENT_REVIEW`. Do not start UA-W13. `A5`
+current status set to `AWAITING_REVIEW`.
+
+```yaml
+state_version: 4
+parent_window_id: UA-W12
+parent_assignment_id: ASG-UA-W12-01
+window_agent_identity: UA-W12-WINDOW-AGENT
+parent_standard_path: PROJECT_AGNOSTIC_DECISION_COMPLETE_CHECKLIST_AUTHORING_STANDARD.md
+parent_standard_revision: cda352017e75c0d11f6797d9fbe108b4365508cd38b0e92365cfb523ede32848
+subwindow_standard_path: PROJECT_AGNOSTIC_WINDOW_AGENT_SUBWINDOW_AUTHORING_STANDARD.md
+subwindow_standard_revision: 842c29550c06c22d63e0a058a27cb8a9ff6b538b3168d2c83a384890b44247f0
+parent_contract_revision: 57fa49c7d9dc1390ef3517c28c73e55bc551bae581d7ea18d7f2e6ee67c54827
+parent_decision_revision: 094bc8bf33dcce26479e2606b40e451f88b067906b8d21b4488e98481cf378b3
+parent_checklist_revision: 1edc1bc7a9d7f46a62a4f88ec74e5e468e1c1d17395b9b1aa0b810ce308e8aab
+decomposition_path: frontend/docs/open-work/uphunt-aesthetic/UA-W12_SUBWINDOW_DECOMPOSITION_S1.md
+decomposition_revision: cd6c8f8f1d410c00dd48c8b6b0fbbf43f636c165980cc41609d6de21f6b5ece9
+evidence_path: frontend/docs/open-work/uphunt-aesthetic/UA-W12_SUBWINDOW_EVIDENCE_S3.md
+evidence_revision: 10ea73ff8b24f5fd76f74853d289a71f6abdb1589ddc01b97f75a2fef8e2c311
+decomposition_status: READY
+current_subwindow: STOP
+current_assignment_id: ASG-UA-W12-01
+assigned_agent: UA-W12-WINDOW-AGENT
+subwindow_type: INTEGRATION_ASSESSMENT
+authorized_write_file: NONE
+authorized_actions:
+  - write_UA-W12_HANDOFF
+  - append_A6_evidence
+  - append_S3_evidence
+  - set_A5_AWAITING_REVIEW_on_I002_PASS
+prohibited_actions:
+  - expand_KEYWORD_INTELLIGENCE_SURFACE_INVENTORY
+  - edit_keyword_intelligence_view_model
+  - edit_keyword_intelligence_inventory_test
+  - add_new_data_surface_token
+  - start_UA-W13
+  - may_start_successor
+  - edit_A5_except_authorized_handoff_action_after_I002
+  - edit_chart_panels_tsx
+  - edit_keyword_dashboard_module_css
+  - edit_globals_css
+  - edit_research_dashboard_tsx
+  - edit_uphunt_aesthetic_w12_test
+  - edit_A6_history
+  - aws
+  - commit
+  - push
+  - production
+  - paid_provider
+  - edit_email_scraper
+  - edit_root_ACTIVE_EXECUTION_STATE
+execution_environment_policy:
+  sandbox_escalation_for_authorized_local_actions: true
+  automatic_identical_recovery_after_proven_environment_invalidation: true
+  recovery_limit_per_invalidated_execution: 1
+  external_authority_expansion: false
+may_start_successor: false
+current_status: AWAITING_REVIEW
+accepted_subwindows: [UA-W12-S001, UA-W12-S002, UA-W12-S003, UA-W12-C001]
+next_subwindow: STOP
+blocker: null
+last_updated: 2026-09-04T10:06:00+05:30
+```
+
+Window complete: I001 failed at G1 (`EV-UA-A-067`, PARENT_BLOCKED, S002 new
+`data-surface` broke W5-I05), corrected by C001 (revert S002), reassessed by
+I002 (PASS). Net changed-file set after C001:
+research-dashboard.tsx + uphunt-aesthetic-w12.test.ts, digest `54cf2d36…`.
+selection-review.tsx returned to the frozen original `5550dffa…`.

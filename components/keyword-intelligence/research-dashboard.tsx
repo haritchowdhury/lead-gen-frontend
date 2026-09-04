@@ -51,6 +51,7 @@ import { KeywordTable } from "./keyword-table";
 import { ResearchStatus } from "./research-status";
 import { SelectionReview } from "./selection-review";
 import { SummaryCards } from "./summary-cards";
+import { SectionIntro } from "@/components/section-intro";
 import { TrafficMarketExplorer } from "../traffic-globe";
 
 import styles from "./keyword-dashboard.module.css";
@@ -542,6 +543,16 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
         </div>
       )}
 
+      {result && (
+        <section aria-label="Keyword research introduction">
+          <SectionIntro
+            eyebrow="Keyword intelligence"
+            title="The landscape behind this market."
+            copy="Active phrases, recommended targets, and the clusters that hold the demand."
+          />
+        </section>
+      )}
+
       {saveError && (
         <div className={styles.banner} role="alert">
           <span>{saveError}</span>
@@ -565,7 +576,7 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
           This research contains no active keywords.
         </div>
       ) : (
-        <>
+        <section aria-label="Keyword research results">
           <div className={styles.marketContext} aria-live="polite">
             <span className={styles.marketContextDot} aria-hidden="true" />
             <span>
@@ -639,7 +650,8 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
                       />
                     </section>
 
-                    <div className={styles.dashboardFlow}>
+                    <section aria-label="Keyword charts and table">
+                      <div className={styles.dashboardFlow}>
                       {charts.seedPerformance}
 
                       <ClusterLandscape
@@ -665,13 +677,14 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
                           onToggleRow={handleToggleRow}
                         />
                       </div>
-                    </div>
+                      </div>
+                    </section>
                   </>
                 )}
               </ChartPanels>
             )}
           </SummaryCards>
-        </>
+        </section>
       )}
     </section>
   );

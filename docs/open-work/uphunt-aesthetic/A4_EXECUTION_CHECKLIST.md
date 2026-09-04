@@ -392,21 +392,21 @@ These are the actual precondition, verification, and handoff checkboxes. Window 
 
 ### UA-W12 lifecycle
 
-- [ ] UA-W12-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: ___
-- [ ] UA-W12-P2 Required predecessor outputs exist and validate (UA-W11 traffic intro). Evidence: ___
-- [ ] UA-W12-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: ___
-- [ ] UA-W12-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: ___
-- [ ] UA-W12-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence.
-- [ ] UA-W12-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned.
-- [ ] UA-W12-V3 Confirm this window introduced no new network/DB operations (operation count 0).
-- [ ] UA-W12-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff.
-- [ ] UA-W12-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only.
-- [ ] UA-W12-H1 Record changed files/symbols and migrations. Evidence: ___
-- [ ] UA-W12-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: ___
-- [ ] UA-W12-H3 Diff names ⊆ authorized_write_scope. Evidence: ___
-- [ ] UA-W12-H4 No successor-window task or prohibited action was started. Evidence: ___
-- [ ] UA-W12-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: ___
-- [ ] UA-W12-H6 Stop; do not assign or begin the successor.
+- [x] UA-W12-P1 Active assignment ID and pinned standard/contract/decision/checklist revisions match A5. Evidence: parent EV-UA-A-068 (ASG-UA-W12-01; A1 57fa49c7…, A3 094bc8bf…, A4 1edc1bc7… MATCH at assignment; A5 state_version 28 at I002 handoff)
+- [x] UA-W12-P2 Required predecessor outputs exist and validate (UA-W11 traffic intro). Evidence: parent EV-UA-A-064; traffic-enrichment 1a903788…, w11 40e31788… MATCH
+- [x] UA-W12-P3 Node, frontend/ package scripts, and named test runner exist. Chrome exists if F1 browser_evidence is true. Evidence: S3 EV-UA-W12-I002 (browser_evidence false; npm test/tsc/lint ran)
+- [x] UA-W12-P4 Starting dirty-worktree and ownership scope recorded for frontend/ and coordination root. Evidence: S3 EV-UA-W12-D-001
+- [x] UA-W12-V1 Execute this window's allocated CASE tests; record activation, oracle, and negative-control evidence. Evidence: parent EV-UA-A-068 (CASE-UA-W12-001/002 pass; W5-I05 pass after C001)
+- [x] UA-W12-V2 Frozen gate: from frontend/, `npm test` per DEC-UA-016; typecheck G2 per DEC-UA-014 (zero tsc diagnostics on this window's authorized_write_scope paths). Also `npm run lint` when CSS/JSX is owned. Evidence: parent EV-UA-A-068 (203/200/3; tsc 0 owned needles; lint exit 0)
+- [x] UA-W12-V3 Confirm this window introduced no new network/DB operations (operation count 0). Evidence: S3 EV-UA-W12-I002 G7
+- [x] UA-W12-V4 Confirm forbidden paths in DEC-UA-006 are absent from the window diff. Evidence: S3 EV-UA-W12-I002 G6
+- [x] UA-W12-V5 Assert this window's allocated CASE IDs each have one test() that calls recordExecuted after the activation witness. Full-set equality is UA-W15-V5 only. Evidence: S3 EV-UA-W12-I002 G5 (W12-001/002; 33-ID cf0e61ac…)
+- [x] UA-W12-H1 Record changed files/symbols and migrations. Evidence: S3 EV-UA-W12-I002 + UA-W12_HANDOFF (research-dashboard.tsx, w12.test.ts; selection-review reverted; no migrations)
+- [x] UA-W12-H2 Record commands, outcomes, scenarios and skipped checks. Evidence: S3 EV-UA-W12-I002 G1–G9 + C001
+- [x] UA-W12-H3 Diff names ⊆ authorized_write_scope. Evidence: S3 EV-UA-W12-I002 G6 (net two files)
+- [x] UA-W12-H4 No successor-window task or prohibited action was started. Evidence: S3 EV-UA-W12-I002 G9 (no UA-W13)
+- [x] UA-W12-H5 Append the execution and enforcement certificates and set A5 current_status to AWAITING_REVIEW. Evidence: S3 WINDOW-HANDOFF; A5 AWAITING_REVIEW at I002
+- [x] UA-W12-H6 Stop; do not assign or begin the successor. Evidence: S3 EV-UA-W12-I002 G9 (stop at H6)
 
 ### UA-W13 lifecycle
 
@@ -747,8 +747,8 @@ parent_file_leaf_checkpoints: forbidden
 browser_evidence: false
 ```
 
-- [ ] UA-W12-T1 Insert page SectionIntro DEC-UA-003 above ResearchDashboard content when `result` is present. Keep filter dock.
-- [ ] UA-W12-T2 Do not reorder charts yet. Tests CASE-UA-W12-001 CASE-UA-W12-002 (headline strings present in research-dashboard.tsx source).
+- [x] UA-W12-T1 Insert page SectionIntro DEC-UA-003 above ResearchDashboard content when `result` is present. Keep filter dock. Evidence: parent EV-UA-A-068 (research-dashboard 39367648…; filterDock kept; SectionIntro when result)
+- [x] UA-W12-T2 Do not reorder charts yet. Tests CASE-UA-W12-001 CASE-UA-W12-002 (headline strings present in research-dashboard.tsx source). Evidence: parent EV-UA-A-068 (CASE-UA-W12-001/002 pass; chart-panels 5bf17d06… zero-edit)
 
 ---
 
