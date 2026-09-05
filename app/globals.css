@@ -5891,11 +5891,11 @@ button {
 .run-history-row {
   --run-accent: var(--color-line-strong);
   position: relative;
-  grid-template-columns: minmax(16rem, 1.15fr) minmax(24rem, 1fr) minmax(10rem, auto);
+  grid-template-columns: minmax(12rem, 1.1fr) minmax(0, 1.2fr) minmax(8rem, auto);
   gap: clamp(var(--space-4), 2.4vw, var(--space-6));
   min-height: 0;
   padding: var(--space-5) 0;
-  overflow: hidden;
+  overflow: visible;
   border: 0;
   border-top: 1px solid var(--color-line);
   border-radius: 0;
@@ -5989,9 +5989,11 @@ button {
 .run-outcome + .run-outcome { border-left: 0; }
 
 .run-outcome strong {
+  display: block;
   color: var(--color-ink);
-  font-size: 1.0625rem;
-  line-height: 1;
+  font-size: 1.125rem;
+  font-weight: 750;
+  line-height: 1.2;
 }
 
 .run-outcome small {
