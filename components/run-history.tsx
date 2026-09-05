@@ -169,6 +169,7 @@ export function RunHistory() {
   const [runPage, setRunPage] = useState(1);
   const [runData, setRunData] = useState<RunListResponse | null>(null);
   const [runError, setRunError] = useState<string | null>(null);
+  const [openDrawer, setOpenDrawer] = useState<"research" | "runs">("research");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -225,7 +226,42 @@ export function RunHistory() {
 
   return (
     <div className="search-history-sections">
-      <section className="search-history-section" aria-labelledby="keyword-research-history-heading">
+      <div className="history-drawer-rail" role="tablist" aria-label="Search workspace">
+        <button
+          type="button"
+          className="history-drawer-toggle"
+          role="tab"
+          id="history-drawer-research"
+          aria-expanded={openDrawer === "research"}
+          aria-selected={openDrawer === "research"}
+          aria-controls="keyword-research-history-panel"
+          onClick={() => setOpenDrawer("research")}
+        >
+          <span>Keyword research</span>
+          {researchData ? <small>{researchData.pagination.totalItems}</small> : null}
+        </button>
+        <button
+          type="button"
+          className="history-drawer-toggle"
+          role="tab"
+          id="history-drawer-runs"
+          aria-expanded={openDrawer === "runs"}
+          aria-selected={openDrawer === "runs"}
+          aria-controls="discovery-runs-history-panel"
+          onClick={() => setOpenDrawer("runs")}
+        >
+          <span>Discovery runs</span>
+          {runData ? <small>{runData.pagination.totalItems}</small> : null}
+        </button>
+      </div>
+
+      <section
+        className="search-history-section"
+        id="keyword-research-history-panel"
+        role="tabpanel"
+        aria-labelledby="keyword-research-history-heading"
+        hidden={openDrawer !== "research"}
+      >
         <div className="search-history-heading">
           <div><span className="eyebrow">Research workspace</span><h2 id="keyword-research-history-heading">Keyword research</h2></div>
         </div>
@@ -268,7 +304,13 @@ export function RunHistory() {
         )}
       </section>
 
-      <section className="search-history-section" aria-labelledby="discovery-runs-history-heading">
+      <section
+        className="search-history-section"
+        id="discovery-runs-history-panel"
+        role="tabpanel"
+        aria-labelledby="discovery-runs-history-heading"
+        hidden={openDrawer !== "runs"}
+      >
         <div className="search-history-heading">
           <div><span className="eyebrow">Lead discovery</span><h2 id="discovery-runs-history-heading">Discovery runs</h2></div>
         </div>
