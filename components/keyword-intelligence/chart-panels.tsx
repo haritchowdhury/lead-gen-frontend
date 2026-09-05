@@ -84,6 +84,7 @@ type ChartPanelSections = {
   scatterPanel: ReactNode;
   overviewSignals: ReactNode;
   analysisCharts: ReactNode;
+  tailSignals: ReactNode;
 };
 
 type Palette = {
@@ -1309,8 +1310,13 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
   const overviewSignals = (
     <>
       {intentPanel}
-      {recommendedPanel}
       {histogramPanel}
+    </>
+  );
+
+  const tailSignals = (
+    <>
+      {recommendedPanel}
       {flagsPanel}
     </>
   );
@@ -1336,7 +1342,7 @@ export function ChartPanels({ result, marketCode, filter, rows, children }: Char
           <span>Some charts could not be rendered. Reload the page to try again.</span>
         </div>
       )}
-      {children({ heatmapPanel, seedPerformance, intentPanel, recommendedPanel, histogramPanel, flagsPanel, historyPanel, topKeywordsPanel, clusterVolumePanel, bubblePanel, scatterPanel, overviewSignals, analysisCharts })}
+      {children({ heatmapPanel, seedPerformance, intentPanel, recommendedPanel, histogramPanel, flagsPanel, historyPanel, topKeywordsPanel, clusterVolumePanel, bubblePanel, scatterPanel, overviewSignals, analysisCharts, tailSignals })}
     </div>
   );
 }

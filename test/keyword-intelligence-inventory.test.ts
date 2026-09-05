@@ -548,6 +548,7 @@ test("VIS-KD visual-only dashboard composition and shared form contract", async 
     "summary.marketOverview(charts.overviewSignals)",
     "{charts.historyPanel}",
     "{charts.analysisCharts}",
+    "{charts.tailSignals}",
     'data-surface="surface:keyword-table"',
   ].map((needle) => dashboard.indexOf(needle));
   assert.equal(compositionOrder.every((index) => index >= 0), true, "every visual section is present");
@@ -565,7 +566,7 @@ test("VIS-KD visual-only dashboard composition and shared form contract", async 
   for (const name of ["marketOverview", "overlapPanel"]) {
     assert.match(summary, new RegExp(`\\b${name}\\b`, "u"));
   }
-  for (const name of ["seedPerformance", "heatmapPanel", "overviewSignals", "historyPanel", "analysisCharts"]) {
+  for (const name of ["seedPerformance", "heatmapPanel", "overviewSignals", "historyPanel", "analysisCharts", "tailSignals"]) {
     assert.match(charts, new RegExp(`\\b${name}\\b`, "u"));
   }
 

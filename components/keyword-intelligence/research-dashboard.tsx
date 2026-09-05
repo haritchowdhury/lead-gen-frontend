@@ -669,6 +669,8 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
 
                     {charts.analysisCharts}
 
+                    {charts.tailSignals}
+
                     <div data-surface="surface:keyword-table">
                       <KeywordTable
                         rows={activeRowsIn}
