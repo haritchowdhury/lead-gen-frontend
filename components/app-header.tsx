@@ -37,10 +37,6 @@ export async function AppHeader() {
           <Link href="/#faq">FAQ</Link>
         </nav>
         <div className="header-actions">
-          <div className="header-meta">
-            <span className="signal-dot" aria-hidden="true" />
-            Shopify lead intelligence
-          </div>
           <HeaderAuth signedIn={signedIn} />
         </div>
       </div>

@@ -42,12 +42,18 @@ export function RunProgress({ run }: RunProgressProps) {
         <div className="progress-stage">
           <span className={`state-indicator ${active ? "is-active" : ""}`} />
           <div>
-            <SectionIntro
-              eyebrow="Discovery"
-              title="StoreSignal is looking for matching stores."
-              copy="The stages and counts below are the existing run status."
-            />
-            <p>{stageLabel(run.stage)}</p>
+            {run.state === "completed" ? (
+              <p>{stageLabel(run.stage)}</p>
+            ) : (
+              <>
+                <SectionIntro
+                  eyebrow="Discovery"
+                  title="StoreSignal is looking for matching stores."
+                  copy="The stages and counts below are the existing run status."
+                />
+                <p>{stageLabel(run.stage)}</p>
+              </>
+            )}
           </div>
         </div>
         <div className="progress-state">

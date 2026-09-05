@@ -285,26 +285,28 @@ export function RunWorkspace({ runId }: { runId: string }) {
   return (
     <main className={`run-page run-page-${run.state}`}>
       <div className="shell">
-        <div className="run-title-row">
-          <div>
-            <Link className="back-link" href="/">
-              ← New discovery
-            </Link>
-            <h1>Lead discovery run</h1>
-            <div className="run-meta">
-              <span>Created {formatDate(run.createdAt)}</span>
-              <span className="meta-divider" />
-              <button type="button" onClick={copyRunId}>
-                {copied ? "Copied" : runId}
-                <CopyIcon />
-              </button>
+        {run.state !== "completed" && (
+          <div className="run-title-row">
+            <div>
+              <Link className="back-link" href="/">
+                ← New discovery
+              </Link>
+              <h1>Lead discovery run</h1>
+              <div className="run-meta">
+                <span>Created {formatDate(run.createdAt)}</span>
+                <span className="meta-divider" />
+                <button type="button" onClick={copyRunId}>
+                  {copied ? "Copied" : runId}
+                  <CopyIcon />
+                </button>
+              </div>
             </div>
+            <Link className="button button-secondary" href="/">
+              <PlusIcon />
+              New run
+            </Link>
           </div>
-          <Link className="button button-secondary" href="/">
-            <PlusIcon />
-            New run
-          </Link>
-        </div>
+        )}
 
         {connectionWarning && (
           <div className="warning-banner ds-notice ds-notice--warning" role="status">
@@ -320,7 +322,7 @@ export function RunWorkspace({ runId }: { runId: string }) {
           </div>
         )}
 
-        <RunProgress run={run} />
+        {run.state !== "completed" && <RunProgress run={run} />}
 
         {run.resultsAvailable && (
           <section className="results-section">
