@@ -540,9 +540,9 @@ test("VIS-KD visual-only dashboard composition and shared form contract", async 
   const compositionOrder = [
     'data-surface="surface:filter-bar"',
     'data-surface="surface:summary-cards"',
+    "<KeywordMarketGlobe",
     "className={styles.selectionStep}",
     "{charts.heatmapPanel}",
-    "<KeywordMarketGlobe",
     "{charts.seedPerformance}",
     "<ClusterLandscape",
     "summary.marketOverview(charts.overviewSignals)",

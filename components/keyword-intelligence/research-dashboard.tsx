@@ -599,6 +599,7 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
                 {(charts) => (
                   <>
                     <section className={styles.researchHero} aria-label="Keyword research workspace">
+                      <div className={styles.heroLeft}>
                       <div className={styles.heroCopy} data-surface="surface:summary-cards">
                         <span className={styles.servicePill}>Research landscape ready</span>
                         <div className={styles.heroEyebrow}>Your keyword opportunity</div>
@@ -622,6 +623,14 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
                         <div className={styles.heroOrbit} aria-hidden="true" />
                       </div>
 
+                      <KeywordMarketGlobe
+                        markets={result.markets}
+                        rows={result.keywords}
+                        selectedMarket={filter.market}
+                        onMarketChange={(market) => handleFilterChange({ market, page: 1 })}
+                      />
+                      </div>
+
                       <div
                         ref={reviewRef}
                         className={styles.selectionStep}
@@ -643,13 +652,6 @@ export function ResearchDashboard({ researchId }: { researchId: string }) {
                     </section>
 
                     {charts.heatmapPanel}
-
-                    <KeywordMarketGlobe
-                      markets={result.markets}
-                      rows={result.keywords}
-                      selectedMarket={filter.market}
-                      onMarketChange={(market) => handleFilterChange({ market, page: 1 })}
-                    />
 
                     {charts.seedPerformance}
 
