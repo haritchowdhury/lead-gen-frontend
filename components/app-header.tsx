@@ -23,22 +23,20 @@ export async function AppHeader() {
   }
   return (
     <header className="site-header" data-auth-state={signedIn ? "signed-in" : "signed-out"}>
-      <div className="shell header-inner">
-        <Link className="brand" href="/" aria-label="StoreSignal home">
-          <span className="brand-mark" aria-hidden="true">
-            <StoreIcon />
-          </span>
-          <span>StoreSignal</span>
-        </Link>
-        <nav className="site-nav" aria-label="Product navigation">
-          <Link href="/#how-it-works">How it works</Link>
-          <Link href="/#intelligence">What you get</Link>
-          <Link href="/#use-cases">Use cases</Link>
-          <Link href="/#faq">FAQ</Link>
-        </nav>
-        <div className="header-actions">
-          <HeaderAuth signedIn={signedIn} />
-        </div>
+      <Link className="brand" href="/" aria-label="StoreSignal home">
+        <span className="brand-mark" aria-hidden="true">
+          <StoreIcon />
+        </span>
+        <span>StoreSignal</span>
+      </Link>
+      <nav className="site-nav" aria-label="Product navigation">
+        <Link href="/#how-it-works">How it works</Link>
+        <Link href="/#intelligence">What you get</Link>
+        <Link href="/#use-cases">Use cases</Link>
+        <Link href="/#faq">FAQ</Link>
+      </nav>
+      <div className="header-actions">
+        <HeaderAuth signedIn={signedIn} />
       </div>
     </header>
   );
